@@ -1,0 +1,75 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.ApprovalFlow.ApprovalFlowViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("ApproverList"))
+{
+    <tr>
+        <td>
+            @Html.DropDownListFor(m => m.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control desig", @onchange = "getEmployeeList(this)" })
+        </td>
+        <td>
+            @Html.DropDownListFor(m => m.EmployeeId, Model.EmployeeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control empList" })
+        </td>
+        <td class="control-option">
+            <button type="button" class="btn btn-sm btn-primary btnAddNewEmp" id="btnAddNewEmp" style="padding:3px;">
+                <i class="fa fa-plus fa-lg"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-primary btnDleteEmp" id="btnDleteEmp" style="padding:3px;">
+                <i class="fa fa-trash fa-lg"></i>
+            </button>
+        </td>
+    </tr>
+}
+
+<script type="text/javascript">
+    $('.desig').select2();
+
+    $('.btnDleteEmp').click(function () {
+        $(this).closest('tr').remove();
+        return false;
+    });
+
+    $('.btnAddNewEmp').click(function () {
+        var eTbody = $(this).closest('table').find('tbody');
+        var url = '@Url.Action("AddEmployeeList", "Budget")';
+
+        $.ajax({
+            url: url,
+            data: {},
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                eTbody.append("<tr>" + result + "</tr>");
+            }
+        })
+    });
+
+    function getEmployeeList(obj) {
+        var designationId = obj.value;
+
+        var row = $(obj).closest('tr');
+        var ToId = row.find('.empList');
+
+        ToId.empty();
+        ToId.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        if (designationId != null && designationId != '') {
+            $.getJSON('@Url.Action("GetEmployeeList", "Budget")',
+                { designationId: designationId },
+                function (data) {
+                    $.each(data,function (index, entity) {
+                            ToId.append($('<option/>',
+                            {
+                                value: entity.Id,
+                                text: entity.Name
+                            }));
+                    });
+                    ToId.select2();
+                });
+        }
+    }
+</script>
+

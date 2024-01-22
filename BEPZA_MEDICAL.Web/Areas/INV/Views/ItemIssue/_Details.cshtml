@@ -1,0 +1,14 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.ItemIssueViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@if (Model != null)
+{
+    if (Model.IssueItemDetail != null)
+    {
+        foreach (var x in Model.IssueItemDetail)
+        {
+            @Html.Partial("_PartialDetail", x);
+        }
+    }
+
+}

@@ -1,0 +1,31 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAM.Models.BSPLReportHeadMapping.BSPLReportAccountHead
+@using BEPZA_MEDICAL.Web.Helpers
+@using (Html.BeginCollectionItem("BSPLReportAccountHeadList"))
+{
+    <tr >
+    <td style=" border:1px solid #CCCCCC; padding-left:3px; padding-right:3px">
+    @if (Model.IsUsed)
+    {
+         @Html.CheckBoxFor(m => m.IsSelected, new { disabled = true })
+    }
+    else
+    {
+         @Html.EditorFor(model => model.IsSelected)
+    }
+    </td>
+    <td>
+       
+        @Html.HiddenFor(model => model.AccountHeadId)
+        @Html.TextBoxFor(model => model.AccountHeadName, new { @readonly=true, @style="width:320px;"})
+        @Html.HiddenFor(model => model.AccountHeadName)
+    </td>
+        
+    <td>
+        @Html.TextBoxFor(model => model.AccountHeadType, new { @readonly = true, @style = "text-align:center; width:100px;" })
+    </td>
+@*    <td>
+        @Html.CheckBoxFor(model => model.IsSelected)
+    </td>*@
+</tr>
+
+}

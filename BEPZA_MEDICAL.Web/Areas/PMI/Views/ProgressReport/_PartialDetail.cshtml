@@ -1,0 +1,50 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.ProgressReport.ProgressReportMasterViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("TempAttachmentDetail"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ProgressReportId)
+
+        @Html.HiddenFor(x => x.NameofWork)
+        @Html.HiddenFor(x => x.PreviousDate)
+
+        @Html.HiddenFor(x => x.CurrentDate)
+        @Html.HiddenFor(x => x.PreviousFileName)
+        @Html.HiddenFor(x => x.PreviousAttachment)
+        @Html.HiddenFor(x => x.CurrentFileName)
+        @Html.HiddenFor(x => x.CurrentAttachment)
+
+        <td width="15%" style="text-align: center" class="chck-refNo">
+            @Html.Encode(Model.NameofWork)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.TextBoxFor(x => x.PreviousDate, "{0:yyyy-MM-dd}", new { @style="display:none"})
+            @Html.Label(Convert.ToDateTime(Model.PreviousDate).ToString("dd-MM-yyyy"), new { @style = "color:black;text-align:center" })
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.PreviousFileName)
+            @if (Model.PreviousAttachment != null)
+            {
+                <img id="mainPortrait" alt="Photo" height="140" width="180" src="data:image;base64,@System.Convert.ToBase64String(Model.PreviousAttachment)" onclick="window.open($(this).attr('src'), '_blank');" />
+            }
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.TextBoxFor(x => x.CurrentDate, "{0:yyyy-MM-dd}", new { @style = "display:none" })
+            @Html.Label(Convert.ToDateTime(Model.CurrentDate).ToString("dd-MM-yyyy"), new { @style = "color:black;text-align:center" })
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.CurrentFileName)
+            @if (Model.CurrentAttachment != null)
+            {
+               <img id="mainPortrait" alt="Photo" height="140" width="180" src="data:image;base64,@System.Convert.ToBase64String(Model.CurrentAttachment)" onclick="window.open($(this).attr('src'), '_blank');" />
+            }
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="remove" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteAttachmentDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

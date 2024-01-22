@@ -1,0 +1,90 @@
+﻿<div class="GroupBox">
+    <table id="jqGrid" cellpadding="0" cellspacing="0" class="ui-jqgrid-view">
+    </table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        $('#btnUpdate').hide();
+
+        $("#btnClear").click(
+         function () {
+             $('#Name').val('');
+             $('#Remarks').val('');
+             $('#SortOrder').val('');
+             //             var url = '@Url.Action("Index", "Configuration")';
+             //             document.location = url;
+         });
+
+        $("a.editItem").live("click", function () {
+
+            var index = $(this).attr('rowId');
+            var rowValue = $(this).text();
+            var id = $(this).attr('tableId');
+
+            $("#Name").val(rowValue);
+            $("#SortOrder").val(jQuery('#jqGrid').jqGrid('getCell', index, 2));
+            $("#Remarks").val(jQuery('#jqGrid').jqGrid('getCell', index, 3));
+
+            $("#Id").val(id);
+
+            $("#frm").attr('action', '@Url.Action("Edit")' + '?type=' + $('.ui-selected:first').text());
+
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            return false;
+        });
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);
+            $('#delete-dialog').dialog('open');
+            return false;
+        });
+    });
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+
+            beforeRequest: function () {
+                var newUrl = '@Url.Action("GetCommonConfigList")' + '?type=' + $('.ui-selected:first').text();
+                $('#jqGrid').jqGrid().setGridParam({ url: newUrl });
+            },
+            url: '',
+            datatype: 'json',
+            mtype: 'GET',
+            ajaxGridOptions: { contentType: 'application/json' },
+
+            autowidth: true,
+            colNames: ['ID', 'Name', 'Sort Order', 'Remarks', 'Delete'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: true, hidden: true, edittype: 'text' },
+                        { name: 'Name', index: 'Name', align: 'left', search: true, edittype: 'text', formatter: ViewformateadorLink },
+                        { name: 'SortOrder', index: 'SortOrder', align: 'center', width: '50px', search: false, edittype: 'text' },
+                        { name: 'Remarks', index: 'Remarks', align: 'left', search: false, sortable: false },
+                        { name: 'Delete', index: 'Delete', align: 'center', width: '50px', hidden: IsDeleteAssigned, edittype: 'image', formatter: deleteformateadorLink }
+                      ],
+            caption: "Common Configuration",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '100%'
+        });
+    });
+
+    function ViewformateadorLink(cellvalue, options, rowObject) {
+        var url = '<a class="editItem" href="#" rowId=' + options.rowId + ' tableId= ' + rowObject[0] + '>' + cellvalue + '</a>';
+        return url;
+    }
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_ID_" }, new { @class = "deleteItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_ID_/, rowObject[0] + '?type=' + $('.ui-selected:first').text())
+        return url;
+    }
+</script>

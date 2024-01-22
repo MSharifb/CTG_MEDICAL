@@ -1,0 +1,8 @@
+﻿
+@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Report.ReportViewerViewModel
+@{
+    ViewBag.Title = "ReportViewer";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<iframe src="@Model.ReportPath" style="width:100%; height:1000px; border:none;">
+</iframe>

@@ -1,0 +1,8 @@
+﻿@model System.DateTime
+@if (Model != null)
+{
+    <span title=@String.Format("{0:dd-MMMM-yyyy}", Model)>
+    @Html.Encode(String.Format("{0:dd/MM/yyyy}", Model))
+    </span>
+}
+

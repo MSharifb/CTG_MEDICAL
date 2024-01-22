@@ -1,0 +1,134 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Personal.PersonalViewModel
+@{
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+@*<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>*@
+<div>
+    <div class="left-sidebar">
+        <ul>
+
+            @{
+                var visaType = string.Empty;
+                var passportType = string.Empty;
+                if (Model.VisaInformation.Type == "Visa")
+                {
+                    visaType = Model.VisaInformation.SideBarClassName;
+                }
+                else if (Model.VisaInformation.Type == "Passport")
+                {
+                    passportType = Model.VisaInformation.SideBarClassName;
+                }
+
+                var Reference = string.Empty;
+                var Guarantor = string.Empty;
+                if (Model.ReferenceInformation.Type == "Reference")
+                {
+                    Reference = Model.ReferenceInformation.SideBarClassName;
+                }
+                else if (Model.ReferenceInformation.Type == "Guarantor")
+                {
+                    Guarantor = Model.ReferenceInformation.SideBarClassName;
+                }
+            }
+
+            <li class="@Model.PersonalInfo.SideBarClassName">@Html.ActionLink("Personal Information", "PersonaInfoIndex/" + @Model.EmployeeId.ToString())</li>
+            <li class="@Model.PersonalFamilyMemberInformation.SideBarClassName">@Html.ActionLink("Spouse/Family Member Information", "PersonalFamilyInformationIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+            <li class="@Model.PersonalNominee.SideBarClassName">@Html.ActionLink("Nominee Information", "PersonalNomineeInformationIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+            <li class="@Model.PersonalLanguageEfficiency.SideBarClassName">@Html.ActionLink("Language Proficiency", "LanguageProficiencyIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+            <li class="@Model.AccademicQlfnInfo.SideBarClassName">@Html.ActionLink("Educational Qualification", "AccademicQlfnInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })</li>
+            <li class="@Model.ProfessionalTrainingInfo.SideBarClassName">@Html.ActionLink("Training Information", "ProfessionalTrainingInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })</li>
+            <li class="@Model.JobExperienceInfo.SideBarClassName">@Html.ActionLink("Previous Job Information", "JobExperienceInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })</li>
+            <li class="@Model.ForeignTourInfoViewModel.SideBarClassName">@Html.ActionLink("Foreign Tour Information", "ForeignTourInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })</li>
+            <li class="@Model.EmployeeWealthStatementViewModel.SideBarClassName">@Html.ActionLink("Wealth Statement", "WealthStatementInformationIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+            @*<li class="@Model.EmpLeverageViewModel.SideBarClassName">@Html.ActionLink("Leverage Information", "EmpLeverageIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>*@
+            <li class="@Model.JobSkillInfo.SideBarClassName">@Html.ActionLink("Skill Information", "JobSkillInfoIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+            <li class="@Reference">@Html.ActionLink("Reference Information", "ReferenceInfoIndex", new { Id = @Model.EmployeeId, IsMenu = true, controlType = "Reference" })</li>
+            <li class="@Model.EmpServiceHistoryViewModel.SideBarClassName">@Html.ActionLink("Service History", "ServiceHistoryIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+            <li class="@Guarantor">@Html.ActionLink("Guarantor Information", "ReferenceInfoIndex", new { Id = @Model.EmployeeId, IsMenu = true, controlType = "Guarantor" })</li>
+            <li class="@visaType">@Html.ActionLink("Visa Information", "VisaInfoIndex", new { Id = @Model.EmployeeId, IsMenu = true, controlType = "Visa" })</li>
+            <li class="@passportType">@Html.ActionLink("Passport Information", "VisaInfoIndex", new { Id = @Model.EmployeeId, IsMenu = true, controlType = "Passport" })</li>
+            <li class="@Model.ProfessionalCertificationInfo.SideBarClassName">@Html.ActionLink("Professional Certification", "ProfessionalCertificationInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })</li>
+            <li class="@Model.ProfessionalLicenseInfo.SideBarClassName">@Html.ActionLink("Professional License/Membership", "ProfessionalLicenseInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })</li>
+            @*<li class="@Model.PersonalPublication.SideBarClassName">@Html.ActionLink("Publication", "PersonalPublicationIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>*@
+            <li class="@Model.PersonalEmergencyContract.SideBarClassName">@Html.ActionLink("Emergency Contact Information", "PersonalEmergencyContractIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+
+            <li class="@Model.EmployeeAttachment.SideBarClassName">@Html.ActionLink("Attachment", "AttachmentIndex", new { Id = @Model.EmployeeId, IsMenu = true })</li>
+            <li class="@Model.LifeInsuranceViewModel.SideBarClassName">@Html.ActionLink("Life Insurance", "LifeInsuranceIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })</li>
+        </ul>
+    </div>
+    <div class="form-content">
+        @switch (Model.ViewType)
+        {
+            case "PersonalInfo":
+                @Html.Partial("_PersonaInfo", Model.PersonalInfo)
+                break;
+            case "AccademicQlfnInfo":
+            @Html.Partial("_AccademicQlyInfo", Model.AccademicQlfnInfo)
+                break;
+            case "JobExperienceInfo":
+            @Html.Partial("_JobExperienceInfo", Model.JobExperienceInfo)
+                break;
+            case "ProfessionalTraining":
+            @Html.Partial("_ProfessionalTrainingInfo", Model.ProfessionalTrainingInfo)
+                break;
+            case "ProfessionalCertification":
+            @Html.Partial("_ProfessionalCertificationInfo", Model.ProfessionalCertificationInfo)
+                break;
+            case "ProfessionalLicense":
+            @Html.Partial("_ProfessionalLicenseInfo", Model.ProfessionalLicenseInfo)
+                break;
+            case "JobSkill":
+            @Html.Partial("_JobSkillInfo", Model.JobSkillInfo)
+                break;
+            @*case "Publication":
+            @Html.Partial("_PersonalPublicationInformation", Model.PersonalPublication)
+                break;*@
+            case "Language":
+            @Html.Partial("_PersonalLanguageProficiency", Model.PersonalLanguageEfficiency)
+                break;
+            case "FamilyMember":
+            @Html.Partial("_PersonalFamilyMemberInfo", Model.PersonalFamilyMemberInformation)
+                break;
+            case "EmergencyContract":
+            @Html.Partial("_PersonalEmergencyContract", Model.PersonalEmergencyContract)
+                break;
+            case "Nominee":
+            @Html.Partial("_PersonalNomineeInformation", Model.PersonalNominee)
+                break;
+            case "VisaInfo":
+            @Html.Partial("_EmpVisaInformation", Model.VisaInformation)
+                break;
+            case "ReferenceInfo":
+            @Html.Partial("_ReferenceGuarantorInfo", Model.ReferenceInformation)
+                break;
+            case "Attachment":
+            @Html.Partial("_EmpAttachment", Model.EmployeeAttachment)
+                break;
+
+            @*case "EmpLeverage":
+            @Html.Partial("_EmpLeverageInfo", Model.EmpLeverageViewModel)
+                break;*@
+
+            case "EmpWealthStatementInfo":
+            @Html.Partial("_EmpWealthStatementInfo", Model.EmployeeWealthStatementViewModel)
+                break;
+
+            case "EmpServiceHisotory":
+            @Html.Partial("_EmpServiceHistory", Model.EmpServiceHistoryViewModel)
+                break;
+
+            case "ForeignTourInfo":
+            @Html.Partial("_ForeignTourInfo", Model.ForeignTourInfoViewModel)
+                break;
+
+            case "LifeInsurance":
+            @Html.Partial("_EmpLifeInsurance", Model.LifeInsuranceViewModel)
+                break;
+
+            default:
+                break;
+        }
+    </div>
+    <div class="clear">
+    </div>
+</div>

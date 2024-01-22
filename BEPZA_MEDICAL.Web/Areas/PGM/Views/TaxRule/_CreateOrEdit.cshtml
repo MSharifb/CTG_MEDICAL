@@ -1,0 +1,207 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxRule.TaxRuleModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm(Model.Mode, "TaxRule", FormMethod.Post, new { id = "frm" }))
+{<fieldset>
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(m => m.Id)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.IncomeYear)
+                    <label style='color: red'>
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(m => m.IncomeYear, Model.IncomeYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.AssessmentYear)
+                    <label style='color: red'>
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.AssessmentYear)
+                </span>
+            </div>
+        </div>
+     <div class="GroupBox">
+         <legend>Investment Rule</legend>
+         <div class="row">
+             <span class="label">
+                 @Html.LabelFor(model => model.InvestmentRate)
+                 <label style='color: red'>*</label>
+             </span>
+             <span class="field ddl-emp-list">
+                 @Html.EditorFor(model => model.InvestmentRate)
+             </span>
+             <span class="label-right">
+                 @Html.LabelFor(model => model.MaximumInvestment)
+                 <label style='color: red'>*</label>
+             </span>
+             <span class="field">
+                 @Html.EditorFor(model => model.MaximumInvestment)
+             </span>
+         </div>
+     </div>
+     <div class="GroupBox">
+         <legend>Special Rebate Rule</legend>
+         <div class="row">
+             <span class="label">
+                 @Html.LabelFor(model => model.ExcessIncomePercent)
+                 <label style='color: red'>*</label>
+             </span>
+             <span class="field ddl-emp-list">
+                 @Html.EditorFor(model => model.ExcessIncomePercent)
+             </span>
+             <span class="label-right">
+                 @Html.LabelFor(model => model.SpecialRebateRate)
+                 <label style='color: red'>*</label>
+             </span>
+             <span class="field">
+                 @Html.EditorFor(model => model.SpecialRebateRate)
+             </span>
+         </div>
+     </div>
+     <div class="GroupBox">
+         <legend>Other</legend>
+         <div class="row">
+             <span class="label">
+                 @Html.LabelFor(model => model.TaxablePercentage)
+                 <label style='color: red'>*</label>
+             </span>
+             <span class="field ddl-emp-list">
+                 @Html.EditorFor(model => model.TaxablePercentage)
+             </span>
+             <span class="label-right">
+                 @Html.LabelFor(model => model.TaxFreeAmountForHavingChildWithDisability)
+                 <label style='color: red'>*</label>
+             </span>
+             <span class="field">
+                 @Html.EditorFor(model => model.TaxFreeAmountForHavingChildWithDisability)
+             </span>
+         </div>
+     </div>
+
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display: none;" />
+                }
+                @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display: none;" />
+                }
+
+                <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $('#btnClear').live('click', function () {
+
+            $('#InvestmentRate').val('0.00');
+            $('#MaximumInvestment').val('0.00');
+            $('#InvestmentRebateRate').val('0.00');
+            $('#ExcessIncomePercent').val('0.00');
+            $('#SpecialRebateRate').val('0.00');
+            $('#MinimumTaxPayable').val('0.00');
+            $('#TaxablePercentage').val('0.00');
+            $('#TaxFreeAmountForHavingChildWithDisability').val('0.00');
+
+        });
+
+
+        $('#IncomeYear').live('change', function () {
+            var incomeYear = $(this).val();
+            incomeYear = incomeYear.split('-');
+            $('#AssessmentYear').val((parseInt(incomeYear[0]) + 1) + '-' + (parseInt(incomeYear[1]) + 1));
+        })
+
+
+        var mode = '@Model.Mode';
+        $.validator.unobtrusive.parse('#frm');
+
+        if (mode == 'Create') {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        else {
+            $('#btnUpdate').show();
+            $('#btnSave').hide();
+        }
+    })
+
+    function OnComplete(content) {
+        var data = content.responseText;
+        if (data.toLowerCase().indexOf("updated") >= 0 || data.toLowerCase().indexOf("deleted successfully") >= 0) {
+
+            $("#message").show();
+            $('#message').text(data).css({ 'color': 'green' });
+
+            $.get(
+                    "@Url.Action("BackToList")", {}, function (r) {
+                        if (r != '') {
+                            $('.frm-content').html(r);
+                        }
+                        else {
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color': 'red' });
+                        }
+                    }
+                );
+        }
+        else if (data.toLowerCase().indexOf("saved") >= 0) {
+            $("#message").show();
+            $('#message').text(data).css({ 'color': 'green' });
+
+            $.get(
+                    "@Url.Action("BackToList")", {}, function (r) {
+                        if (r != '') {
+                            $('.frm-content').html(r);
+                        }
+                        else {
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color': 'red' });
+                        }
+                    }
+                );
+        }
+        else {
+            $("#message").show();
+            $('#message').text(data).css({ 'color': 'red' });
+
+            $.get(
+                    "@Url.Action("BackToList")", {}, function (r) {
+                        if (r != '') {
+                            $('.frm-content').html(r);
+                        }
+                        else {
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color': 'red' });
+                        }
+                    }
+                );
+        }
+    }
+</script>

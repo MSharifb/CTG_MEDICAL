@@ -1,0 +1,46 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.TenderDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr>
+    @using (Html.BeginCollectionItem("TenderDetailsViewModelList"))
+    {
+
+        @Html.HiddenFor(m => m.Id)
+        <td style="width:100px;">@Html.EditorFor(m => m.LotNumber)</td>
+        <td>@Html.EditorFor(m => m.Identification)</td>
+        <td style="width:200px;">@Html.EditorFor(m => m.Location)</td>
+        <td style="width:120px;" class="security-money">@Html.EditorFor(m => m.SecurityMoney)</td>
+        <td style="width:120px;" class="tender-price">@Html.EditorFor(m => m.TenderPrice)</td>
+        <td style="width:130px;" class="tndrComDays">@Html.TextBoxFor(m => m.CompletionDays)</td>
+        <td style="width:130px;" class="tndrComDate">@Html.EditorFor(m => m.CompletionDate)</td>
+        <td class="control-field" style="width:75px;">
+            @*<a href="#" class="deleteRow" title="delete" id="cmdDeleteRow">
+                    <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+                </a>*@
+            <button type="button" id="cmdDeleteRow" class="btn btn-sm btn-danger">
+                <i class="fa fa-trash fa-lg"></i>
+            </button>
+        </td>
+    }
+</tr>
+
+<script type="text/javascript">
+    $(".control-field button").on("click", function () {
+        var parent = $(this).parent('td').parent('tr');
+        parent.remove();
+        GetTotalPrice();
+        return false;
+    });
+
+    $('.tender-price :input').on('change', function () {
+        GetTotalPrice();
+    });
+
+    
+
+</script>
+<style type="text/css">
+    .security-money input[type='text'], .tender-price input[type='text'] {
+        text-align: right;
+    }
+</style>

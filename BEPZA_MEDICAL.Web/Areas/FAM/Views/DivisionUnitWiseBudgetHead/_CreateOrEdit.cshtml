@@ -1,0 +1,284 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.DivisionUnitWiseBudgetHead
+@model DivisionUnitWiseBudgetHeadModel
+
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+
+  
+    
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DivisionUnitId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.DivisionUnitId, Model.DivisionUnitList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                @Html.HiddenFor(m=>m.DivisionUnitId)
+            </span>
+        </div>
+
+
+        <table cellspacing='0' cellpadding='0' style=" margin-left:50px;">
+            <thead >
+                <tr>
+                    <th style="border:1px solid #CCCCCC;">
+            
+                    </th>
+
+                    <th style="border:1px solid #CCCCCC;">
+                        Account Head
+                    </th>
+                    <th style="border:1px solid #CCCCCC;">
+                        Account Type
+                    </th>
+                </tr>
+            </thead>
+
+            @if (Model != null && Model.BudgetHeadAllocationList != null)
+                {
+
+                    foreach (var x in Model.BudgetHeadAllocationList)
+                    {
+                        @Html.Partial("BudgetHeadAllocationList", x);
+                    }
+                }
+
+        </table>
+        
+    </div>
+    
+    <div class="clear"></div>
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+        <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+        }
+        else
+        {
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+        }     
+
+        <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        <div class="clear"></div>
+    </div>
+    
+}
+<div class="button-crude button-left">
+    @Ajax.ActionLink("Back to List", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })
+</div>   
+<div class="clear"></div>
+<script type="text/javascript">
+
+$(function () {
+    var mode = '@Model.Mode';
+    $.validator.unobtrusive.parse('#frm');
+
+    if (mode == 'Create') {
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+    }
+    else {
+        
+        $('#DivisionUnitId').attr('disabled',true)
+        $('#btnUpdate').show();
+        $('#btnSave').hide();
+        
+    }
+
+
+})
+
+function OnCompleteBacktoList(content) {
+    if (content.statusText == 'OK') {
+        $('.search-content').hide();
+        $('.frm-content').html(content.responseText);
+    } else {
+        $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+    }
+}
+
+function OnComplete(content) {
+    var data = content.responseText;
+    if (data.toLowerCase().indexOf("updated") >= 0) {
+                    
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else if (data.toLowerCase().indexOf("saved") >= 0) {
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'green' });
+        $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else {
+        //$('.search-content').hide();
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'red' });
+        $("#message").delay(3000).hide('slow');
+    }
+}
+
+
+</script>
+
+<style>
+    .label {width:185px;}
+    .label-right {width:185px;}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@model BEPZA_MEDICAL.Web.Areas.FAM.Models.VendorInfo.VendorInformationModel
+@using BEPZA_MEDICAL.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+    });
+</script>
+<table width="100%" class="contenttable">
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.VendorName)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.VendorName)
+            </div>
+        </td>
+
+        <td >
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ContactPerson)
+            </div>
+        </td>
+        <td >
+            <div class="editor-field" >
+                @Html.EditorFor(model=>model.ContactPerson)
+            </div>
+        </td>
+
+    </tr>
+
+
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ContactNumber)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.ContactNumber)
+            </div>
+        </td>
+
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.EMail)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model=> model.EMail)
+            </div>
+        </td>
+
+        <td>
+        
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model=> model.Address)            
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model=>model.Address)            
+            </div>
+        </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model=>model.IsActive)            
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model=>model.IsActive)
+            </div>
+        </td>
+
+    </tr>
+</table>
+
+*@

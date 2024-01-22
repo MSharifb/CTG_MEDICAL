@@ -1,0 +1,207 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.VehicleDeductionBill.VehicleDeductionBillViewModel
+@using ERP_BEPZA.Web.Helpers
+
+<script type="text/javascript">
+
+
+    // ******** functions for open popup *************
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+
+    });
+
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearchForPGM", "Employee")?searchEmpType=active';
+        url = url.replace('PGM', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+    }
+
+
+    function Closing() {
+
+    }
+
+    function GetEmployeeInfo() {
+        var empId = $('#EmployeeId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "VehicleDeductionBill")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        $('#EmpID').val('');
+        $('#EmployeeInitial').val('');
+        $('#FullName').val('');
+        $('#Designation').val('');
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (obj.Result == 'InActiveEmployee') {
+                    alert('Inactive employee is not allow for vehicle deduction.');
+                }
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+                else if (obj.Result != undefined) {
+                    alert(obj.Result);
+                }
+                else {
+                    $("#EmpID").val(obj.EmpId);
+                    $("#EmployeeInitial").val(obj.EmployeeInitial);
+                    $("#FullName").val(obj.FullName);
+                    $("#Designation").val(obj.Designation);
+                }
+
+            }, "json");
+        }
+
+        return false;
+    }
+
+    $('#SalaryYear, #SalaryMonth').live('change', function () {
+        $('#EmpID').val('');
+        $('#EmployeeInitial').val('');
+        $('#FullName').val('');
+        $('#Designation').val('');
+    });
+
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+</script>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SalaryYear)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.SalaryYear, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.SalaryMonth)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.SalaryMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmpID)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.TextBoxFor(model => model.EmpID, new { @class = "read-only", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" alt="Find" title="Find" />
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.EmployeeInitial)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.EmployeeInitial, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FullName)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.FullName, new { @class = "read-only", @readonly = true })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.Designation)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OfficalAmount)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.OfficalAmount, new { @class = "doubleNZ", @style = "text-align:right;", @maxLength = "10" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.PersonalAmount)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.PersonalAmount, new { @class = "doubleNZ", @style = "text-align:right;", @maxLength = "10" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks, new { @style = "width:570px", @maxLength = "50" })
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#PersonalAmount , #OfficalAmount").keydown(function (event) {
+            //alert(advance);
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    });
+
+</script>

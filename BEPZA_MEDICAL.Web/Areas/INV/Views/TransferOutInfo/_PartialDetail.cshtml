@@ -1,0 +1,77 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.TransferOutDetailViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("TransferOutDetail"))
+    {
+        if (@Model != null)
+        {
+            <td class="itemIdInfo" style="display:none;">
+                <span class="item-id-info">
+                    @Html.HiddenFor(model => model.ItemId)
+                </span>
+                <span class="item-purchase-info">
+                    @Html.HiddenFor(model => model.PurchaseId)
+                </span>
+            </td>
+            @Html.HiddenFor(model => model.TransferOutId)
+        }
+        @*<td style="text-align: left;">
+                @Html.HiddenFor(model => model.SlNo)
+                @Html.Encode(Model.SlNo)
+            </td>*@
+        <td style="text-align: left;">
+            @Html.HiddenFor(model => model.Item)
+            <a href="#" class="editRow" title="edit" style="border: none; color: #000000; ">
+                @Html.Encode(Model.Item)
+            </a>
+        </td>
+        <td style="text-align: right;">
+            @Html.HiddenFor(model => model.Unit)
+            @Html.Encode(Model.Unit)
+        </td>
+        <td class="quantity" style="text-align: right;">
+            @Html.HiddenFor(model => model.Quantity)
+            @Html.Encode(Model.Quantity)
+        </td>
+        <td style="text-align: left;">
+            @Html.HiddenFor(model => model.Comment)
+            @Html.Encode(Model.Comment)
+        </td>
+        @*<td style="text-align: right;">
+                @Html.Encode(Model.MRR)
+            </td>*@
+        <td>
+            <a href="#" class="deleteRow" title="delete">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>
+
+<script type="text/javascript">
+    $('table tbody tr .editRow').click(function () {
+
+        var quantity = $(this).closest('tr').find('td').eq(3).find('input').val();
+        var comment = $(this).closest('tr').find('td').eq(4).find('input').val();
+        var itemId = $(this).closest('tr').find('td .item-id-info').eq(0).find('input').val();
+        var purchaseId = $(this).closest('tr').find('td .item-purchase-info').eq(0).find('input').val();
+
+        $('#ItemId').val(itemId);
+        $('#CommentDetail').val(comment);
+        $('#Quantity').val(quantity);
+        $('#PurchaseId').val(purchaseId);
+
+        $('#ItemId').trigger('change');
+
+        $(this).closest('tr').remove();
+
+        return false;
+    })
+
+    $('table tbody tr .deleteRow').click(function(){
+        $(this).closest('tr').remove();
+        return false;
+    })
+</script>

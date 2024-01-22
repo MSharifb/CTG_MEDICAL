@@ -1,0 +1,91 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.BudgetDetailViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="workList">
+    <td class="hiddenSlNo" style="display:none;">
+        @Html.HiddenFor(m => m.HiddenSlNo)
+    </td>
+    <td class="serialNo">
+        @Html.EditorFor(m => m.SerialNo)
+    </td>
+    <td class="workNo">
+        @Html.EditorFor(m => m.WorkIdentificationNumber)
+    </td>
+    <td class="budget-sub-head">
+        <span class="budget-sub-head-id">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.BudgetHeadId, new { @class = "form-control tempAccHeahId" })
+        </span>
+        <span class="test">
+            <input id="inpPrefix" value="@Html.ViewData.TemplateInfo.HtmlFieldPrefix.Trim('.')" style="display:none;" />
+        </span>
+        @Html.DropDownListFor(m => m.BudgetSubHeadId, Model.BudgetSubHeadList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control BudgetSubHead" })
+    </td>
+    <td class="sub-ledger">
+        @Html.DropDownListFor(m => m.SubledgerId, Model.SubLedgerList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control Subledger" })
+    </td>
+    <td class="construction-type">
+        @Html.DropDownListFor(m => m.ConstructionTypeId, Model.ConstructionTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+    </td>
+    <td class="project-name">
+        @Html.TextAreaFor(m => m.NameOfWorks, new { @maxlength = "1000" })
+        @*@Html.DropDownListFor(m => m.NameOfWorks, Model.NameOfWorksList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })*@
+    </td>
+    <td class="budget-amount">
+        @Html.EditorFor(m => m.BudgetAmount,"{0:0.00}", new { @required = @"required" })
+    </td>
+    @Html.Partial("_BudgetDetailYearlyCost", Model.YearlyCostList)
+    @*<td class="estimated-amount">
+        @Html.EditorFor(m => m.EstimatCost, "{0:0.00}")
+    </td>
+    <td class="contract-amount">
+        @Html.EditorFor(m => m.ContractAmount, "{0:0.00}")
+    </td>
+        @Html.Partial("_BudgetDetailYearlyBilled", Model.YearlyBilledList)
+    <td class="construction-type">
+        @Html.DropDownListFor(m => m.WorkStatusId, Model.WorkStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+    </td>*@
+    <td class="remarks">
+        @Html.EditorFor(m => m.Remarks)
+    </td>
+    <td class="control-option">
+        <span class="add-button">
+            <button type="button" class="btn btn-sm btn-primary btnAddNewProject" id="btnAddNewProject" style="padding:3px;">
+                <i class="fa fa-plus fa-lg"></i>
+            </button>
+         </span>
+        <span class="delete-button">
+            <button type="button" class="btn btn-sm btn-primary btnDleteProject" id="btnDleteProject" style="padding:3px;">
+                <i class="fa fa-trash fa-lg"></i>
+            </button>
+        </span>
+</td>
+
+</tr>
+<style>
+    .BudgetSubHead {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        padding: 1px !important;
+    }
+    .Subledger {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        padding: 1px !important;
+    }
+</style>
+
+<script type="text/javascript">
+    $('.BudgetSubHead, .Subledger').select2();
+
+    //$('table tbody tr .budget-amount :input').change(function () {
+    //    var totalAmount = $(this).val();
+    //    $(this).closest('tr').find('.yearly-cost .yearly-cost-amount').each(function () {
+    //        var textBox = $(this);
+    //        textBox.find('input[type=text]').val("0.00");
+    //    });
+    //    $(this).closest('tr').find('.yearly-cost .yearly-cost-amount:first').find('input[type=text]').val(totalAmount);
+    //});
+</script>

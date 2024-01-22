@@ -1,0 +1,31 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.Configuration
+@model ConfigurationModel
+@{
+    ViewBag.Title = "Common Configuration";
+    Layout = "~/Areas/FAM/Views/Shared/_Layout.cshtml";
+}
+<h1 style="text-align: center;">
+    @*@ViewBag.Title*@
+</h1>
+<div id="wraper">
+    <div id="leftdiv" style="float: left; width: 25%; height: 80%;">
+        <div class="GroupBox">
+            <div style="width: 90%; height: 400px; overflow: scroll; overflow-x: hidden;">
+                @Html.Partial("_CommonConfigTypeList",Model)</div>
+        </div>
+    </div>
+    <div id="rightdiv" style="float: left; width: 74%; height: 80%;">
+        <div class="GroupBox">
+            <div class="GroupBox" id="message">
+                @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            </div>
+            <div class="row">
+            @Html.Partial("_CreateOrEdit")
+            </div>
+            <div class="row">
+                @Html.Partial("_CommonConfigList")</div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>

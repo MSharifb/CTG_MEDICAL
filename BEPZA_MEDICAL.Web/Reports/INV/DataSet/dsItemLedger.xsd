@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsItemLedger" targetNamespace="http://tempuri.org/dsItemLedger.xsd" xmlns:mstns="http://tempuri.org/dsItemLedger.xsd" xmlns="http://tempuri.org/dsItemLedger.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsItemLedger" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsItemLedger" msprop:Generator_UserDSName="dsItemLedger">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="sp_INV_RptItemLedger" msprop:Generator_TableClassName="sp_INV_RptItemLedgerDataTable" msprop:Generator_TableVarName="tablesp_INV_RptItemLedger" msprop:Generator_RowChangedName="sp_INV_RptItemLedgerRowChanged" msprop:Generator_TablePropName="sp_INV_RptItemLedger" msprop:Generator_RowDeletingName="sp_INV_RptItemLedgerRowDeleting" msprop:Generator_RowChangingName="sp_INV_RptItemLedgerRowChanging" msprop:Generator_RowEvHandlerName="sp_INV_RptItemLedgerRowChangeEventHandler" msprop:Generator_RowDeletedName="sp_INV_RptItemLedgerRowDeleted" msprop:Generator_RowClassName="sp_INV_RptItemLedgerRow" msprop:Generator_UserTableName="sp_INV_RptItemLedger" msprop:Generator_RowEvArgName="sp_INV_RptItemLedgerRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="ItemId" msprop:Generator_ColumnVarNameInTable="columnItemId" msprop:Generator_ColumnPropNameInRow="ItemId" msprop:Generator_ColumnPropNameInTable="ItemIdColumn" msprop:Generator_UserColumnName="ItemId" type="xs:int" minOccurs="0" />
+              <xs:element name="ItemName" msprop:Generator_ColumnVarNameInTable="columnItemName" msprop:Generator_ColumnPropNameInRow="ItemName" msprop:Generator_ColumnPropNameInTable="ItemNameColumn" msprop:Generator_UserColumnName="ItemName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ItemDate" msprop:Generator_ColumnVarNameInTable="columnItemDate" msprop:Generator_ColumnPropNameInRow="ItemDate" msprop:Generator_ColumnPropNameInTable="ItemDateColumn" msprop:Generator_UserColumnName="ItemDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ChallanNo" msprop:Generator_ColumnVarNameInTable="columnChallanNo" msprop:Generator_ColumnPropNameInRow="ChallanNo" msprop:Generator_ColumnPropNameInTable="ChallanNoColumn" msprop:Generator_UserColumnName="ChallanNo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TranssactionType" msprop:Generator_ColumnVarNameInTable="columnTranssactionType" msprop:Generator_ColumnPropNameInRow="TranssactionType" msprop:Generator_ColumnPropNameInTable="TranssactionTypeColumn" msprop:Generator_UserColumnName="TranssactionType" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="InQt" msprop:Generator_ColumnVarNameInTable="columnInQt" msprop:Generator_ColumnPropNameInRow="InQt" msprop:Generator_ColumnPropNameInTable="InQtColumn" msprop:Generator_UserColumnName="InQt" type="xs:decimal" minOccurs="0" />
+              <xs:element name="OutQt" msprop:Generator_ColumnVarNameInTable="columnOutQt" msprop:Generator_ColumnPropNameInRow="OutQt" msprop:Generator_ColumnPropNameInTable="OutQtColumn" msprop:Generator_UserColumnName="OutQt" type="xs:decimal" minOccurs="0" />
+              <xs:element name="ZoneInfoId" msprop:Generator_ColumnVarNameInTable="columnZoneInfoId" msprop:Generator_ColumnPropNameInRow="ZoneInfoId" msprop:Generator_ColumnPropNameInTable="ZoneInfoIdColumn" msprop:Generator_UserColumnName="ZoneInfoId" type="xs:int" minOccurs="0" />
+              <xs:element name="Balance" msprop:Generator_ColumnVarNameInTable="columnBalance" msprop:Generator_ColumnPropNameInRow="Balance" msprop:Generator_ColumnPropNameInTable="BalanceColumn" msprop:Generator_UserColumnName="Balance" type="xs:decimal" minOccurs="0" />
+              <xs:element name="OpeningBalance" msprop:Generator_ColumnVarNameInTable="columnOpeningBalance" msprop:Generator_ColumnPropNameInRow="OpeningBalance" msprop:Generator_ColumnPropNameInTable="OpeningBalanceColumn" msprop:Generator_UserColumnName="OpeningBalance" type="xs:decimal" minOccurs="0" />
+              <xs:element name="IDate" msprop:Generator_ColumnVarNameInTable="columnIDate" msprop:Generator_ColumnPropNameInRow="IDate" msprop:Generator_ColumnPropNameInTable="IDateColumn" msprop:Generator_UserColumnName="IDate" type="xs:dateTime" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,237 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SalaryScaleViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@*<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>*@
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">         
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.SalaryScaleName)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.SalaryScaleName)
+        </span>
+        <span class="label-right">
+        </span>
+        <span class="field">
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DateOfCirculation)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.DateOfCirculation)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.DateOfEffective)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.DateOfEffective)
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="max-height: 700px; overflow-y: auto;">
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+                <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+            </div>
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable fixedcontenttable custom-grid">
+                <thead>
+                    <tr>
+                        <th>
+                            Grade Name<label style='color: red'>*</label>
+                        </th>
+                        <th>
+                            Pay Scale
+                        </th>
+                        <th>
+                            Add Step
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.JobGradeDetails.Count; i++)
+                    {
+                        var item = Model.JobGradeDetails.ToList()[i];
+                        <tr>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobGradeDetails[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobGradeDetails[i].SalaryScaleId)
+                            </td>
+                            <td style="width:10%">
+                                @Html.TextBoxFor(m => m.JobGradeDetails[i].GradeName, new { @class = "required", @style = "width:90%" })
+                            </td>
+                            <td style="text-align:left">
+                                @item.PayScale
+                            </td>
+                            <td>
+                                @if (@item.Id > 0)
+                                {
+                                    <a href="#" class="" title="Add Step" onclick="AddStep(this,@item.Id,'@Url.Action("AddGradeStep")')">
+                                        <img src='@Url.Content("~/Content/Images/addItem.png")' alt="add Comment" style="border: none; " />
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,'@Url.Action("DeleteJobGrade")')">
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+
+    $('#btnAdd').live('click', function () {
+        $('#message').empty();
+        // $('#grid tbody').append('<tr><td><input class="valid" type="text" value="" name="JobGradeDetails[0].GradeName" data-val-required="The Grade Name field is required." data-val="true"></td><td><a class="deleteRow fixeddeleteRow" href="#" title="delete"><img src="../../Content/Images/Delete.png" style="border: none;" alt="delete"></a></td></tr>');
+        var salaryScaleId = $('#Id').val();
+        var trClone = '<tr>' +
+         '<td style="display: none;">' + '<input type="text" name="JobGradeDetails[0].Id"  value="0"></td>' +
+         '<td style="display: none;">' + '<input type="text" name="JobGradeDetails[0].SalaryScaleId" value="' + salaryScaleId + '"></td>' +
+         '<td>' + '<input style="width:90%"  class="required" data-val-required="The Grade Name field is required." data-val="true"  type="text" name="JobGradeDetails[0].GradeName" value="" ></td>' +
+         '<td></td>' +
+           '<td></td>' +
+         '<td><a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;/PRM/JobGrade/DeleteJobGrade&quot;)"></a></td>' +
+         '</tr>';
+        $('#grid tbody').append(trClone);
+        RearrengeControlName();
+
+    })
+    
+    function RemoveDb(el, id, url) {      
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+
+                }
+            });
+        }
+        RearrengeControlName();
+    }
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+    function RearrengeControlName() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+
+</script>
+
+@*Add Grade Step*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#StepList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Add Grade Steps', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+
+    function AddStep(el, id, href) {
+        var url = href + '/' + id;
+        //  var url = $(this).attr('href');
+        $("#StepList").dialog({
+            title: 'Add Grade Steps',
+            autoOpen: false,
+            resizable: false,
+            height: 550,
+            width: 800,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(this).load(url);
+
+            },
+            close: function () {
+                //  $(this).dialog('close');
+                // $("#ChkListDetailGrid > tbody> tr").remove();
+            }
+        });
+
+        $("#StepList").dialog('open');
+        return false;
+    }
+
+    function Closing() {
+
+    }
+</script>
+
+<div id='StepList' style="height: 20px">
+
+</div>
+
+@*End Grade Step*@

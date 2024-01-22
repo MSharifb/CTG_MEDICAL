@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.ApplicantInfoQualification != null)
+{
+    foreach (var x in Model.ApplicantInfoQualification)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

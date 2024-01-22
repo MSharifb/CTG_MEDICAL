@@ -1,0 +1,30 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxInvestmentRebateRule.TaxInvestmentRebateRuleDetailViewModel
+@using ERP_BEPZA.Web.Helpers
+
+@using (Html.BeginCollectionItem("RuleDetail"))
+{
+    <tr>
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.RebateRuleMasterId)
+
+        <td class="slabNo" style="width: 50px; text-align: center;">
+            @Html.TextBoxFor(model => model.SlabNo, new {@required = "required", @readonly = "readonly"})
+        </td>
+        <td style="text-align: right;">
+            @Html.TextBoxFor(model => model.LowerLimit, new {@required = "required", @width = "80px"})
+        </td>
+        <td style="text-align: right;">
+            @Html.TextBoxFor(model => model.UpperLimit, new {@required = "required"})
+        </td>
+        <td style="text-align: right;">
+            @Html.TextBoxFor(model => model.RebateRate, new {@required = "required"})
+        </td>
+        
+        <td style="width:70px;">
+            <a href="#" class="deleteRow" title="delete" id="cmdDeleteRow"
+               onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    </tr>
+}

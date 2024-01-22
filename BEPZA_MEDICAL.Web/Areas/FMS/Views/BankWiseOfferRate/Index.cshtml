@@ -1,0 +1,296 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.BankWiseOfferRateViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/FMS/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Create", "BankWiseOfferRate", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div id="ErrMsg" class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    if (@Model.BankWiseOfferRateList != null && @Model.BankWiseOfferRateList.Count > 0)
+    {
+        <div class="form-horizontal">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="APPlotNo">Bank Name</th>
+                        <th class="packageNo">Branch Name</th>
+                        <th class="construction">Offer Rate</th>
+                        <th class="description">Duration</th>
+                        <th class="unit">Type</th>
+                        <th class="remarks">Remarks</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        foreach (var item in @Model.BankWiseOfferRateList)
+        {
+            <table class="table table-bordered">
+                <tbody>
+                        @Html.Partial("_Detail", item)
+                </tbody>
+            </table>
+        }
+    }
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <button class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                }
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    var AddNewItemInformation = function () {
+        var eTbody = $(this).closest('table').find('tbody');
+        var url = '@Url.Action("AddNew", "BankWiseOfferRate")';
+        $.ajax({
+            url: url,
+            data: { },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                eTbody.append("<tr>" + result + "</tr>");
+                $('table tbody tr .control-option .add-button button').unbind().click(AddNewItemInformation);
+                $('.control-option .delete-button button').unbind().click(RemoveItemInformation);
+                $('table tbody tr .APPlotNo select').chosen();
+                $('table tbody tr .packageNo select').chosen();
+                $('table tbody tr .unit select').chosen();
+
+            }
+        })
+    }
+    $('table tbody tr .control-option .add-button button').click(AddNewItemInformation);
+
+    var RemoveItemInformation = function () {
+        $(this).closest('tr').remove();
+        CalculateTotalProjectCost();
+    }
+    $('.control-option .delete-button button').click(RemoveItemInformation);
+
+
+    function GetBranch(bank) {
+        var bankId = $(bank).val();
+        var branchInfo = $(bank).closest('td').next('td').find('select');
+        var table = $(bank).closest('table');
+
+        var selectedHeadName = $(bank).find('option:selected').text();
+
+        branchInfo.empty();
+        branchInfo.append($("<option></option>").val('').html("[Select One]"));
+        var url = '@Url.Action("GetBranchInfo", "BankWiseOfferRate")';
+
+        $.ajax({
+            url: url,
+            data: { bankId: bankId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                $.each(result, function (index, d) {
+                    branchInfo.append($('<option/>', {
+                        value: d.Value,
+                        text: d.Text
+                    }));
+                });
+                branchInfo.trigger("chosen:updated")
+            }
+        })
+    }
+</script>
+<style type="text/css">
+    table thead th {
+        background: #2980b9 !important;
+        font-weight: bold !important;
+        font-size: 14px !important;
+        /*height: 100px;*/
+        vertical-align: middle !important;
+        display: table-cell;
+        text-align: center;
+        color: #FFFFFF;
+    }
+
+        table thead th:hover {
+            cursor: default;
+        }
+
+    .construction {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+        .packageNo {
+            width: 220px;
+            max-width: 220px;
+            min-width: 220px;
+            padding: 1px !important;
+        }
+
+    .description {
+        width: 100px;
+        min-width: 100px;
+        padding: 1px !important;
+        max-width: 100px;
+    }
+
+        .budget-amount input[type=text] {
+            text-align: right;
+            width: 100%;
+        }
+
+    .remarks {
+        width: 150px;
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+        .remarks input[type=text] {
+            width: 100%;
+        }
+
+    .control-option {
+        max-width: 65px;
+        width: 65px;
+        min-width: 65px;
+        padding: 1px !important;
+    }
+
+    .APPlotNo{
+        width: 220px;
+        max-width: 220px;
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+    .yearly-cost-head {
+        padding: 1px !important;
+        /*min-width: 105px;*/
+        max-width: 105px;
+        min-width: 105px;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        color: #FFFFFF;
+    }
+
+    .unit {
+        max-width: 70px;
+        min-width: 70px;
+        padding: 1px !important;
+    }
+
+        .yearly-cost input[type=text] {
+            text-align: right;
+            width: 100%;
+        }
+
+    .yearly-cost-head .fy-name input[type=text] {
+        text-align: center !important;
+        cursor: default;
+        border: none;
+        font-weight: bold;
+        font-size: 11px;
+        background: #2980b9;
+        color: #FFFFFF;
+    }
+
+    .yearly-cost-head select {
+        font-weight: bold;
+        font-size: 11px;
+        min-width: 105px;
+    }
+
+    .yearly-cost-head .lbl {
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    .yearly-cost-head input[type=text] {
+        text-align: center;
+        background: none;
+        border: none;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        color: #FFFFFF;
+    }
+
+    .head-devider {
+        padding: 0;
+        border: none;
+        border-top: medium double #908c8c;
+        color: #333;
+        text-align: center;
+    }
+
+        .head-devider:before { /* Not really supposed to work, but does */
+            content: "***";
+            display: inline-block;
+            position: relative;
+            top: -0.7em;
+            font-size: 1.5em;
+            padding: 0 0.25em;
+            background: white;
+        }
+
+    #dvFinancialYear table {
+        border: 1px solid #5789B3 !important;
+    }
+
+        #dvFinancialYear table thead th {
+            height: 15px !important;
+            background: #5789B3 !important;
+            font-weight: bold !important;
+            font-size: 12px !important;
+            color: #FFFFFF !important;
+        }
+
+        #dvFinancialYear table tbody tr td {
+            font-size: 12px !important;
+            height: 15px !important;
+            vertical-align: top;
+        }
+
+    table tbody tr td:hover {
+        cursor: default;
+    }
+
+    .select2-selection {
+        border-radius: 0px !important;
+        padding: 0px 2px !important;
+        border: 1px solid #D2D6DE !important;
+    }
+
+    .my-button {
+        min-width: 100px;
+        width: 100px;
+    }
+
+    .select2-results__option {
+        font-size: 13px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+        font-size: 13px;
+    }
+
+    .yearly-cost-head button {
+        padding: 2px !important;
+    }
+
+        .yearly-cost-head button i {
+            padding: 0 !important;
+        }
+</style>

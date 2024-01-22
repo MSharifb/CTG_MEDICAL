@@ -1,0 +1,222 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRAttributesInformationViewModel
+
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.StaffCategoryId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.StaffCategoryId, Model.StaffCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ACRCriteriaInfoId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.ACRCriteriaInfoId, Model.ACRCriteriaInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+</div>
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.AttributeName)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.AttributeName)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FullMark)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.FullMark)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SerialNumber)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.SerialNumber)
+        </span>
+    </div>
+    <div class="row" align="center">
+        <div style="width: 60%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+                <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>
+                           SL
+                        </th>
+                        <th>
+                            Attribute Name
+                        </th>
+                        <th>
+                            Full Mark
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.ACRAttributesInfoDetailList.Count; i++)
+                    {
+                        var item2 = Model.ACRAttributesInfoDetailList.ToList()[i];
+                        <tr>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.ACRAttributesInfoDetailList[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.ACRAttributesInfoDetailList[i].AttributeName)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.ACRAttributesInfoDetailList[i].FullMark)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.ACRAttributesInfoDetailList[i].SerialNumber)
+                            </td>
+                            <td>
+                                <label> @item2.SerialNumber</label>
+                            </td>
+                            <td>
+                                <label> @item2.AttributeName</label>
+                            </td>
+                            <td>
+                                <label> @item2.FullMark</label>
+                            </td>
+                            <td>
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item2.Id,'@Url.Action("DeleteACRAttributesDetail")')"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#btnAdd').live('click', function () {
+        $('#message').empty();
+        $('#FullMark').removeClass('border-red');
+
+        var acrAttributeDtl = $('#Id').val();
+        var attributeName = $('#AttributeName').val();
+        var fullMark = $('#FullMark').val();
+        var serialNumber = $('#SerialNumber').val();
+
+        if (fullMark == null || fullMark == "" || fullMark < 1) {
+            $('#FullMark').addClass('border-red');
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (attributeName == null || attributeName == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (serialNumber == null || serialNumber == 0 || serialNumber< 1) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        else {
+
+            var trClone = '<tr>' +
+                '<td style="display: none;">' + '<input type="text" value="0" name="ACRAttributesInfoDetailList[0].Id"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="ACRAttributesInfoDetailList[0].AttributeName" value="' + attributeName + '"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="ACRAttributesInfoDetailList[0].FullMark" value="' + fullMark + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="ACRAttributesInfoDetailList[0].SerialNumber" value="' + serialNumber + '" ></td>' +
+
+                '<td>' + '<label for="AttributeName">' + serialNumber + '</td>' +
+                '<td>' + '<label for="AttributeName">' + attributeName + '</td>' +
+                '<td>' + '<label for="FullMark" >' + fullMark + '</td>' +
+                '<td>' + '<a class="deleteIcon-tempGrid" title="delete" href="#" title="delete" onclick="RemoveDb(this,0)"></a></td>' +
+                '</tr>';
+            $('#grid tbody').append(trClone);
+            RearrengeControlName2();
+        }
+    })
+
+
+    function RemoveDb(el,id,url) {
+
+        var recordId = id;
+        if (recordId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: recordId }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    if (result.Success == true) {
+                        $(el).parent().parent().remove();
+                        $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                    }
+                    else {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>" + result.Message + "</span>  </div> ");
+                    }
+                }
+            });
+        }
+        else {
+            $(el).parent().parent().remove();
+        }
+        RearrengeControlName2();
+    }
+
+    function RearrengeControlName2() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>
+
+<script>
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>

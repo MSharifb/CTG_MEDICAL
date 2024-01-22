@@ -1,0 +1,118 @@
+﻿<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 320, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+
+                    $.post(deleteLinkObj[0].href, function (obj) {  //Post to action
+
+                        if (obj.Success) {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+                            $('#sButton').trigger('click');
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+     
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+//        var vartype = $('#adjustType').val();
+//        var GridTitle;
+//      // alert(vartype);
+//        if (vartype == "Adjust") {
+//            GridTitle = "Other Adjustment";
+//            //alert("A");
+//        }
+//        else {
+//            GridTitle = "Other Deduction";
+//            //alert("B");
+//        }
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Year', 'Month', 'Employee ID', 'Employee Name', 'Designation', 'Salary Head', 'Amount', 'Delete'],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'SalaryYear', index: 'SalaryYear', align: 'left', search: true, width: '100px', edittype: 'select', formatter: viewformatEdiorLink, surl: '@Url.Action("GetSalaryYearList")' },
+                            { name: 'SalaryMonth', index: 'SalaryMonth', align: 'left', search: true, width: '100px', edittype: 'select', surl: '@Url.Action("GetSalaryMonthList")' },
+                            { name: 'EmpID', index: 'EmpID', align: 'left', search: true, width: '100px', edittype: 'text' },
+                            //{ name: 'EmployeeInitial', index: 'EmployeeInitial', align: 'left', search: true, width: '70px', edittype: 'text' },
+                            { name: 'EmployeeName', index: 'EmployeeName', align: 'left', search: true, width: '200px', edittype: 'text' },
+                            { name: 'EmployeeDesignation', index: 'EmployeeDesignation', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetDesignationList")' },
+                            { name: 'SalaryHead', index: 'SalaryHead', align: 'left', search: false, edittype: 'text' },
+                            { name: 'Amount', index: 'Amount', align: 'right', search: false, width: '50px', edittype: 'text' },
+                            { name: 'Delete', index: 'Delete', align: 'right', search: false, hidden: IsDeleteAssigned, sortable: false, width: '60px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+            autowidth: true,
+            caption: 'Other Deduction',
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID,SalaryYear,SalaryMonth',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>

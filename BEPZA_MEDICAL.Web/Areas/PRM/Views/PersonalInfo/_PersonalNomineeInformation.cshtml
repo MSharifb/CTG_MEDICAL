@@ -1,0 +1,278 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalNomineeViewModel
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm(Model.ActionMode, "PersonalInfo", FormMethod.Post, new { id = "frm" }))
+{
+    <fieldset>
+        <div class="GroupBox" style="min-height: 15px" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ActionMode)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">Nominee For </span><span class="field">@Html.DropDownListFor(model => model.NomineeForId, Model.NomineeForList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+            </div>
+        </div>
+        @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+        {
+            <div class="GroupBox">
+                <div class="row">
+                    <div class="button-crude button-left" style="margin: 5px">
+                        @Ajax.ActionLink("Add", "AddNomineeDetail", new { id = Model.EmployeeId, nomineeForID = Model.Id }, new AjaxOptions { }, new { @class = "addNominee" })
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="GroupBox">
+            <div class="row">
+                <table id="grid" class="contenttable">
+                    <tr>
+                        <th width="30%">
+                            Nominee Name
+                            <label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                        <th width="18%">
+                            Relation
+                        </th>
+                        <th width="12%">
+                            Date of Birth
+                        </th>
+                        <th width="10%">
+                            Age
+                        </th>
+                        <th width="10%">
+                            Share(%)<label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                        <th width="10%">
+                            Remarks
+                        </th>
+                        <th width="10%">
+                            Delete
+                        </th>
+                    </tr>
+                    @if (Model != null && Model.PersonalNomineeDetail != null)
+                    {
+
+                        foreach (var item in Model.PersonalNomineeDetail)
+                        {
+                        @Html.Partial("_NomineeDetails", item);
+                        }
+
+                    }
+                    <tr id="footerRow">
+                        <td colspan="3">
+                        </td>
+                        <td width="10%" style="text-align: right">
+                            Total:
+                        </td>
+                        <td width="10%" id="rowSum" style="text-align: right">
+                            @Model.TotalShare
+                        </td>
+                        <td width="10%" colspan="2">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+                {
+                    <input type="submit" value="Delete" id="btnDelete" name="btnSubmit" />
+                }
+                @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+                {
+                    <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+                }
+            </div>
+        </div>
+        <div class="button-crude button-left">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </fieldset>
+}
+<script type="text/javascript">
+    $(function () {
+
+        $("#btnDelete").live("click", function () {
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("DeleteConfirmforNominee", "PersonalInfo")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success) {
+                            var indexUrl = '@Url.Action("PersonalNomineeInformationIndex", "PersonalInfo", new { id = Model.EmployeeId, message = "_msg_" })';
+                            indexUrl = indexUrl.replace(/_msg_/, obj.Message)
+                            window.document.location = indexUrl;
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $(function () {
+
+            if ('@Model.ActionMode' == "PersonalNomineeInformationEdit") {
+                $('#btnUpdate').show();
+                $('#btnDelete').show();
+                $('#btnSave').hide();
+            }
+            else {
+                $('#btnUpdate').hide();
+                $('#btnDelete').hide();
+            }
+
+
+            $('#btnClear').live("click", function () {
+                var url = '@Url.Action("PersonalNomineeInformationIndex", "PersonalInfo")' + '?id=@Model.EmployeeId';
+                window.location.href = url;
+            });
+
+
+            $('#NomineeForId').live("change", function () {
+                var url = '@Url.Action("PersonalNomineeInformationEdit", "PersonalInfo")' + '?employeeID=@Model.EmployeeId' + '&nomineeForID=' + $(this).val()
+                window.location.href = url;
+            })
+            if ('@Model.Message' != "") {
+                if ('@Model.IsSuccessful' == 'True') {
+                    $('#message').html("<b style='color:Green'>" + '@Model.Message' + "</b>");
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + '@Model.Message' + "</b>");
+                }
+            }
+
+            $(".addNominee").click(function () {
+                $.ajax({
+                    url: this.href,
+                    cache: false,
+                    success: function (html) {
+                        $('#footerRow').before(html);
+                    }
+                });
+                return false;
+            });
+
+            $("a.deleteRow").live("click", function () {
+
+                var Id = $(this).closest('tr').find('td').eq(0).find('input').val();
+
+                $.ajax({
+                    url: 'DeleteNomineeDetail',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ id: Id }),
+                    contentType: "application/json; charset=utf-8",
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                    success: function (result) {
+                        var errMsg = result.Message;
+                        var errg = result.Success;
+                        if (errg) {
+                            $("#message").html('<span style=\"color:Green\">' + errMsg + '</span>');
+                            $(el).parent().parent().remove();
+                        }
+                        else {
+                            $("#message").html('<span style=\"color:red\">' + errMsg + '</span>');
+                        }
+
+                    }
+                });
+
+                $(this).parents("tr:first").remove();
+                SumTableRow();
+                return false;
+            });
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function SumTableRow() {
+        var sum = 0
+        $('.sharePCT').each(function () {
+            sum = parseFloat(sum) + parseFloat($(this).val());
+        });
+        $('#rowSum').html(sum);
+    }
+
+    $(function () {
+
+        $('.sharePCT').live("keyup", function (e) {
+            var sum = 0
+            if ($(this).val() > 0) {
+                $('.sharePCT').each(function () {
+                    if (!isNaN($(this).val()) && $(this).val() != "") {
+                        sum = parseFloat(sum) + parseFloat($(this).val());
+                        if (sum > 100) {
+                            sum = sum - parseFloat($(this).val());
+                            $(this).val('');
+                        }
+                    }
+                })
+            }
+            else {
+                $(this).val('');
+            }
+            $('#rowSum').html(sum);
+
+        });
+
+        $('.ddl').live("change", function (e) {
+            var memeberID = $(this).val()
+            var selectedIndex = $(this).parent().parent().index();  //gettig row index         
+
+            if (memeberID != "") {
+                var url = '@Url.Action("GetSelectedFamilyMemberData", "PersonalInfo", new { id = "_id_" })'
+                url = url.replace(/_id_/, memeberID);
+                $.post(url, function (data) {
+                    $('#grid tr:eq(' + selectedIndex + ') td:eq(1)').children().val(data.Name)
+                    $('#grid tr:eq(' + selectedIndex + ') td:eq(2)').children().val(data.Date)
+                    $('#grid tr:eq(' + selectedIndex + ') td:eq(3)').children().val(data.Age)
+                    $('#grid tr:eq(' + selectedIndex + ') td:eq(0)').children(':last').val(data.Id)
+                })
+            }
+            else {
+                $('#grid tr:eq(' + selectedIndex + ') td:eq(1)').children().val('')
+                $('#grid tr:eq(' + selectedIndex + ') td:eq(2)').children().val('')
+                $('#grid tr:eq(' + selectedIndex + ') td:eq(3)').children().val('')
+                $('#grid tr:eq(' + selectedIndex + ') td:eq(0)').children(':last').val('')
+            }
+        })
+    })
+
+</script>

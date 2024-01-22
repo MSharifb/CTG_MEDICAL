@@ -1,0 +1,122 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+@using (Ajax.BeginForm("Index", "AlternateApproval", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div id="message" class="form-group messageBox clearfix">
+        @if (Model != null)
+        {
+            if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+        }
+    </div>
+    <fieldset>
+        <legend> Search </legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalProcessId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(m => m.ApprovalProcessId, Model.AprovalProcessList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.StartDate, new { @class = @"col-sm-2 control-label" })
+                <div class="col-sm-3">
+                    @Html.EditorFor(m => m.StartDate)
+                </div>
+                @Html.LabelFor(m => m.EndDate, new { @class = @"col-sm-2 control-label" })
+                <div class="col-sm-3">
+                    @Html.EditorFor(m => m.EndDate)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-12 text-left">
+                    <button class="btn btn-sm btn-primary" id="btnSearch"><i class="fa fa-search"></i> Search</button>
+                    <button class="btn btn-sm btn-primary" id="btnCancel"><i class="fa fa-refresh"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </fieldset>
+    <div class="clear" style="height:10px">
+    </div>
+    <div id="divList">
+        @*@Html.Partial("_GridListWelfareFund")*@
+    </div>
+
+}
+
+<div id="divApplicationViewer">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divApplicationViewer").dialog({ autoOpen: false, modal: true, height: 650, width: 900, title: 'Application', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    $('#btnSearch').click(function (e) {
+        e.preventDefault();
+        GetApplicationList();
+    });
+
+    function GetApplicationList() {
+        var approvalProcessId = $('#ApprovalProcessId option:selected').val();
+        if (approvalProcessId == '') {
+            return;
+        };
+        var approvalStatusId = $('#ApprovalStatusId option:selected').val();
+        var statusId = parseInt(approvalStatusId);
+        if (approvalStatusId == '') {
+            return;
+        };
+        var startDate = $('#StartDate').val();
+        var endDate = $('#EndDate').val();
+
+        $('#divList').empty();
+        var url = '@Url.Action("SearchItem", "AlternateApproval")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { approvalProcessId: approvalProcessId, approvalStatusId: approvalStatusId, startDate: startDate, endDate: endDate },
+            cache: false,
+            success: function (result) {
+                console.log(result);
+                $('#divList').append(result);
+            }
+        });
+    };
+
+
+
+
+</script>
+
+
+<style type="text/css">
+    .btn {
+        min-width: 100px !important;
+    }
+</style>

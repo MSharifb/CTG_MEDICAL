@@ -1,0 +1,61 @@
+﻿
+@model BEPZA_MEDICAL.Web.Areas.CPF.Models.BankInformationViewModel.BankInformationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.BankId)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+           @Html.DropDownListFor(model => model.BankId, Model.BankList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.BranchId)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.BranchId, Model.BankBranchList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.AccountNo)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.AccountNo)
+        </span><span class="label-right">
+           @Html.LabelFor(model => model.OpeningBalance)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+             @Html.EditorFor(model => model.OpeningBalance)
+        </span>
+    </div>
+
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+            <label style='color: red'>
+            </label>
+        </span><span class="field">
+           @Html.TextAreaFor(m => m.Remarks, new { @style = "width:570px", @maxlength = "500" })
+        </span>
+    </div>
+
+    <div class="clear">
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>

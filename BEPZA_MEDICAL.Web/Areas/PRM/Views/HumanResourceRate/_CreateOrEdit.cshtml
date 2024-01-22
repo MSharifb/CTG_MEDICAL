@@ -1,0 +1,71 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.HumanResourceRate.HumanResourceRateViewModel
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">@Html.LabelFor(model => model.EffectiveDate)<label style='color: red'>
+            *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">@Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<br />
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 40%">
+            <table id="grid" class="contenttable" width="20%">
+                <thead>
+                    <tr>
+                        <th width="20%" align="center">
+                            Job Grade
+                            <label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                        <th width="15%" align="center">
+                            Resource Level
+                            <label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                        <th width="15%" align="center">
+                            Budget Rate
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.HumanResourceRateDetailList != null)
+                    {
+                        foreach (var humanResourceRateDetail in Model.HumanResourceRateDetailList)
+                        {
+                        @Html.Partial("_HumanResourceRateDetail", humanResourceRateDetail);
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        if ('@Model.message' != '') {
+
+            if ('@Model.isSuccess' != "True") {
+                $('#message').html("<b style='color:Red'>" + '@Model.message' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Green'>" + '@Model.message' + "</b>");
+
+            }
+        }
+
+    });
+</script>

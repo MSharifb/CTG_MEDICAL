@@ -1,0 +1,194 @@
+﻿@model BOM_MPA.Web.Areas.PGM.Models.OtherAdjustDeduct.OtherAdjustDeductModel
+@using BOM_MPA.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+
+        $("#Amount").keydown(function (event) {
+                //alert(advance);
+                // Allow: backspace, delete, tab, escape, and enter
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                else {
+                    // Ensure that it is a number and stop the keypress
+                    if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                        event.preventDefault();
+                    }
+                }
+            });
+
+    });          //End Document Ready
+
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+
+
+    function openEmployee() {
+
+        var url = '@Url.Action("ActiveEmployeeSearchList", "Employee")';
+        url = url.replace('PGM', 'PRM');
+       
+        $.ajax({
+            url: url,
+            type: 'GET',          
+            dataType: 'text',
+            timeout: 50000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+    }
+
+
+    function Closing() {
+
+    }
+
+    function GetEmployeeInfo() {
+        var empId = $('#EmployeeId').val();
+
+        var url = '@Url.Action("GetEmployeeInfo", "OtherDeduction")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        $('#EmpID').val('');
+        $('#EmployeeInitial').val('');
+        $('#EmployeeName').val('');
+        $('#EmployeeDesignation').val('');
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (obj.Result == 'InActiveEmployee') {
+                    alert('Inactive employee is not allow for other deduction.');
+                }
+
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+
+                else {
+                    $("#EmpID").val(obj.EmpID);
+                    $("#EmployeeInitial").val(obj.EmployeeInitial);
+                    $('#EmployeeName').val(obj.EmployeeName);
+                    $("#EmployeeDesignation").val(obj.EmployeeDesignation);
+                }
+
+            }, "json");
+        }
+        return false;
+    }
+
+</script>
+<div class="GroupBox"  id="message">
+    @Html.ValidationSummary(false, BOM_MPA.Web.Utility.Common.ValidationSummaryHead)
+</div>
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SalaryYear)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.SalaryYear, Model.SalaryYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.SalaryMonth)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.SalaryMonth, Model.SalaryMonthList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmpID)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.EditorFor(m => m.EmpID)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" />
+        </span>
+        <span class="label-right">
+            &nbsp;   
+        </span>
+        <span class="field">
+            &nbsp;   
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeName)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(m => m.EmployeeName)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.EmployeeDesignation)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EmployeeDesignation)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SalaryHead)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.SalaryHeadId, Model.SalaryHeadList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.Amount)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.TextBoxFor(m => m.Amount, new { @maxLength = "8" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+            <label style='color: red'>
+            </label>
+        </span><span class="field">
+            @Html.TextAreaFor(m => m.Remarks, new { @style = "width:570px" })
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.</p>
+    </iframe>
+</div>

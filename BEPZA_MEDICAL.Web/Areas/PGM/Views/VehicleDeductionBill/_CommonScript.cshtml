@@ -1,0 +1,43 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#btnDelete").live("click", function () {
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("Delete", "VehicleDeductionBill")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.get(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success) {
+                            var indexUrl = '@Url.Action("Index", "VehicleDeductionBill")' + '?message=' + obj.Message + '&isSuccess=' + obj.Success;
+                            window.document.location = indexUrl;
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+
+    });
+    
+    
+</script>

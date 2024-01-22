@@ -1,0 +1,558 @@
+﻿@model ERP_BEPZA.Web.Areas.CPF.Models.BankReconciliationViewModel.BankReconciliationViewModel
+@using ERP_BEPZA.Web.Helpers
+<div class="GroupBox">
+    @if (Model.Mode == "Edit")
+    {
+        @Html.HiddenFor(model => model.ReconMonth)
+        @Html.HiddenFor(model => model.BankId)
+        @Html.HiddenFor(model => model.BankAccountId)
+    }
+    <div class="row fixedContent">
+        <span class="label">
+            @Html.LabelFor(model => model.ReconYear)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ReconYear, new { @maxlength = "4" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.ReconMonth)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.ReconMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row HideDateButton">
+        <span class="label">
+            @Html.LabelFor(model => model.FromDate)
+            <label style='color: red'>
+                *</label>
+        </span><span id="FromDateImg" class="field">
+            @Html.EditorFor(model => model.FromDate)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.ToDate)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ToDate)
+        </span>
+    </div>
+    <div class="row fixedContent">
+        <span class="label">
+            @Html.LabelFor(model => model.BankId)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.BankId, Model.BankList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.BankAccountId)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.BankAccountId, Model.AccountNoList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OpeningBalance)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.OpeningBalance)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.ReconciledBy)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ReconciledBy)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ClosingBalance)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ClosingBalance)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks, new { @style = "width:570px", @maxlength = "500" })
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<div class="GroupBox">
+    <fieldset>
+        <legend>Debit</legend>
+        <div class="row" align="center">
+            <div style="width: 95%">
+                <table id="grid" class="contenttable" width="95%">
+                    <tr>
+                        <th width="3%" align="center">
+                        </th>
+                        <th width="10%" align="center">
+                            Voucher No.
+                        </th>
+                        <th width="10%" align="center">
+                            Payee
+                        </th>
+                        <th width="10%" align="center">
+                            Cheque No.
+                        </th>
+                        <th width="10%" align="center">
+                            Cheque Date
+                        </th>
+                        <th width="15%" align="center">
+                            Amount
+                        </th>
+                        <th width="10%" align="center">
+                            Clear Date
+                        </th>
+                    </tr>
+                    @if (Model != null && Model.DebitList != null && Model.DebitList.Count > 0)
+                    {
+                        foreach (var x in Model.DebitList)
+                        {
+                        @Html.Partial("_DebitDetail", x);
+                        }
+                        <tr class="LastRow">
+                            <td colspan="7" style="text-align: right; padding-right: 5;">
+                                <span class="label">
+                                    @Html.LabelFor(model => model.BankCharge)
+                                </span><span class="field" style="width: auto;">
+                                    @Html.EditorFor(model => model.BankCharge)
+                                </span><span class="label-right" style="width: auto; text-align: right;">
+                                    @Html.LabelFor(model => model.TotalClearDebit)
+                                </span><span class="label-right" style="width: auto;">
+                                    @Html.EditorFor(model => model.TotalClearDebit)
+                                </span><span class="label-right" style="width: auto; text-align: right;">
+                                    @Html.LabelFor(model => model.NetDebit)
+                                </span><span class="label-right" style="width: auto;">
+                                    @Html.EditorFor(model => model.NetDebit)
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Credit</legend>
+        <div class="row" align="center">
+            <div style="width: 95%">
+                <table id="gridTable" class="contenttable" width="95%">
+                    <tr>
+                        <th width="3%" align="center">
+                        </th>
+                        <th width="10%" align="center">
+                            Voucher No.
+                        </th>
+                        <th width="10%" align="center">
+                            Receive From
+                        </th>
+                        <th width="10%" align="center">
+                            Cheque No.
+                        </th>
+                        <th width="10%" align="center">
+                            Cheque Date
+                        </th>
+                        <th width="15%" align="center">
+                            Amount
+                        </th>
+                        <th width="10%" align="center">
+                            Clear Date
+                        </th>
+                    </tr>
+                    @if (Model != null && Model.CreditList != null && Model.CreditList.Count > 0)
+                    {
+                        foreach (var x in Model.CreditList)
+                        {
+                        @Html.Partial("_CreditDetail", x);
+                        }
+                        <tr class="LastRow">
+                            <td colspan="7" style="text-align: right; padding-right: 5;">
+                                <span class="label">
+                                    @Html.LabelFor(model => model.BankInterest)
+                                </span><span class="field" style="width: auto;">
+                                    @Html.EditorFor(model => model.BankInterest)
+                                </span><span class="label-right" style="width: auto; text-align: right;">
+                                    @Html.LabelFor(model => model.TotalClearCredit)
+                                </span><span class="label-right" style="width: auto;">
+                                    @Html.EditorFor(model => model.TotalClearCredit)
+                                </span><span class="label-right" style="width: auto; text-align: right;">
+                                    @Html.LabelFor(model => model.NetCredit)
+                                </span><span class="label-right" style="width: auto;">
+                                    @Html.EditorFor(model => model.NetCredit)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                    }
+                </table>
+            </div>
+        </div>
+    </fieldset>
+    <div class="clear">
+        <input type="submit" value="Add" id="btnLoad" name="btnLoad" style="margin-right: 8px;
+            display: none;" />
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        showErrMsg();
+        if ('@Model.Mode' == "Create") {
+
+            if('@Model.FromDate' !='')
+            {
+                $('.HideDateButton').find('span.field #FromDate').attr('readonly', true).css('background-color', '#F2F5F8');
+                $('.HideDateButton').find('#FromDateImg').find('img').hide();
+            }
+        }
+
+        if ('@Model.Mode' == "Edit") {
+         
+            $('.fixedContent').find('#ReconYear').attr('readonly', true).css('background-color', '#F2F5F8');
+//            $('.dynamicRow').find('.IsDebitReconciled').attr('disabled',true);
+            $('.HideDateButton').find('span.field #FromDate').attr('readonly', true).css('background-color', '#F2F5F8');
+            $('.HideDateButton').find('#FromDateImg').find('img').hide();
+            $('.fixedContent').find('select').attr('disabled',true);
+        }
+        else {
+
+           
+        }
+
+        $('#ReconMonth').live('change', function () {
+
+            if($(this).val()!='' && $('#ReconYear').val()!=''){
+                $.post('@Url.Action("GetFromDate", "BankReconciliation")', { month: $(this).val(),year:  $('#ReconYear').val()}, function (data) {
+               if(data.FromDate!="01-01-0001")
+               {
+                    $('.HideDateButton').find('span.field #FromDate').attr('readonly', true).css('background-color', '#F2F5F8');
+                    $('.HideDateButton').find('#FromDateImg').find('img').hide();
+                    $('#FromDate').val(data.FromDate);
+                    }
+                else
+                {
+                 $('#FromDate').val('');
+                 $('.HideDateButton').find('span.field #FromDate').attr('readonly', false).css('background-color', '#FFFFFF');
+                 $('.HideDateButton').find('#FromDateImg').find('img').show();
+                }
+
+                }, "json");
+            }
+            else
+            {
+                if($('#ReconYear').val()=='')
+                {
+                    $('#FromDate').val('');
+                    alert('Please enter valid year.');
+                }
+                if($(this).val()=='')
+                {
+                    $('#FromDate').val('');
+                    alert('Please select valid month.');
+                }
+                 $('.HideDateButton').find('span.field #FromDate').attr('readonly', false).css('background-color', '#FFFFFF');
+                 $('.HideDateButton').find('#FromDateImg').find('img').show();
+            }
+            return false;
+        });
+
+        $('#BankId').live('change', function () {
+
+            if($(this).val()!=''){
+
+                $.ajax({
+                    url: "@Url.Action("GetBankAccountNoByBankId", "BankReconciliation")",
+                    data: {id: $(this).val()},
+                    dataType: "json",
+                    type: "POST",                    
+                    error: function() {
+                        alert("System is unable to load data, please try again.");
+                    },
+
+                    success: function(data) {
+                    $("#BankAccountId").empty();
+
+                        var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                        $.each(data, function(i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+
+                        $("#BankAccountId").html(items);
+                    }
+                });
+
+            }
+            else
+            {
+                $("#BankAccountId").empty();
+                $('#OpeningBalance').val(0);
+                $('#ReconciledBy').val('');
+                var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                $("#BankAccountId").html(items);
+            }
+            return false;
+        });
+
+         $('#BankAccountId').live('change', function () {
+
+         var accountID=$(this).val();
+         var year=$('#ReconYear').val();
+         var month=$('#ReconMonth').val();
+         if($(this).val()!='' && year!='' && month!='')
+         {
+               // Load Debit/Credit Grid 
+                    $('.dynamicRow').each(function () {
+                    $(this).remove();
+                    });
+                    $('#grid .LastRow').hide(); 
+                    $('#gridTable .LastRow').hide(); 
+
+
+                    $("#btnLoad").click(); 
+                // Load Debit/Credit Grid End
+                return false;
+           }
+           else
+           {
+                if(year=='')
+                {
+                    var myDDL = $('#BankAccountId');
+                    myDDL[0].selectedIndex = 0;
+                    alert('Year must be needed.');
+                }
+                if(month=='')
+                {
+                    var myDDL = $('#BankAccountId');
+                    myDDL[0].selectedIndex = 0;
+                    alert('Month must be needed.');
+                }
+
+                $('#TotalClearDebit').val(0);
+                $('#TotalClearCredit').val(0);
+                $('#NetDebit').val(0);
+                $('#NetCredit').val(0);
+                $('#ClosingBalance').val(0);
+                $('#BankCharge').val(0);
+                $('#BankInterest').val(0);
+                $('#OpeningBalance').val(0);
+                $('#ReconciledBy').val('');
+           }
+         
+         });
+
+            $("#btnLoad").live("click", function () {
+
+                $('.dynamicRow').each(function () {
+                $(this).remove();
+                });
+
+            $("#frm").attr('action', '@Url.Action("AddDetail", "BankReconciliation")');
+            });
+
+
+            Total = parseFloat( $('#TotalClearDebit').val());
+            $(" #grid tbody tr input[type='checkbox']").click(function () {
+
+            var netCredit=0;
+
+            BankCharge=$('#BankCharge').val();
+            
+            if($('#NetCredit').val()==undefined){
+                netCredit=0;
+              }
+              else
+              {
+              netCredit+=parseFloat($('#NetCredit').val());
+              }
+
+            if(netCredit!='')
+            {
+                netCredit=parseFloat(netCredit);
+            }
+            
+            var netDebit=0;
+            if (this.checked == 1) {
+
+                var ald = $(this).parent().parent().find('td:eq(5) input.alowOnlyNumber').val();               
+                Total += parseFloat(ald);
+                $('#TotalClearDebit').val(Total);
+                
+                if(BankCharge!='')
+                {
+                    BankCharge=parseFloat(BankCharge);
+                    netDebit+=Total+BankCharge;
+                }
+                   $('#NetDebit').val(netDebit);
+                   $('#ClosingBalance').val(GetClosingBalance(netCredit,netDebit));
+            }
+            else {
+                if (Total >= 0) {
+                    var ald = $(this).parent().parent().find('td:eq(5) input.alowOnlyNumber').val();
+                    Total -= parseFloat(ald);
+                    $('#TotalClearDebit').val(Total);
+
+                    if(BankCharge!='')
+                    {
+                        BankCharge=parseFloat(BankCharge); 
+                        netDebit+=Total+BankCharge;                      
+                    }
+                     $('#NetDebit').val(netDebit);
+                     $('#ClosingBalance').val(GetClosingBalance(netCredit,netDebit));
+                }
+            }
+        });
+
+
+        TotalCredit = parseFloat($('#TotalClearCredit').val());
+        $(" #gridTable tbody tr input[type='checkbox']").click(function () {
+            var netDebit=0;
+            
+            BankInterest=$('#BankInterest').val();
+            //netDebit=$('#NetDebit').val();
+
+            if($('#NetDebit').val()==undefined){
+                netDebit=0;
+              }
+              else
+              {
+              netDebit+=parseFloat($('#NetDebit').val());
+              }
+
+            if(netDebit!='')
+            {
+                netDebit=parseFloat(netDebit);
+            }
+
+            var netCredit=0;
+            if (this.checked == 1) {
+
+                var ald = $(this).parent().parent().find('td:eq(5) input.alowOnlyNumber').val();               
+                TotalCredit += parseFloat(ald);
+                $('#TotalClearCredit').val(TotalCredit);
+
+                if(BankInterest!='')
+                    {
+                        BankInterest=parseFloat(BankInterest);
+                        netCredit+=TotalCredit+BankInterest;
+                    }
+                    
+                    $('#NetCredit').val(netCredit);
+                    $('#ClosingBalance').val(GetClosingBalance(netCredit,netDebit));
+            }
+            else {
+                if (TotalCredit >= 0) {
+                    var ald = $(this).parent().parent().find('td:eq(5) input.alowOnlyNumber').val();
+                    TotalCredit -= parseFloat(ald);
+                    $('#TotalClearCredit').val(TotalCredit);
+
+                    if(BankInterest!='')
+                    {
+                       BankInterest=parseFloat(BankInterest);
+                       netCredit+=TotalCredit+BankInterest;
+                    }
+                    
+                    $('#NetCredit').val(netCredit);
+                    $('#ClosingBalance').val(GetClosingBalance(netCredit,netDebit));
+                }
+            }
+        });
+    
+     $('#BankCharge').live('change',function(){
+            var netCredit=0;
+            var BankCharge=$(this).val();
+            
+            if($('#NetCredit').val()==undefined){
+                netCredit=0;
+              }
+              else
+              {
+              netCredit+=parseFloat($('#NetCredit').val());
+              }
+
+            if(netCredit!='')
+            {
+                netCredit=parseFloat(netCredit);
+            }
+
+            if(BankCharge!='')
+            {
+                BankCharge=parseFloat(BankCharge);
+            }
+            var TotalClearDebit=$('#TotalClearDebit').val();
+            if(TotalClearDebit!='')
+            {
+                TotalClearDebit=parseFloat(TotalClearDebit);
+            }
+            var netDebit=BankCharge+TotalClearDebit;
+            $('#NetDebit').val(netDebit);
+
+            $('#ClosingBalance').val(GetClosingBalance(netCredit,netDebit));
+        });
+
+
+
+        $('#BankInterest').live('change',function(){
+
+            var interest=$(this).val();            
+            var netDebit=$('#NetDebit').val();
+
+            if(netDebit!='')
+            {
+                netDebit=parseFloat(netDebit);
+            }
+
+            if(interest!='')
+            {
+                interest=parseFloat(interest);
+            }
+            var TotalClearCredit=$('#TotalClearCredit').val();
+            if(TotalClearCredit!='')
+            {
+                TotalClearCredit=parseFloat(TotalClearCredit);
+            }
+            var NetCredit=interest+TotalClearCredit;
+            $('#NetCredit').val(NetCredit);
+            
+
+            $('#ClosingBalance').val(GetClosingBalance(NetCredit,netDebit));
+        });
+
+    });
+
+    function GetClosingBalance(NetCredit, NetDebit)
+    {
+        var result=0;
+        var OpeningBalance=$('#OpeningBalance').val();
+        if(OpeningBalance!='')
+        {
+            OpeningBalance=parseFloat(OpeningBalance);
+        }
+
+        result=OpeningBalance+NetCredit-NetDebit;
+
+        return result;
+    }
+
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+        else {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "green");
+        }
+    }
+   
+</script>

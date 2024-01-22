@@ -1,0 +1,64 @@
+﻿@model ERP_BEPZA.Web.Areas.CPF.Models.LoanApplication.LoanApplicationViewModel
+@using ERP_BEPZA.Web.Helpers
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+@using (Ajax.BeginForm("Index", "LoanApplication", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+     
+    <div class="GroupBox" style="min-height: 15px" id="message">
+    </div>
+    <div class="GroupBox">
+        <div class="row">
+        <span class="label">
+      
+            @Html.LabelFor(model => model.EmployeeCode)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EmployeeCode)
+           
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.EmployeeInitial)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EmployeeInitial)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeName)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EmployeeName)
+        </span><span class="label-right">
+            
+            @Html.LabelFor(model => model.MembershipCode)
+            <label style='color: red'>*
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.MembershipCode)
+        </span>
+    </div>
+    </div>
+    
+    
+    <div class="button-crude button-left">
+        @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            @Html.ActionLink("Add New", "Create")
+        }
+    </div>
+    <br /> 
+    <br />   
+    <table id="jqGrid" cellpadding="0" cellspacing="0">
+    </table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>  
+    <div id="divList">
+        @Html.Partial("_GridList")
+    </div>
+}

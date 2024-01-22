@@ -1,0 +1,260 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.OverTimeRule.OverTimeRuleModel
+
+@{
+    Layout = null;
+}
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    @Html.HiddenFor(model=>model.Mode)
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RuleName)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.RuleName)
+        </span>
+    </div>
+    <fieldset>
+        <legend> Eligible From </legend>
+        <div class="row">
+            <span class="label">
+            </span>
+            <span class="field">
+                @Html.RadioButtonFor(m => m.EligibleFrom, "Join", new { @checked = true })
+                @Html.Label("Joining Date")
+            </span> <span>@Html.RadioButtonFor(m => m.EligibleFrom, "Conf")@Html.Label("Confirmation Date")</span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend> Period </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FromDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">             
+               @Html.EditorFor(model => model.FromDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ToDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.ToDate)
+            </span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend> Overtime Policy </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AfterOutTime)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.AfterOutTime)
+                <label>Minute(s)</label>
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.MinHour)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.MinHour)
+                <label>Minute(s)</label>
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.MaxHour)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.MaxHour)
+                <label>Hour(s)</label>
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Unithour)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Unithour, new { @class = "required" })
+                <label>Minute(s)</label>
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.SalaryHeadId)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.SalaryHeadId, Model.SalaryHeadList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Rate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                (Basic Salary /  @Html.TextBoxFor(model => model.BasicSalaryX, new { @class = "required" }) ) * @Html.TextBoxFor(model => model.BasicSalaryY, new { @class = "required" })
+            </span>
+            <div style="display: none;">
+                @Html.EditorFor(model => model.Rate)
+            </div>
+
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend> Night Allowance </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.IsAllowForNight)
+            </span>
+            <span class="field">
+                @Html.CheckBoxFor(model => model.IsAllowForNight)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.NightAllowance)
+
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.NightAllowance)
+                <label>Per Night</label>
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.MaxDays)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.MaxDays)
+                <label>Day(s)</label>
+            </span>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend> General </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.RevenueStamp)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.RevenueStamp)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.IsImpactInPaySlip)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.CheckBoxFor(model => model.IsImpactInPaySlip)
+            </span>
+        </div>
+    </fieldset>
+
+    <script type="text/javascript">
+        $(function () {
+            preventSubmitOnEnter($("#frm"));
+            $("#btnSave").click(function () {
+                $("#Rate").val(BasicSalaryX.value + "*" + BasicSalaryY.value)
+            })
+        })
+    </script>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#ToDate").live('change', function () {
+            var from = $('#FromDate').val();
+            var to = $('#ToDate').val();
+            getDate(from, to);
+        })
+
+        $("#FromDate").live('change', function () {
+            var from = $('#FromDate').val();
+            var to = $('#ToDate').val();
+            getDate(from, to);
+        })
+
+        function getDate(from, to) {
+            $('#message').empty();
+            if ((new Date(from).getTime() > new Date(to).getTime())) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'To Date' must be greater than or equal to 'From Date'.</span> </div> ");
+                return;
+            }
+        }
+    });
+
+</script>
+
+<script>
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            $("#message").empty();
+            //$('#EffectiveToDate').removeClass('border-red');
+
+            if ($('#RuleName').val() == '' || $('#RuleName').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if ($('#SalaryHeadId').val() == '' || $('#SalaryHeadId').val() == null || $('#SalaryHeadId').val() ==0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if ($('#BasicSalaryX').val() == '' || $('#BasicSalaryX').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if ($('#BasicSalaryY').val() == '' || $('#BasicSalaryY').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }          
+        });
+    });
+</script>
+
+

@@ -1,0 +1,32 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.ProfitInterestRate.ProfitInterestRateModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "ProfitInterestRate", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" style="max-height: 15px" id="message">
+        @if (Model != null && !string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+
+    <fieldset>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+        </div>
+    </fieldset>
+}
+
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>

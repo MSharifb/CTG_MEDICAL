@@ -1,0 +1,86 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRforOfficer.ACRforOfficerViewModel
+
+@{
+    ViewBag.Title = "CreateOrEdit";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" id="Id" value="@Model.Id" />
+@{
+    string Id = "#";
+    string empId = "#";
+    
+    if (Model.Id != 0)
+    { Id = "/" + Model.Id.ToString(); }
+    if (!string.IsNullOrWhiteSpace(Model.EmpId))
+    { empId = "/" + Model.EmpId; }
+
+}
+<div class="employee">
+    <div class="left-sidebar">
+         <ul>
+            <li class="@Model.OfficerInfo.SelectedClass">@Html.ActionLink("Officer's Information", "OfficerInfoIndex" +Id, null, new { @class = "emp-info" })</li>
+            <li class="@Model.HealthTestReport.SelectedClass">@Html.ActionLink("1st Part - Health Test Report", "HealthTestReportIndex" + Id, null, new { @class = "emp-contract" })</li>
+            <li class="@Model.BioData.SelectedClass">@Html.ActionLink("2nd Part - Bio Data", "OfficerBioDataIndex" + Id, null, new { @class = "emp-salary" })</li>
+            <li class="@Model.PersonalCharacteristics.SelectedClass">@Html.ActionLink("3rd Part - Personal Characteristics", "PersonalCharacteristicsIndex" + Id, null, new { @class = "emp-photo" })</li>
+            <li class="@Model.PerformanceOfWork.SelectedClass">@Html.ActionLink("4th Part - Performance of Work", "PerformanceOfWorkIndex" + Id, null, new { @class = "emp-sign" })</li>
+            <li class="@Model.GraphAndRecommendation.SelectedClass">@Html.ActionLink("5th & 6th Part - Graph & Recommendation", "GraphAndRecommendationIndex" + Id, null, new { @class = "grap" })</li>
+            <li class="@Model.ReviewingOfficerComments.SelectedClass">@Html.ActionLink("7th Part - Counter Signing Officer's Comments", "ReviewingOfficerCommentsIndex" + Id, null, new { @class = "review" })</li>
+            <li class="@Model.InformationForAuthority.SelectedClass">@Html.ActionLink("8th Part - Information for Authority", "InformationForAuthorityIndex" + Id, null, new { @class = "info" })</li>
+        </ul>
+    </div>
+    <div class="form-content">
+        @switch (Model.ViewType)
+        {
+            case "OfficerInfo":
+                @Html.Partial("_OfficerInfo", Model.OfficerInfo)
+                break;
+            case "HealthTestReport":
+            @Html.Partial("_HealthTestReport", Model.HealthTestReport)
+                break;
+            case "BioData":
+            @Html.Partial("_OfficerBioData", Model.BioData)
+                break;
+            case "PersonalCharacteristics":
+            @Html.Partial("_PersonalCharacteristics", Model.PersonalCharacteristics)
+                break;
+            case "PerformanceOfWork":
+            @Html.Partial("_PerformanceOfWork", Model.PerformanceOfWork)
+                break;
+            case "GraphAndRecommendation":
+            @Html.Partial("_GraphAndRecommendation", Model.GraphAndRecommendation)
+               break;
+            case "ReviewingOfficerComments":
+            @Html.Partial("_ReviewingOfficerComments", Model.ReviewingOfficerComments)
+               break;
+            case "InformationForAuthority":
+            @Html.Partial("_InformationForAuthority", Model.InformationForAuthority)
+               break;
+
+            default:
+                break;
+        }
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var editMode = false;
+    var empId = '@Model.EmpId';
+    var id = '@Model.Id';
+
+    if (id != 0) {
+        editMode = true;
+    }
+    if (!editMode) {
+        $('.emp-info, .emp-contract, .emp-salary, .emp-photo, .emp-sign, .grap, .review, .info').attr('href', '#');
+    }
+
+    function DeleteConfirm()
+    {
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+</script>
+

@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.OnlineWelfareFundApplicationInformationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.AttachmentFilesList != null)
+{
+    foreach (var x in Model.AttachmentFilesList)
+    {
+        @Html.Partial("_AttachmentDetails", x);
+    }
+
+}

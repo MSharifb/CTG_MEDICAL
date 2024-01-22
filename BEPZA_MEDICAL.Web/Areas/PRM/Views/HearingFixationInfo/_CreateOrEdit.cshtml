@@ -1,0 +1,616 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.HearingFixationInfoViewModel
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.HearingfixationEmployeeId)
+            @Html.LabelFor(model => model.ComplaintNoteSheetId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @if (Model.strMode == "Edit")
+            {   @Html.HiddenFor(model => model.ComplaintNoteSheetId)
+                @Html.TextBoxFor(model => model.ComplaintNoteSheetName, new { @class = "read-only", @readonly = true })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.ComplaintNoteSheetId, Model.ComplaintNoteSheetList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            }
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.HearingRefNo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingRefNo)
+        </span>
+    </div>
+</div>
+<fieldset>
+    <legend>Complaint History</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RefNo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.RefNo, new { @class = "read-only required", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplaintDate, new { @class = "read-only required", @readonly = true })
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDate, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmpId, new { @class = "read-only required", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantEmpId, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmployeeName, new { @class = "read-only required", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantEmployeeName, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDepartmentName, new { @class = "read-only", @readonly = true })
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDepartmentName, new { @class = "read-only", @readonly = true })
+
+        </span>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Hearing Date and Time Fixation</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.HearingDate)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.HearingTime)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingTime, new { @class = "time-picker", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingLocation)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingLocation)
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.HearingStatus)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.HearingStatus, Model.HearingStatusList @*, @String.Format("{0}", Content.DDLOptionalLabel())*@)
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingComments)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.HearingComments)
+        </span>
+    </div>
+    <div class="row" align="center">
+        <div style="width: 70%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+                <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>
+                            Hearing Date
+                        </th>
+                        <th>
+                            Hearing Time
+                        </th>
+                        <th>
+                            Hearing Location
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @for (int i = 0; i < Model.HearingFixationInfoDetail.Count; i++)
+                    {
+                        var item = Model.HearingFixationInfoDetail.ToList()[i];
+                        <tr>
+
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.HearingFixationInfoDetail[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.HearingFixationInfoDetail[i].HearingFixationInfoId)
+                            </td>
+                            <td style="display: none;">
+                                @*@Html.HiddenFor(m => m.HearingFixationInfoDetail[i].HearingDate)*@
+                                @Html.TextBoxFor(m => m.HearingFixationInfoDetail[i].HearingDate, "{0:yyyy-MM-dd}")
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.HearingFixationInfoDetail[i].HearingTime)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.HearingFixationInfoDetail[i].HearingLocation)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.HearingFixationInfoDetail[i].HearingComments)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.HearingFixationInfoDetail[i].HearingStatus)
+                            </td>
+                            <td>
+                                <label>@Convert.ToDateTime(@item.HearingDate).ToString("dd-MM-yyyy")</label>
+                            </td>
+                            <td>
+                                <label>@item.HearingTime</label>
+                            </td>
+                            <td>
+                                <label>@item.HearingLocation</label>
+                            </td>
+                            <td>
+                                <label>@item.HearingStatus</label>
+                            </td>
+
+                            <td>
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,'@item.HearingStatus','@Url.Action("DeleteDetail")')">
+
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Hearing Date and Time Fixation By</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingfixationByEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingfixationByEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingfixationByEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingfixationByEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingfixationByDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingfixationByDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</fieldset>
+
+<fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.CheckBoxFor(model => model.IsAddAttachment, new { onclick = "disableUpload();" })
+            @Html.LabelFor(model => model.IsAddAttachment)
+        </span><span class="field">
+            <div id="divFileAttach">
+                @Html.HiddenFor(model => model.Attachment)
+                @Html.HiddenFor(model => model.FileName)
+                <input type="file" name="Attachment" id="Attachment" />
+                <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+            </div>
+        </span>
+    </div>
+</fieldset>
+<div class="clear"></div>
+
+<script type="text/javascript">
+    FormatTextBox();
+
+    $(document).ready(function () {
+        disableUpload();
+    });
+
+    function disableUpload() {
+        var IsSelect = $('#IsAddAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+            // $('#spAttachment').show();
+            $('#divFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+            // $('#spAttachment').hide();
+            $('#divFileAttach').hide();
+        }
+    }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $(document).ready(function () {
+        var val = $('input[name=IsIndividual]:checked').val();
+        var chk = $('.chkRestriction')
+    });
+</script>
+
+<script type="text/javascript">
+
+
+    $('#ComplaintNoteSheetId').live('change', function () {
+
+        $("#RefNo").val('');
+        $('#ComplaintDate').val('');
+        $("#ComplaintEmpId").val('');
+        $("#ComplaintEmployeeName").val('');
+        $("#ComplaintDesignationName").val('');
+        $("#ComplaintDepartmentName").val('');
+        $("#ComplainantEmpId").val('');
+        $("#ComplainantEmployeeName").val('');
+        $("#ComplainantDesignationName").val('');
+        $("#ComplainantDepartmentName").val('');
+
+        var complaintNoteSheetId = $(this).val();
+        GetComplaintNoteInfo(complaintNoteSheetId);
+
+    });
+
+    function GetComplaintNoteInfo(complaintNoteSheetId) {
+        var url = '@Url.Action("GetComplaintNoteInfo", "NoteOrderInfo")';
+        if (complaintNoteSheetId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ complaintNoteSheetId: complaintNoteSheetId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#RefNo").val(obj.RefNo);
+                    $('#ComplaintDate').val(obj.ComplaintDate);
+                    $("#ComplaintEmpId").val(obj.ComplaintEmpId);
+                    $("#ComplaintEmployeeName").val(obj.ComplaintEmployeeName);
+                    $("#ComplaintDesignationName").val(obj.ComplaintDesignationName);
+                    $("#ComplaintDepartmentName").val(obj.ComplaintDepartmentName);
+                    $("#ComplainantEmpId").val(obj.ComplainantEmpId);
+                    $("#ComplainantEmployeeName").val(obj.ComplainantEmployeeName);
+                    $("#ComplainantDesignationName").val(obj.ComplainantDesignationName);
+                    $("#ComplainantDepartmentName").val(obj.ComplainantDepartmentName);
+
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+</script>
+
+@*Employee Info*@
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<br />
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#HearingfixationEmployeeId').val(id);
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "NoteOrderInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#HearingfixationByEmpId").val(obj.EmpId);
+                    $('#HearingfixationByEmployeeName').val(obj.EmployeeName);
+                    $("#HearingfixationByDesignationName").val(obj.DesignationName);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+
+    function Closing() {
+
+    }
+
+</script>
+@*End Employee Info*@
+
+
+
+<script type="text/javascript">
+
+    var arrList = [];
+    //pupulate existing data from database
+    var hFixInfoDtls = @Html.Raw(Json.Encode(Model.HearingFixationInfoDetail));
+    $.each( hFixInfoDtls, function( key, value ) {
+        arrList.push(String( value.HearingStatus ));
+    });
+
+    $('#btnAdd').live('click', function (e) {
+        e.preventDefault();
+        $("#message").empty();
+        $("#HearingDate").removeClass('border-red');
+        $("#HearingTime").removeClass('border-red');
+        $("#HearingLocation").removeClass('border-red');
+
+        var hearingInfoId = $('#Id').val();
+        var hearingDate = $('#HearingDate').val();
+        var hearingTime = $("#HearingTime").val();
+        var hearingLocation = $("#HearingLocation").val();
+        var hearingComments = $("#HearingComments").val();
+        var hearingStatus = $("#HearingStatus").val();
+
+        //checking duplicate entry
+        if (hearingStatus == 'Actual') {
+            var index = $.inArray(hearingStatus, arrList);
+        }
+
+        if (hearingDate == null || hearingDate == "") {
+            $("#HearingDate").addClass('border-red');
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (hearingTime == null || hearingTime == "") {
+            $("#HearingTime").addClass('border-red');
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (hearingLocation == null || hearingLocation == "") {
+            $("#HearingLocation").addClass('border-red');
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Status 'Actual' no more than once</span>  </div> ");
+            return;
+        }
+        else {
+            //push to arry
+            if (hearingStatus == 'Actual') {
+                arrList.push(hearingStatus);
+            }
+            var trClone = '<tr>' +
+             '<td style="display: none;">' + '<input type="text" value="0" name="HearingFixationInfoDetail[0].Id"></td>' +
+             '<td style="display: none;">' + '<input type="text" name="HearingFixationInfoDetail[0].HearingFixationInfoId" value="' + hearingInfoId + '"></td>' +
+             '<td style="display: none">' + '<input type="text" name="HearingFixationInfoDetail[0].HearingDate" value="' + hearingDate + '" ></td>' +
+             '<td style="display: none">' + '<input type="text" name="HearingFixationInfoDetail[0].HearingTime" value="' + hearingTime + '" ></td>' +
+             '<td style="display: none">' + '<input type="text" name="HearingFixationInfoDetail[0].HearingLocation" value="' + hearingLocation + '" ></td>' +
+             '<td style="display: none">' + '<input type="text" name="HearingFixationInfoDetail[0].HearingComments" value="' + hearingComments + '" ></td>' +
+             '<td style="display: none">' + '<input type="text" name="HearingFixationInfoDetail[0].HearingStatus" value="' + hearingStatus + '" ></td>' +
+             '<td>' + '<label>' + hearingDate + '</td>' +
+             '<td>' + '<label>' + hearingTime + '</td>' +
+             '<td>' + '<label>' + hearingLocation + '</td>' +
+             '<td>' + '<label>' + hearingStatus + '</td>' +
+             '<td>' + '<a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;'+hearingStatus+'&quot;,&quot;/PRM/HearingFixationInfo/DeleteDetail&quot;)"></a></td>' +
+             '</tr>';
+            $('#grid tbody').append(trClone);
+            RearrengeControlName();
+
+
+            $('#HearingDate').val('');
+            $("#HearingTime").val('');
+            $("#HearingLocation").val('');
+            $("#HearingComments").val('');
+
+        }
+    });
+
+
+    function RemoveDb(el, id,hStatus, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                }
+            });
+        }
+
+        //delete from arry
+        arrList = $.grep(arrList, function(value) {
+            return value != hStatus;
+        });
+        RearrengeControlName();
+    }
+
+    function RearrengeControlName() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            });
+        });
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+
+            var validateValue =$('#ComplaintNoteSheetId').val();
+            if(validateValue !=''){
+                var rowCount = $('#grid tbody tr').length;
+                if (rowCount == 0 || rowCount < 0) {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, add 'Hearing Date and Time Fixation'.</span> </div> ");
+                    return false;
+                }
+            }
+
+        });
+    });
+</script>

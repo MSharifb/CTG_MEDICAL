@@ -1,0 +1,174 @@
+﻿@model BOM_MPA.Web.Areas.PRM.ViewModel.ApplicantInfoViewModel
+
+<style type="text/css">
+    .applicant-view .label{
+        width:25%;
+    }
+</style>
+<div class="GroupBox applicant-view" >
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ApplicantNameE)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ApplicantNameE, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ApplicantNameB)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ApplicantNameB, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.NationalID)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.NationalID, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.BirthRegNo)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.BirthRegNo, new { @class = "read-only", @readonly = true })
+        </span>
+
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DateOfBirth)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    @*<div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Age)
+            @Html.LabelFor(model => model.Age)
+        </span>
+        <span class="field" style="width:7%">
+            @Html.TextBoxFor(model => model.Year, new { @class = "read-only", @readonly = true }) Years  @Html.TextBoxFor(model => model.Month, new { @class = "read-only", @readonly = true }) Months @Html.TextBoxFor(model => model.Day, new { @class = "read-only", @readonly = true }) Days
+        </span>
+
+    </div>*@
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PlaceOfBirth)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.PlaceOfBirth, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FatherName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.FatherName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MotherName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.MotherName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MobNo)            
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.MobNo, new { @class = "read-only", @readonly = true })
+        </span>       
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TelNo)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.TelNo, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Email, new { @class = "read-only", @readonly = true })
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Email, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">        
+        <span class="label">
+            @Html.LabelFor(model => model.Profession)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Profession,new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</div>
+
+
+<div class="row">
+    <table id="grid" class="contenttable">
+        <thead>
+            <tr>
+                <th>
+                    Examination Name
+                </th>
+                <th>
+                    Academic Institution
+                </th>
+                <th>
+                    Passing Year
+                </th>
+                <th>
+                    Division/Grade
+                </th>
+                <th>
+                    Board/University
+                </th>
+                <th>
+                    Subject
+                </th>
+               
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @for (int i = 0; i < Model.ApplicantInfoQualification.Count; i++)
+            {
+                var item = Model.ApplicantInfoQualification.ToList()[i];
+                <tr class="row">
+                    <td>
+                        <label> @item.DegreeLevelName</label>
+                    </td>
+                    <td>
+                        <label> @item.AcademicInstName</label>
+                    </td>
+                    <td>
+                        <label> @item.Passingyear</label>
+                    </td>
+                    <td>
+                        <label> @item.AcademicGradeName</label>
+                    </td>
+                    <td>
+                        <label> @item.BoardName</label>
+                    </td>
+                    <td>
+                        <label> @item.SubjectGroupName</label>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>

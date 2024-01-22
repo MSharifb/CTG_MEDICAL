@@ -1,0 +1,73 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.DistrictWiseApplicantInfoViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+    int index = 1;
+}
+@using (Html.BeginForm("Index", "DistrictWiseApplicantInfo", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(m => m.JobAdvertisementId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.JobAdvertisementId, Model.JobAdvertisementList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+
+            @Html.LabelFor(m => m.DesignationId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalAllLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <button type="submit" id="btnsub" class="btn btn-base" onclick="return fnValidate()">Show</button>
+                    @Html.ActionLink("Print", "ListofApplicantsAllDistrict", new { JobAdId = Model.JobAdvertisementId, DesignationId = Model.DesignationId}, new { @class = "btn btn-base", target = "_blank" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <table style="width: 100%" class="table table-bordered table-condensed table-hover">
+                    <thead>
+                        <tr class="webgrid-header">
+                            <th style="width: 30px; text-align: center">
+                                SL#
+                            </th>
+                            <th>
+                                District
+                            </th>
+                            <th>
+                                Total No. of Applicants
+                            </th>
+                            <th>
+                                Preview
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.reportTemp)
+                        {
+                            <tr>
+                                <td style="width: 30px; text-align: center">
+                                    @(index++)
+                                </td>
+                                <td>
+                                    @Html.Encode(item.Name)
+                                </td>
+                                <td>
+                                    @Html.Encode(item.TotalNo)
+                                </td>
+                                <td>
+                                    @Html.ActionLink(" ", "ListofCandidatesByHomeDistrict", new { id = item.ID, JobAdId = Model.JobAdvertisementId , DesiId = Model.DesignationId}, new { @class = "gridView", target = "_blank" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+}
+

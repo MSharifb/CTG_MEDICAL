@@ -1,0 +1,421 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Notification.NotificationFlowSetupViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+
+}
+
+<script type="text/javascript">
+    $(function () {
+
+        if ('@Model.ActionType' == 'Update') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            setTimeout(SetDesignationData, 1000);
+        }
+        else {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        return false;
+    });
+
+
+</script>
+
+@using (Html.BeginForm(Model.ActionType, "NotificationFlowSetup", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="form-horizontal">
+        <div id="message" class="form-group messageBox clearfix">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        <fieldset>
+            <legend>Notification Flow</legend>
+
+
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.ActionType)
+
+            @Html.HiddenFor(m => m.OrganogramLevelId)
+            @Html.HiddenFor(m => m.SelectedDesignationId)
+            @Html.HiddenFor(m => m.EmployeeId)
+            @Html.HiddenFor(m => m.NotificationTypeIdWhenEdit)
+            @Html.HiddenFor(m => m.ModuleIdWhenEdit)
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.NotificationTypeId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @if (Model.ActionType != "Update")
+                    {
+                        @Html.DropDownListFor(m => m.NotificationTypeId, Model.NotificationTypeList, @String.Format("{0}", Content.DDLOptionalLabel())
+                            , new { @class = "form-control select-single" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.NotificationTypeName, new { @class = "form-control read-only", @readonly = true });
+                    }
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ModuleId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @if (Model.ActionType != "Update")
+                    {
+                        @Html.DropDownListFor(m => m.SelectedModuleIds, Model.ModuleList, @String.Format("{0}", Content.DDLOptionalLabel())
+                            , new { @class = "form-control select-single", @multiple = "true" })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.ModuleName, new { @class = "form-control read-only", @readonly = true });
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.HasReminder, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-1 pull-left">
+                    @Html.CheckBoxFor(m => m.HasReminder, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ReminderBeforeDays, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ReminderBeforeDays, new { @class = "form-control" })
+                </div>
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <div class="form-group">
+                <div class="col-sm-12 group-area-selector">
+                    @Html.LabelFor(m => m.ZoneId, new { @class = "col-sm-4 control-label" })
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(m => m.ZoneId, Model.ZoneList, new { @class = "form-control select-single" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12 group-area-selector" style="text-align: center;">
+                    <label style="margin-right: 20px;"> @Html.RadioButtonFor(m => m.IsApplicableForGroup, false)Individual</label>
+                    <label> @Html.RadioButtonFor(m => m.IsApplicableForGroup, true)Group</label>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="col-sm-6">
+                    <div id="dvEmp">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.EmpId, new { @class = "col-sm-4 control-label labelRequired" })
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.EmpId, new { @class = "form-control read-only", @readonly = true })
+
+                                </div>
+                                <div class="col-sm-1" style="text-align: left;">
+                                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" />
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.EmployeeName, new { @class = "col-sm-4 control-label labelRequired" })
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control read-only", @readonly = true })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Designation, new { @class = "col-sm-4 control-label labelRequired" })
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control read-only", @readonly = true })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" id="dvTreeView">
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LevelDetail, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.LevelDetail, new { @class = "form-control read-only", @readonly = true })
+                        </div>
+                    </div>
+                    <div style="background: #FFFFFF" id="treeViewSearch">
+                    </div>
+
+                    <script type="text/javascript">
+
+                        $(document).ready(function() {
+                            PopulateTreeView();
+                        })
+
+                        function ClearTree() {
+                            $('#treeViewSearch').empty();
+                        }
+
+                        $('#ZoneId').change(function() {
+                            $("#treeViewSearch").jstree("destroy");
+                            PopulateTreeView();
+                        });
+
+                        function PopulateTreeView() {
+
+                            var zoneId = $("#ZoneId option:selected").val();
+
+                            if (zoneId == '') {
+                                zoneId = '0'
+                            }
+                            var url = '@Url.Action("GetTreeData", "ApprovalFlow")?zoneId=' + zoneId;
+
+                            $('#treeViewSearch').jstree({
+                                "plugins": [
+                                    "search"
+                                ],
+                                'core': {
+                                    'check_callback': true,
+                                    'data': {
+                                        'url': url,
+                                        'data': function(node) {
+                                            return { "id": node.title };
+                                        }
+                                    }
+                                }
+                            });
+
+                            $(document).on('click',
+                                '.jstree-anchor',
+                                function(e) {
+                                    var anchorId = $(this).parent().attr('id');
+                                    var nodeName = '';
+                                    $('#OrganogramLevelId').val(anchorId);
+                                    GetDesignationInfo(anchorId);
+                                });
+
+                            $(".jstree").on("loaded.jstree",
+                                function() {
+
+                                    var selectedNodeId = $('#OrganogramLevelId').val();
+                                    $(".jstree").jstree("open_all");
+                                    //$(".jstree").jstree("open_all", selectedNodeId);
+                                    $('.jstree').jstree(true).select_node(selectedNodeId);
+                                    ToggleGroup();
+                                });
+                        };
+                    </script>
+                    <div style="margin-top: 15px;">
+                        
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.OnlyLevelHead, new { @class = "col-sm-4 control-label" })
+                            <div class="col-sm-1 pull-left">
+                                @Html.CheckBoxFor(m => m.OnlyLevelHead, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DesignationId, new {@class = "col-sm-4 control-label"})
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.DesignationId, Model.DesignationList, new {@class = "form-control select-single"})
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <button class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <button class="btn btn-primary" id="btnUpdate"><i class="fa fa-edit"></i> Update</button>
+                }
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    // ******** functions for open popup *************
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 940, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "AssignApprovalFlow")';
+        var selectedZoneId = $('#ZoneId option:selected').val();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            data: { UseTypeEmpId: "Active", zoneId: selectedZoneId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function GetDesignationInfo(nodeId) {
+        var url = '@Url.Action("GetDesignationInfoByLevelId", "NotificationFlowSetup")';
+        var dsgId = $('#SelectedDesignationId').val();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { levelId: nodeId },
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                $("#DesignationId").empty();
+
+                $("#DesignationId").append($("<option></option>").val('0').html('ALL'));
+
+                $.each(data, function () {
+                    $("#DesignationId").append($("<option></option>").val(this['Id']).html(this['Name']));
+                    if (dsgId == (this['Id'])) {
+                        $("#DesignationId").val(dsgId);
+                    }
+                });
+
+                $('.select-single').trigger('chosen:updated');
+            }
+        });
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id);
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function Closing() {
+
+    }
+    // ---------------------------------
+
+    $(document).ready(function () {
+        setTimeout(GetLoggedInZoneId, 500);
+        ToggleGroup();
+        return false;
+    });
+
+    function SetOrganogramLevel() {
+
+        var levelId = $('#OrganogramLevelId').val();
+        //$("#treeViewSearch").jstree("open_all", node);
+        $(".jstree").jstree('open_all');
+    };
+
+    function SetDesignationData() {
+        var levelId = $('#OrganogramLevelId').val();
+        GetDesignationInfo(levelId);
+    };
+
+    function GetLoggedInZoneId() {
+        var url = '@Url.Action("GetLoggedZoneId", "NotificationFlowSetup")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                $('#ZoneId').val(data);
+            }
+        });
+    }
+
+    function ToggleGroup() {
+        var isApplicableForGroup = $('.group-area-selector input[type=radio]:checked').val();
+
+        if (isApplicableForGroup == "False") {
+            $('#dvTreeView').hide();
+            $('#dvEmp').show();
+            //$('#treeViewSearch').find('.jstree li').each(function () {
+            //    $(".jstree").jstree().disable_node(this.id);
+            //});
+            //$('#DesignationId').prop("disabled", true);
+            //$('#EmployeeCategory').prop("disabled", true);
+            //$('#Gender').prop("disabled", true);
+        }
+        else {
+            //$('#treeViewSearch').find('.jstree li').each(function () {
+            //    $(".jstree").jstree().enable_node(this.id);
+            //});
+            //$('#DesignationId').prop("disabled", false);
+            //$('#EmployeeCategory').prop("disabled", false);
+            //$('#Gender').prop("disabled", false);
+            $('#dvTreeView').show();
+            $('#dvEmp').hide();
+        }
+    }
+
+    $('.group-area-selector input[type=radio]').on('click', function () {
+        ToggleGroup();
+    });
+
+
+    $(function() {
+        console.log($('SelectedModuleIds').val());
+
+    });
+</script>
+
+<style type="text/css">
+    #treeViewSearch {
+        overflow: auto;
+        max-height: 250px;
+        height: 250px;
+    }
+
+    #fldSteps {
+        font-size: 13px;
+        text-align: center;
+        min-height: 200px;
+    }
+
+    .step-name {
+        font-weight: bold;
+        color: green;
+    }
+
+    .approver-name {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #dvEmp, #dvTreeView {
+        min-height: 375px;
+    }
+</style>

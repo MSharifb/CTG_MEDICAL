@@ -1,0 +1,226 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.ProjectEstimationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@{
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        @*if ('@Model.ActionType' == 'Update') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            $('.ApvSave').hide();
+        }
+        else {
+            $('#btnUpdate').hide();
+            $('.ApvUpdate').hide();
+        }*@
+        if ('@Model.ApprovalStatus' != 'Submitted') {
+            $('#btnSave').hide();
+        }
+        $('.page-title').html("Project Estimation");
+    });
+
+</script>
+
+@using (Html.BeginForm("SaveEstimation", "RequestedApplication", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <fieldset>
+        <legend>Estimation Details</legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(m => m.ApprovalSelectionId)
+                @Html.LabelFor(model => model.ProjectId, new { @class = "col-sm-2 default-label" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(model => model.ProjectId, Model.ProjectList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control", @disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.BudgetAmount, new { @class = "col-sm-2 default-label" })
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.BudgetAmount, "{0:0.00}", new { @class = @"amount-style", @readonly = true, @style = @"background:#F2F5F8" })
+                </div>
+                @Html.LabelFor(model => model.EstimationDate, new { @class = "col-sm-2 default-label" })
+                <div class="col-sm-2">
+                    @Html.Encode(Convert.ToDateTime(@Model.EstimationDate).ToShortDateString())
+                </div>
+                @Html.LabelFor(model => model.EstimationStatusId, new { @class = "col-sm-2 default-label" })
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(model => model.EstimationStatusId, Model.EstimationStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control", @disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="estimationData">
+        <legend>Estimation Items</legend>
+        <div class="form-group">
+            @Html.LabelFor(m => m.TotalAmount, new { @class = "col-sm-3 default-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(m => m.TotalAmount, new { @class = @"amount-style", @readonly = true, @style = @"background:#F2F5F8" })
+            </div>
+        </div>
+        <br />
+        @if (@Model.ProjectEstimationDetails != null && @Model.ProjectEstimationDetails.Count > 0)
+        {
+            for (int i = 0; i < Model.ProjectEstimationDetails.Count; i++ )
+            {
+                var item = Model.ProjectEstimationDetails.ToList()[i];
+                var headDes =  Model.EstimationHeadDescriptions.Where(q => q.EstimationHeadId == item.EstimationHeadId).FirstOrDefault();
+                <div class="form-horizontal">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td colspan="2" style="border-right:none; border-bottom:none; padding:2px;">
+                                        <label>Head</label>
+                                </td>
+                                <td colspan="6" style="border-left: none; border-bottom: none; padding: 2px;">
+                                    <div class="form-group">
+                                        <div class="col-sm-11">
+                                            <label>@headDes.HeadName</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border-right: none; border-top: none; padding: 2px;">
+                                        <label>Description</label>
+                                </td>
+                                <td colspan="6" style="border-left: none; border-top: none; padding: 2px;">
+                                    <div class="form-group">
+                                        <div class="col-sm-11 estimationHead">
+                                            <label>@headDes.HeadDescription</label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="slNo">Sl. No.</th>
+                                <th>Estimation Item</th>
+                                <th>Unit</th>
+                                <th>Unit Price (Tk.)</th>
+                                <th>Quantity</th>
+                                <th>Total Amount (Tk.)</th>
+                                <th>Description</th>
+                            </tr>
+                            @for (int j = 0; j < Model.EstimationItemList.Count; j++)
+                            {
+                                var estimationItem = Model.EstimationItemList.ToList()[j];
+                                <tr>
+                                    <td class="slNo">@Html.Encode(estimationItem.SerialNo)</td>
+                                    <td style="width:180px;" class="item">@Html.Encode(estimationItem.EstimationItemName)</td>
+                                    <td class="unit" style="width:130px;">@Html.Encode(estimationItem.UnitName)</td>
+                                    <td class="unitPrice" style="width:80px;">@Html.Encode(estimationItem.UnitPrice)</td>
+                                    <td class="quantity" style="width:80px;">@Html.Encode(estimationItem.Quantity)</td>
+                                    <td class="totalAmount" style="width:100px;">@Html.Encode(estimationItem.TotalAmount)</td>
+                                    <td>@Html.Encode(estimationItem.ItemDescription)</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        }
+    </fieldset>
+
+    <div class="ApvSave">
+        <fieldset>
+            <legend>Recommendation / Approval Flow</legend>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label labelRequired">Your Remarks</label>
+                <div class="col-sm-10">
+                    @Html.TextAreaFor(m => m.Remarks, new { @style = @"width:50%", @required = @"required" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                </div>
+            </div>
+            <br />
+            <table class="table table-bordered" style="width:100%">
+
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Designation</th>
+                        <th style="width: 45%">Employee Name & Department</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                if (Model.ApproverList != null && Model.ApproverList.Any())
+                {
+                    foreach (var x in Model.ApproverList)
+                    {
+                        @Html.Partial("_PartialEmployeeList", x);
+            }
+        }
+                    }
+
+                </tbody>
+            </table>
+        </fieldset>
+    </div>
+
+    @*<div class="ApvUpdate">
+        <fieldset>
+            <legend>Recomandation / Approval Flow</legend>
+            <table class="table table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Designation</th>
+                        <th style="width: 30%">Employee Name</th>
+                        <th> Department</th>
+                        <th>Status</th>
+                        <th> Remarks </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.ApproverList.Count; i++)
+                    {
+                        var item = Model.ApproverList.ToList()[i];
+                        <tr>
+                            <td>@Html.Encode(item.DesignationName)</td>
+                            <td>@Html.Encode(item.EmployeeName)</td>
+                            <td>@Html.Encode(item.DepartmentName)</td>
+                            <td>@Html.Encode(item.Status)</td>
+                            <td>@Html.Encode(item.Remarks)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </fieldset>
+    </div>*@
+
+    <div class="button-crude" style="text-align:center;">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <button type="submit" class="btn btn-primary" value="Save" id="btnSave" name="btnSave"><i class="fa fa-save"> Save</i></button>
+        }
+    </div>
+
+}
+<div class="button-crude button-left">
+    <a href="@Url.Action("Index")" class="btn btn-sm btn-primary"> <i class="fa fa-backward"></i> Back to List</a>
+</div>

@@ -1,0 +1,597 @@
+﻿@model BEPZA_MEDICAL.Web.Models.Menu
+@using BEPZA_MEDICAL.Web.Utility
+@{
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Dashboard";
+}
+@*<link href="@Url.Content("~/Content/Dashboard.css")" rel="stylesheet" type="text/css" />*@
+@*<h1>@ViewBag.Message</h1>*@
+<div style="width:10%; float:left">
+    <a href="@Url.Action("Index", "Employee", new { area = "PRM" })">
+        <p><b>Employee Info.</b> </p>
+    </a>
+</div>
+<div style="width:10%; float:left">
+    <a href="@Url.Action("Index", "PersonalInfo", new { area = "PRM" })">
+        <p><b>Personal Info.</b> </p>
+        <div class="clearfix"></div>
+    </a>
+</div>
+<div class="row top-summary" style="margin-top: 80px;">
+
+    @foreach (var item in MyAppSession.ModuleName)
+    {
+        if (item.ModuleName == "FMS")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("FDRType", "Home", new { area = "FMS" })">
+                    <div class="widget blue-3 animated fadeInDown widget-content padding mpa-dashboard-widget prm">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-pie-chart fms"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b> @item.ModuleTitle </b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "AMS")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("SecurityManagement", "Home", new { area = "SMS" })">
+                    <div class="widget lightblue-2 animated fadeInDown widget-content padding mpa-dashboard-widget ams">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-user ams"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b> @item.ModuleTitle </b> </p>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "UMS")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Ums", "Home", new { area = "SWM" })">
+                    <div class="widget red-1 animated fadeInDown widget-content padding mpa-dashboard-widget ums">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-lock ums"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b> @item.ModuleTitle </b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "ACC")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("ACC", "Home", new { area = "SWM" })">
+                    <div class="widget blue-3 animated fadeInDown widget-content padding mpa-dashboard-widget acc">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-dollar acc"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "PGM")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "PGM" })">
+                    <div class="widget green-1 animated fadeInDown widget-content padding mpa-dashboard-widget pgm">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="glyphicon glyphicon-signal payrollmanagmnt"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "LMS")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "LMS"})">
+                    <div class="widget darkblue-1 animated fadeInDown widget-content padding mpa-dashboard-widget lms">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-briefcase fms"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle </b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "CPF")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "CPF" })">
+                    <div class="widget darkblue-2 animated fadeInDown widget-content padding mpa-dashboard-widget cpf">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="icon-bag providentfndmanagmnt"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b></p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        }
+        else if (item.ModuleName == "INV")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "INV"  })">
+                    <div class="widget lightblue-1 animated fadeInDown widget-content padding mpa-dashboard-widget inv">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-clipboard inv"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b> </p>
+
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </a>
+            </div>
+
+        }
+        else if (item.ModuleName == "PMI")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("ProjectSection", "Home", new { area = "PMI" })">
+                    <div class="widget blue-1 animated fadeInDown widget-content padding mpa-dashboard-widget pmi">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "WFM")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "WFM" })">
+                    <div class="widget green-3 animated fadeInDown widget-content padding mpa-dashboard-widget wfm">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-bank wfm"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "FAR")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "FAR" })">
+                    <div class="widget green-2 animated fadeInDown widget-content padding mpa-dashboard-widget far">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-money fms"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "LAMS")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "LAMS" })">
+                    <div class="widget pink-2 animated fadeInDown widget-content padding mpa-dashboard-widget prm">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="fa fa-calculator fms"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle</b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (item.ModuleName == "PRM")
+        {
+            <div class="col-lg-3 col-md-6">
+                <a href="@Url.Action("Index", "Home", new { area = "PRM" })">
+                    <div class="widget lightblue-2 animated fadeInDown widget-content padding mpa-dashboard-widget prm">
+                        <div class="widget-content padding">
+                            <div class="widget-icon">
+                                <i class="glyphicon glyphicon-user personnelinfo"></i>
+                            </div>
+                            <div class="text-box">
+                                <p class="maindata"><b>@item.ModuleTitle </b> </p>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    }
+
+    @*Temp Close*@
+
+    @*
+        <div class="col-lg-3 col-md-6">
+        <a href="@Url.Action("Index", "Home", new { area = "PRM" })">
+            <div class="widget lightblue-2 animated fadeInDown widget-content padding mpa-dashboard-widget">
+                <div class="widget-content padding">
+                    <div class="widget-icon">
+                        <i class="glyphicon glyphicon-user personnelinfo"></i>
+                    </div>
+                    <div class="text-box">
+                        <p class="maindata"><b>Human Resource Management </b> </p>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
+   
+    
+
+    <div class="col-lg-3 col-md-6">
+        <a href="@Url.Action("SecurityManagement", "Home", new { area = "SMS" })">
+            <div class="widget lightblue-2 animated fadeInDown widget-content padding mpa-dashboard-widget">
+                <div class="widget-content padding">
+                    <div class="widget-icon">
+                        <i class="fa fa-user ams"></i>
+                    </div>
+                    <div class="text-box">
+                        <p class="maindata"><b> Security Management </b> </p>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <a href="@Url.Action("Ums", "Home", new { area = "SWM" })">
+            <div class="widget red-1 animated fadeInDown widget-content padding mpa-dashboard-widget">
+                <div class="widget-content padding">
+                    <div class="widget-icon">
+                        <i class="fa fa-lock ums"></i>
+                    </div>
+                    <div class="text-box">
+                        <p class="maindata"><b> User Management System </b> </p>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-lg-3 col-md-6">
+        <a href="@Url.Action("Index", "Home", new { area = "LAMS" })">
+            <div class="widget pink-2 animated fadeInDown widget-content padding mpa-dashboard-widget">
+                <div class="widget-content padding">
+                    <div class="widget-icon">
+                        <i class="fa fa-calculator fms"></i>
+                    </div>
+                    <div class="text-box">
+                        <p class="maindata"><b> Loan Management </b> </p>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>*@
+
+    @*Temp Close End*@
+</div>
+
+
+
+<script type="text/x-template" id="notifications-template">
+
+    <ul class="notification-content">
+        <%if(_.size(notifications) == 0){%>
+        <li><div class="notification-all-read-done">bingo! you have read all messages.</div></li>   <%}
+
+        _.each(notifications, function(notification){
+
+        // formate .net date to human readable date!
+        notification.NotificationDate = notification.NotificationDate.replace('/Date(', '');
+        notification.NotificationDate = notification.NotificationDate.replace(')/', '');
+        var expDate = new Date(parseInt(notification.NotificationDate));
+        // ---------
+        %>
+        <li>
+            <div class="notification-type"><%= notification.NotificationType %> [<%= moment(expDate).format('YYYY-MM-DD') %>]</div>
+            <div class="notification-message"><%= notification.Message %></div>
+            <div class="notification-buttons">
+                <span>
+                    <button type="button"
+                            class="btn btn-link js-mark-notification-as-read btn-sm"
+                            data-notification-id=
+                        <%= notification.Id %> >
+                        Mark as Read
+                    </button>
+                </span>
+
+                <span>
+                    <% if(notification.RedirectLink != ''){ %>
+
+                    <a class="btn btn-link tbn-sm" href=<%= notification.RedirectLink %>>Goto Link</a>
+
+                    @*<button type="button"
+                                class="btn btn-link js-goto-link btn-sm"
+                                data-goto-link=
+                            <%= notification.RedirectLink %>
+                            data-notification-id=
+                            <%= notification.Id %> >Goto Link.
+                        </button>*@
+
+                    <% } %>
+                </span>
+            </div>
+        </li>
+
+        <%})        %>
+
+        <li class="text-center bg-info">
+            <a href="@Url.Action("Index", "Home", new { area = "PRM" })">All Notifications</a>
+        </li>
+    </ul>
+
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $(document).on('click', '.js-goto-link', function (e) {
+
+            var button = $(e.target);
+            var redirectUrl = button.attr('data-goto-link');
+
+            var url = '@Url.Action("RedirectToUrlFromNotification", "Account", new {area=""})';
+            $.post(url, { redirectUrl: redirectUrl }).done(function (result) {
+                console.log(result.url);
+                window.location.href = result.url;
+            }).fail(function() {
+                console.log('Something wrong during redirect!');
+            });
+
+
+            @*var areaName = url.split('/')[1];
+            var controllerName = url.split('/')[2];
+            var actionName = url.split('/')[3];
+
+            url = '@Url.Action(actionName, "__ControllerName__", new { area="__area__" } )';
+            console.log(url);
+
+            url = url.replace('__actionName__', actionName);
+            url = url.replace('__ControllerName__', controllerName);
+            url = url.replace('__area__', areaName);*@
+
+
+           // window.location.href = url;
+
+            //var url = window.location.href.split('/');
+            //var baseUrl = url[0] + '//' + url[2];
+            //baseUrl = baseUrl + '/PRM/Approval/Index';
+            //console.log(baseUrl);
+            //window.location.href = baseUrl;
+        });
+
+    });
+
+    $(function () {
+
+        // update db and ui after mark notification as read.
+        var readUrl = '@Url.Action("MarkMyNotificationAsRead", "Account", new { area = "" })';
+        $(document).on('click', '.js-mark-notification-as-read', function (e) {
+            var button = $(e.target);
+            var notificationId = button.attr('data-notification-id');
+
+            $.post(readUrl, { Id: notificationId })
+                .done(function () {
+                    var currentCount = parseInt($('.js-notification-count').text());
+
+                    if (currentCount == 1) {
+
+                        $(".notifications").popover('hide');
+                        $('.js-notification-count').text('').addClass('hide');
+
+                    }
+                    else {
+
+                        $('.js-notification-count').text(currentCount - 1);
+
+                        button.parents('li').fadeOut(function () {
+                            $(this).remove();
+                        });
+
+                    }
+                })
+                .fail(function () {
+                    alert('Something wrong with marking notification as read!');
+                });
+        });
+
+    });
+
+    $(function () {
+        var url = '@Url.Action("GetNotifications", "Account", new { area = "" })';
+        $.getJSON(url,
+            function (data) {
+
+                // badge text
+                if (data.notifications.length > 0) {
+                    $(".js-notification-count")
+                        .text(data.notifications.length)
+                        .removeClass("hide")
+                        .addClass("animated bounceInDown");
+                }
+
+                // popover notifications.
+                $(".notifications").popover({
+                    container: 'body',
+                    html: true,
+                    title: "My Notifications",
+                    content: function () {
+
+                        var html;
+                        if ($('#divTmpNotificationMessages').html().length > 0) { // from second time popover
+                            html = $('#divTmpNotificationMessages').html();
+                        }
+                        else { // first time popover
+                            var compiled = _.template($("#notifications-template").html());
+                            html = compiled({ notifications: data.notifications });
+                        }
+
+                        return html;
+                    },
+                    placement: "bottom",
+                    template:
+                        '<div class="popover popover-notification" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+                });
+
+            });
+
+        // get unmarked notificaiton during hiding popover.
+        $('.notifications').on('hidden.bs.popover',
+            function () {
+                $.getJSON(url)
+                    .done(function (data) {
+
+                        var compiled = _.template($("#notifications-template").html());
+                        var html = compiled({ notifications: data.notifications });
+
+                        $('#divTmpNotificationMessages').html(html);
+                    });
+            });
+
+
+    });
+
+
+</script>
+
+
+
+@*<script type="text/javascript">
+
+        $(document).ready(function () {
+            // $('#addlink').unbind('click', disableLink);
+            function disableLink(e) {
+                // cancels the event
+                e.preventDefault();
+                return false;
+            }
+            $('a.personnelinfo').bind('click', disableLink);
+            //$('a.projectinfo').bind('click', disableLink);
+            $('a.accmanagemnt').bind('click', disableLink);
+            $('a.astmanagmnt').bind('click', disableLink);
+            $('a.providentfndmanagmnt').bind('click', disableLink);
+            $('a.payrollmanagmnt').bind('click', disableLink);
+            $('a.leavemanagemnt').bind('click', disableLink);
+            $('a.usermanagemnt').bind('click', disableLink);
+
+            // Added By Shamim
+            $('a.bgms').bind('click', disableLink);
+            $('a.ytms').bind('click', disableLink);
+            //$('a.ams').bind('click', disableLink);
+
+            var moduleName = '@Model.ModuleName';
+
+            //        alert(moduleName);
+            if (moduleName.toUpperCase().indexOf("PRM") >= 0) {
+                $('a.personnelinfo').unbind('click', disableLink);
+            }
+            if (moduleName.toUpperCase().indexOf("FAM") >= 0) {
+                $('a.accmanagemnt').unbind('click', disableLink);
+            }
+
+            if (moduleName.toUpperCase().indexOf("CPF") >= 0) {
+                $('a.providentfndmanagmnt').unbind('click', disableLink);
+            }
+            if (moduleName.toUpperCase().indexOf("PGM") >= 0) {
+                $('a.payrollmanagmnt').unbind('click', disableLink);
+            }
+            if (moduleName.toUpperCase().indexOf("LMS") >= 0) {
+                $('a.leavemanagemnt').unbind('click', disableLink);
+            }
+            if (moduleName.toUpperCase().indexOf("UMS") >= 0) {
+                $('a.usermanagemnt').unbind('click', disableLink);
+            }
+
+            // Added By Shamim
+            if (moduleName.toUpperCase().indexOf("YTS") >= 0) {
+                $('a.ytms').unbind('click', disableLink);
+            }
+            if (moduleName.toUpperCase().indexOf("BGM") >= 0) {
+                $('a.bgms').unbind('click', disableLink);
+            }
+            //if (moduleName.toUpperCase().indexOf("AMS") >= 0) {
+            //    $('a.ams').unbind('click', disableLink);
+            //}
+        })
+
+
+    </script>*@

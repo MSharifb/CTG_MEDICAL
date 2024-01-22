@@ -1,0 +1,74 @@
+﻿@model ERP_BEPZA.DAL.PGM.PRM_SalaryHead
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>PRM_SalaryHead</legend>
+
+    <div class="display-label">PRM_SalaryHeadGroup</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_SalaryHeadGroup.Name)
+    </div>
+
+    <div class="display-label">HeadName</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HeadName)
+    </div>
+
+    <div class="display-label">HeadType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HeadType)
+    </div>
+
+    <div class="display-label">AmountType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AmountType)
+    </div>
+
+    <div class="display-label">IsTaxable</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsTaxable)
+    </div>
+
+    <div class="display-label">IsGrossPayHead</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsGrossPayHead)
+    </div>
+
+    <div class="display-label">SortOrder</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SortOrder)
+    </div>
+
+    <div class="display-label">IUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IUser)
+    </div>
+
+    <div class="display-label">EUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EUser)
+    </div>
+
+    <div class="display-label">IDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IDate)
+    </div>
+
+    <div class="display-label">EDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EDate)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

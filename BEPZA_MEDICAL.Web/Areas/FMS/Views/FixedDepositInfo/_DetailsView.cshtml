@@ -1,0 +1,37 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FixedDepositInfoInstallmentScheduleViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("InstallmentSchedulList"))
+    {
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.FixedDepositInfoId)
+        @Html.HiddenFor(x => x.InsAmount)
+        @Html.HiddenFor(x => x.Tax)
+        @Html.HiddenFor(x => x.BankCharge)
+        @Html.HiddenFor(x => x.Profit)
+
+        <td style="text-align:center;width: 10%">
+            <span style="display:none">
+                @Html.TextBoxFor(x => x.InsDate, "{0:yyyy-MM-dd}")
+            </span>
+            @Html.Encode(Model.SLNo)
+        </td>
+        <td style="text-align:center;width: 10%">
+            @Html.Encode(Model.InsDate.ToString("yyyy-MM-dd"))
+        </td>
+        <td width="10%" style="text-align: right" class="fdrInsAmout">
+            @Html.Encode(Model.InsAmount)
+        </td>
+        <td width="10%" style="text-align: right" class="fdrTax">
+            @Html.Encode(Model.Tax)
+        </td>
+        <td width="10%" style="text-align: right" class="fdrBankCharge">
+            @Html.Encode(Model.BankCharge)
+        </td>
+        <td width="10%" style="text-align: right" class="fdrProfit">
+            @Html.Encode(Model.Profit)
+        </td>
+    }
+</tr>

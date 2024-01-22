@@ -1,0 +1,46 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SelectionBoardInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.SelectionBoardInfoCommittee != null)
+{
+    foreach (var item in Model.SelectionBoardInfoCommittee)
+    {
+        @Html.Partial("_PartialDetail", item);
+
+        @*@Html.HiddenFor(item => item.Id)       
+        @Html.HiddenFor(x => x.IsExternal)
+        @Html.HiddenFor(x => x.MemberEmployeeId)
+        @Html.HiddenFor(x => x.MemberName)
+        @Html.HiddenFor(x => x.MemberDesignation)
+        @Html.HiddenFor(x => x.MemberRole)
+        @Html.HiddenFor(x => x.ActiveStatus)
+        @Html.HiddenFor(x => x.SortOrder)
+        @Html.HiddenFor(x => x.DesignationId)*@
+
+        @*<td width="15%" style="text-align: center" class="chck-refNo">
+            @Html.Encode(Model.DesignationName)
+        </td>       
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.SortOrder)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.MemberEmpId)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.MemberEmpId)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.MemberEmpId)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.MemberEmpId)
+        </td>
+
+        <td width="5%">
+            <a href="#" class="deleteRow" title="remove" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteAttachmentDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>*@
+
+    }
+
+}

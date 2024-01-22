@@ -1,0 +1,28 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.WithheldSalaryPayment.WithheldSalaryPaymentViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm("Edit", "WithheldSalaryPayment", FormMethod.Post, new { id = "frm" }))
+{
+
+    <fieldset>
+       
+        @Html.Partial("_CreateOrEdit", Model)       
+        @*<div class="GroupBox">
+            <div class="button-crude">
+                @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <input type="submit" value="Update" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                }
+            </div>
+            <div class="clear"></div>
+        </div>*@
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>

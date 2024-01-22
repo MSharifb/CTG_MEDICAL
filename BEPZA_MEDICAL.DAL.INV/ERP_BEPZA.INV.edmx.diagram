@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0c4531c249674c24b094ba94814343ae" Name="Diagram1" ZoomLevel="88">
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.CommonConfigType" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_Category" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_Color" Width="1.5" PointX="3.375" PointY="5.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_ItemStatus" Width="1.5" PointX="5.375" PointY="4.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_Manufacturer" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_Model" Width="1.5" PointX="7.375" PointY="4.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_PurchaseType" Width="1.5" PointX="5.375" PointY="8.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_Unit" Width="1.5" PointX="7.375" PointY="8.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_ItemInfo" Width="1.5" PointX="9.625" PointY="2.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ItemInfo_INV_Category" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ItemInfo_INV_Color" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ItemInfo_INV_Manufacturer" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ItemInfo_INV_Model" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ItemInfo_INV_Unit" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.PRM_ZoneInfo" Width="1.5" PointX="3" PointY="12.625" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_TransferInInfo" Width="1.5" PointX="8.25" PointY="15.375" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_TransferOutInfo" Width="1.5" PointX="5.25" PointY="18.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferInInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferInInfo_PRM_ZoneInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferOutInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferOutInfo_PRM_ZoneInfo1" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_TransferInItem" Width="1.5" PointX="14.875" PointY="12.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferInItem_INV_ItemInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferInItem_INV_TransferInInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_IssueItem" Width="1.5" PointX="15.875" PointY="16.875" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_PurchaseItem" Width="1.5" PointX="12.875" PointY="4.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueItem_INV_ItemInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_PurchaseItem_INV_ItemInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_TransferOutItem" Width="1.5" PointX="17.875" PointY="12.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferOutItem_INV_ItemInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferOutItem_INV_TransferOutInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_IssueReturnInfo" Width="1.5" PointX="8.25" PointY="20.75" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueReturnInfo_PRM_ZoneInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_AdjustmentInfo" Width="1.5" PointX="5.25" PointY="13" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_AdjustmentItem" Width="1.5" PointX="15.875" PointY="4.25" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_IssueReturnItem" Width="1.5" PointX="12.875" PointY="16.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AdjustmentInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AdjustmentItem_INV_AdjustmentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AdjustmentItem_INV_ItemInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AdjustmentItem_INV_ItemStatus" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueReturnItem_INV_IssueReturnInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueReturnItem_INV_ItemInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueReturnItem_INV_ItemStatus" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_AssetQuotaInfo" Width="1.5" PointX="11.875" PointY="9.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_PeriodicAssetDuration" Width="1.5" PointX="11.875" PointY="0.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_SupplierInfo" Width="1.5" PointX="8.375" PointY="25.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AssetQuotaInfo_INV_ItemInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AssetQuotaInfo_INV_Unit1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AssetQuotaInfo_PRM_ZoneInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_PeriodicAssetDuration_INV_ItemInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_IssueInfo" Width="1.5" PointX="11.5" PointY="20.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueItem_INV_IssueInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_DelegationApprovalInfo" Width="1.5" PointX="14.25" PointY="0.75" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_DelegationApprovalInfo_PRM_ZoneInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.vwINVItemHistory" Width="1.5" PointX="16.375" PointY="0.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.PRM_EmploymentInfo" Width="1.5" PointX="0.5" PointY="12" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AdjustmentInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_AdjustmentInfo_PRM_EmploymentInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueInfo_PRM_EmploymentInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueReturnInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueReturnInfo_PRM_EmploymentInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferInInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferOutInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_PRM_EmploymentInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferInInfo_INV_TransferOutInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_ScrapItem" Width="1.5" PointX="14.5" PointY="20.625" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ScrapItem_INV_ItemInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ScrapItem_INV_ItemStatus" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_ItemType" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_DelegationApprovalInfo_INV_ItemType" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ItemInfo_INV_ItemType" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ItemType_INV_ItemType" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_RequisitionInfo" Width="1.5" PointX="5.25" PointY="24.5" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueInfo_INV_RequisitionInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_RequisitionInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_RequisitionInfo_PRM_EmploymentInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_RequisitionInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.PRM_AcceptanceLetterInfo_PRM_EmploymentInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_ScrapInfo" Width="1.5" PointX="11.25" PointY="26.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_ScrapItemHistory" Width="1.5" PointX="18.375" PointY="0.75" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueReturnInfo_INV_ScrapInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ScrapInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ScrapInfo_PRM_EmploymentInfo1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ScrapInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_ScrapItem_INV_ScrapInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.vwINVBudgetHead" Width="1.5" PointX="7.375" PointY="12.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_RequisitionItem" Width="1.5" PointX="14.875" PointY="9" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_RequisitionItem_INV_ItemInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_RequisitionItem_INV_RequisitionInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.INV.INV_PurchaseInfo" Width="1.5" PointX="17.625" PointY="21.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_IssueItem_INV_PurchaseInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_PurchaseInfo_INV_PurchaseType" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_PurchaseInfo_INV_SupplierInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_PurchaseInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_PurchaseInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_PurchaseItem_INV_PurchaseInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferInItem_INV_PurchaseInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.INV.FK_INV_TransferOutItem_INV_PurchaseInfo" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

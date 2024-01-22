@@ -1,0 +1,95 @@
+﻿
+
+<script type="text/javascript">
+
+</script>
+<style>
+    .ui-datepicker-trigger {
+        z-index: 1000;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Dept. Proceedings No', 'Reference No.', 'Complaint Date', 'Accused Person Name', 'Designation', 'Delete'],
+            colModel: [
+            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+            { name: 'DeptProceedingNo', index: 'DeptProceedingNo', align: 'center', width: '80px', search: true, edittype: 'select', surl: '@Url.Action("DeptProceedingListView")' },          
+            { name: 'RefNo', index: 'RefNo', align: 'Center', width: '80px', search: true, edittype: 'text', formatter: viewformatEdiorLink },
+            { name: 'ComplaintDate', index: 'ComplaintDate', align: 'center', width: '60px', search: true, edittype: 'text' },
+            { name: 'ComplaintEmployeeName', index: 'ComplaintEmployeeName', align: 'left', width: '140px', search: true, edittype: 'text' },
+            { name: 'ComplaintDesignationName', index: 'ComplaintDesignationName', align: 'Center', width: '140px', search: false, edittype: 'text' },
+            { name: 'Delete', index: 'Delete', align: 'Center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Complaint/Note Sheet Information List",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#sg_ComplaintDate').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+
+<div class="clear">
+</div>
+
+

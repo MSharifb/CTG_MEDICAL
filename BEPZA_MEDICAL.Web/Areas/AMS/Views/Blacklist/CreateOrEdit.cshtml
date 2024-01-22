@@ -1,0 +1,397 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.AMS.ViewModel.BlacklistViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@{
+    Layout = "~/Areas/AMS/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .TextArea {
+        width: 600px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        if ('@Model.ActionType' == 'Edit') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            $('.bepzaId img').hide();
+        }
+        else {
+            $('#btnUpdate').hide();
+        }
+    });
+
+    if ('@Model.ErrMsg' != "") {
+
+        if ('@Model.IsError' == '1') {
+
+            //            $('#message').html("<b style='color:red'>" + '@Model.ErrMsg' + "</b>");
+        }
+        else {
+            $('#message2').html("<b style='color:green'>" + '@Model.ErrMsg' + "</b>");
+        }
+    }
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#SortingOrder").keydown(function (event) {
+
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+    });
+
+</script>
+
+<div>
+    @using (Html.BeginForm(Model.ActionType, "Blacklist", FormMethod.Post, new { id = "frm" }))
+    {
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                if (@Model.IsError == 1)
+                {
+                    <div class="failed">
+                        @Model.ErrMsg
+                    </div>
+                }
+                else
+                {
+                    <div class="success">
+                        @Model.ErrMsg
+                    </div>
+                }
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.EmployeeId)
+        <div class="GroupBox">
+
+            <div class="row">
+                <span class="label">
+                    @*@Html.LabelFor(model => model.BEPZAID)
+                    *@
+                    @Html.LabelFor(model => model.AnsarId)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field bepzaId">
+                    @Html.HiddenFor(model => model.BEPZAID)
+                    @Html.EditorFor(model => model.AnsarId)
+                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openAnsar();" alt="Find" title="Find" />
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Name)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.Name)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                   @Html.LabelFor(model => model.AnsarJoiningDate)
+                </span>
+                <span class="field">
+                   @Html.EditorFor(model => model.AnsarJoiningDate)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Designation)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.Designation)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateOfJoining)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateOfJoining)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.BlacklistedByEmpId)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.HiddenFor(model => model.BlacklistedByEmpId)
+                    @Html.HiddenFor(model => model.CheckStatus)
+                    @Html.EditorFor(model => model.BlacklistedBy)
+                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openBlacklistedByEmployee();" alt="Find" title="Find" />
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Reason)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.TextAreaFor(model => model.Reason)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Date)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.Date)
+                </span>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                    <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+                }
+                <input type="button" value="Clear" id="btnClear" name="btnClear" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    }
+</div>
+
+<div class="button-crude button-left" style="margin: 5px">
+    @Html.ActionLink("Back to List", "Index", "Blacklist")
+</div>
+
+<div class="clear"></div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function openBlacklistedByEmployee() {
+        $('#CheckStatus').val("Blacklisted By");
+        openEmployee();
+    }
+    function openApprovedByEmployee() {
+        $('#CheckStatus').val("Approved By");
+        openEmployee();
+    }
+
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        url = url.replace('AMS', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        if ($('#CheckStatus').val() == 'Blacklisted By') {
+            $('#BlacklistedByEmpId').val(id);
+            //console.log($('#BlacklistedByEmpId').val());
+        }
+        else {
+            $('#ApprovedByEmpId').val(id);
+        }
+
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+    }
+
+    function Closing() {
+
+    }
+
+    function GetEmployeeInfo() {
+        if ($('#CheckStatus').val() == 'Blacklisted By') {
+            var empId = $('#BlacklistedByEmpId').val();
+            $('#BlacklistedBy').val('');
+        }
+        else {
+            var empId = $('#ApprovedByEmpId').val();
+            $('#ApprovedBy').val('');
+        }
+        //console.log(empId);
+        var url = '@Url.Action("GetEmployeeInfo", "Blacklist")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (StringHasValue(obj.Result) == true) {
+                    alert(obj.Result);
+                }
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+                else {
+                    $('#BlacklistedBy').val(obj.BlacklistedBy);
+                    $("#BlacklistedByEmpId").val(obj.BlacklistedByEmpId);
+                    //$('#ApprovedBy').val(obj.ApprovedBy);
+                    //$("#ApprovedByEmpId").val(obj.ApprovedByEmpId);
+
+                }
+
+            }, "json");
+        }
+
+        return false;
+    }
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+
+</script>
+
+<script type="text/javascript">
+
+    function openAnsar() {
+        var url = '@Url.Action("AnsarSearch", "AnsarInfo")';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setAnsarData(id) {
+        
+        $('#EmployeeId').val(id);
+        
+
+        GetAnsarInfo();
+        $("#divEmpList").dialog('close');
+    }
+
+    function Closing() {
+
+    }
+
+    function GetAnsarInfo() {
+        
+        var empId = $('#EmployeeId').val();
+        $('#BEPZAID').val('');
+        $('#AnsarId').val('');
+        $('#Name').val('');
+        $('#Designation').val('');
+        $('#DateOfJoining').val('');
+        $('#AnsarJoiningDate').val('');
+        
+        //console.log(empId);
+        var url = '@Url.Action("GetAnsarInfo", "Blacklist")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (StringHasValue(obj.Result) == true) {
+                    alert(obj.Result);
+                }
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+                else {
+                    $('#BEPZAID').val(obj.BEPZAID);
+                    $("#AnsarId").val(obj.AnsarId);
+                    $('#Name').val(obj.Name);
+                    $("#Designation").val(obj.Designation);
+                    $("#DateOfJoining").val(obj.DateOfJoining);
+                    $("#AnsarJoiningDate").val(obj.AnsarJoiningDate);
+
+                }
+
+            }, "json");
+        }
+
+        return false;
+    }
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+
+</script>

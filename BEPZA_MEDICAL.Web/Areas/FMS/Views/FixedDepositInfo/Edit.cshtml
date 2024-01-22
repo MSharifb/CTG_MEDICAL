@@ -1,0 +1,26 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FixedDepositInfoViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/FMS/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "FixedDepositInfo", FormMethod.Post, new { id = "frm" }))
+{
+
+    @Html.Partial("_CreateOrEdit", Model)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <button class="btn btn-success" id="btnSave"><i class="fa fa-edit"></i> Update</button>
+                    <a class="btn btn-primary pull-left" id="btnSimulateChange"><i class="fa fa-money"></i> Simulate Change</a>
+                    <a class="btn btn-danger pull-left" style="margin-left:5px;" id="btnCommitChange"><i class="fa fa-exclamation-circle"></i> Commit Change</a>
+                }
+                @*<a href="#" id="btnVoucherPosting" class="btn btn-success"> <i class="fa  alert('System is unable to load data please try again.');"></i> Prepare Voucher</a>*@
+                <a href="@Url.Action("Index")" class="btn btn-warning"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+}
+
+

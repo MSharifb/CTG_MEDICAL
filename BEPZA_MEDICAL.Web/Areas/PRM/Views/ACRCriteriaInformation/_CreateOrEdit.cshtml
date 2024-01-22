@@ -1,0 +1,41 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRCriteriaInformationViewModel
+
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.StaffCategoryId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.StaffCategoryId, Model.StaffCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ACRCriteriaName)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ACRCriteriaName)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FullMark)
+        </span><span class="field">
+            @Html.EditorFor(model => model.FullMark)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SortOrder)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.SortOrder)
+        </span>
+    </div>
+</div>

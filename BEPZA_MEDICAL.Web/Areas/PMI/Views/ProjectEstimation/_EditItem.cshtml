@@ -1,0 +1,20 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.EstimationItemSetupViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("EstimationItemList"))
+{
+    <div class="row">
+        <span class="label" style="width:80px">@Html.LabelFor(model => model.SLNo)</span>
+        <span class="field" style="width:180px">@Html.TextBoxFor(model => model.SLNo, new { @class = "read-only", @readonly = true })</span>
+        <span class="label" style="width:120px">@Html.LabelFor(model => model.EstimationItem)</span>
+        <span class="field">@Html.TextBoxFor(model => model.EstimationItem)</span>
+        <span class="label" style="width:90px">@Html.LabelFor(model => model.UnitId)</span>
+        <span class="field">@Html.DropDownListFor(model => model.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+    </div>
+    <div class="row">
+        <span class="label" style="width:80px">@Html.LabelFor(model => model.UnitPrice)</span>
+        <span class="field" style="width:180px">@Html.TextBoxFor(model => model.UnitPrice)</span>
+        <span class="label" style="width:120px">@Html.LabelFor(model => model.DescriptionDetails)</span>
+        <span class="field" style="width:400px">@Html.TextAreaFor(model => model.DescriptionDetails)</span>
+    </div>
+}

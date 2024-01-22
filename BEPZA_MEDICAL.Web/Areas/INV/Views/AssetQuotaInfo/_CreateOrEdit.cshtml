@@ -1,0 +1,69 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.AssetQuotaInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.ItemId)
+            @*<label class="required-field">
+                *
+            </label>*@
+        </span>
+        <span class="field">
+           @Html.DropDownListFor(model => model.ItemId, Model.ItemInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+        <span class="label" style="width:80px">
+            @Html.LabelFor(model => model.ZoneId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ZoneId, Model.ZoneList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Quota)
+        </span>
+        <span class="field" style="width:132px">
+            @Html.TextBoxFor(model => model.Quota)
+            @Html.DropDownListFor(model => model.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new {@class = "required select-single" })
+        </span>
+        
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        buttonHide();
+    });
+
+    $(function() {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function buttonHide() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            //$('input[name="btnSave"]').hide();
+            //var Url = window.location.href;
+            //    window.location.href = Url;
+        }
+    }
+
+</script>

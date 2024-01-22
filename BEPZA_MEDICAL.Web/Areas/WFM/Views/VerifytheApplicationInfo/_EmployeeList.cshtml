@@ -1,0 +1,52 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.VerifytheApplicationInfoViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("EmployeeList"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.EmployeeId)
+        @Html.HiddenFor(x => x.AppliedAmount)
+
+        <td style="width: 30px; text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.EmpId)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.EmployeeName)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.Designation)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.Department)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.Section)
+        </td>
+        <td width="8%" style="text-align: center">
+            @Html.Encode(Model.ApplieedAmount)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.AppliedDate)
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" title="view" onclick="ViewApplicantInfo(this,@Model.EmployeeId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" title="view" onclick="ViewHistory(this,@Model.EmployeeId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

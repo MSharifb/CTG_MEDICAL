@@ -1,0 +1,76 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.CommonConfigViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<script type="text/javascript">
+
+    $(function () {
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+    });
+
+
+</script>
+
+
+
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Name)
+            @Html.HiddenFor(model => model.Id)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field" style="width:330px;">
+            @Html.TextBoxFor(model => model.Name, new { @maxlenght = "100", @class = "required" })
+        </span><span class="label-right"
+                     style="width: 128px;">
+            @Html.LabelFor(model => model.SortOrder)
+
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field" style="width:70px;">
+            @Html.TextBoxFor(model => model.SortOrder, new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">@Html.LabelFor(model => model.Remarks) </span>
+        <span class="field" style="width:330px;">
+            @Html.TextAreaFor(model => model.Remarks, new { @maxlenght = "100" })
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+<div class="GroupBox">
+    <table align="center">
+        <tr>
+            <td>
+                <div class="buttonSubmit">
+                    @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                    {
+                        <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right:2px" />
+                    }
+                </div>
+            </td>
+            <td>
+                <div class="buttonSubmit">
+                    @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                    {
+                        <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="margin-right:2px" />
+                    }
+                </div>
+            </td>
+            <td>
+                <div class="buttonSubmit">
+                    <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+

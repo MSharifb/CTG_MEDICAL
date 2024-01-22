@@ -1,0 +1,40 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.BudgetSummaryParamViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr>
+    <td class="label-param">
+        @Html.LabelFor(m => m.FinancialYearId, new { @class = @"col-sm-4 control-label" })
+    </td>
+    <td class="field-param">
+        @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+    </td>
+    <td class="label-param">
+        @Html.LabelFor(m => m.ApprovalTypeId, new { @class = @"col-sm-4 control-label" })
+    </td>
+    <td class="field-param">
+        @Html.DropDownListFor(m => m.ApprovalTypeId, Model.ApprovalTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+    </td>
+    <td class="add-param" style="padding-right:5px;">
+        <button type="button" id="btnAddParam" class="btn btn-sm btn-primary">
+            <i class="fa fa-plus-circle"></i>
+        </button>
+
+    </td>
+    <td class="delete-param">
+        <button type="button" id="btnDeleteParam" class="btn btn-sm btn-primary">
+            <i class="fa fa-trash-o"></i>
+        </button>
+    </td>
+</tr>
+
+<script type="text/javascript">
+    $(".delete-param button").on("click", function () {
+        var rowCount = $('table tbody tr .delete-param').length;
+
+        if (rowCount > 1) {
+            var parent = $(this).parent('td').parent('tr');
+            parent.remove();
+        }
+        return false;
+    })
+</script>

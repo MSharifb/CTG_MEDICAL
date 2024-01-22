@@ -1,0 +1,211 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRInstallmentInformationViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend> Interest Receive Info. </legend>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Month, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.DropDownListFor(model => model.Month, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required" })
+            </div>
+            @Html.LabelFor(model => model.Year, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.DropDownListFor(model => model.Year, Model.YearList, new { @class = "form-control required"})
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DateFrom, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.DateFrom, new { @class = "form-control read-only", @readonly = true })
+            </div>
+            @Html.LabelFor(model => model.DateTo, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.DateTo, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ratio, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Ratio, new { @class = "form-control required" })
+            </div>
+            <div class="col-sm-2">
+               %
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-success" id="btSearch"><i class="fa fa-search"></i> Search</button>
+                <button class="btn btn-success" id="btnClear"><i class="fa fa-refresh"></i> Clear</button>
+            </div>
+        </div>
+        
+   </fieldset>
+    <fieldset>
+        <div class="form-horizontal">
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>FDR No.</th>
+                        <th>Date</th>
+                        <th>FDR Amount</th>
+                        <th>Interest</th>
+                        <th>Bank Charge</th>
+                        <th>Tax</th>
+                        <th>Net Interest</th>
+                        <th>Interest Rec. Amount</th>
+                        <th>Interest Rate(%)</th>
+                        <th>Bank</th>
+                        <th>Branch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+</fieldset>
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        $("#btSearch").on('click', function (e) {
+            e.preventDefault();
+            $("#message").empty();
+            $("#grid tbody").empty();
+            $("#Ratio").removeClass("border-red");
+            $("#Month").removeClass("border-red");
+
+            if ($("#Ratio").val() == null || $("#Ratio").val() < 0 || $("#Ratio").val() == "") {
+                $("#Ratio").addClass("border-red");
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+            if ($("#Month").val() == null || $("#Month").val() == 0) {
+                $("#Month").addClass("border-red");
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+
+            LoadInstallmentInfo($("#DateFrom").val(), $("#DateTo").val(), $("#Ratio").val());
+        });
+        var loadUrl = "@Url.Action("GetInstallmentInfo")";
+
+        function LoadInstallmentInfo(dateFrom, dateTo, ratio) {
+
+            if (dateFrom != "" && dateFrom != undefined && dateTo != "" && dateTo != undefined) {
+                    $.ajax({
+                        type: "GET",
+                        url: loadUrl,
+                        data: { dateFrom: dateFrom, dateTo: dateTo, ratio: ratio },
+                        success: (function (result) {
+                            $("#grid tbody").html(result);
+                        })
+                    });
+
+                }
+                else
+                    $("#ErrorMessage").show().html("<b> Required Shift Information</b>").css("color", "red");
+            }
+    });
+
+</script>
+
+<script type="text/javascript">
+    $("#Month").on('change', function () {
+
+        var year = $("#Year").val();
+        var month = $(this).val();
+        var firstDay = year + '-' + month + '-' + '01';
+
+        var days = new Date(year, month, 0).getDate();
+
+        var lastDay = year + '-' + month + '-' + days;
+
+        $("#DateFrom").val(firstDay);
+        $("#DateTo").val(lastDay);
+    });
+
+    $("#Year").on('change', function () {
+
+        var month = $("#Month").val();
+        var year = $(this).val();
+        var firstDay = year + '-' + month + '-' + '01';
+
+        var days = new Date(year, month, 0).getDate();
+
+        var lastDay = year + '-' + month + '-' + days;
+
+        $("#DateFrom").val(firstDay);
+        $("#DateTo").val(lastDay);
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#Ratio').keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+    })
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").on("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            var month = $('#Month').val();
+
+            if (month == null || month == 0 || month == "") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+
+            var rows = $('.contenttable').find('tr').length
+            if (rows == 1 || rows < 1) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Sorry! Row is not available.</span>  </div> ");
+                return false;
+            }
+
+            var selectedAppCount = $('.contenttable').find('input[type="checkbox"]:checked').length;
+            if (selectedAppCount == 0 || selectedAppCount < 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, select at least one Row.</span> </div> ");
+                return false;
+            }
+
+        });
+    });
+</script>
+

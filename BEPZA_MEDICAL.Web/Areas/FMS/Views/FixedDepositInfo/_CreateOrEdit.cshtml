@@ -1,0 +1,1017 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FixedDepositInfoViewModel
+@{
+    Layout = null;
+}
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+        <script>
+            $(document).ready(function(){
+                if('@Model.errClass' == "success")
+                {
+                    var Url = window.location.href;
+                    window.location.href = Url;
+                }
+            })
+        </script>
+    }
+</div>
+
+
+<div class="form-horizontal">
+
+    <div class="form-group" style="display:none">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.strMode)
+        @Html.HiddenFor(model => model.FDRDurationInMonth)
+        @Html.HiddenFor(model => model.TotalInterestAmount)
+        @Html.HiddenFor(model => model.FDRTypeId)
+        @Html.HiddenFor(model => model.FDRCloseingId)
+    </div>
+
+    <fieldset>
+        <legend>Fixed Deposit Info</legend>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FDRTypeName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.FDRTypeName, new { @class = "form-control" })
+            </div>
+            @if (Model.FDRTypeName == "Others")
+            {
+                @Html.LabelFor(model => model.SourceofFundId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(model => model.SourceofFundId, Model.SourceofFundList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                </div>
+            }
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FDRNumber, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @if (Model.strMode == "Renew")
+                {
+                    @Html.TextBoxFor(model => model.FDRNumber, new { @class = "form-control read-only", @readonly = true })
+                }
+                else
+                {
+                    @Html.TextBoxFor(model => model.FDRNumber, new { @class = "form-control" })
+                }
+
+            </div>
+            @Html.LabelFor(model => model.FDRDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.FDRDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FixedDepositTypeInfoId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.FixedDepositTypeInfoId, Model.FixedDepositTypeInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+            </div>
+            @Html.LabelFor(model => model.FDRName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.FDRName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.RenewalNo, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    @Html.EditorFor(model => model.RenewalNo, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankInfoId, new { @class = "col-sm-4 control-label labelRequired" })
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(model => model.BankInfoId, Model.BankInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.BankInfoBranchDetailId, new { @class = "col-sm-4 control-label labelRequired" })
+                <div class="col-sm-8">
+                    @Html.DropDownListFor(model => model.BankInfoBranchDetailId, Model.BankInfoBranchDetailList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                </div>
+            </div>
+            @if (Model.FDRTypeName != "BEPZA")
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ProfitRecvId, new { @class = "col-sm-4 control-label" })
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(model => model.ProfitRecvId, Model.ProfitRecvList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                @Html.LabelFor(model => model.FDRDescription, new { @class = "col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    @Html.TextAreaFor(model => model.FDRDescription, new { @rows = "2", @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        @if (Model.FDRTypeName != "BEPZA")
+        {
+            <div class="col-sm-6">
+                <fieldset>
+                    <legend>Cheque Info</legend>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AccBankId, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.AccBankId, Model.AccBankList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AccBranchId, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.AccBranchId, Model.AccBranchList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BankAccountId, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.BankAccountId, Model.BankAccountList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ChequeId, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.DropDownListFor(model => model.ChequeId, Model.ChequeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        }
+    </fieldset>
+
+    <fieldset>
+        <div class="row">
+            <div class="col-sm-6">
+                <fieldset>
+                    <legend>Fixed Deposit Details</legend>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.InitialDeposit, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @if (Model.strMode == "Edit")
+                            {
+                                @Html.TextBoxFor(model => model.InitialDeposit, new { @class = "form-control read-only", @readonly = true, @dir = "rtl" })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.InitialDeposit, new { @class = "form-control" })
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FDRAmount, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @if (Model.strMode == "Edit")
+                            {
+                                @Html.TextBoxFor(model => model.FDRAmount, new { @class = "form-control read-only", @readonly = true, @dir = "rtl" })
+                            }
+                            else
+                            {
+                                @Html.EditorFor(model => model.FDRAmount, new { @class = "form-control" })
+                            }
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FDRDuration, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-5">@Html.TextBoxFor(model => model.FDRDuration, new { @class = "form-control" })</div>
+                                <div class="col-sm-7">@Html.DropDownListFor(model => model.FDRDurationType, Model.FDRDurationTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.InstallmentDuration, new { @class = "col-sm-4 control-label labelRequired text-primary" })
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-5">@Html.TextBoxFor(model => model.InstallmentDuration, new { @class = "form-control" })</div>
+                                <div class="col-sm-7">@Html.DropDownListFor(model => model.InstallmentDurationType, Model.InstallmentDurationTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.InterestRate, new { @class = "col-sm-4 control-label labelRequired text-primary" })
+                        <div class="col-sm-2">
+                            @Html.EditorFor(model => model.InterestRate, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-6">%</div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.InterestAmount, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.InterestAmount, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TAXRate, new { @class = "col-sm-4 control-label text-primary" })
+                        <div class="col-sm-2">
+                            @Html.EditorFor(model => model.TAXRate, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-6">%</div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TAXAmount, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.TAXAmount, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BankCharge, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.BankCharge, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TotalBankCharge, new { @class = "col-sm-4 control-label text-primary" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.TotalBankCharge, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.StartDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MaturityDate, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.MaturityDate, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TotalReceivableAmount, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.TotalReceivableAmount, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TotalTAXAmount, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.TotalTAXAmount, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tempTotalBankCharge, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.tempTotalBankCharge, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TotalProfit, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.TotalProfit, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NetReceivableAmount, new { @class = "col-sm-4 control-label labelRequired" })
+                        <div class="col-sm-8">
+                            @Html.EditorFor(model => model.NetReceivableAmount, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 control-label">
+                            <label>Net Receivable </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <label> = FDR Amount + Total Profit</label>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <legend>Schedule</legend>
+                    <div class="form-group">
+                        <div class="text-right" style="margin-bottom:5px">
+                            <a class="btn btn-success" id="btnAdd"><i class="fa fa-plus"></i> Get Schedule</a>
+                        </div>
+                    </div>
+                    <table id="tblInstShdl" class="contenttable">
+                        <thead>
+                            <tr>
+                                <th>SL.#</th>
+                                <th>Date</th>
+                                <th>Interest</th>
+                                <th>Tax</th>
+                                <th>Excise Duty Others</th>
+                                <th>Net Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ if (Model.strMode == "Edit" || Model.ShowRecord == "Show") { Html.RenderPartial("_Details", Model); }}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </fieldset>
+
+</div>
+
+
+<script type="text/javascript">
+    //cascading dropdown
+    $("#BankInfoId").on('change', function () {
+        fillBankBranch($(this).val());
+    });
+
+    $("#AccBankId").on('change', function () {
+        getAccBankBranch($(this).val());
+    });
+
+    $("#AccBranchId").on('change', function () {
+        getAccBankAccountNo($(this).val());
+    });
+
+    $("#BankAccountId").on('change', function () {
+        fillBankChequeNo($(this).val());
+    });
+
+    $('#ChequeId').on('change', function () {
+        getInitialDepositAmount($(this).val());
+    });
+
+    // bank brances
+    function fillBankBranch(bankInfoId) {
+        var presentBranch = $('#BankInfoBranchDetailId');
+        //presentBranch.empty();
+
+        // clear all previous options
+        $("select#BankInfoBranchDetailId>option").remove();
+
+        presentBranch.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankInfoId != '') {
+            $.getJSON('@Url.Action("GetBankBranchess")', { id: bankInfoId }, function (branchs) {
+                $.each(branchs, function (index, data) {
+                    presentBranch.append($('<option/>', {
+                        value: data.branchId,
+                        text: data.branchName
+                    }));
+                });
+                presentBranch.trigger("chosen:updated")
+            });
+        }
+    }
+
+    // bank Cheque No
+    function fillBankChequeNo(bankAccountId) {
+        var cheque = $('#ChequeId');
+        cheque.empty();
+        cheque.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankAccountId != '') {
+            $.getJSON('@Url.Action("GetBankCheckNo")', { id: bankAccountId }, function (obj) {
+                $.each(obj, function (index, data) {
+                    cheque.append($('<option/>', {
+                        value: data.Id,
+                        text: data.Name
+                    }));
+                });
+                cheque.trigger("chosen:updated")
+            });
+
+        }
+    }
+
+    $("#FixedDepositTypeInfoId").on('change', function () {
+        $("#FDRDuration").val('');
+        $("#FDRDurationType").val('');
+        $("#InterestRate").val('');
+        $("#InstallmentDuration").val('');
+        $("#InstallmentDurationType").val('');
+        $("#TAXRate").val('');
+        $("#BankCharge").val('');
+
+        $("#InterestAmount").val('');
+        $("#TAXAmount").val('');
+
+        getFDRDetails($(this).val());
+    });
+
+    function getFDRDetails(Id) {
+        if (Id > 0) {
+            var url = '@Url.Action("GetFDRDestils", "FixedDepositInfo")' + '?id=' + Id;
+            $.get(url, function (response) {
+                $("#FDRDuration").val(response.FDRDuration);
+                $("#FDRDurationType").val(response.DurationType);
+                $("#InterestRate").val(response.InterestRate);
+                $("#InstallmentDuration").val(response.InstallmentIn);
+                $("#InstallmentDurationType").val(response.InstallmentType);
+                $("#TAXRate").val(response.Tax);
+                $("#BankCharge").val(response.BankChargeFix);
+            });
+        }
+    }
+
+    // Get Acc Branch Name
+    function getAccBankBranch(bankId) {
+        var branch = $('#AccBranchId');
+        branch.empty();
+        branch.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankId != '') {
+            $.getJSON('@Url.Action("GetAccBankBranch")', { id: bankId }, function (obj) {
+                $.each(obj, function (index, data) {
+                    branch.append($('<option/>', {
+                        value: data.Value,
+                        text: data.Text
+                    }));
+                });
+                branch.trigger("chosen:updated")
+            });
+        }
+    }
+
+    // Get Acc Bank Account No.
+    function getAccBankAccountNo(branchId) {
+        var bankAccount = $('#BankAccountId');
+        bankAccount.empty();
+        bankAccount.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (branchId != '') {
+            $.getJSON('@Url.Action("GetAccBankAccount")', { id: branchId }, function (obj) {
+                $.each(obj, function (index, data) {
+                    bankAccount.append($('<option/>', {
+                        value: data.Value,
+                        text: data.Text
+                    }));
+                });
+                bankAccount.trigger("chosen:updated")
+            });
+        }
+    }
+
+    // Get Initial Deposit or FDR Amount
+    function getInitialDepositAmount(chequeId) {
+        $.get(
+               "@Url.Action("GetInitialDepositAmount")", { 'id': chequeId }, function (r) {
+
+                   if (r != '') {
+                       $('#InitialDeposit').val(r);
+                       $('#FDRAmount').val(r);
+                   }
+                   else {
+                       $('#InitialDeposit').val('');
+                       $('#FDRAmount').val('');
+                   }
+               }
+           );
+    }
+</script>
+
+<script type="text/javascript">
+    //globar var
+    var finalFdrDuration = 0;
+    var finalInsDuration = 0;
+
+    //temp
+    var durationForIntRec = 0;
+
+    //function  total Receivalble
+    function calculateTotalReceivalble(fdrAmount, interestPerIns, InsDuration) {
+        var totalReceivable = fdrAmount + (interestPerIns * InsDuration);
+        $('#TotalReceivableAmount').val(totalReceivable.toFixed(2));
+
+    }
+
+    //function  total tax Amunt
+    function calculateTotalTaxAmount(taxAmount, finalInsDuration) {
+        var totalTaxAmount = taxAmount * finalInsDuration;
+        $('#TotalTAXAmount').val(totalTaxAmount.toFixed(2));
+    }
+
+    //function  total bank Charge
+    function calculateTotalBankCharge(perInsbackCharge, InsDuration) {
+        var totalBankCharge = perInsbackCharge * InsDuration;
+        $('#TotalBankCharge').val(totalBankCharge.toFixed(2));
+        $('#tempTotalBankCharge').val(totalBankCharge.toFixed(2));
+    }
+
+    //function  total profit
+    function calculateTotalProfit(fdrAmount, totalTax, totalBcharge) {
+        var totalRecAmount = parseFloat($('#TotalReceivableAmount').val());
+        var totalProfit = ((totalRecAmount - fdrAmount) - totalTax) - totalBcharge;
+        $('#TotalProfit').val(totalProfit.toFixed(2));
+    }
+
+    //function Net Receivable Amount
+    function calculateNetReceivableAmount(fdrAmount, totalProfit){
+        var netReceivableAmount = fdrAmount + parseFloat(totalProfit);
+        $('#NetReceivableAmount').val(netReceivableAmount.toFixed(2));
+    }
+
+    function calculateMaturityDate(fdrDate, addMonth) {
+        $('#MaturityDate').val('');
+        if (fdrDate != '' && fdrDate != null && !isNaN(addMonth)) {
+            var tempFdrDate = new Date(fdrDate);
+            //tempFdrDate.setDate(tempFdrDate.getDate() - 1);
+            tempFdrDate.setMonth(tempFdrDate.getMonth() + addMonth);
+            var day = ("0" + tempFdrDate.getDate()).slice(-2);
+            var month = ("0" + (tempFdrDate.getMonth() + 1)).slice(-2);
+            var year = tempFdrDate.getFullYear();
+            var newMD = year + "-" + month + "-" + day;
+            $('#MaturityDate').val(newMD);
+        }
+    }
+
+    function calculateFirstIntRecDate(fdrDate, addMonth) {
+        $('#StartDate').val('');
+        if (fdrDate != '' && fdrDate != null && !isNaN(addMonth)) {
+            var tempFdrDate = new Date(fdrDate);
+            //tempFdrDate.setDate(tempFdrDate.getDate() - 1);
+            tempFdrDate.setMonth(tempFdrDate.getMonth() + addMonth);
+            var day = ("0" + tempFdrDate.getDate()).slice(-2);
+            var month = ("0" + (tempFdrDate.getMonth() + 1)).slice(-2);
+            var year = tempFdrDate.getFullYear();
+            var newMD = year + "-" + month + "-" + day;
+            $('#StartDate').val(newMD);
+        }
+    }
+
+    $("#FDRAmount,#TAXRate, #InterestRate, #FDRDuration, #FDRDurationType,#InstallmentDuration,#InstallmentDurationType,#BankCharge").on('change keyup blur', function (e) {
+        e.preventDefault();
+
+        $('#tblInstShdl tbody').empty();
+        $('#FDRDurationInMonth').val('');
+        $('#TotalInterestAmount').val('');
+
+        var fdrAmount = parseFloat($('#FDRAmount').val());
+        var interestRate = parseFloat($('#InterestRate').val());
+        var taxRate = parseFloat($('#TAXRate').val());
+
+        if(isNaN(taxRate)){
+            taxRate = 0;
+        }
+
+        var fdrDuration = parseFloat($('#FDRDuration').val());
+        var fdrDurationType = $('#FDRDurationType').val();
+
+        if (fdrDurationType == 'Month') {
+            finalFdrDuration = fdrDuration * 1;
+            $('#FDRDurationInMonth').val(finalFdrDuration);
+        }
+        else {
+            finalFdrDuration = fdrDuration * 12;
+            $('#FDRDurationInMonth').val(finalFdrDuration);
+        }
+
+        var insDuration = parseFloat($('#InstallmentDuration').val());
+        var insDurationType = $('#InstallmentDurationType').val();
+
+        if (fdrDurationType == 'Year' && insDurationType == 'Month' && insDuration >0) {
+            finalInsDuration = finalFdrDuration / insDuration;
+            durationForIntRec = insDuration;
+        }
+        else if (fdrDurationType == 'Year' && insDurationType == 'Year' && insDuration >0) {
+            finalInsDuration = finalFdrDuration / (insDuration * 12);
+            durationForIntRec = insDuration * 12;
+        }
+        if (fdrDurationType == 'Month' && insDurationType == 'Month' && insDuration >0) {
+            finalInsDuration = finalFdrDuration / insDuration;
+            durationForIntRec = insDuration;
+        }
+
+        $('#InterestAmount').val('');
+        $('#TAXAmount').val('');
+
+        //interest amount per installment
+        if (fdrAmount > 0 && interestRate > 0 && finalInsDuration > 0 && finalFdrDuration >0) {
+
+            //var perInstalment = ((fdrAmount * interestRate) / 100) / finalInsDuration;
+
+            var perInstalment = (((fdrAmount * interestRate) / (100*12))* finalFdrDuration)/ finalInsDuration;
+
+            $('#InterestAmount').val(perInstalment.toFixed(2));
+            var totalInterestAmount = perInstalment * finalInsDuration;
+            $('#TotalInterestAmount').val(totalInterestAmount.toFixed(2));
+        }
+
+        var intersentAmount = parseFloat($('#InterestAmount').val());
+
+        //tax amount percentage wise
+        if (taxRate >= 0 && intersentAmount > 0 && finalInsDuration > 0) {
+            var totalTaxtAmount = taxRate * (intersentAmount / 100);
+            $('#TAXAmount').val(totalTaxtAmount.toFixed(2));
+        }
+
+        var taxAmount = parseFloat($('#TAXAmount').val());
+
+        //calcucate bank charge
+        var perInsbackCharge = parseFloat($("#BankCharge").val());
+        if(isNaN(perInsbackCharge)){
+            perInsbackCharge = 0;
+        }
+        if (perInsbackCharge >= 0 && finalInsDuration > 0) {
+            calculateTotalBankCharge(perInsbackCharge, finalInsDuration);
+        }
+
+        //call function total Receivable
+        if (fdrAmount > 0 && intersentAmount > 0 && finalInsDuration > 0) {
+            calculateTotalReceivalble(fdrAmount, intersentAmount, finalInsDuration);
+        }
+
+
+        //call function total tax amount
+        if (taxAmount >= 0 && finalInsDuration > 0) {
+            calculateTotalTaxAmount(taxAmount, finalInsDuration);
+        }
+
+        //call function  total profit
+        if (fdrAmount > 0 && $('#TotalTAXAmount').val() >= 0 && $('#TotalBankCharge').val() >= 0) {
+            calculateTotalProfit(fdrAmount, $('#TotalTAXAmount').val(), $('#TotalBankCharge').val());
+        }
+
+        //cal function Net Receivable
+        if(fdrAmount > 0 && $('#TotalProfit').val() > 0){
+            calculateNetReceivableAmount(fdrAmount,$('#TotalProfit').val());
+        }
+
+        //call for calculate MuturityDate
+        calculateMaturityDate($('#FDRDate').val(), finalFdrDuration);
+
+        //call for First Int. Rec. Date
+        calculateFirstIntRecDate($('#FDRDate').val(), durationForIntRec);
+    });
+
+    //if renew
+    $(function () {
+        $('#FDRDurationInMonth').val('');
+        $('#TotalInterestAmount').val('');
+
+        var fdrAmount = parseFloat($('#FDRAmount').val());
+        var interestRate = parseFloat($('#InterestRate').val());
+        var taxRate = parseFloat($('#TAXRate').val());
+
+        if(isNaN(taxRate)){
+            taxRate = 0;
+        }
+
+        var fdrDuration = parseFloat($('#FDRDuration').val());
+        var fdrDurationType = $('#FDRDurationType').val();
+
+        if (fdrDurationType == 'Month') {
+            finalFdrDuration = fdrDuration * 1;
+            $('#FDRDurationInMonth').val(finalFdrDuration);
+        }
+        else {
+            finalFdrDuration = fdrDuration * 12;
+            $('#FDRDurationInMonth').val(finalFdrDuration);
+        }
+
+        var insDuration = parseFloat($('#InstallmentDuration').val());
+        var insDurationType = $('#InstallmentDurationType').val();
+
+        if (fdrDurationType == 'Year' && insDurationType == 'Month' && insDuration>0) {
+            finalInsDuration = finalFdrDuration / insDuration;
+            durationForIntRec = insDuration;
+        }
+        else if (fdrDurationType == 'Year' && insDurationType == 'Year' && insDuration>0) {
+            finalInsDuration = finalFdrDuration / (insDuration * 12);
+            durationForIntRec = insDuration * 12;
+        }
+        if (fdrDurationType == 'Month' && insDurationType == 'Month'  && insDuration>0) {
+            finalInsDuration = finalFdrDuration / insDuration;
+            durationForIntRec = insDuration;
+        }
+
+        $('#InterestAmount').val('');
+        $('#TAXAmount').val('');
+        //interest amount per installment
+        if (fdrAmount > 0 && interestRate > 0 && finalInsDuration > 0 && finalFdrDuration >0) {
+
+            //var perInstalment = ((fdrAmount * interestRate) / 100) / finalInsDuration;
+
+            var perInstalment = (((fdrAmount * interestRate) / (100*12))* finalFdrDuration)/ finalInsDuration;
+
+            $('#InterestAmount').val(perInstalment.toFixed(2));
+            var totalInterestAmount = perInstalment * finalInsDuration;
+            $('#TotalInterestAmount').val(totalInterestAmount.toFixed(2));
+        }
+
+        var intersentAmount = parseFloat($('#InterestAmount').val());
+
+        //tax amount percentage wise
+        if (taxRate >= 0 && intersentAmount > 0 && finalInsDuration > 0) {
+            var totalTaxtAmount = taxRate * (intersentAmount / 100);
+            $('#TAXAmount').val(totalTaxtAmount.toFixed(2));
+        }
+
+        var taxAmount = parseFloat($('#TAXAmount').val());
+
+        //calcucate bank charge
+        var perInsbackCharge = parseFloat($("#BankCharge").val());
+        if(isNaN(perInsbackCharge)){
+            perInsbackCharge = 0;
+        }
+        if (perInsbackCharge > 0 && finalInsDuration > 0) {
+            calculateTotalBankCharge(perInsbackCharge, finalInsDuration);
+        }
+
+        //call function total Receivable
+        if (fdrAmount > 0 && intersentAmount > 0 && finalInsDuration > 0) {
+            calculateTotalReceivalble(fdrAmount, intersentAmount, finalInsDuration);
+        }
+
+        //call function total tax amount
+        if (taxAmount >= 0 && finalInsDuration > 0) {
+            calculateTotalTaxAmount(taxAmount, finalInsDuration);
+        }
+
+        //call function  total profit
+        if (fdrAmount > 0 && $('#TotalTAXAmount').val() >= 0 && $('#TotalBankCharge').val() > 0) {
+            calculateTotalProfit(fdrAmount, $('#TotalTAXAmount').val(), $('#TotalBankCharge').val());
+        }
+
+        //cal function Net Receivable
+        if(fdrAmount > 0 && $('#TotalProfit').val() > 0){
+            calculateNetReceivableAmount(fdrAmount,$('#TotalProfit').val());
+        }
+
+        //call for calculate MuturityDate
+        calculateMaturityDate($('#FDRDate').val(), finalFdrDuration);
+
+        //call for First Int. Rec. Date
+        calculateFirstIntRecDate($('#FDRDate').val(), durationForIntRec);
+    });
+
+    //$("#BankCharge").on('change keyup blur', function () {
+    //    //calcucate bank charge
+    //    var bankChargePerIns = parseFloat($("#BankCharge").val());
+    //    if(isNaN(bankChargePerIns)){
+    //        bankChargePerIns = 0;
+    //    }
+    //    var totalBankCharge = bankChargePerIns * finalInsDuration;
+    //    $('#TotalBankCharge').val(totalBankCharge.toFixed(2));
+    //    $('#tempTotalBankCharge').val(totalBankCharge.toFixed(2));
+    //});
+
+    $("#TotalBankCharge").on('change keyup blur', function () {
+        //calcucate bank charge
+        var totalBCharge = parseFloat($("#TotalBankCharge").val());
+        var perInsBCharge = totalBCharge / finalInsDuration;
+        $('#BankCharge').val(perInsBCharge.toFixed(2));
+        $('#tempTotalBankCharge').val(totalBCharge.toFixed(2));
+
+        //call function  total profit
+        if ($('#FDRAmount').val() > 0 && $('#TotalTAXAmount').val() >= 0 && $('#TotalBankCharge').val() >= 0) {
+            calculateTotalProfit(parseFloat($("#FDRAmount").val()), $('#TotalTAXAmount').val(), $('#TotalBankCharge').val());
+        }
+
+        //cal function Net Receivable
+        if($('#FDRAmount').val() > 0 && $('#TotalProfit').val() > 0){
+            calculateNetReceivableAmount(parseFloat($("#FDRAmount").val()),$('#TotalProfit').val());
+        }
+
+    });
+
+    $("#FDRDate").on('change', function () {
+        //call for calculate MuturityDate
+        calculateMaturityDate($('#FDRDate').val(), finalFdrDuration);
+        //call for First Int. Rec. Date
+        calculateFirstIntRecDate($('#FDRDate').val(), durationForIntRec);
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#InitialDeposit,#FDRAmount, #InterestRate,#TAXRate,#BankCharge ').keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        $("#FDRDuration,#InstallmentDuration").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                //$("#errmsg").html("Digits Only").show().fadeOut("slow");
+                return false;
+            }
+        });
+
+    });
+
+    $("#StartDate").on('change', function () {
+        var startDate = new Date($('#StartDate').val());
+        var maturityDate = new Date($('#MaturityDate').val());
+
+        if ($('#StartDate').val() != '' && maturityDate < startDate) {
+            $('#StartDate').val('');
+            alert("Start Date is lower than to Maturity Date.");
+        }
+    });
+
+    $("#MaturityDate").on('change', function () {
+        var startDate = new Date($('#StartDate').val());
+        var maturityDate = new Date($('#MaturityDate').val());
+
+        if ($('#MaturityDate').val() != '' && startDate > maturityDate) {
+            $('#MaturityDate').val('');
+            alert("Maturity Date is greater than or equal to Start Date.");
+        }
+    });
+</script>
+
+<script type="text/javascript">
+
+    if ('@Model.ShowRecord' == 'Show') {
+        calculateSum();
+    }
+    $('#btnAdd').on('click', function (e) {
+        e.preventDefault();
+        var finalFdrDuration = 0;
+        var finalInsDuration = 0;
+        var fdrDuration = parseFloat($('#FDRDuration').val());
+        var fdrDurationType = $('#FDRDurationType').val();
+
+        if (fdrDurationType == 'Month') {
+            finalFdrDuration = fdrDuration * 1;
+        }
+        else {
+            finalFdrDuration = fdrDuration * 12;
+        }
+
+        var insDuration = parseFloat($('#InstallmentDuration').val());
+        var insDurationType = $('#InstallmentDurationType').val();
+
+        if (fdrDurationType == 'Year' && insDurationType == 'Month') {
+            finalInsDuration = finalFdrDuration / insDuration;
+        }
+        if (fdrDurationType == 'Year' && insDurationType == 'Year') {
+            finalInsDuration = finalFdrDuration / (insDuration * 12);
+        }
+        if (fdrDurationType == 'Month' && insDurationType == 'Month') {
+            finalInsDuration = finalFdrDuration / insDuration;
+        }
+
+        if ($('#StartDate').val() == '') {
+            return;
+        }
+        var url = '@Url.Action("AddInstallmentSchedule", "FixedDepositInfo")' + '?NofoIns=' + finalInsDuration;
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+        $.post(url, serializedForm, function (result) {
+            $('#tblInstShdl tbody').html(result);
+            calculateSum();
+        });
+        return false;
+    });
+
+
+
+    function calculateSum() {
+        var sumAmout = 0;
+        // iterate through each td based on class and add the values
+        $(".fdrInsAmout").each(function () {
+            var value = $(this).text();
+            // add only if the value is number
+            if (!isNaN(value) && value.length != 0) {
+                sumAmout += parseFloat(value);
+            }
+        });
+
+        var sumfdrTax = 0;
+        $(".fdrTax").each(function () {
+            var value = $(this).text();
+            // add only if the value is number
+            if (!isNaN(value) && value.length != 0) {
+                sumfdrTax += parseFloat(value);
+            }
+        });
+
+        var sumfdrBankCharge = 0;
+        $(".fdrBankCharge").each(function () {
+            var value = $(this).text();
+            // add only if the value is number
+            if (!isNaN(value) && value.length != 0) {
+                sumfdrBankCharge += parseFloat(value);
+            }
+        });
+        var sumfdrAmout = 0;
+        $(".fdrProfit").each(function () {
+
+            var value = $(this).text();
+            // add only if the value is number
+            if (!isNaN(value) && value.length != 0) {
+                sumfdrAmout += parseFloat(value);
+            }
+        });
+
+        var trClone = '<tr>' +
+                          '<td colspan="2" style="text-align:right">' + 'Total' + '</td>' +
+                          '<td style="text-align:right">' + sumAmout.toFixed(2) + '</td>' +
+                          '<td style="text-align:right">' + sumfdrTax.toFixed(2) + '</td>' +
+                          '<td style="text-align:right">' + sumfdrBankCharge.toFixed(2) + '</td>' +
+                          '<td style="text-align:right">' + sumfdrAmout.toFixed(2) + '</td>' +
+                     '</tr>';
+
+        if ($('#tblInstShdl tbody tr').length > 0) {
+            $('#tblInstShdl tbody').append(trClone);
+        }
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('a#btnVoucherPosting').on('click', function (e) {
+            e.preventDefault();
+            //debugger;
+            if(@Model.Id<= 0){
+                alert('Before prepare voucher, please save FDR.');
+                return false;
+            }
+            var url = '@Url.Action("VoucherPosing", "FixedDepositInfo")?id='+  @Model.Id;
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function (result) {
+                    if(result.redirectUrl!=''){
+                        window.location.href = result.redirectUrl;
+                    }
+                },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                }
+            });
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    var getFDRChangeURL = function(isCommitChange){
+        var interestRate = $('#InterestRate').val();
+        var interestRateDuration = $('#InstallmentDuration').val();
+        var taxRate = $('#TAXRate').val();
+        var totalBankCharge = $('#TotalBankCharge').val();
+
+        var url = '@Url.Content("~/Reports/FMS/viewers/RptSimulateFDRRegister.aspx")?id='+  @Model.Id
+            + '&interestRate=' + interestRate
+            + '&interestRateDuration=' + interestRateDuration
+            + '&taxRate=' + taxRate
+            + '&totalBankCharge=' + totalBankCharge
+            + '&isCommitChange=' + isCommitChange;
+
+        return url;
+    };
+
+    $(document).ready(function () {
+        $('a#btnSimulateChange').on('click', function (e) {
+            e.preventDefault();
+
+            if(@Model.Id<= 0){
+                alert('FDR Id not found!');
+                return false;
+            }
+
+            var url = getFDRChangeURL(0);
+
+            window.open(url,'_blank');
+        });
+    });
+
+    $(document).ready(function () {
+        $('a#btnCommitChange').on('click', function (e) {
+            e.preventDefault();
+
+            if(@Model.Id<= 0){
+                alert('FDR Id not found!');
+                return false;
+            }
+
+            var url = getFDRChangeURL(1);
+
+            window.open(url,'_blank');
+        });
+    });
+</script>

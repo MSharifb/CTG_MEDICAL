@@ -1,0 +1,86 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.ProjectSectionViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Section";
+}
+
+@using (Html.BeginForm("ProjectSection", "Home", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+
+    <div class="clear" style="height:7px"></div>
+
+    <div class="row" style="text-align:center">
+        <div class="divCenter">
+            <ul class="user-zone-list">
+                <li><a href="#">SELECT SECTION</a></li>
+                @for (var i = 0; i < Model.ProjectSectionList.Count; i++)
+                {
+                    var item = Model.ProjectSectionList.ToList()[i];
+                    <li>
+                        <a href="#" id="@Model.ProjectSectionList[i].Value" onclick="return loginZone(this)">
+                            @Html.LabelFor(m => m.ProjectSectionList[i].Value, @Model.ProjectSectionList[i].Text)
+                        </a>
+                    </li>
+                }
+            </ul>
+
+        </div>
+    </div>
+
+}
+
+<style>
+    .divCenter {
+        margin: auto;
+        width: 50%;
+        border: 3px solid #2ab67c; /*3px solid #747dbf;*/
+        padding: 10px;
+    }
+
+    .user-zone-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .user-zone-list li {
+            margin-bottom: 8px;
+        }
+
+            .user-zone-list li:last-of-type {
+                margin-bottom: 0;
+            }
+
+            .user-zone-list li a {
+                padding: 8px 15px;
+                background-color: rgb(62 192 120 / 80%); /*rgba(72, 82, 163, 0.8);*/
+                margin-bottom: 3px;
+                display: block;
+                color: #fff;
+            }
+
+                .user-zone-list li a:hover {
+                    background-color: #328d84;
+                }
+</style>
+<script type="text/javascript">
+    var url = '@Url.Action("SetProjectSection")'
+    function loginZone(obj) {
+        var id = $(obj).attr("id");
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                'Id': id
+            },
+            success: function (result) {
+                GoIndex();
+            }
+        });
+    }
+
+    function GoIndex() {
+        window.location.href = '@Url.Action("Index", "Home")';
+    }
+</script>

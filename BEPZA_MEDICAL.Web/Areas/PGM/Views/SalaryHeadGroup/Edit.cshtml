@@ -1,0 +1,34 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryHeadGroup.SalaryHeadGroupViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "SalaryHeadGroup", FormMethod.Post, new { id = "frm" }))
+{
+    <fieldset>
+        @Html.HiddenFor(model => model.Id)
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.strMessage))
+            {
+                <div class="@Model.errClass">
+                    @Model.strMessage
+                </div>
+            }
+            @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+       
+        @Html.Partial("_CreateOrEdit", Model)
+          
+        <div class="button-center buttonSubmit" style="margin-top:10px;">
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" style="width: auto; overflow: visible; padding-left: .25em;
+                    padding-right: .25em;" />
+            }
+            <input type="button" value="Clear" id="btnClear" name="btnClear" />
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>

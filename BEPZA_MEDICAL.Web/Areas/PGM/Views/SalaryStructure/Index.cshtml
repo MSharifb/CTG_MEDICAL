@@ -1,0 +1,49 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryStructure.SalaryStructureModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+
+@using (Ajax.BeginForm("Index", "SalaryStructure", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <fieldset>
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+
+            <div id="ErrMsg" class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        </div>
+        <fieldset>
+            <div id="jqSearch">
+            </div>
+        </fieldset>
+        <div class="GroupBox">
+            <div class="button-crude button-left">
+                @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    @Html.ActionLink("Add New", "Create")
+                }
+            </div>
+            <div class="clear"></div>
+        </div>
+        <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        <div id="divList">
+            <div id='delete-dialog' title='Delete Record' style="height: 20px">
+                <p style="line-height: 1em">
+                    <span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>
+                    Do you want to delete this record?
+                </p>
+            </div>
+            @Html.Partial("_GridList")
+        </div>
+    </fieldset>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sg_GradeId").focus();
+    });
+</script>

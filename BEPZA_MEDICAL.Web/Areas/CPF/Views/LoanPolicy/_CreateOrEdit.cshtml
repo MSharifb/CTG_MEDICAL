@@ -1,0 +1,162 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.LoanPolicy.LoanPolicyViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.ActionType' == 'Edit') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+        }
+        else {
+            $('#btnUpdate').hide();
+        }
+    });
+</script>
+@using (Html.BeginForm(Model.ActionType, "LoanPolicy", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="message">
+        @if (Model != null)
+        {
+            if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                if (@Model.IsError == 1)
+                {
+                    <div class="failed">
+                        @Model.ErrMsg
+                    </div>
+                }
+                else
+                {
+                    <div class="success">
+                        @Model.ErrMsg
+                    </div>
+                }
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        }
+    </div>
+
+    <fieldset>
+        <legend>Loan Policy Information</legend>
+        <div class="row">
+            @Html.HiddenFor(model => model.ActionType)
+            @Html.HiddenFor(model => model.Id)
+            <span class="label">@Html.LabelFor(model => model.LoanPolicyFor)<label style='color: red'>*</label></span>
+            <span class="field">@Html.DropDownListFor(model => model.LoanPolicyFor, Model.LoanPolicyForList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+        </div>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.StartDate)<label style='color: red'>*</label></span>
+            <span class="field">@Html.EditorFor(model => model.StartDate)</span>
+            <span class="label-right">@Html.LabelFor(model => model.EndDate)</span>
+            <span class="field">@Html.EditorFor(model => model.EndDate)</span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Non-Refundable Loan</legend>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.NRfLoanPercentage)</span>
+            <span class="field">@Html.EditorFor(model => model.NRfLoanPercentage)</span>
+            <span class="label-right">@Html.LabelFor(model => model.NRfApplicableFor)</span>
+            <span class="field nrf-data">@Html.DropDownListFor(model => model.NRfApplicableFor, Model.NRfApplicableForList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+        </div>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.NRfMinimumAge)</span>
+            <span class="field">@Html.TextBoxFor(model => model.NRfMinimumAge)<label>&nbsp;Years</label></span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Refundable Loan</legend>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.RfLoanPercentage)<label style='color: red'>*</label></span>
+            <span class="field">@Html.EditorFor(model => model.RfLoanPercentage)</span>
+            <span class="label-right">@Html.LabelFor(model => model.RfApplicableFor)</span>
+            <span class="field">@Html.DropDownListFor(model => model.RfApplicableFor, Model.RfApplicableForList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+        </div>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.IsRfDeductFromBalance)</span>
+            <span class="field">@Html.DropDownListFor(model => model.IsRfDeductFromBalance, Model.RfBalanceDeductionConfirmationList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+        </div>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.IsRfInstallmentAddedWithBalance)</span>
+            <span class="field">@Html.DropDownListFor(model => model.IsRfInstallmentAddedWithBalance, Model.RfInstallmentBalanceAdditionConformationList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+        </div>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.RfMaxConcurrentLoan)<label style='color: red'>*</label></span>
+            <span class="field">@Html.TextBoxFor(model => model.RfMaxConcurrentLoan)</span>
+        </div>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.RfMinServiceYear)<label style='color: red'>*</label></span>
+            <span class="field">@Html.TextBoxFor(model => model.RfMinServiceYear)<label>&nbsp;Years</label></span>
+        </div>
+    </fieldset>
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="margin-right: 8px;" />
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsCancelAssigned)
+        {
+            <input type="submit" value="Cancel" id="btnCancel" name="btnSubmit" style="margin-right: 8px;" />
+        }
+    </div>
+
+    <div class="button-crude button-left">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+}
+
+<script type="text/javascript">
+    $('#btnCancel').live('click', function (event) {
+        event.preventDefault();
+        window.location.href = Url;
+    });
+
+    $(document).ready(function () {
+        CheckIsRequired();
+    })
+
+    function CheckIsRequired() {
+        var applicableFor = $('#NRfApplicableFor option:selected').text();
+        var loanPer = $('#NRfLoanPercentage').val();
+        var minCharge = $('#NRfMinimumAge').val();
+        if (applicableFor == '[Select One]' && loanPer == '' && minCharge == '') {
+            ToggleRequired(false);
+        }
+        else {
+            ToggleRequired(true);
+        }
+    }
+
+    function ToggleRequired(isRequired) {
+        $('#NRfApplicableFor').attr("required", isRequired);
+        $('#NRfMinimumAge').attr("required", isRequired);
+        $('#NRfLoanPercentage').attr("required", isRequired);
+    }
+
+    $('#NRfLoanPercentage, #NRfMinimumAge').live('focusout', function () {
+        CheckIsRequired();
+    })
+
+    $('#NRfApplicableFor').live('change', function () {
+        CheckIsRequired();
+    });
+
+
+
+</script>
+<style type="text/css">
+    .label {
+        min-width: 25%;
+    }
+
+    .label-right {
+        max-width: 5%;
+    }
+</style>

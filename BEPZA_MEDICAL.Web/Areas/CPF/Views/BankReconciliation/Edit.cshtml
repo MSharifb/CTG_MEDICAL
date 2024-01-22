@@ -1,0 +1,42 @@
+﻿@model ERP_BEPZA.Web.Areas.CPF.Models.BankReconciliationViewModel.BankReconciliationViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "BankReconciliation", FormMethod.Post, new { id = "frm" }))
+{
+     
+    <fieldset>
+       <div class="GroupBox" class="message" style="min-height:15px;">
+       @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div style="color:Red">
+                    @Model.ErrMsg
+                </div>
+            }
+           
+        </div>
+        
+       <div>
+        @Html.HiddenFor(model => model.Id)    
+        @Html.Partial("_CreateOrEdit", Model)
+        </div>
+          
+         <br />
+        <div class="button-center buttonSubmit">
+        @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="Update" style="width: auto; overflow: visible; padding-left: .25em; padding-right: .25em;" />
+            
+        }</div>  
+                
+    </fieldset>
+  
+}
+   <div class="button-crude button-left" style="padding-left: 5px;">
+        <span></span>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+

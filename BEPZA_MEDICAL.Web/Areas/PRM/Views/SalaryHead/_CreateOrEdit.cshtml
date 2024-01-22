@@ -1,0 +1,268 @@
+﻿@model BOM_MPA.Web.Areas.PRM.ViewModel.SalaryHeadViewModel
+@using BOM_MPA.Web.Helpers
+<script type="text/javascript">
+    $(function () {
+        showErrMsg();
+    });
+    function showErrMsg() {
+        $(".message").hide();
+        $("#message1").hide();
+        if ('@Model.IsError' == "1") {
+            $("#message1").show();
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message1").html("<b>" + msg + "</b>").css("color", "red");
+        }
+        else {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "green");
+        }
+    }
+
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#HeadName").focus();
+
+        $("#SortOrder").keydown(function (event) {
+
+            //alert(advance);
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    });
+
+</script>
+
+<div class="GroupBox" style="max-height: 15px" id="message1">
+    @Html.ValidationSummary(false, BOM_MPA.Web.Utility.Common.ValidationSummaryHead)
+</div>
+<table width="100%" class="contenttable">
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.HeadName)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.HeadName)
+            </div>
+        </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.HeadType)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.HeadType, BOM_MPA.Web.Utility.Common.GetHeadType(), @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required", onchange = "LoadHeadGroup();" })
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.AmountType)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.AmountType, BOM_MPA.Web.Utility.Common.GetAmountType(), @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </div>
+        </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.GroupId)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.DropDownListFor(model => model.GroupId, new SelectList(ViewBag.HeadGroup, "Id", "Name"), @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.IsGrossPayHead)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.CheckBoxFor(model => model.IsGrossPayHead)
+            </div>
+        </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.IsTaxable)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.CheckBoxFor(model => model.IsTaxable)
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SortOrder)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td class="td-right">
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.SortOrder, new { @style = "text-align:right;width:50px" })
+            </div>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+<style>
+    #SortOrder .td-right input[type="text"], input[type="password"]
+    {
+        text-align: right;
+    }
+</style>
+<script type="text/javascript">
+
+    $(function () {
+
+        if ("@Model.HeadType" == "Deduction") {
+            $('#IsTaxable').attr("checked", false);
+            $('#IsTaxable').attr("disabled", true);
+
+            $('#IsGrossPayHead').attr("checked", false);
+            $('#IsGrossPayHead').attr("disabled", true);
+        }
+
+
+
+    });
+    $('#HeadType').live('change', function () {
+
+        var headType = $(this).val();
+
+
+        if (headType != null && headType != '') {
+
+            $.getJSON('@Url.Action("LoadSortOrder")', { headType: headType }, function (item) {
+
+                $('#SortOrder').val(item);
+            });
+        }
+        else {
+            $('#SortOrder').val(0);
+        }
+
+        if (headType == 'Deduction') {
+            $('#IsGrossPayHead').attr('disabled', true);
+            $('#IsGrossPayHead').attr('checked', false);
+            $('#IsTaxable').attr('disabled', true);
+            $('#IsTaxable').attr('checked', false);
+        }
+        else {
+            $('#IsGrossPayHead').attr('disabled', false);
+            $('#IsTaxable').attr('disabled', false);
+        }
+
+        return false;
+    });
+
+
+    $('#SortOrder').live('blur', function () {
+
+        var SortOrder = $(this).val();
+        var HeadTypeName = $('#HeadType').val();
+
+        if (HeadTypeName != '') {
+
+            if (HeadTypeName == 'Addition') {
+
+                if (SortOrder <= 0 || SortOrder > 99) {
+                    $('#SortOrder').val(1);
+                    alert('Sort Order must be 1-99.');
+                }
+            }
+            else if (HeadTypeName == 'Deduction') {
+
+                if (SortOrder <= 100 || SortOrder > 199) {
+                    $('#SortOrder').val(101);
+                    alert('Sort Order must be 101-199.');
+                }
+            }
+            else {
+                return false;
+            }
+        }
+        return false;
+    });
+
+
+
+    function LoadHeadGroup() {
+        var HeadType = $('#HeadType').val();
+        var HeadGroup = $('#GroupId');
+        HeadGroup.empty();
+        HeadGroup.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (HeadType == 'Deduction') {
+            $('#IsTaxable').attr("checked", false);
+            $('#IsTaxable').attr("disabled", true);
+        }
+        else {
+            $('#IsTaxable').attr("disabled", false);
+        }
+
+        if (HeadType != null && HeadType != '') {
+            $.getJSON('@Url.Action("LoadHeadGroup")', { Id: HeadType }, function (items) {
+                $.each(items, function (index, item) {
+                    HeadGroup.append($('<option/>', {
+                        value: item.Id,
+                        text: item.Name
+                    }));
+                });
+            });
+        }
+    }
+
+</script>

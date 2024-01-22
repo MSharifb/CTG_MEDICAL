@@ -1,0 +1,110 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmployeeConfirmationIncrementPromotionViewModel
+@{
+    Layout = null;
+}
+
+@*<div class="GroupBox search-content">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.LevelName)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.LevelName)
+        </span>
+        <span class="label-right">
+
+        </span>
+        <span class="field">
+            <div class="button-crude button-left">
+                <input type="button" id="search" value="Search" />
+            </div>
+        </span>
+    </div>
+</div>*@
+
+<div class="form-group">
+
+    <div class="button-crude">
+        <input type="button" id="expandAndCloseNode" value="Expand" />
+    </div>
+    <div class="clear"></div>
+    <div style="background: #FFFFFF" class="demo jstree jstree-5" id="treeViewSearch">
+    </div>
+
+    <div class="col-md-8">
+        <div class="clear"></div>
+        <div style="background: #FFFFFF" id="ZoneWiseTreeView">
+        </div>
+
+
+        <script type="text/javascript">
+            //$(function () {
+            //    $("#search").click(function () {
+            //        $("#ZoneWiseTreeView").jstree("search", document.getElementById("LevelName").value);
+            //    })
+            //});
+
+            $(function () {
+
+                $(document).ready(function () {
+                    var zoneId = '@ViewBag.ZoneInfoId';
+                    PopulateTreeView(zoneId);
+                });
+
+                function PopulateTreeView(zoneId) {
+                    var url = '@Url.Action("GetZoneWiseOrganogramLevelTreeData", "EmployeeTransferInfo")?zoneId=' + zoneId;
+                    $("#ZoneWiseTreeView")
+                        .jstree({
+                            "plugins": [
+                                "themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys"
+                            ],
+
+                            "json_data": {
+                                "ajax": {
+                                    "url": url,
+                                    "data": function (n) {
+                                        return {
+                                            "operation": "get_children",
+                                            "id": n.attr ? n.attr("id").replace("node_", "") : 1
+                                        };
+                                    }
+                                }
+                            },                         
+                        });
+                }
+
+            });
+
+        </script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#ZoneWiseTreeView").bind("select_node.jstree", function (e, data) {
+                    var organogramId = data.rslt.obj.attr("id")
+                    var organogramName = '';
+
+                    if ($('.jstree-clicked').length == 1) {
+                        organogramName = $('.jstree-clicked').text();
+                    }
+                    if (organogramId > 0) {
+                        // This function must declare to used page
+                        SetOrganogramId(organogramId, organogramName);
+                    }
+
+                });
+            });
+
+            $('#expandAndCloseNode').click(function () {
+                var strText = $(this).val();
+                if (strText == "Expand") {
+                    $("#ZoneWiseTreeView").jstree("open_all");
+                    $('#expandAndCloseNode').val('Collapse');
+                } else {
+                    $("#ZoneWiseTreeView").jstree("close_all");
+                    $('#expandAndCloseNode').val('Expand');
+                }
+            });
+        </script>
+
+    </div>
+</div>

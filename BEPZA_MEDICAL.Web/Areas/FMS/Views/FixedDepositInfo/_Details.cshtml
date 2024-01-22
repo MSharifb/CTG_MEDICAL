@@ -1,0 +1,11 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FixedDepositInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@if (Model != null && Model.InstallmentSchedulList != null)
+{
+    foreach (var x in Model.InstallmentSchedulList)
+    {
+        @Html.Partial("_DetailsView", x);
+    }
+
+}

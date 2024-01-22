@@ -1,0 +1,109 @@
+﻿
+@model BEPZA_MEDICAL.Web.Areas.CPF.Models.ProfitDistribution.ProfitDistributionViewModel
+
+@Html.HiddenFor(model => @Model.Id, new { id = "id" })
+@*@Html.HiddenFor(model => @Model.PeriodId, new { periodid = "periodid" })
+@Html.HiddenFor(model => @Model.Period, new { Period = "Period" })*@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var masterid = $('#id').val();
+
+        $('#jqGrid').jqGrid({
+            
+            url: '@Url.Action("GetDetailList")?Id=' + masterid,
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'MembershipId', 'Employee ID', 'Name', 'Opening Balance (E)', 'Contri. (E)', 'Profit (E)', 'Withdrawn (E)', 'Final Payment (E)', 'Balance (E)',
+                        'Opening Balance (C)', 'Contri. (C)', 'Profit (C)', ' Withdrawn (C)', 'Final Payment (C)', ' Forfeited (C)', 'Balance (C)', 'Closing Balance (E+C)'],
+            colModel: [
+                            { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'MembershipId', index: 'MembershipId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'EmpID', index: 'EmpID', align: 'center', width: '250px', search: true, edittype: 'text' },
+                            { name: 'FullName', index: 'FullName', align: 'left', width: '600px', search: false, edittype: 'text' },
+
+                            { name: 'EmpOpening', index: 'EmpOpening', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'EmpContributionInPeriod', index: 'EmpContributionInPeriod', align: 'right', width: '300px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'EmpProfitInPeriod', index: 'EmpProfitInPeriod', align: 'right', search: false, width: '250px', edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'EmpWithdrawnInPeriod', index: 'EmpWithdrawnInPeriod', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'EmpFinalPayment', index: 'EmpFinalPayment', align: 'right', width: '300px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'EmpClosingBalance', index: 'EmpClosingBalance', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+
+                            { name: 'ComOpening', index: 'ComOpening', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'ComContributionInPeriod', index: 'ComContributionInPeriod', align: 'right', width: '300px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'ComProfitInPeriod', index: 'ComProfitInPeriod', align: 'right', width: '250px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'ComWithdrawnInPeriod', index: 'ComWithdrawnInPeriod', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'ComFinalPayment', index: 'ComFinalPayment', align: 'right', width: '300px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'ComForfeitedAmount', index: 'ComForfeitedAmount', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                            { name: 'ComClosingBalance', index: 'ComClosingBalance', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+
+                            { name: 'TotalBalance', index: 'TotalBalance', align: 'right', width: '350px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} }
+                            //{ name: 'Rollback', index: 'Rollback', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '150px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+            autowidth: true,
+            caption: "Profit Distribution Detail Information",
+            rowList: [20, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '100%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "RollbackIndividual", new { id = "_id_" }, new { @class = "refreshIcon" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+</script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.refreshIcon").live("click", function () {
+
+            rollbackLinkObj = $(this);  //for future use
+            $('#rollback-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+
+<style type="text/css" media="screen">
+    th.ui-th-column div {
+        white-space: normal !important;
+        height: auto !important;
+        padding: 1px;
+    }
+</style>

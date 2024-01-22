@@ -1,0 +1,50 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.TransferInViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/INV/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Create", "TransferInInfo", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+
+    <fieldset>
+        <div class="GroupBox" id="message" style="min-height:15px;">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+{
+    <input type="submit" value="Save" id="btnSave" name="btnSave" style="margin-right: 8px;" />
+}
+            <input type="button" value="Clear" id="btnClear" name="btnClear" />
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GenerateTransferNo", "TransferInInfo")',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            data: JSON.stringify({
+                strMode: create
+            }),
+            success: function (result) {
+                $('#TransferNo').val(result);
+            }
+
+        });
+    });
+</script>*@
+
+ 

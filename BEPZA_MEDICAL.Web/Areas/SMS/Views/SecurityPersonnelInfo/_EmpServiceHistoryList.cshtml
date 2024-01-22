@@ -1,0 +1,55 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.SMS.ViewModel.SecurityServiceHistoryViewModel
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetServiceHistoryList", null, new { Id = Model.EmployeeId })',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Zone', 'From', 'To', 'Duration', 'Award', 'Punishment'],
+            colModel: [
+                        {name: 'ID', index: 'ID', align: 'left', search: false, edittype: 'text', hidden: true },
+                        { name: 'ZoneName', index: 'ZoneName', width: '180px', align: 'left', edittype: 'text', formatter: viewformatEdiorLink },
+                        { name: 'PeriodFrom', index: 'PeriodFrom', align: 'center' },
+                        { name: 'PeriodTo', index: 'PeriodTo', align: 'center' },
+                        { name: 'Duration', index: 'Duration', align: 'right' },
+                        { name: 'Award', index: 'Award', align: 'left', edittype: 'text' },
+                        { name: 'DisciplineRecord', index: 'DisciplineRecord', align: 'left', width: '180px' }
+                      ],
+            autowidth: true,
+            caption: "Service History List",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+//            ,
+//            footerrow: true,
+//            loadComplete: function () {
+//                var $self = $(this),
+//                duration = $self.jqGrid("getCol", "Duration", false, "sum");
+//                $self.jqGrid("footerData", "set", { To: "Total Experience:", Duration: duration });
+//            }
+
+        });
+
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "ServiceHistoryIndex", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>

@@ -1,0 +1,9 @@
+﻿@model ERP_BEPZA.Web.Areas.PRM.ViewModel.SuspensionOfEmployeeViewModel
+@using ERP_BEPZA.Web.Helpers
+@if (Model != null && Model.SuspensionOfEmployeeDetailList != null)
+{
+    foreach (var x in Model.SuspensionOfEmployeeDetailList.Where(x => x.HeadType == "Addition"))
+    {
+        @Html.Partial("_AdditionDetail", x);
+    }
+}

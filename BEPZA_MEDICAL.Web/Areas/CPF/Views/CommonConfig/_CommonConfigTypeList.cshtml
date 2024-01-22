@@ -1,0 +1,64 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.CommonConfigViewModel.CommonConfigViewModel
+<script type="text/javascript">
+    $(function () {
+        //$("#selectable").selectable();
+
+
+        var url = '@Url.Action("Index", "CommonConfig")';
+        var text = $("#selectable li:nth(0)").text();
+
+        $.get(url, { name: text }, function () {
+            jQuery("#jqGrid").trigger("reloadGrid");
+            $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+            $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+            document.getElementById('frm').reset();
+            $('#message').empty();
+
+            return false;
+        });
+       
+        $("#selectable li:nth(0)").addClass('ui-selected');
+
+    });
+</script>
+<div id="leftPanelList">
+    <ul id="selectable" class="ui-selectable">
+        @foreach (var item in Model.CommonConfigType)
+        {
+            <li class="ui-selectee" style="color: #3C78B5">@item.DisplayName</li>
+        }
+    </ul>
+</div>
+<style type="text/css">
+    #feedback
+    {
+        font-size: 1 em;
+    }
+    #selectable .ui-selecting
+    {
+        background: #D8D2FE;
+    }
+    #selectable .ui-selected
+    {
+        background: #C6DEF6;
+        color: white;
+        font-weight: bold;
+    }
+    #selectable
+    {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        width: 95%;
+    }
+    #selectable li
+    {
+        font-size: 13px;
+        height: 24px;
+        border: .5px solid #EEEEEE;
+        width: 100%;
+        cursor: pointer;
+    }
+</style>

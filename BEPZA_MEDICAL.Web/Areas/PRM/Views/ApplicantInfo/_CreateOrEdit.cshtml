@@ -1,0 +1,1193 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantInfoViewModel
+
+<div class="GroupBox">
+    <div class="leftColumn custom-left-width">
+                <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.DivisionId)
+                @Html.HiddenFor(model => model.IsSubmit)
+                @Html.LabelFor(model => model.JobAdvertisementInfoId, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.JobAdvertisementInfoId, Model.JobAdvertisementInfoList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DesignationId, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AdJobPostAgeCalDate, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.AdJobPostAgeCalDate, new { @class = "read-only", @readonly = true })
+            </span>
+
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.StartDateOfApplication, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.StartDateOfApplication, new { @class = "read-only", @readonly = true })
+            </span>
+
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.LastDateOfApplication, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.LastDateOfApplication, new { @class = "read-only", @readonly = true })
+            </span>
+
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ApplicantNameE, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.ApplicantNameE)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ApplicantNameB, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.ApplicantNameB)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.NationalID)
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.NationalID)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.BirthRegNo)
+            </span><span class="field">
+                @Html.EditorFor(model => model.BirthRegNo)
+            </span>
+
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DateOfBirth, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.DateOfBirth)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.Age)
+                @Html.LabelFor(model => model.Age, new { @class = "label-required" })
+            </span>
+            <span class="field" style="width:7%">
+                @Html.TextBoxFor(model => model.Year, new { @class = "read-only", @readonly = true }) Years  @Html.TextBoxFor(model => model.Month, new { @class = "read-only", @readonly = true }) Months @Html.TextBoxFor(model => model.Day, new { @class = "read-only", @readonly = true }) Days
+            </span>
+
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PlaceOfBirth, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.PlaceOfBirth)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FatherName, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.FatherName)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.MotherName, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.MotherName)
+            </span>
+        </div>
+    </div>
+
+    <div class="rightalign">
+        <span class="field">
+            <div style="display:none">
+                @Html.CheckBoxFor(model => model.IsAddAttachment)
+            </div>
+            <div class="portrait-box">
+                <span id="portrait-holder" class="applicant-img-preview">
+                    @if (Model.Attachment != null)
+                    {
+                        <img id="mainPortrait" alt="Applicant Photo" height="140" width="180" src="data:image;base64,@System.Convert.ToBase64String(Model.Attachment)" />
+                    }
+                    <img id="previewImg" class="applicant-img-preview" src="#" alt="" />
+
+                </span>
+            </div>
+            @Html.HiddenFor(model => model.Attachment)
+            @Html.HiddenFor(model => model.FileName)
+            <input type="file" name="Attachment" id="Attachment" />
+
+        </span>
+        <span style="margin-left: 25px; width: 200px;" class="label">Maximum image size(512 KB) and jpg, jpeg, png or gif image only</span>
+    </div>
+    <div class="clear"></div>
+
+</div>
+<div class="clear"></div>
+
+
+    <fieldset>
+        <legend style="margin: 3px 3px 3px 3px;">@Html.Label("Present Address")</legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PresentAddress, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.PresentAddress, new { @maxlength = 500 })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.PresentUnion)
+            </span><span class="field">
+                @Html.EditorFor(model => model.PresentUnion)
+            </span>
+            <div class="clear"></div>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PresentVillage)
+            </span><span class="field">
+                @Html.EditorFor(model => model.PresentVillage)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PresentPostName)
+            </span><span class="field">
+                @Html.EditorFor(model => model.PresentPostName)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.PresentDistictId)
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.PresentDistictId, Model.PresentDistictList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadThana();" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PresentPostCode)
+            </span><span class="field">
+                @Html.EditorFor(model => model.PresentPostCode, new { @maxlength = 20 })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.PresentThanaId)
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.PresentThanaId, Model.PresentThanaList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+    </fieldset>
+
+
+    <fieldset>
+        <legend style="margin: 3px;">
+            @Html.Label("Permanent Address")&nbsp; @Html.CheckBox("SameasPresent", new { onclick = "return CopyPresentAddress();" })<label style="font-weight: normal; padding-left: 3px;">Same as Present</label>
+        </legend>
+        <div class="spacer">
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PermanentAddress, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.PermanentAddress, new { @maxlength = 500 })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.PermanentUnion)
+            </span><span class="field">
+                @Html.EditorFor(model => model.PermanentUnion)
+            </span>
+            <div class="clear"></div>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PermanentVillage)
+            </span><span class="field">
+                @Html.EditorFor(model => model.PermanentVillage)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PermanentPostName)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.PermanentPostName)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.PermanentDistictId)
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.PermanentDistictId, Model.PermanentDistictList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadThanaPermanent();" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PermanentPostCode)
+            </span><span class="field">
+                @Html.EditorFor(model => model.PermanentPostCode, new { @maxlength = 20 })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.PermanentThanaId)
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.PermanentThanaId, Model.PermanentThanaList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadThana();" })
+            </span>
+        </div>
+    </fieldset>
+
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MobNo)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.MobNo, new { @maxlength = 20 })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.TelNo)
+        </span><span class="field">
+            @Html.EditorFor(model => model.TelNo, new { @maxlength = 20 })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Email)
+        </span><span class="field">
+            @Html.EditorFor(model => model.Email)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.NationalityId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.NationalityId, Model.NationalityList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ReligionId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.ReligionId, Model.ReligionList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Gender)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.Gender, Model.GenderList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Profession)
+
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Profession)
+        </span>
+    </div>
+
+    <div class="clear"></div>
+</div>
+
+<div class="clear"></div>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DegreeLevelId, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.DegreeLevelId, Model.DegreeLevelList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.PassingYear)
+            <label class="required-field">*</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.PassingYear, Model.PassingYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SubjectGroupId)
+            <label class="required-field">*</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.SubjectGroupId, Model.SubjectGroupList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.UniversityAndBoardId)
+            <label class="required-field">*</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.UniversityAndBoardId, Model.UniversityAndBoardList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.AcademicInstName)
+        </span><span class="field">
+            @Html.EditorFor(model => model.AcademicInstName)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.AcademicGradeId)
+            <label class="required-field">*</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.AcademicGradeId, Model.AcademicGradeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CGPA)
+        </span><span class="field">
+            @Html.EditorFor(model => model.CGPA)
+        </span>
+    </div>
+    <div class="row" align="center">
+        <div style="width: 90%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+                <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        @*<th>
+                            SL No.
+                        </th>*@
+                        <th>
+                            Examination Name
+                        </th>
+                        <th>
+                            Academic Institution
+                        </th>
+                        <th>
+                            Passing Year
+                        </th>
+                        <th>
+                            Division/Grade
+                        </th>
+                        <th>
+                            Board/University
+                        </th>
+                        <th>
+                            Subject
+                        </th>
+                        <th>
+                            GPA/CGPA
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.strMode == "Edit") { Html.RenderPartial("_Details", Model); }
+                </tbody>
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.AddQualafication)
+
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.AddQualafication)
+        </span>
+    </div>
+    <fieldset>
+        <legend>Experience Details (If applicable)</legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.YearOfExperience)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.YearOfExperience)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.ExperienceDetails)
+            </span><span class="field">
+                @Html.EditorFor(model => model.ExperienceDetails)
+            </span>
+        </div>
+    </fieldset>
+    <div class="clear"></div>
+</div>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.BankDraftNo)
+
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.BankDraftNo)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.BankDraftDate)
+
+        </span><span class="field">
+            @Html.EditorFor(model => model.BankDraftDate)
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.QuotaNameId)
+
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.QuotaNameId, Model.QuotaNameList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.BankNameId)
+
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.BankNameId, Model.BankNameList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadBankBranch();" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.BankBranchId)
+
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.BankBranchId, Model.BankBranchList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CandidateType)
+
+        </span><span class="field">
+            @Html.RadioButtonFor(model => model.CandidateType, "Yes")
+            @Html.Label("Yes")
+            @Html.RadioButtonFor(model => model.CandidateType, "No", new { @checked = true })
+            @Html.Label("No")
+            @Html.RadioButtonFor(model => model.CandidateType, "NA")
+            @Html.Label("Not Applicable")
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ApplicationDate)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ApplicationDate)
+        </span>
+    </div>
+</div>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.CheckBoxFor(model => model.IsAddSingnatureAttachment, new { onclick = "disableUploadSignature();" })
+            @Html.LabelFor(model => model.IsAddSingnatureAttachment)
+        </span><span class="field">
+            <div id="divSignatureFileAttach">
+                @Html.HiddenFor(model => model.SingnatureAttachment)
+                @Html.HiddenFor(model => model.SingnatureFileName)
+                <input type="file" name="SingnatureAttachment" id="SingnatureAttachment" />
+                <a href="@Model.SingnatureFilePath" visible="true" runat="server" target="_blank">@Model.SingnatureFileName</a>
+
+            </div>
+        </span>
+    </div>
+    <div class="row">
+        <span style="margin-left: 25px; width: 200px;" class="label">Maximum image size(512 KB) and jpg, jpeg, png or gif image only</span>
+    </div>
+</div>
+
+<div class="clear">
+</div>
+<style type="text/css">
+    .applicant-img-preview {
+        position: relative;
+        overflow: hidden;
+        width: 180px;
+        height: 140px;
+    }
+
+    .portrait-box {
+        position: relative;
+        width: 182px;
+        height: 142px;
+        border: 2px solid #ddd;
+    }
+
+    .custom-left-width .label {
+        width: 25%;
+    }
+
+    .custom-left-width .field {
+        width: 42%;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $(document).ready(function () {
+        disableUploadSignature();
+        showErrMsg();
+        $('#previewImg').hide();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    $("#ApplicationDate").live('change', function () {
+        var startDateofapp = new Date($('#StartDateOfApplication').val());
+        var lastDateofapp = new Date($('#LastDateOfApplication').val());
+        var appDate = new Date($('#ApplicationDate').val());
+
+        if ($('#LastDateOfApplication').val() == '' || $('#LastDateOfApplication').val() == null) {
+            $('#ApplicationDate').val('');
+            alert('please, select Advertisement Code before Application Date');
+            return;
+        }
+
+        if ($('#StartDateOfApplication').val() != '' && startDateofapp > appDate) {
+            // Do something
+            $('#ApplicationDate').val('');
+            alert("Application Date must be greater than or equal to Application Start Date (" + $('#StartDateOfApplication').val() + ').');
+            return;
+        }
+
+        if ($('#LastDateOfApplication').val() != '' && lastDateofapp < appDate) {
+            // Do something
+            $('#ApplicationDate').val('');
+            alert("Application Date must be lower than or equal to Application End Date (" + $('#LastDateOfApplication').val() + ').');
+            return;
+        }
+
+    })
+
+    function disableUploadSignature() {
+        var IsSelect = $('#IsAddSingnatureAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+            // $('#spSignatureAttachment').show();
+            $('#divSignatureFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+            // $('#spSignatureAttachment').hide();
+            $('#divSignatureFileAttach').hide();
+        }
+    }
+
+    //$("#Attachment").live('change', function () {
+    //    $('#mainPortrait').hide();
+    //    $('#previewImg').show();
+    //    readURL(this);
+
+    //});
+
+    //function readURL(input) {
+    //    if (input.files && input.files[0]) {
+    //        var reader = new FileReader();
+    //        reader.onload = function (e) {
+    //            $('#previewImg').attr('src', e.target.result);
+    //        }
+    //        reader.readAsDataURL(input.files[0]);
+    //    }
+    //}
+
+    $('#btnSubmit').live('click', function () {
+        $('#IsSubmit').attr('value', true);
+    })
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var dob = $('#DateOfBirth').val();
+        var jobAddDate = $('#AdJobPostAgeCalDate').val();
+        if (dob != '' && jobAddDate != '')
+            getAge(dob, jobAddDate);
+    });
+    $("#DateOfBirth").live('change', function () {
+        $("#message").empty();
+        var dob = $('#DateOfBirth').val();
+        var jobAddDate = $('#AdJobPostAgeCalDate').val(); //from job advertisement
+
+        if (jobAddDate == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the Advertisement Date</span>  </div> ");
+            $('#DateOfBirth').val('');
+            return;
+        }
+        if (dob == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the Date of Birth</span>  </div> ");
+            return;
+        }
+        getAge(dob, jobAddDate);
+    })
+
+    function getAge(dob, doc) {
+        // $("#message").empty();
+        $('#Age').val('');
+        $('#Year').val('');
+        $('#Month').val('');
+        $('#Day').val('');
+
+        var dateString = new Date(dob);
+        var pub = new Date(doc);
+
+        var dtNow = new Date();
+        if (dateString > dtNow) {
+            $('#DateOfBirth').val('');
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Date of birth needs to be earlier than the current date.</span>  </div> ");
+            return;
+        }
+
+        var now = pub;
+        var today = new Date(now.getYear(), now.getMonth(), now.getDate());
+
+        var yearNow = now.getYear();
+        var monthNow = now.getMonth();
+        var dateNow = now.getDate();
+
+        var yearDob = dateString.getYear();
+        var monthDob = dateString.getMonth();
+        var dateDob = dateString.getDate();
+
+        var oneDay = 24 * 60 * 60 * 1000;
+        var TotaldiffDays = "";
+        TotaldiffDays = Math.round(Math.abs((pub.getTime() - dateString.getTime()) / (oneDay)));
+
+        var days = (pub.getTime() - dateString.getTime()) / (oneDay);
+        //var age = {};
+
+        yearAge = yearNow - yearDob;
+
+        if (monthNow >= monthDob)
+            var monthAge = monthNow - monthDob;
+        else {
+            yearAge--;
+            var monthAge = 12 + monthNow - monthDob;
+        }
+
+        if (dateNow >= dateDob)
+            var dateAge = dateNow - dateDob;
+        else {
+            monthAge--;
+            var dateAge = 31 + dateNow - dateDob;
+
+            if (monthAge < 0) {
+                monthAge = 11;
+                yearAge--;
+            }
+        }
+
+        $('#Age').val(TotaldiffDays);
+
+        $('#Year').val(yearAge);
+        $('#Month').val(monthAge);
+        $('#Day').val(dateAge);
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    $("#Attachment").live('change', function () {
+
+        if (typeof (FileReader) != "undefined") {
+
+            var image_holder = $("#image-holder");
+            image_holder.empty();
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("<img />", {
+                    "src": e.target.result,
+                    "class": "thumb-image"
+                }).appendTo(image_holder);
+
+            }
+            image_holder.show();
+            reader.readAsDataURL($(this)[0].files[0]);
+        } else {
+            alert("This browser does not support FileReader.");
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $('#btnAdd').live('click', function () {
+        $('#message').empty();
+
+        $("#DegreeLevelId").removeClass("border-red");
+        $("#UniversityAndBoardId").removeClass("border-red");
+        $("#SubjectGroupId").removeClass("border-red");
+        $("#AcademicGradeId").removeClass("border-red");
+        $("#PassingYear").removeClass("border-red");
+
+        var sno = $('#grid tr').length;
+        var applicantInfoId = $('#Id').val();
+
+        var degreeLevelId = $('#DegreeLevelId').val();
+        var degreeLevelName = $("#DegreeLevelId option:selected").text();
+
+        var universityAndBoardId = $('#UniversityAndBoardId').val();
+        var boardName = $("#UniversityAndBoardId option:selected").text();
+
+        var subjectGroupId = $('#SubjectGroupId').val();
+        var subjectGroupName = $("#SubjectGroupId option:selected").text();
+
+        var academicGradeId = $('#AcademicGradeId').val();
+        var academicGradeName = $("#AcademicGradeId option:selected").text();
+
+        var passingyear = $('#PassingYear').val();
+        var academicInstName = $('#AcademicInstName').val();
+        var cgpa = $('#CGPA').val();
+
+        if (degreeLevelId == null || degreeLevelId == "") {
+            $("#DegreeLevelId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (subjectGroupId == null || subjectGroupId == "") {
+            $("#SubjectGroupId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (passingyear == null || passingyear == "") {
+            $("#PassingYear").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (universityAndBoardId == null || universityAndBoardId == "") {
+            $("#UniversityAndBoardId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (academicGradeId == null || academicGradeId == "") {
+            $("#AcademicGradeId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        var model = {
+            ApplicantInfoId: applicantInfoId,
+            DegreeLevelId: degreeLevelId,
+            UniversityAndBoardId: universityAndBoardId,
+            SubjectGroupId: subjectGroupId,
+            AcademicGradeId: academicGradeId,
+            PassingYear: passingyear,
+            AcademicInstName: academicInstName,
+            CGPA: cgpa,
+            DegreeLevelName: degreeLevelName,
+            AcademicGradeName: academicGradeName,
+            UniversityAndBoardName: boardName,
+            SubjectGroupName: subjectGroupName,
+        }
+
+        var url = '@Url.Action("AddQualifacation")';       
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data:{model:model} ,
+           // data: JSON.stringify(model),
+          //  contentType: 'application/json; charset=utf-8',
+           // dataType: 'json',
+            error: function () {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+            },
+            success: function (result) {
+                $("#grid tbody").append(result);
+            }
+        });
+
+        $("#DegreeLevelId").val('');
+        $("#UniversityAndBoardId").val('');
+        $("#SubjectGroupId").val('');
+        $("#AcademicGradeId").val('');
+        $("#PassingYear").val('');
+        $("#AcademicInstName").val('');
+        $("#CGPA").val('');
+    })
+
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+                }
+            });
+        }
+
+        arrangeSno();
+        RearrengeControlName();
+    }
+
+
+    function arrangeSno() {
+        var i = 0;
+        $('#grid tr').each(function () {
+            $(this).find(".sNo").html(i);
+            i++;
+        });
+    }
+
+    function RearrengeControlName() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    function CopyPresentAddress() {
+        if ($("#SameasPresent").is(':checked')) {
+            $("#PermanentAddress").val($("#PresentAddress").val());
+            $("#PermanentVillage").val($("#PresentVillage").val());
+            $("#PermanentUnion").val($("#PresentUnion").val());
+
+            // LoadDistrict
+            $("#PermanentDistictId").empty();
+            $("#PermanentDistictId").append($('#PresentDistictId').html());
+            $("#PermanentDistictId").val($("#PresentDistictId").val());
+            // LoadThana
+            $("#PermanentThanaId").empty();
+            $("#PermanentThanaId").append($('#PresentThanaId').html());
+            $("#PermanentThanaId").val($("#PresentThanaId").val());
+
+            $("#PermanentPostName").val($("#PresentPostName").val());
+            $("#PermanentPostCode").val($("#PresentPostCode").val());
+        }
+        else {
+            $("#PermanentAddress").val('');
+            $("#PermanentVillage").val('');
+            $("#PermanentUnion").val('');
+
+            // LoadDistrict
+            $("#PermanentDistictId").empty();
+            $("#PermanentDistictId").append('');
+            $("#PermanentDistictId").val('');
+            // LoadThana
+            $("#PermanentThanaId").empty();
+            $("#PermanentThanaId").append('');
+            $("#PermanentThanaId").val('');
+
+            $("#PermanentPostName").val('');
+            $("#PermanentPostCode").val('');
+        }
+    }
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+
+    function LoadThana() {
+        var presentDistictId = $('#PresentDistictId').val();
+        var presentThana = $('#PresentThanaId');
+        presentThana.empty();
+        presentThana.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (presentDistictId != null && presentDistictId != '') {
+            $.getJSON('@Url.Action("LoadThana")', { districtId: presentDistictId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    presentThana.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+
+    function LoadThanaPermanent() {
+        var presentDistictId = $('#PermanentDistictId').val();
+        var presentThana = $('#PermanentThanaId');
+        presentThana.empty();
+        presentThana.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (presentDistictId != null && presentDistictId != '') {
+            $.getJSON('@Url.Action("LoadThana")', { districtId: presentDistictId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    presentThana.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+    function LoadBankBranch() {
+        var bankNameId = $('#BankNameId').val();
+        var bankBranchId = $('#BankBranchId');
+        bankBranchId.empty();
+        bankBranchId.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankNameId != null && bankNameId != '') {
+            $.getJSON('@Url.Action("LoadBankBranch")', { bankId: bankNameId }, function (obj) {
+                $.each(obj, function (index, data) {
+                    bankBranchId.append($('<option/>', {
+                        value: data.Id,
+                        text: data.Name
+                    }));
+                });
+            });
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    $('#JobAdvertisementInfoId').live("change", function (e) {
+        var jobId = $(this).val();
+        getJobAdvertisementInfo();
+        FillDesignaitonCombo(jobId);
+    });
+
+    function getJobAdvertisementInfo() {
+        var jobAdId = $('select#JobAdvertisementInfoId').val();
+        if (jobAdId != '') {
+            $("#AdJobPostAgeCalDate").val('');
+            $("#StartDateOfApplication").val('');
+            $("#LastDateOfApplication").val('');
+            $.get('@Url.Action("GetJobAdvertisementInfo", "ApplicantInfo")', { jobAdId: $('select#JobAdvertisementInfoId').val() }, function (data) {
+                if (data.AgeCalDate != null) {
+                    $("#AdJobPostAgeCalDate").val(data.AgeCalDate);
+                    $("#LastDateOfApplication").val(data.LastDateOfApplicaton);
+                    $("#StartDateOfApplication").val(data.StartDateOfApplication);
+                }
+            });
+        }
+    }
+
+
+
+    // Designation by OrganogramLevel
+    function FillDesignaitonCombo(AdJobId) {
+        if (AdJobId != '') {
+            var url = '@Url.Action("GetDesignationByAdJobId", "ApplicantInfo")' + '?Id=' + AdJobId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var ddlDesignations = $("#DesignationId");
+                // clear all previous options
+                $("#DesignationId>option").remove();
+                // populate the products
+                for (i = 0; i < heads.length; i++) {
+                    ddlDesignations.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+            });
+        }
+        else {
+
+            $("#DesignationId>option").remove();
+            $("#DesignationId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+
+
+    $('#DesignationId').live("change", function (e) {
+        fillDivision($(this).val());
+    });
+
+    function fillDivision() {
+        var designationIdId = $('select#DesignationId').val();
+        if (designationIdId != '') {
+            $("#DivisionId").val('');
+            $.get('@Url.Action("GetDivisionByDesignaionId", "ApplicantInfo")', { designationId: designationIdId }, function (data) {
+                $("#DivisionId").val(data.DivisionId);
+            });
+        }
+    }
+
+
+    function getNameFromPath(strFilepath) {
+        var objRE = new RegExp(/([^\/\\]+)$/);
+        var strName = objRE.exec(strFilepath);
+
+        if (strName == null) {
+            return null;
+        }
+        else {
+            return strName[0];
+        }
+    }
+
+    $(function () {
+        $('input[name=Attachment]').live("change", function () {
+            $("#message").empty();
+
+            var file = getNameFromPath($(this).val());
+            if (file != null) {
+                var extension = file.substr((file.lastIndexOf('.') + 1)).toLowerCase();
+                switch (extension) {
+                    case 'jpg':
+                    case 'png':
+                    case 'gif':
+                    case 'jpeg':
+                        flag = true;
+                        $('#mainPortrait').hide();
+                        $('#previewImg').show();
+                        readURL(this);
+                        break;
+                    default:
+                        flag = false;
+                }
+            }
+            if (flag == false) {
+                $("#message").html('<b>Please select JPG,JPEG, GIF or PNG image file only.</b>').css({ color: 'red' });
+                $('input[name=Attachment]').val("");
+                $('#previewImg').attr("src", "#");
+                return false;
+            }
+            else {
+                var fileSize = 0;
+                fileSize = this.files[0].size;
+                fileSize = Math.round(fileSize / 1024);
+                if (fileSize >= 512) {
+                    $("#message").html('<b>Please select image file less than 512 KB.</b>').css({ color: 'red' });
+                    $('input[name=Attachment]').val("");
+                    $('#mainPortrait').show();
+                    $('#previewImg').hide();
+                    return false;
+                }
+
+            }
+        });
+    });
+
+    $(function () {
+        $('input[name=SingnatureAttachment]').live("change", function () {
+            $("#message").empty();
+            var file = getNameFromPath($(this).val());
+            if (file != null) {
+                var extension = file.substr((file.lastIndexOf('.') + 1)).toLowerCase();
+                switch (extension) {
+                    case 'jpg':
+                    case 'png':
+                    case 'gif':
+                    case 'jpeg':
+                        flag = true;
+                        break;
+                    default:
+                        flag = false;
+                }
+            }
+            if (flag == false) {
+                $("#message").html('<b>Please select JPG,JPEG, GIF or PNG image file only.</b>').css({ color: 'red' })
+                $('input[name=SingnatureAttachment]').val("");
+                return false;
+            }
+            else {
+                var fileSize = 0;
+                fileSize = this.files[0].size;
+                fileSize = Math.round(fileSize / 1024);
+                if (fileSize >= 512) {
+                    $("#message").html('<b>Please select image file less than 512 KB.</b>').css({ color: 'red' })
+                    $('input[name=SingnatureAttachment]').val("");
+                    return false;
+                }
+
+            }
+        });
+    });
+
+    //$("#Attachment").live('change', function () {
+    //    $('#mainPortrait').hide();
+    //    $('#previewImg').show();
+    //    readURL(this);
+
+    //});
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#previewImg').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    
+</script>
+

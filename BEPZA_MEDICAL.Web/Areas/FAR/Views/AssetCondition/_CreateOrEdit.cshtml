@@ -1,0 +1,45 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.AssetConditionViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend>Asset Condition</legend>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssetStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.AssetStatusId, Model.AssetStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.Name, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.Name, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SortOrder, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SortOrder, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.Remarks, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+</div>
+

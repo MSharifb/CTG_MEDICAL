@@ -1,0 +1,65 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.ItemType.ItemTypeViewModel
+@{
+    ViewBag.Title = "Item Type";
+    //Layout = "~/Areas/INV/Views/Shared/_Layout.cshtml";
+}
+
+<div class="GroupBox">
+    <div class="GroupBox" style="max-height: 25px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+
+    <div class="GroupBox search-content">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ItemTypeName)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.ItemTypeName)
+            </span>
+            <span class="label-right">
+
+            </span>
+            <span class="field">
+                <div class="button-crude button-left">
+                    <input type="button" id="search" value="Search" />
+                </div>
+            </span>
+        </div>
+    </div>
+
+    <div class="frm-content">
+        <div class="GroupBox">
+            <div class="button-crude">
+                <input type="button" id="expandAndCloseNode" value="Expand" />
+            </div>
+            <div class="clear"></div>
+            @Html.Partial("_TreeView")
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function OnCompleteCreate(content) {
+
+        if (content.statusText == 'OK') {
+
+            $('.search-content').hide();
+            $('.frm-content').html(content.responseText);
+        }
+    }
+
+    $('#expandAndCloseNode').click(function () {
+        var strText = $(this).val();
+        if (strText == "Expand") {
+            $("#treeView").jstree("open_all");
+            $('#expandAndCloseNode').val('Collapse');
+        } else {
+            $("#treeView").jstree("close_all");
+            $('#expandAndCloseNode').val('Expand');
+        }
+
+    });
+
+</script>

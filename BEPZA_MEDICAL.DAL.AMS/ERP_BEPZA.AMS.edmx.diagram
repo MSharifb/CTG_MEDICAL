@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6aebdee478ea436f8d0b7e5410098c72" Name="Diagram1" ZoomLevel="50">
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_AutoReminder" Width="1.5" PointX="11" PointY="1" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_Category" Width="1.5" PointX="3.75" PointY="3.5" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_DesignationInfo" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_ReminderType" Width="1.5" PointX="8.75" PointY="1" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_StayRule" Width="1.5" PointX="6" PointY="3.625" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_ZoneWiseQuota" Width="1.5" PointX="6" PointY="9.5" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.PRM_ZoneInfo" Width="1.5" PointX="0.75" PointY="9.625" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.CommonConfigType" Width="1.5" PointX="2.75" PointY="0.75" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AutoReminder_AMS_ReminderType" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_StayRule_AMS_Category" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_ZoneWiseQuota_AMS_Category" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_ZoneWiseQuota_PRM_ZoneInfo" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_AnsarDegree" Width="1.5" PointX="11.25" PointY="32.375" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_EmpStatus" Width="1.5" PointX="6.75" PointY="13.375" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_AnsarPhoto" Width="1.5" PointX="11.25" PointY="11.875" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_AnsarEmpInfo" Width="1.5" PointX="9" PointY="4.75" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarDegree_AMS_AnsarEmpInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarEmpInfo_AMS_DesignationInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarEmpInfo_AMS_EmpStatus" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarEmpInfo_PRM_ZoneInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarPhoto_AMS_AnsarEmpInfo" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.vwAMSAnsarEducationalQlfy" Width="1.5" PointX="13.375" PointY="0.75" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.PRM_OrganizationType" Width="1.5" PointX="13.375" PointY="8" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_AnsarExperience" Width="1.5" PointX="15.625" PointY="6.625" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarExperience_AMS_AnsarEmpInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarExperience_PRM_OrganizationType" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_BlacklistRemoval" Width="1.5" PointX="16.5" PointY="12.5" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarEmpInfo_AMS_Category" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.PRM_EmploymentInfo" Width="1.5" PointX="3" PointY="7.75" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_BlacklistRemoval_PRM_EmploymentInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_BlacklistRemoval_PRM_EmploymentInfo1" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_PRM_EmploymentInfo_PRM_ZoneInfo" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.SMS_SecurityInfo" Width="1.5" PointX="5.25" PointY="22.25" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_SMS_SecurityInfo_PRM_EmploymentInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_SMS_SecurityInfo_PRM_ZoneInfo" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.SMS_Organization" Width="1.5" PointX="13.375" PointY="16.75" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_Blacklist" Width="1.5" PointX="14.25" PointY="11.625" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_Blacklist_AMS_AnsarEmpInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_Blacklist_PRM_EmploymentInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_BlacklistRemoval_AMS_Blacklist" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_AnsarPersonalInfo" Width="1.5" PointX="11.25" PointY="20.875" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarPersonalInfo_AMS_AnsarEmpInfo" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.AMS_AnsarServiceHistory" Width="1.5" PointX="16.25" PointY="1.25" />
+        <EntityTypeShape EntityType="ERP_BEPZA_AMSModel.SMS_SecurityServiceHistory" Width="1.5" PointX="9.5" PointY="15.5" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarServiceHistory_AMS_AnsarEmpInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_AMS_AnsarServiceHistory_PRM_ZoneInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_SMS_SecurityServiceHistory_PRM_EmploymentInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_SMS_SecurityServiceHistory_PRM_ZoneInfo" />
+        <AssociationConnector Association="ERP_BEPZA_AMSModel.FK_SMS_SecurityServiceHistory_SMS_SecurityInfo" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

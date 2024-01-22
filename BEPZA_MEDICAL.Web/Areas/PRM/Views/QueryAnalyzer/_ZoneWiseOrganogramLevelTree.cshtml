@@ -1,0 +1,99 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.QueryAnalyzerViewModel
+
+@*<h2>@ViewBag.ZoneInfoId</h2>*@
+
+<div class="form-group">
+    <div class="GroupBox search-content">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.LevelName)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.LevelName)
+            </span>
+            <span class="label-right">
+
+            </span>
+            <span class="field">
+                <div class="button-crude button-left">
+                    <input type="button" id="searchOrg" value="Search" />
+                </div>
+            </span>
+        </div>
+
+    </div>
+
+    <div class="col-md-8">
+        <div class="clear"></div>
+        <div style="background: #FFFFFF" id="treeViewSearch">
+        </div>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () { 
+                var zoneId = '@ViewBag.ZoneInfoId';
+                PopulateTreeView(zoneId);
+            })
+
+            function ClearTree() {
+                $('#treeViewSearch').empty();
+            }
+            
+            function PopulateTreeView(zoneId) {
+               
+                var url = '@Url.Action("GetOrganogramTreeData", "QueryAnalyzer")?zoneId=' + zoneId;
+                $('#treeViewSearch').jstree({                   
+                    'core': {
+                        'check_callback': true,
+                        'data': {
+                            'url': url,
+                            'data': function (node) {
+                                return { "id": node.title };
+                            }
+                        }
+                    },
+
+                    "plugins": ["search"]
+                });
+
+                $("#searchOrg").click(function () {
+                        var to = false;
+                        if (to) { clearTimeout(to); }
+                        to = setTimeout(function () {
+                            var v = $('#LevelName').val();
+                            $('#treeViewSearch').jstree(true).search(v);
+                        }, 250);
+                })
+
+               
+                $(document).on('click', '.jstree-anchor', function (e) {                   
+                    var orgNodeid = $(this).parent().attr('id');
+                    var nodeName = $(this).text();
+                    if (orgNodeid > 0) {
+                        setOrganogramId(orgNodeid, nodeName);
+                    }                  
+                    
+                });
+
+                $('#treeViewSearch').on('changed.jstree', function (e, data) {
+                    var nodeId = $('#treeViewSearch').jstree('get_selected').attr('id');
+                }).jstree();
+
+            };
+
+            //$(function () {
+            //    var to = false;
+            //    $("#search").click(function () {
+            //        alert("Ok");
+            //        if (to) { clearTimeout(to); }
+            //        to = setTimeout(function () {
+            //            var v = $('OrganogramLevelName').val();
+            //            $('#treeViewSearch').jstree(true).search(v);
+            //        }, 250);
+            //    })
+            //});
+
+        </script>
+
+    </div> 
+</div>

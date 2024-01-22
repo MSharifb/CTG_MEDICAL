@@ -1,0 +1,182 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MembershipInformationViewModel
+@{
+    ViewBag.Title = "MembershipApplicationApproval";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("MembershipApplicationApproval", "MembershipApproval", FormMethod.Post, new { id = "frm" }))
+{  
+    <div class="GroupBox" class="message" style="min-height: 15px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div style="color: Red">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <fieldset>
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ApprovalPathId)
+        @Html.HiddenFor(model => model.ApprovalActionId)
+        @Html.HiddenFor(model => model.PreviousStepId)
+        @Html.HiddenFor(model => model.ApprovalStatusId)
+        <div id="appDiv">
+            @Html.Partial("_CreateOrEdit", Model)
+        </div>
+
+        <div class="button-center buttonSubmit">
+          
+            @if (Model.ApprovalActionId == 3)
+            {
+                <input type="submit" value="Review" id="btnReview" name="btnReview" style="margin-right: 8px;" />
+            }
+            @if (Model.ApprovalActionId == 4) 
+            {
+                <input type="submit" value="Approve" id="btnApprove" name="btnApprove" style="margin-right: 8px;" />
+            } 
+            @if (Model.ApprovalActionId >= 3 && Model.ApprovalActionId <= 4) 
+            {
+                <input type="submit" value="Reject" id="btnReject" name="btnReject" style="margin-right: 8px;" />
+            }
+        </div>
+
+       
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<div class="row" style="padding: 10px">
+    @Html.CheckBox("ShowApproval")<b style="color: #3C78B5; vertical-align: top; padding: 2px">
+        View Approval History</b>
+    <div class="PS">
+    </div>
+    <div class="History" style="display: none">
+        <div class="GroupBox">
+            <div class="row">
+                <table>
+                    @if (Model.ApprovalPathList != null && Model.ApprovalPathList.Count > 0)
+                    {
+                        foreach (var approvalObj in Model.ApprovalPathList)
+                        {
+                        <tr>
+                            <td>
+                                <span style="color: #3C78B5; margin: 0 0 0 38px; overflow: visible; text-align: left;
+                                    vertical-align: middle;">@Html.Encode(approvalObj.Status)
+                                    by</span>
+                            </td>
+                            <td>
+                                :
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.ApprovedBy)</span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; overflow: visible; margin: 0 0 0 38px; text-align: left;
+                                    vertical-align: middle;">Submission Date :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.ApprovedDate)
+                                </span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; overflow: visible; margin: 0 0 0 38px; text-align: left;
+                                    vertical-align: middle;">Status :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.Status)
+                                </span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; float: left; margin: 0 0 0 38px; overflow: visible;
+                                    text-align: left; vertical-align: middle;">Comment :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.Comments)</span>
+                            </td>
+                        </tr>
+                   
+                        }
+                    }
+                </table>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="divPhotoViewer">
+    <img id="imgThumbView" height="250" width="274" class="imgThumb"  src=""  />
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divPhotoViewer").dialog({ autoOpen: false, resizable: false, modal: true, height: 300, width: 300, title: 'Photo Viewer', beforeclose: function (event, ui) { Close(); } });
+        showErrMsg();
+
+    });
+
+    function OpenPhotoViewer(e) {
+
+        var imgSrc = $(e).attr('src');
+        $('#imgThumbView').attr('src', imgSrc);
+
+        $("#divPhotoViewer").dialog('open');
+        return false;
+    }
+
+
+    function Close() {
+
+    }
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+        if ('@Model.Mode' == "Edit") {
+
+            $('.button-left a.addItem').hide();
+            $('#grid .dynamicRow').find('td input.datePicker').attr('readonly', true).css('background-color', '#F2F5F8');
+            $('#grid .dynamicRow').find('td:last img').hide();
+        }
+
+    });
+
+    $('#btnApprove').live('click', function () {
+
+       
+        if ($('#MembershipID').val() == '') {
+            $('#MembershipID').css('border-color', 'red');
+            alert('Membership ID must be needed.');
+            return false;
+        }
+
+    });
+
+    $('#btnReview').live('click', function () {
+        $('#ApprovalActionId').val(3);
+    });
+
+    $('#btnApprove').live('click', function () {
+        $('#ApprovalActionId').val(4);
+
+    });
+
+    $('#btnReject').live('click', function () {
+
+        $('#ApprovalActionId').val(5);
+
+    });
+
+
+    $("#ShowApproval").click(function () {
+        $(".History").toggle("slow");
+    });
+</script>

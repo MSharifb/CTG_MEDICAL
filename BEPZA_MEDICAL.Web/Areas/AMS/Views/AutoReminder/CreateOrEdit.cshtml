@@ -1,0 +1,155 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.AMS.ViewModel.AutoReminderViewModel
+@{
+    Layout = "~/Areas/AMS/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .TextArea {
+        width: 600px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        if ('@Model.ActionType' == 'Edit') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+        }
+        else {
+            $('#btnUpdate').hide();
+        }
+    });
+
+    if ('@Model.ErrMsg' != "") {
+
+        if ('@Model.IsError' == '1') {
+
+            //            $('#message').html("<b style='color:red'>" + '@Model.ErrMsg' + "</b>");
+        }
+        else {
+            $('#message2').html("<b style='color:green'>" + '@Model.ErrMsg' + "</b>");
+        }
+    }
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#SortingOrder").keydown(function (event) {
+
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        //$('.chkIndividual').live('change', function () {
+        //    if ($('#IsIndividual:checked').val() == 'False') {
+        //        $('#imgEmpSearch').hide();
+        //        $('#EmployeeId').val(0);
+        //        $('#EmpId').val('');
+        //        $('#EmployeeName').val('');
+        //    }
+        //    else {
+        //        $('#imgEmpSearch').show();
+        //    }
+        //})
+
+    });
+
+</script>
+
+<div>
+    @using (Html.BeginForm(Model.ActionType, "AutoReminder", FormMethod.Post, new { id = "frm" }))
+    {
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                if (@Model.IsError == 1)
+                {
+                    <div class="failed">
+                        @Model.ErrMsg
+                    </div>
+                }
+                else
+                {
+                    <div class="success">
+                        @Model.ErrMsg
+                    </div>
+                }
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+
+        @Html.HiddenFor(m => m.Id)
+        @*@Html.HiddenFor(m => m.ZoneInfoId)*@
+        <div class="GroupBox">
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ReminderTypeId)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(m => m.ReminderTypeId, Model.ReminderTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ReminderAfter)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.ReminderAfter, new { @type = "number", @class = "required" })
+                    &nbsp; month(s)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Remarks)
+                </span>
+                <span>
+                    @Html.TextAreaFor(model => model.Remarks, new { @style = @"width:55%" })
+                </span>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                    <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+                }
+                <input type="button" value="Clear" id="btnClear" name="btnClear" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    }
+</div>
+
+<div class="button-crude button-left" style="margin: 5px">
+    @Html.ActionLink("Back to List", "Index", "AutoReminder")
+</div>

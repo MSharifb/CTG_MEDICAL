@@ -1,0 +1,56 @@
+﻿
+
+<div class="form-group">
+    <div class="col-md-8">
+        <div class="clear"></div>
+        <div style="background: #FFFFFF" id="treeViewSearch">
+        </div>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                PopulateTreeView();
+            });
+
+            function ClearTree() {
+                $('#treeViewSearch').empty();
+            }
+
+            $('#ZoneId').change(function () {
+                $("#treeViewSearch").jstree("destroy");
+                PopulateTreeView();
+            });
+
+            function PopulateTreeView() {
+
+                var url = '@Url.Action("GetOrganogramTreeData", "FixedAsset")';
+                $('#treeViewSearch').jstree({                   
+                    'core': {
+                        'check_callback': true,
+                        'data': {
+                            'url': url,
+                            'data': function (node) {
+                                return { "id": node.title };
+                            }
+                        }
+                    },
+                    "plugins": ["search"]
+                });
+                
+                $(document).on('click', '.jstree-anchor', function (e) {                   
+                    var orgNodeid = $(this).parent().attr('id');
+                    var nodeName = $(this).text();
+                    if (orgNodeid > 0) {
+                        setOrganogramId(orgNodeid, nodeName);
+                    } 
+                });
+
+                $('#treeViewSearch').on('changed.jstree', function (e, data) {
+                    var nodeId = $('#treeViewSearch').jstree('get_selected').attr('id');
+                }).jstree();
+
+            };
+        </script>
+
+    </div> 
+</div>

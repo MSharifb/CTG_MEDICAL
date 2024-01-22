@@ -1,0 +1,30 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SuspensionOfEmployeeViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("SuspensionOfEmployeeDetailList"))
+    {           
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.HeadId)
+        @Html.HiddenFor(x => x.HeadType)
+        @Html.HiddenFor(x => x.AmountType)
+        @Html.HiddenFor(x => x.ActualAmount)
+
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.SalaryHead)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.AmountType)
+        </td>
+        <td width="15%" style="text-align: right">
+            @Html.Encode(Model.ActualAmount)
+        </td>
+        <td width="15%" style="text-align: right">
+            @Html.TextBoxFor(x => x.Amount, new { @class = "DeductionSum"})
+        </td>
+    }
+    </tr>
+<style type="text/css">
+    .DeductionSum {
+        text-align: right;
+    }
+</style>

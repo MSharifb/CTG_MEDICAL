@@ -1,0 +1,21 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantInterviewCardIssueViewModel
+@foreach (var item in Model.JobPostInformationList)
+{
+    <tr>
+        <td style="width: 30px; text-align: center">
+            @Html.CheckBox("chkDesignation", item.IsChecked, new { @class = "rchk", @value = item.DesignationId })
+        </td>
+        <td style="text-align: left">
+            @Html.Encode(item.DesignationName)
+        </td>
+        <td style="text-align: left;">
+            @Html.Encode(item.DepartmentName)
+        </td>
+        <td style="text-align: left;">
+            @Html.Encode(item.SectionName)
+        </td>
+        <td style="text-align: right;">
+            @Html.Encode(item.NoOfPost)
+        </td>
+    </tr>
+}

@@ -1,0 +1,528 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.Settlement.SettlementViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <fieldset>
+        <legend>Membership Information</legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeCode)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmployeeCode)
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" onclick="return openEmployee();" />
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeName)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmployeeName)
+            </span><span class="label-right">
+                @Html.HiddenFor(model => model.MembershipId)
+                @Html.LabelFor(model => model.MembershipCode)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.MembershipCode)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.InactiveDate)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.InactiveDate)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.SettlementDate)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.SettlementDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.PeriodId)
+                @Html.LabelFor(model => model.CpfPeriod)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.CpfPeriod)
+            </span>
+            @if (!Model.IsMonthly)
+            {
+                <span class="label-right">
+                    @Html.LabelFor(model => model.OutgoingProfitRate)
+                    <label style='color: red'>
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.OutgoingProfitRate)
+                </span>
+            }
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Remarks)
+            </span><span class="field">
+                @Html.TextAreaFor(m => m.Remarks, new { @style = "width:200px", @maxlength = "500" })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.MembershipLengthInYear)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.MembershipLengthInYear)
+            </span>
+        </div>
+    </fieldset>
+    <div class="row">
+        <div style="float: left; width: 49%; padding-right: 5px">
+            <fieldset style="padding-right: 10px">
+                <legend>Employee Portion</legend>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.EmpOpening)
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.EmpOpening)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.EmpContributionInPeriod)
+                        <label style='color: red'>
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.EmpContributionInPeriod)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.EmpProftInPeriod)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.EmpProftInPeriod)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.EmpWithdrawnInPeriod)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.EmpWithdrawnInPeriod)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.EmpBalance)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.EmpBalance)
+                    </span>
+                </div>
+            </fieldset>
+        </div>
+        <div style="float: left; width: 49%; padding-left: 5px">
+            <fieldset style="padding-left: 10px">
+                @*Company Portion*@
+                <legend>@Html.LabelFor(model=> model.CompanyPortion)</legend>
+                <div class="row">
+                    <span class="label" style="width: 45%;">
+                        @Html.LabelFor(model => model.ComOpening)
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ComOpening)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width: 45%;">
+                        @Html.LabelFor(model => model.ComContributionInPeriod)
+                        <label style='color: red'>
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ComContributionInPeriod)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width: 45%;">
+                        @Html.LabelFor(model => model.ComProftInPeriod)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ComProftInPeriod)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width: 45%;">
+                        @Html.LabelFor(model => model.ForfeitedAmount)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ForfeitedAmount)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width: 45%;">
+                        @Html.LabelFor(model => model.ComBalance)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ComBalance)
+                    </span>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div style="float: left; width: 49%; padding-right: 5px">
+            <fieldset style="padding-right: 10px">
+                <legend>Loan Information</legend>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.HiddenFor(model => model.LoanId)
+                        @Html.LabelFor(model => model.LoanAmount)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.LoanAmount)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.LoanRefund)
+                        <label style='color: red'>
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.LoanRefund)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.DueLoan)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.DueLoan)
+                    </span>
+                </div>
+            </fieldset>
+        </div>
+        <div style="float: left; width: 49%; padding-left: 5px">
+            <fieldset style="padding-left: 10px">
+                <legend>Final Payment</legend>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.GrandTotal)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.GrandTotal)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.OtherDeduction)
+                        <label style='color: red'>
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.OtherDeduction)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:45%;">
+                        @Html.LabelFor(model => model.NetPayable)
+                        <label style='color: red'>
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.NetPayable)
+                    </span>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearchList", "EmployeeSearch")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'text',
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        setTimeout(ClickEmpSearch, 2000);
+        return false;
+    }
+
+    function ClickEmpSearch() {
+        $('#divEmpList #sButton').trigger('click');
+    }
+
+    function setData(id) {
+        var isEmpcode = false;
+        GetSettlementInfo(isEmpcode, id);
+        $("#divEmpList").dialog('close');
+    }
+
+
+    function Closing() {
+
+    }
+
+
+    //  Start Autocomplete
+
+    function split(val) {
+        return val.split(/,\s*/);
+    }
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+    $("#EmployeeCode").bind("keydown",
+        function(event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+                $(this).data("autocomplete").menu.active) {
+                event.preventDefault();
+            }
+        });
+
+    var urlauto = '@Url.Action("GetMemberByEmployeeCode", "OpeningBalance")';
+
+    $("#EmployeeCode").autocomplete({
+        source: function (request, response) {
+            //define a function to call your Action (assuming UserController)
+            $.ajax({
+                url: urlauto,
+                type: "GET",
+                dataType: "json",
+                //query will be the param used by your action method
+                data: { query: request.term },
+                term: extractLast(request.term),
+                success: function (data) {
+
+                    response($.map(data, function (item) {
+                        return { label: item, value: item };
+                    }))
+                }
+            })
+        },
+        search: function () {
+            // custom minLength
+            var term = extractLast(this.value);
+            if (term.length < 1) {
+                return false;
+            }
+        },
+        focus: function () {
+            // prevent value inserted on focus
+            return false;
+        },
+        select: function (event, ui) {
+            var terms = split(this.value);
+            // remove the current input
+            terms.pop();
+            // add the selected item
+            terms.push(ui.item.value);
+            this.value = terms;
+            var isEmp = true;
+            $('#EmployeeCode').val(terms);
+            GetSettlementInfo(isEmp, terms);
+            return false;
+        }
+    });
+
+    // End Autocomplete
+
+    $("#OtherDeduction").change(function () {
+        $('#message').empty();
+        var grandTotal = parseFloat($("#GrandTotal").val());
+        var otherDeduction = parseFloat($("#OtherDeduction").val());
+        var dueLoan = parseFloat($("#DueLoan").val());
+        if (otherDeduction < (grandTotal - dueLoan)) {
+            $("#NetPayable").val("");
+            $("#NetPayable").val(grandTotal - dueLoan - otherDeduction)
+
+        } else {
+            $('#message').append('<span class="validateown" style="color:red;">Other Deduction Amount is higher than payable amount</span>');
+
+        }
+    });
+
+    if ('@Model.Mode' == "Update") {
+
+        $('#imgEmpSearch').hide();
+        $('#EmployeeCode').attr("readonly", "readonly");
+    }
+
+    //End Document Ready
+
+
+    function GetSettlementInfo(isEmpcode, id) {
+
+        if (isEmpcode) {
+            id = $('#EmployeeCode').val();
+        }
+
+        $('#EmployeeCode').val('');
+        $('#EmployeeInitial').val('');
+        $('#EmployeeName').val('');
+        $('#MembershipId').val('');
+        $('#MembershipCode').val('');
+        $('#InactiveDate').val('');
+        $('#ActiveDate').val('');
+        $('#CpfPeriod').val('');
+        $('#PeriodId').val('');
+        $('#OutgoingProfitRate').val('');
+        $('#MembershipLengthInYear').val('');
+        $('#EmpOpening').val('');
+        $('#EmpContributionInPeriod').val('');
+        $('#EmpProftInPeriod').val('');
+        $('#EmpWithdrawnInPeriod').val('');
+        $('#EmpBalance').val('');
+        $('#ComOpening').val('');
+        $('#ComContributionInPeriod').val('');
+        $('#ComProftInPeriod').val('');
+        $('#ForfeitedAmount').val('');
+        $('#ComBalance').val('');
+        $('#LoanAmount').val('');
+        $('#LoanRefund').val('');
+        $('#DueLoan').val('');
+        $('#GrandTotal').val('');
+        $('#OtherDeduction').val('');
+        $('#NetPayable').val('');
+
+        if (id > 0) {
+
+            var url = '@Url.Action("GetSettlementInformation", "Settlement")';
+
+            $.post(url, { id: id, isEmpcode: isEmpcode }, function (data) {
+
+                if (data.Inactive == 'Inactive') {
+                    alert('Employee must be inactive for final settlement.');
+                }
+                else if (data.Inactive == 'NotMember') {
+                    alert('Employee must be a member for final settlement.');
+                }
+
+                else {
+                    $('#EmployeeCode').val(data.EmployeeCode);
+                    $('#EmployeeInitial').val(data.EmployeeInitial);
+                    $('#EmployeeName').val(data.EmployeeName);
+                    $('#MembershipId').val(data.MembershipId);
+                    $('#MembershipCode').val(data.MembershipCode);
+                    $('#EmployeeInitial').val(data.EmployeeInitial);
+                    $('#EmployeeName').val(data.EmployeeName);
+                    $('#MembershipId').val(data.MembershipId);
+                    $('#ActiveDate').val(data.ActiveDate);
+                    $('#InactiveDate').val(data.InactiveDate);
+                    $('#CpfPeriod').val(data.CpfPeriod);
+                    $('#PeriodId').val(data.PeriodId);
+                    $('#OutgoingProfitRate').val(data.OutgoingProfitRate);
+                    $('#MembershipLengthInYear').val(data.MembershipLengthInYear);
+                    $('#EmpOpening').val(data.EmpOpening);
+                    $('#EmpContributionInPeriod').val(data.EmpContributionInPeriod);
+                    $('#EmpProftInPeriod').val(data.EmpProftInPeriod);
+                    $('#EmpWithdrawnInPeriod').val(data.EmpWithdrawnInPeriod);
+                    $('#EmpBalance').val(data.EmpBalance);
+                    $('#ComOpening').val(data.ComOpening);
+                    $('#ComContributionInPeriod').val(data.ComContributionInPeriod);
+                    $('#ComProftInPeriod').val(data.ComProftInPeriod);
+                    $('#ForfeitedAmount').val(data.ForfeitedAmount);
+                    $('#ComBalance').val(data.ComBalance);
+                    $('#LoanAmount').val(data.LoanAmount);
+                    $('#LoanRefund').val(data.LoanRefund);
+                    $('#DueLoan').val(data.DueLoan);
+                    $('#GrandTotal').val(data.GrandTotal);
+                    $('#OtherDeduction').val(data.OtherDeduction);
+                    $('#NetPayable').val(data.NetPayable);
+                }
+
+            }, "json");
+        }
+        return false;
+    }
+
+    function SettlementVoucherPosting() {
+        
+        var memberId = $('#MembershipId').val();
+        if(memberId <= 0){
+            alert('Before prepare voucher, please save settlement information.');
+            return false;
+        }
+        var url = '@Url.Action("SettlementVoucherPosting", "Settlement")?mId=' + memberId;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (result) {
+                if(result.redirectUrl!=''){
+                    window.location.href = result.redirectUrl;
+                }
+            },
+            error: function () {
+                alert('System is unable to load data please try again.');
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,11 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRInstallmentInformationViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.InstallmentList != null)
+{
+    foreach (var x in Model.InstallmentList)
+    {
+        @Html.Partial("_PartialDetails", x);
+    }
+
+}

@@ -1,0 +1,166 @@
+﻿
+
+
+<script type="text/javascript">
+
+</script>
+<style>
+    .ui-datepicker-trigger {
+        z-index: 1000;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'EmployeeID', 'Employee ID', 'Responsible Person', 'Clearance Form', 'Delete'],
+            colModel: [
+                    { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text'  },
+                    { name: 'EmployeeID', index: 'EmployeeID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                    { name: 'EmpId', index: 'EmpId', align: 'center', width: '60px', search: true, edittype: 'text', formatter: viewformatEdiorLink },
+                    { name: 'EmployeeName', index: 'EmployeeName', align: 'left', width: '140px', search: true, edittype: 'text' },
+                    { name: 'ClearanceFormName', index: 'ClearanceFormName', align: 'Center', width: '140px', search: false},
+                    { name: 'Delete', index: 'Delete', align: 'Center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Clearance Checklist Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $("a.deleteItem").live("click", function () {
+            //debugger;
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+<div class="clear">
+</div>
+
+
+@*<script type="text/javascript">
+
+    $("#sg_EmpId").live("click", function () {
+        openEmployee();
+    });
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "ClearanceChecklist")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#sg_EmpId").val(obj.EmpId);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+
+    function Closing() {
+
+    }
+
+</script>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<br />
+<div class="clear">
+</div>
+<div class="clear">
+</div>*@

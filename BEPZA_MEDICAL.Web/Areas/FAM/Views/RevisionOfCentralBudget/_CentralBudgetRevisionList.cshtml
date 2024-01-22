@@ -1,0 +1,35 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.RevisionOfCentralBudget
+@model RevisionOfCentralBudgetModel
+
+<table cellspacing='0' cellpadding='0' style=" margin-left:50px;">
+            <thead >
+                <tr>
+                    
+                    <th style="border:1px solid #CCCCCC; width:320px;">
+                        Account Head
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:100px;">
+                        Previous Budget
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:100px;">
+                        Revised Budget
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:100px;">
+                        Account Type
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:200px;">
+                        Remarks
+                    </th>
+                </tr>
+            </thead>
+
+            @if (Model != null && Model.CentralBudgetRevisionList != null)
+            {
+
+                foreach (var x in Model.CentralBudgetRevisionList)
+                {
+                        @Html.Partial("CentralBudgetRevisionList", x);
+                }
+            }
+
+        </table>

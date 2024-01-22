@@ -1,0 +1,157 @@
+﻿	#search-form {
+		float: right;
+		border: solid 1px #6B90DA;
+		padding: 3px;
+		margin-bottom: 10px;
+	}	
+	
+	#search-form #advanced-search tr td {
+		padding: 3px;
+		vertical-align: top;
+	}
+	
+	#search-form #advanced-search #date-of-last-order-range tr td {
+		padding-left: 0px;
+		padding-top: 0px;
+	}
+			
+	#search-form #advanced-search .field-validation-error {
+		display: block;
+	}
+
+	#grid {
+		margin-top: 10px;
+		width: 100%;	/* use this field to set width of the whole grid */
+		display: table;
+	    float: left;
+	}
+
+	#grid #grid-header {
+		white-space: nowrap;
+		font-size: 9pt;
+		margin-bottom: 3px;
+		height: 20px;
+	}
+		
+	#grid #grid-header #row-stats {
+		width: 100px;
+		float: left;
+		margin-top: 3px;
+	}
+	
+	#grid #pager-nav {
+		float: right;
+		margin-right: 40%;
+		margin-left: auto;
+	}
+	
+	#grid #pager-nav table {
+		width: 165px;
+	}
+	
+	#grid #pager-nav table tr td {
+		text-align: center;
+	}
+	
+	#grid #pager-nav .disabled {
+		color: #C0C0C0;
+	}
+			
+	#grid #pager-nav a {
+		text-decoration: none;
+	}
+	
+	#grid #grid-data table {
+		border: solid 1px #e8eef4;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	
+	#grid #grid-data table th {
+		padding: 4px 5px;
+		text-align: left;
+		background-color: #dddddd; 
+		border-bottom: solid 3px #cccccc;
+	    border-left: solid 1px #cccccc;
+		white-space: nowrap;
+		color:#666666;
+	}
+	
+	#grid #grid-data table th a {
+		padding-right: 10px;
+		color: #666666;
+	    text-decoration: none;	
+	}
+
+
+	#grid #grid-data table td {
+		padding: 5px;   
+		border: solid 1px #cccccc;
+	    background-color: #f4f3f3;
+	    color: #000000;
+	    font-family: tahoma;
+	    font-size: small;
+	}
+
+	#grid #grid-data table tr:hover 
+	{
+	    background-color: white;
+		
+	}
+					
+	#grid #grid-data table tr.alt td {
+		background: #ffffff none repeat scroll 0 0;
+	    
+	}
+	
+	#grid #grid-data table tr.over td {
+		background: #f8f6bd none repeat scroll 0 0;
+	}
+	
+	
+	#grid #grid-data .asc{
+		background: transparent url('../Content/img/asc.png') center right no-repeat;
+	}
+	
+	#grid #grid-data .desc{
+		background: transparent url('../Content/img/desc.png') center right no-repeat;
+	}
+	
+	#grid #grid-footer {
+		margin-top : 10px;
+	}
+	
+	#grid #grid-footer #refresh-button {
+	  width: 20px;
+	  height: 20px;
+	  margin: 0;
+	  padding: 0;
+	  border: 0;
+	  background: transparent url(../Content/img/refresh.gif) no-repeat center top;
+	  text-indent: -1000em;
+	  cursor: pointer; /* hand-shaped cursor */
+	  cursor: hand; /* for IE 5.x */
+	}
+
+
+	.hidden {
+		display: none;
+	}
+	
+	#grid .blockUI-message {
+		background: url('../Content/img/busy.gif') center left no-repeat;
+		padding : 5px 5px 5px 20px;
+		border: 3px solid blue;
+		display: block;
+		vertical-align: middle;
+	}
+	#reportHeader
+    {
+        padding: 5px;
+        width: 100%; /* use this field to set width of the whole grid */
+        float: left;
+        font-size: 12px;
+        text-decoration: none;
+        font-weight: bold;
+        Text-align:center;
+    }

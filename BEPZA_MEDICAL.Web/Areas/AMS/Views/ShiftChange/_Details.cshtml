@@ -1,0 +1,11 @@
+﻿@model List<ERP_BEPZA.Web.Areas.AMS.Models.ShiftChange.ShiftChangeViewModel>
+@using ERP_BEPZA.Web.Helpers
+@{
+    if (Model != null && Model != null)
+    {
+        foreach (var x in Model)
+        {
+           Html.RenderPartial("_PartialDetail", x);
+        }
+    }
+}

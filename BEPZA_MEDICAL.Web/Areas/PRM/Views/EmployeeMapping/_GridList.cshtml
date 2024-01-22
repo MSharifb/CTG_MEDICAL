@@ -1,0 +1,139 @@
+﻿<script type="text/javascript">
+
+    function ResetForm() {
+        $("#ResourceCategoryId").val("");
+        LoadDivision();
+        $("#Type").val("");
+        $("#ResourceTypeId").val("");       
+        $('#btnUpdate').hide();
+        $(".validation-summary-errors ").empty();
+    }
+    function OnSubmitSuccess(obj) {
+        if (obj.Success > 0) {
+            $('#message').html("<b style='color:Green'>" + obj.Message + "</b>");
+//            $("#successfull-dialog .msg").html("<b>" + obj.Message + "</b>").css("color", "Green");           
+//            $('#successfull-dialog').dialog('open');
+            jQuery("#jqGrid").trigger("reloadGrid");
+            ResetForm();
+            $('#btnSave').show();            
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+//            $("#error-dialog .msg").html("<b>" + obj.Message + "</b>").css("color", "red");
+//            $('#error-dialog').dialog('open');
+        } 
+    }
+
+    function OnSubmitFailure() {
+        alert('Form Submit Error!');
+    }
+
+    function LoadResoruceCategory() {
+        var selectedCountry = $('#ResourceTypeId').val();
+        var divisionSelect = $('#ResourceCategoryId');        
+        divisionSelect.empty();
+        divisionSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        if (selectedCountry != null && selectedCountry != '') {
+            $.getJSON('@Url.Action("GetResourceCategory")', { Id: selectedCountry }, function (items) {
+                $.each(items, function (index, item) {
+                    divisionSelect.append($('<option/>', {
+                        value: item.Id,
+                        text: item.ResourceCategory
+                    }));
+                });
+            });
+        }
+    }
+
+    $(function () {
+
+        $("#btnClear").click(
+         function () {
+
+          
+             ResetForm();
+             $('#btnSave').show();
+             $('.field-validation-error')
+                .removeClass('field-validation-error')
+                .addClass('field-validation-valid');
+
+             $('.input-validation-error')
+                .removeClass('input-validation-error')
+                .addClass('valid'); 
+             $(".validation-summary-errors")
+                .removeClass("validation-summary-errors")
+                .addClass("validation-summary-valid"); 
+
+
+            
+         });
+
+        $("a.editItem").live("click", function () {
+            editLinkObj = $(this);
+            $.post(editLinkObj[0].href, function (obj) {
+                $("#Type").val(obj.Type);
+                $("#ResourceTypeId").val(obj.ResourceTypeId);
+                LoadResourceCategory();               
+                setTimeout(function() {$("#ResourceCategoryId").val(obj.ResourceCategoryId);},100);
+                $("#ResourceCategory").val(obj.ResourceCategory);
+            });
+
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+
+            return false; // prevents the default behaviour
+        });
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });  
+   
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Type', 'Resource Type', 'Resource Category', 'Delete'],
+            colModel: [
+                            { name: 'Type', index: 'Type', align: 'left', search: true, edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'Resource Type', index: 'ResourceTypeId', align: 'left', search: true, edittype: 'text' },
+                             { name: 'Resource Category', index: 'ResourceCategoryId', align: 'left', search: true, edittype: 'text' },
+                            { name: 'Delete', index: 'Delete', align: 'right', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+            autowidth: true,
+            caption: "Employee Mapping List",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Ajax.ActionLink("_name_", "Edit", new { id = "_id_" },new AjaxOptions { }, new { @class = "editItem" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>

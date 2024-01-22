@@ -1,0 +1,107 @@
+﻿
+@model ERP_BEPZA.Web.Areas.PGM.Models.MonthlySalaryDistribution.SalaryDistributionViewModel
+
+@Html.HiddenFor(model => model.SalaryYear, new { id = "hfSalaryYear" })
+@Html.HiddenFor(model => model.SalaryMonth, new { id = "hfSalaryMonth" })
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+     
+</script> 
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var syear = $('#hfSalaryYear').val();
+        var smonth = $('#hfSalaryMonth').val();
+
+        $('#jqGrid').jqGrid({
+        
+            url: '@Url.Action("GetDetailList")?year='+syear + "&month="+smonth,
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Employee ID', 'Division/Unit', 'Initial', 'Name', 'Gross Salary', 'Total Hour(s)', 'Per Hour Rate', 'Project No.', 'Project No.', 'Project Hour(s)', "Distributed Amount"],
+            colModel: [
+                            { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'EmpID', index: 'EmpID', align: 'center', width: '75px', search: false, edittype: 'text' },
+
+                            { name: 'DivisionId', index: 'DivisionId', align: 'center', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetDivisionList")' },
+                           
+                            { name: 'EmployeeInitial', index: 'EmployeeInitial', align: 'center', width: '40px', search: true, edittype: 'text' },
+                            { name: 'FullName', index: 'FullName', align: 'left', search: false, edittype: 'text' },
+                            { name: 'GrossSalary', index: 'GrossSalary', align: 'center', search: false, width: '90px', edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} },
+                            { name: 'TotalHours', index: 'TotalHours', align: 'right', width: '90px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} },
+                            { name: 'RatePerHour', index: 'RatePerHour', align: 'right', width: '90px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} },
+                            { name: 'ProjectId', index: 'ProjectId', align: 'center',  hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetProjectNoList")' },
+                            { name: 'ProjectNo', index: 'ProjectNo', align: 'center', width: '90px', search: false, edittype: 'text' },
+                            { name: 'ProjectHour', index: 'ProjectHour', align: 'right', width: '90px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} },
+                            { name: 'ProjectAmount', index: 'ProjectAmount', align: 'right', width: '90px', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} },
+
+                          ],
+            autowidth: true,
+            caption: "Salary Distribution Detail Information",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+        
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+</script>
+<style type="text/css" media="screen">
+    th.ui-th-column div{
+        white-space:normal !important;
+        height:auto !important;
+        padding:1px;
+    }
+</style>

@@ -1,0 +1,115 @@
+﻿
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Employee ID', 'EmployeeId', 'Employee Name', 'Designation', 'Meter No.', 'Month', 'Year', 'Total Bill', 'PrepareDate', 'Delete'],
+            colModel: [
+                            { name: 'Id', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'ICNo', index: 'ICNo', align: 'left', search: true, hidden: false, width: '100px', edittype: 'text' },
+                            { name: 'EmployeeId', index: 'EmployeeId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'EmployeeName', index: 'EmployeeName', align: 'left', search: true, edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'Designation', index: 'Designation', align: 'left', search: false, width: '200px', edittype: 'text' },
+                            { name: 'ElectricMeterNo', index: 'ElectricMeterNo', align: 'left', search: true, width: '200px', edittype: 'text' },
+                            { name: 'BillMonth', index: 'BillMonth', align: 'left', search: true, width: '200px', edittype: 'select', surl: '@Url.Action("GetMonth")'  },
+                            { name: 'BillYear', index: 'BillYear', align: 'left', search: true, width: '200px', edittype: 'select', surl: '@Url.Action("GetYear")' },
+                            { name: 'TotalBill', index: 'TotalBill', align: 'left', search: false, width: '200px', edittype: 'text' },
+                            { name: 'PrepareDate', index: 'PrepareDate', align: 'left', search: false, hidden: true, width: '200px', edittype: 'text' },
+                            { name: 'Delete', index: 'Delete', align: 'right', search: false, hidden: IsDeleteAssigned, sortable: false, width: '60px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+            autowidth: true,
+            caption: 'Electric Bill Information',
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'SalaryHeadName',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 320, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+
+                    $.post(deleteLinkObj[0].href, function (obj) {  //Post to action
+
+                        if (obj.Success) {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+                            $('#sButton').trigger('click');
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $('#sg_PrepareDate').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>

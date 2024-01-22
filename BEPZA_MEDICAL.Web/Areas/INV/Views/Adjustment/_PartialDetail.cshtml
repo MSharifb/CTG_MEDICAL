@@ -1,0 +1,86 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.Adjustment.AdjustmentDetailViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("AdjustmentItemDetail"))
+    {
+        if (@Model != null)
+        {
+            <td class="itemIdInfo" style="display:none;">
+                <span class="item-id-info">
+                    @Html.HiddenFor(model => model.ItemId)
+                </span>
+                <span class="item-status-info">
+                    @Html.HiddenFor(model => model.ItemStatusId)
+                </span>
+            </td>
+            @Html.HiddenFor(model => model.AdjustmentId)
+            
+        }
+        <td style="text-align: left;">
+            @Html.HiddenFor(model => model.Item)
+            <a href="#" class="editRow" title="edit" style="border: none; color: #000000; ">
+                @Html.Encode(Model.Item)
+            </a>
+        </td>
+        <td style="text-align: right;">
+            @Html.HiddenFor(model => model.Unit)
+            @Html.Encode(Model.Unit)
+        </td>
+        <td class="adjQt" style="text-align: right;">
+            @Html.HiddenFor(model => model.Quantity)
+            @Html.Encode(Model.Quantity)
+        </td>
+        <td style="text-align: right;">
+            @Html.HiddenFor(model => model.Rate)
+            @Html.Encode(Model.Rate)
+        </td>
+        <td id="tdTotalCost" style="text-align: right;">
+            @Html.HiddenFor(model => model.TotalCost)
+            @Html.Encode(Model.TotalCost)
+        </td>
+        <td style="text-align: left;">
+            @Html.HiddenFor(model => model.Comment)
+            @Html.Encode(Model.Comment)
+        </td>
+        <td>
+            <a href="#" class="deleteRow" title="delete" >
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+        
+        //onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')"
+    }
+</tr>
+
+<script type="text/javascript">
+    $('table tbody tr .editRow').click(function () {
+
+        var quantity = $(this).closest('tr').find('td').eq(3).find('input').val();
+        var comment = $(this).closest('tr').find('td').eq(6).find('input').val();
+        var itemId = $(this).closest('tr').find('td .item-id-info').eq(0).find('input').val();
+        var rate = $(this).closest('tr').find('td').eq(4).find('input').val();
+        var total = $(this).closest('tr').find('td').eq(5).find('input').val();
+        var itemStatusId = $(this).closest('tr').find('td .item-status-info').eq(0).find('input').val();
+
+        $('#ItemId').val(itemId);
+        $('#CommentDetail').val(comment);
+        $('#Quantity').val(quantity);
+        $('#Rate').val(rate);
+        $('#TotalCost').val(total);
+        $('#ItemStatusId').val(itemStatusId);
+
+        $('#ItemId').trigger('change');
+
+        $(this).closest('tr').remove();
+
+        return false;
+    })
+
+    $('table tbody tr .deleteRow').click(function(){
+        $(this).closest('tr').remove();
+        return false;
+    })
+</script>
+

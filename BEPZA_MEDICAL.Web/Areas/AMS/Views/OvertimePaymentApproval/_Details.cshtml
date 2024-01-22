@@ -1,0 +1,10 @@
+﻿@model List<ERP_BEPZA.Web.Areas.AMS.Models.OvertimePaymentApproval.OvertimePaymentApprovalViewModel>
+@using ERP_BEPZA.Web.Helpers
+@if (Model != null)
+{
+    foreach (var x in Model)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

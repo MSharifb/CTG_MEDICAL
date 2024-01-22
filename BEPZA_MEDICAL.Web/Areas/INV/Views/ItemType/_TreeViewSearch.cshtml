@@ -1,0 +1,152 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.ItemType.ItemTypeViewModel
+@{
+    Layout = null;
+}
+
+<div class="GroupBox search-content">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemTypeName)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ItemTypeName)
+        </span>
+        <span class="label-right">
+
+        </span>
+        <span class="field">
+            <div class="button-crude button-left">
+                <input type="button" id="search" value="Search" />
+            </div>
+        </span>
+    </div>
+    
+</div>
+
+<div class="GroupBox">
+    <div class="button-crude">
+        <input type="button" id="expandAndCloseNode" value="Expand" />
+    </div>
+    <div class="clear"></div>
+    <div style="background: #FFFFFF" class="demo jstree jstree-5" id="treeViewSearch">
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#search").click(function () {
+                $("#treeViewSearch").jstree("search", document.getElementById("ItemTypeName").value);
+            })
+        });
+        $(function () {
+            $("#treeViewSearch")
+
+            .jstree({
+                "plugins": [
+                    "themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys"
+                ],
+
+                "json_data": {
+                    "ajax": {
+                        "url": "@Url.Action("GetTreeData", "ItemType")",
+                        "data": function (n) {
+                            return {
+                                "operation": "get_children",
+                                "id": n.attr ? n.attr("id").replace("node_", "") : 1
+                            };
+                        }
+                    }
+                },
+                "search": {
+                    "ajax": {
+                        "url": "@Url.Action("GetTreeData", "ItemType")",
+                        "data": function (str) {
+
+                            return {
+                                "operation": "search",
+                                "search_str": str
+                            };
+                        }
+                    }
+                },
+                "types": {
+                    "max_depth": -2,
+                    "max_children": -2,
+                    "valid_children": ["drive"],
+                    "types": {
+                        "default": {
+                            "valid_children": "none",
+                            "icon": {
+                            }
+                        },
+                        "folder": {
+                            "valid_children": ["default", "folder"],
+                            "icon": {
+                                "image": "d.png"
+                            }
+                        },
+                        "drive": {
+                            "valid_children": ["default", "folder"],
+                            "icon": {
+                                "image": "file.png"
+                            },
+                            "start_drag": false,
+                            "move_node": false,
+                            "delete_node": false,
+                            "remove": false
+                        }
+                    }
+                },
+                // UI & core - the nodes to initially select and open will be overwritten by the cookie plugin
+
+                // the UI plugin - it handles selecting/deselecting/hovering nodes
+                "ui": {
+                    // this makes the node with ID node_4 selected onload
+                    "initially_select": ["node_4"]
+                },
+                // the core plugin - not many options here
+                "core": {
+                    // just open those two nodes up
+                    // as this is an AJAX enabled tree, both will be downloaded from the server
+                    "initially_open": ["node_2", "node_3"]
+                },
+
+            })
+
+        });
+
+    </script>
+
+    <script>
+
+        $("#treeViewSearch").bind("select_node.jstree", function (e, data) {
+            var itemTypeId = data.rslt.obj.attr("id")
+            var itemTypeName = '';
+
+            if ($('.jstree-clicked').length == 1) {
+                itemTypeName = $('.jstree-clicked').text();
+            }
+
+            var ItemTypeIdentityName = @Model.ItemTypeIdentityName.ToString();
+
+            // !! This function must declare to used page !!
+            SetItemTypeId(itemTypeId, itemTypeName, ItemTypeIdentityName);
+        });
+
+
+        $('#expandAndCloseNode').click(function () {
+            var strText = $(this).val();
+            if (strText == "Expand") {
+                $("#treeViewSearch").jstree("open_all");
+                $('#expandAndCloseNode').val('Collapse');
+            } else {
+                $("#treeViewSearch").jstree("close_all");
+                $('#expandAndCloseNode').val('Expand');
+            }
+
+        });
+
+       
+    </script>
+
+
+</div>

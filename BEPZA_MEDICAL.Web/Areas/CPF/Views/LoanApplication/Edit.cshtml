@@ -1,0 +1,147 @@
+﻿@model ERP_BEPZA.Web.Areas.CPF.Models.LoanApplication.LoanApplicationViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "LoanApplication", FormMethod.Post, new { id = "frm" }))
+{
+   
+    <fieldset>
+        <div class="GroupBox message" id="message" style="min-height: 15px;">
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div style="color:Red" class="@Model.ErrMsg">
+                    @Model.ErrMsg
+                </div>
+            }
+            @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.Id)
+        <div id="appDiv">
+            @Html.Partial("_CreateOrEdit", Model)
+        </div>
+        <div class="button-center buttonSubmit" style="margin-top: 10px;">
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" id="btnUpdate" value="Resubmit" style="width: auto; overflow: visible;
+                    padding-left: .25em; padding-right: .25em;" />
+                <input id="btnPrint" type="button" value="Print" style="width: auto; overflow: visible;
+                    padding-left: .25em; padding-right: .25em;" onclick="JavaScript:printPartOfPage('appDiv');" />
+            }
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    <span></span>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<div class="row" style="padding: 10px">
+    @Html.CheckBox("ShowApproval")<b style="color: #3C78B5; vertical-align: top; padding: 2px">
+        View Approval History</b>
+    <div class="PS">
+    </div>
+    <div class="History" style="display: none">
+        <div class="GroupBox">
+            <div class="row">
+                <table>
+                    @if (Model.ApprovalPathList != null && Model.ApprovalPathList.Count > 0)
+                    {
+                        foreach (var approvalObj in Model.ApprovalPathList)
+                        {
+                        <tr>
+                            <td>
+                                <span style="color: #3C78B5; margin: 0 0 0 38px; overflow: visible; text-align: left;
+                                    vertical-align: middle;">@Html.Encode(approvalObj.Status)
+                                    by</span>
+                            </td>
+                            <td>
+                                :
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.ApprovedBy)</span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; overflow: visible; margin: 0 0 0 38px; text-align: left;
+                                    vertical-align: middle;">Submission Date :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.ApprovedDate)
+                                </span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; overflow: visible; margin: 0 0 0 38px; text-align: left;
+                                    vertical-align: middle;">Status :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.Status)
+                                </span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; float: left; margin: 0 0 0 38px; overflow: visible;
+                                    text-align: left; vertical-align: middle;">Comment :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.Comments)</span>
+                            </td>
+                        </tr>
+                   
+                        }
+                    }
+                </table>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    if ('@Model.ApplicationStatusId' == "5") {
+
+        $('#btnUpdate').show();
+        $('#btnPrint').show();
+    }
+    else {
+
+        $('#btnUpdate').hide();
+        $('#btnPrint').show();
+    }
+    $('#btnUpdate').live('click', function () {
+
+        $('#ApplicationStatusId').val(2);
+
+    });
+
+    $('#btnReject').live('click', function () {
+
+        $('#ApplicationStatusId').val(5);
+
+    });
+
+    function printPartOfPage(elementId) {
+
+        printDivCSS = new String('<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css">')
+        var reportHeader = "My Loan Application";
+        var printContent = document.getElementById(elementId);
+        var uperPart = printDivCSS + document.getElementById('appDiv').innerHTML;
+        //        var uperPart = "Upper";
+        //        var printedBy = $('#<%= hdfPrintedby.ClientID %>').val();
+        //        var printedBy = "Anwar";
+        var windowUrl = 'about:blank';
+        var uniqueName = new Date();
+        var windowName = 'Print' + uniqueName.getTime();
+        //        var printWindow = window.open(windowUrl, windowName, 'left=2000,top=60000,width=20000,height=30000');
+        var printWindow = window.open(windowUrl, windowName, 'left=0,top=60,width=2000,height=3000');
+
+        //        printWindow.document.write("<div align='center'>" + "<h2>" + reportHeader + "</h2>" + "</div>" + uperPart + "<br>" + "<div align='right' style='padding-right: 5%;position: absolute;bottom:0px'>" + printedBy + "</div>");
+        printWindow.document.write("<div align='center'>" + "<h2>" + reportHeader + "</h2>" + "</div>" + uperPart);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+    }
+
+    $("#ShowApproval").click(function () {
+        $(".History").toggle("slow");
+    });
+</script>

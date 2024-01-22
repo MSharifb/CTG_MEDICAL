@@ -1,0 +1,42 @@
+﻿@model BOM_MPA.Web.Areas.PRM.ViewModel.SalaryScaleViewModel
+@using BOM_MPA.Web.Helpers
+
+<div class="row">
+    <span class="label">
+        @Html.HiddenFor(model => model.JobGradeViewModel.Id)
+        @Html.HiddenFor(model => model.JobGradeViewModel.IUser)
+        @Html.HiddenFor(model => model.JobGradeViewModel.IDate)
+        @Html.HiddenFor(model => model.JobGradeViewModel.EUser)
+        @Html.HiddenFor(model => model.JobGradeViewModel.EDate)
+
+        @Html.LabelFor(model => model.JobGradeViewModel.GradeName, "Grade")
+        <label style='color: red'>*</label>
+    </span>
+    <span class="field">
+        @Html.EditorFor(model => model.JobGradeViewModel.GradeName)
+    </span>
+    <span class="label-right">
+        @Html.LabelFor(model => model.JobGradeViewModel.GradeCode)
+        <label style='color: red'>*</label>
+    </span>
+    <span class="field">
+        @Html.EditorFor(model => model.JobGradeViewModel.GradeCode)
+    </span>
+</div>
+
+@*<div class="row">
+    <span class="label">
+        @Html.LabelFor(model => model.JobGradeViewModel.NumberOfSteps, "Steps")
+        <label style='color: red'>*</label>
+    </span>
+    <span class="field">
+        @Html.EditorFor(model => model.JobGradeViewModel.NumberOfSteps, new { @class = "required" })
+    </span>
+    <span class="label-right">
+    </span>
+    <span class="field">
+    </span>
+</div>*@
+
+<div class="clear">
+</div>

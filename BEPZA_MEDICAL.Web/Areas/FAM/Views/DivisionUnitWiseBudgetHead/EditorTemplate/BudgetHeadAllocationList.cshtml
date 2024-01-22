@@ -1,0 +1,20 @@
+﻿@model MFS_IWM.Web.Areas.FAM.Models.DivisionUnitWiseBudgetHead.BudgetHeadAllocation
+
+    <tr>
+    <td>
+        @Html.HiddenFor(model => model.AccountHeadId)
+        @Html.DisplayFor(model => model.AccountHeadName)
+        @Html.HiddenFor(model => model.AccountHeadName)
+    </td>
+        
+    <td  style="display:none;">
+        @Html.DisplayFor(model => model.AccountHeadType)
+    </td>
+</tr>
+
+@{
+    if(true){
+        var test = Model.IsSelected;
+        @test
+    }
+}

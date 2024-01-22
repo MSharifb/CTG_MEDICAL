@@ -1,0 +1,282 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.AMS.ViewModel.EmploymentInfoViewModel
+@using (Html.BeginForm(Model.ActionType, "AnsarInfo"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        <div class="GroupBox">
+            <div class="leftColumn">
+                <div class="row">
+                    <span class="label" style="width:32%">
+                        @Html.LabelFor(model => model.AnsarId)
+                    </span><span class="field" style="width:60%">
+                        @Html.TextBoxFor(model => model.AnsarId)
+                        @Html.HiddenFor(model => model.BEPZAID)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:32%">
+                        @Html.LabelFor(model => model.TitleId)
+                    </span><span class="field" style="width:60%">
+                        @Html.DropDownListFor(model => model.TitleId, Model.TitleList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:32%">
+                        @Html.LabelFor(model => model.FullName)
+                    </span>
+                    <span class="field" style="width:60%">
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "read-only", @readonly = true })
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:32%">
+                        @Html.LabelFor(model => Model.DistrictId)
+                    </span>
+                    <span class="field" style="width:60%">
+                        @Html.DropDownListFor(model => model.DistrictId, Model.DistrictList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                    </span>
+                </div>
+            </div>
+            <div class="rightColumn">
+                <div class="row">
+                    <div class="field" style="width: auto;">
+                        @{
+    if (Model.IsPhotoExist)
+    {
+        <div class="Photo-Top">
+            <img alt="Employe Photo" height="110" width="110" src="@Url.Action("GetImage", "AnsarInfo", new { id = Model.Id, isPhoto = true })" />
+        </div>
+    }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.FirstName)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.FirstName)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.LastName)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.LastName)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.FullNameBangla)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.FullNameBangla)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Gender, new { @class = "label-required" })
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.Gender, Model.GenderList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.DateofBirth, new { @class = "label-required" })
+                </span><span class="field">
+                    @Html.EditorFor(model => model.DateofBirth)
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div class="GroupBox">
+
+            <div class="row">
+
+                <span class="label">
+                    @Html.LabelFor(model => model.DesignationId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Salary)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.Salary)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => Model.CategoryId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.CategoryId, Model.CategoryList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => Model.ReligionId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.ReligionId, Model.ReligionList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.AnsarJoiningDate)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.AnsarJoiningDate)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Duration)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.Duration)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateofJoining, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateofJoining)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.MobileNo)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.MobileNo)
+                </span>
+
+            </div>
+
+            <div class="row HideDateButton">
+                <span class="label">
+                    @Html.LabelFor(model => model.StatusId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @if (Model.Id > 0)
+                    {
+                        @Html.DropDownListFor(model => model.StatusId, Model.StatusList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(model => model.StatusId)
+                        @Html.EditorFor(model => model.StatusName)
+                    }
+
+                </span>
+                <span class="label-right ">
+                    @Html.LabelFor(model => model.InactiveDate)
+                </span><span class="field ">
+                    @Html.EditorFor(model => model.InactiveDate)
+                </span>
+            </div>
+
+        </div>
+
+
+        <div class="clear">
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" name="btnCreate" id="btnCreate" style="margin: 0 10px 0 0;" />
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+            <div class="clear">
+            </div>
+        </div>
+    </fieldset>
+
+}
+<div class="button-crude button-left" style="float: left;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    if ('@Model.InactiveDate' != '') {
+        fnDisableEditMode();
+        $(".delete-confirm").hide();
+    }
+
+    $("#FirstName, #LastName,#TitleId").focusout(function () {
+        $("#FullName").val(($('#TitleId').val() == '' ? '' : ($('#TitleId option:selected').text()) + ' ') + $.trim($('#FirstName').val()) + ' ' + $.trim($('#LastName').val()));
+    });
+
+    $('#StatusId').live('change', function () {
+
+        if ($('#StatusId option:selected').text() == 'Inactive') {
+            var d = new Date();
+            var dateStr = (d.getFullYear() + '-' + ("0" + (d.getMonth() + 1)).slice(-2) + '-' + ("0" + d.getDate()).slice(-2));
+            $('#InactiveDate').val(dateStr);
+            $('.HideDateButton').find('span.field #InactiveDate').attr('readonly', false).css('background-color', '#FFFFFF');
+            $('.HideDateButton').find('span.field').find('img').show();
+        }
+        else {
+            $('#InactiveDate').val('');
+            $('.HideDateButton').find('span.field #InactiveDate').attr('readonly', true).css('background-color', '#F2F5F8');
+            $('.HideDateButton').find('span.field').find('img').hide();
+        }
+
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        buttonHide();
+
+        if ($('#DateofJoining').val() != '') {
+            $.get('@Url.Action("GetDuration", "AnsarInfo")', { Id: $('#Id').val(), DOJ: $('#DateofJoining').val(), DOI: $('#InactiveDate').val() }, function (data) {
+                if (data.duration != null) {
+                    $("#Duration").val(data.duration);
+                }
+            });
+        }
+        else {
+            $("#Duration").val('');
+        }
+
+        if ('@Model.InactiveDate' == '') {
+            $('.HideDateButton').find('span.field #InactiveDate').attr('readonly', true).css('background-color', '#F2F5F8');
+            $('.HideDateButton').find('span.field').find('img').hide();
+        }
+
+    });
+
+    function buttonHide() {
+        if ('@Model.ErrorClass' == "success delete-emp" && '@Model.IsError' == "0") {
+            $('#btnCreate').hide();
+        }
+    }
+
+    $('#DateofJoining').live("change", function (e) {
+        if ($('#DateofJoining').val() != '') {
+            $.get('@Url.Action("GetDuration", "AnsarInfo")', { Id: $('#Id').val(), DOJ: $('#DateofJoining').val(), DOI: $('#InactiveDate').val() }, function (data) {
+                if (data.duration != null) {
+                    $("#Duration").val(data.duration);
+                }
+            });
+        }
+        else {
+            $("#Duration").val('');
+        }
+    });
+</script>

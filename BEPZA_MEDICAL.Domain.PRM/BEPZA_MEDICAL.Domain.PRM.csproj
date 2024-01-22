@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E43088EA-2886-4A50-97FB-B55CCA6D7085}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.Domain.PRM</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.Domain.PRM</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="QueryAnalyzerService.cs" />
+    <Compile Include="SalaryScaleService.cs" />
+    <Compile Include="DivisionHeadMapingService.cs" />
+    <Compile Include="EmployeeSeparationService.cs" />
+    <Compile Include="EmployeeConfirmIncrementPromotionService.cs" />
+    <Compile Include="ResourceCategoryService.cs" />
+    <Compile Include="ResourceInfoService.cs" />
+    <Compile Include="JobDesignationService.cs" />
+    <Compile Include="PersonalInfoService.cs" />
+    <Compile Include="EmployeeService.cs" />
+    <Compile Include="PRMCommonSevice.cs" />
+    <Compile Include="JobGradeService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.PGM\BEPZA_MEDICAL.DAL.PGM.csproj">
+      <Project>{AFD8DEEB-3F26-41D0-BAAB-6CC6467F2807}</Project>
+      <Name>BEPZA_MEDICAL.DAL.PGM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.PRM\BEPZA_MEDICAL.DAL.PRM.csproj">
+      <Project>{99686ff6-1a23-41d2-9055-853e638a48ea}</Project>
+      <Name>BEPZA_MEDICAL.DAL.PRM</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BEPZA_MEDICAL.Utility\BEPZA_MEDICAL.Utility.csproj">
+      <Project>{1fbe4e81-4078-44cf-9ad7-282c84002c37}</Project>
+      <Name>BEPZA_MEDICAL.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

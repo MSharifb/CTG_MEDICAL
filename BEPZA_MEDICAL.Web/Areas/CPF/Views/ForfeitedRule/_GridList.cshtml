@@ -1,0 +1,60 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID','Service Length', 'From Service Length', 'To Service Length', 'Forfeited Rate', 'Delete'],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'strRuleName', index: 'strRuleName', width: '70px', align: 'center', search: false, edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'FromServiceLength', index: 'FromServiceLength', width: '70px', align: 'right', search: true, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} },
+                            { name: 'ToServiceLength', index: 'ToServiceLength', align: 'right', search: true, width: '60px', edittype: 'text' },
+                            { name: 'ForfeitedRate', index: 'ForfeitedRate', align: 'right', search: false, width: '100px', edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00'} },                     
+                            { name: 'Delete', index: 'Delete', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '50px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+            autowidth: true,
+            caption: "Forfeited Rule List",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>
+
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+           
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+</script>

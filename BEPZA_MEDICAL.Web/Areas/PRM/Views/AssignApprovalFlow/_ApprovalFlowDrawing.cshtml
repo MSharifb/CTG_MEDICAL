@@ -1,0 +1,44 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApprovalFlowDrawViewModel>
+@using BEPZA_MEDICAL.Web.Helpers
+
+
+@using (Html.BeginCollectionItem("ApprovalFlowInitializationList"))
+{
+    foreach (var item in Model)
+    {
+
+        @*@Html.Partial("_ApprovalFlowDrawingItem", item)*@
+
+        <i class="fa fl-3x fa-arrow-circle-down"></i>
+        <br />
+        @Html.HiddenFor(m => item.StepId)
+        <span class="drawing-area">
+            @Html.RadioButton("rdoInitialization", item.StepId, item.InitialStepId)
+        </span>
+        <span class="step-name">
+            @item.StepName
+        </span>
+        <br />
+        <span class="approver-name">
+            @item.ApproverIdAndName
+        </span>
+        <br />
+    }
+}
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var initialStepId = '@Model.Select(t=>t.InitialStepId).FirstOrDefault()';
+        $('#InitialStepId').val(initialStepId);
+        $('input[type="radio"][value=' + initialStepId + ']').attr("checked", true);
+    })
+
+    $('.drawing-area input[type=radio]').on('click', function () {
+
+        var stepId = $(this).val();
+        $('#InitialStepId').val(stepId);
+    });
+</script>

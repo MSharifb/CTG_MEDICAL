@@ -1,0 +1,22 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftRoster.ShiftRosterModel
+
+@using ERP_BEPZA.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ShiftInformation"))
+    {
+        @Html.HiddenFor(x => x.ShiftRosterDetailsId)
+        @Html.HiddenFor(x => x.DepartmentId)
+        <td width="10%" style="text-align: center">
+            @Html.DropDownListFor(x => x.SourceShift, Model.SourceShiftList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl", @style = "width:100%" })
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.DropDownListFor(x => x.NextShift, Model.NextShiftList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl", @style = "width:100%" })
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.ShiftRosterDetailsId,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

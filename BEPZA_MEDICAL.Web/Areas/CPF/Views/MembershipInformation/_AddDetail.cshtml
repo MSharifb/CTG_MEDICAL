@@ -1,0 +1,94 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MemberNominee
+@using BEPZA_MEDICAL.Web.Helpers
+<div style="float: left; width: 70%;">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.NomineeName)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.NomineeName)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.NomineeAddress)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.NomineeAddress)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Relationship)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Relationship)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.DateOfBirth)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.DateOfBirth)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PercentOfShare)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.PercentOfShare)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.GuardianName)
+        </span><span class="field">
+            @Html.EditorFor(model => model.GuardianName)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.GuardianAddress)
+        </span><span class="field">
+            @Html.EditorFor(model => model.GuardianAddress)
+        </span><span class="label-right"></span><span class="field"></span>
+    </div>
+</div>
+<div style="float: left; width: 30%;">
+    <div class="GroupBox" align="center" id="photoUpload">
+        @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+        {
+            <div class="row">
+               
+                @Html.TextBoxFor(model => model.Attachment, new { @type = "file", @id = "Attachment" })
+            </div>
+        }
+        <div class="row">
+            <div style="border: 1px solid #D2DDE7; width: 150px; height: 150px; margin: 20px">
+                @if (Model != null)
+                {
+                    if (Model.Id > 0)
+                    {        
+                    <img height="150" width="150" alt="Image" class="imgThumb" src="@Url.Action("GetImage", "MembershipInformation", new { id = Model.Id })"/>
+                    }
+                    else
+                    { 
+                    <img height="150" width="150" 
+                             src="@(Model.Attachment)" 
+                             id="uploadedImage"  alt="Image"/>
+                   
+                    }
+                }
+            </div>
+        </div>
+        @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+        {
+            <div class="row">
+                <div class="button-crude">
+                    <a href="#" id="btnImageLoaderSign"  onclick="return openImageUploader();">Upload Image </a>
+                    <input type="submit" value="Remove" name="btnSubmit" id="btnPhotoRemove" style="margin-right: 8px;" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="clear">
+</div>

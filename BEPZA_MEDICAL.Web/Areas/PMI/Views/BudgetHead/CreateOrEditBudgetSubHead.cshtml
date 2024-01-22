@@ -1,0 +1,178 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.BudgetHeadViewModel
+@{
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+<style>
+    .TextArea {
+        width: 600px;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $(function () {
+
+        if ('@Model.ActionType' == 'Edit') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+        }
+        else {
+            $('#btnUpdate').hide();
+        }
+    });
+</script>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#SortingOrder").keydown(function (event) {
+
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    });
+
+</script>
+
+<div>
+    @using (Html.BeginForm(Model.ActionType, "BudgetHead", FormMethod.Post, new { id = "frm" }))
+    {
+        <div class="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+
+        <div class="GroupBox">
+            <div class="row">
+                @Html.HiddenFor(m => m.Id)
+                <span class="label">
+                    @Html.LabelFor(m => m.ParentId)
+                    <label style='color: red'>*</label>
+                </span>
+                <span class="field">@Html.DropDownListFor(model => model.ParentId, Model.BudgetHeadList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })</span>
+                <span class="label">@Html.Label("Budget Sub-Head")<label style='color: red'>*</label></span>
+
+                <span class="field">@Html.EditorFor(m => m.BudgetHeadName)</span>
+            </div>
+
+            <div class="row">
+                <span class="label">@Html.LabelFor(m => m.IsActive)</span>
+                <span class="field">@Html.CheckBoxFor(m => m.IsActive)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(m => m.CreatedBy)</span>
+                <span class="field">@Html.EditorFor(m => m.CreatedBy)</span>
+                <span class="label">@Html.LabelFor(m => m.CreatedDate)</span>
+                <span class="field">@Html.TextBoxFor(m => m.CreatedDate, new { @readonly = true, @class = @"readonlyField" })</span>
+            </div>
+            <div class="row">
+                <div class="spacer">
+                </div>
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                    <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+                }
+                <input type="button" value="Clear" id="btnClear" name="btnClear" />
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="button-crude button-left" style="margin: 5px">
+            <span>@Html.ActionLink("Back to List", "Index", "BudgetHead")</span>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $('#btnSave').click(function (event) {
+        event.preventDefault();
+        $.validator.unobtrusive.parse($('#frm'));
+        if ($('#frm').valid()) {
+            var url = '@Url.Action("SaveBudgetSubHead", "BudgetHead")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+            $.post(url, serializedForm, function (obj) {  //Post to action
+                if (obj != null) {
+                    if (obj.IsError == false) {
+                        $('.message').html("<b>" + obj.Message + "</b>").css("color", "green");
+                        //ResetForm();
+                    }
+                    else {
+                        $('.message').html("<b>" + obj.Message + "</b>").css("color", "red");
+                    }
+
+                }
+
+            });
+        }
+    })
+
+    $('#btnUpdate').click(function (event) {
+        event.preventDefault();
+        $.validator.unobtrusive.parse($('#frm'));
+        if ($('#frm').valid()) {
+            var url = '@Url.Action("UpdateBudgetSubHead", "BudgetHead")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+            $.post(url, serializedForm, function (obj) {  //Post to action
+                if (obj != null) {
+                    if (obj.IsError == false) {
+                        $('.message').html("<b>" + obj.Message + "</b>").css("color", "green");
+                    }
+                    else {
+                        $('.message').html("<b>" + obj.Message + "</b>").css("color", "red");
+                    }
+
+                }
+
+            });
+        }
+    })
+
+    $(document).ready(function () {
+        var createDate = $('#CreatedDate').val();
+        createDate = createDate.split(' ')[0];
+
+        var year = createDate.split('/')[2];
+        var month = createDate.split('/')[1];
+        var day = createDate.split('/')[0];
+        var fullDate = year + "-" + month + "-" + day;
+        $('#CreatedDate').val(fullDate);
+
+    })
+
+    function ResetForm() {
+        $('#BudgetHeadName').val('');
+        $('#CreatedBy').val('');
+        $('#CreatedDate').val('');
+        $("#CreatedDate").val($.datepicker.formatDate('yy-mm-dd', new Date()));
+    }
+</script>
+
+<style type="text/css">
+    .readonlyField {
+        background: #F2F5F8;
+    }
+</style>

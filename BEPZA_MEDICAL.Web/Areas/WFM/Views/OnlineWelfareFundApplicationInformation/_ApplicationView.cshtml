@@ -1,0 +1,89 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.OfflineWelfareFundApplicationInformationViewModel
+
+<div class="form-horizontal">
+        <div id="printable">
+        <div class="form-group">
+            @Html.Label("Date:", new { @class = "col-sm-1", style = "text-align:left" })
+            <div class="col-sm-8">
+                @Html.Label(@Model.ApplicationDate.Value.ToString("dd-MMMM-yyyy"))
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppTo, new { @class = "col-sm-12", style = "text-align:left" })
+        </div>
+        <div class="form-group">
+            @Html.Label(@Model.AppTo, new { @class = "col-sm-12", style = "text-align:left" })
+        </div>
+        <div class="form-group">
+            @Html.Label("Subject : ", new { @class = "col-sm-2", style = "text-align:left" })
+            <div class="col-sm-8" style="padding-top:3px">
+                @Html.Encode(@Model.Subject)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12">
+                @Html.Encode(@Model.Body)
+            </div>
+        </div>
+            <div class="form-group">
+                @Html.Label("Signature :", new { @class = "col-sm-12", style = "text-align:left" })
+            </div>
+            <div class="form-group">
+                <span id="portrait-holder" class="applicant-img-preview">
+                    @if (Model.SignatureAttachment != null)
+                    {
+                        <img id="mainPortrait" alt="Applicant Photo" height="80" width="140" src="data:image;base64,@System.Convert.ToBase64String(Model.SignatureAttachment)" />
+                    }
+                    <img id="previewImg" class="applicant-img-preview" src="#" alt="" />
+                </span>
+            </div>
+            <div class="form-group">
+                @Html.Label("Attachment Titles :", new { @class = "col-sm-12", style = "text-align:left" })
+            </div>
+                @if (Model != null && Model.AttachmentFilesList != null)
+                {
+                    foreach (var x in Model.AttachmentFilesList)
+                    {
+                        <div class="form-group">
+                            @Html.Label(x.Title, new { @class = "col-sm-12", style = "text-align:left" })
+                        </div>
+                    }
+
+                }
+            </div>
+
+    <br />
+    <a href="#" class="btn btn-info" id="btnPrint" onclick="getDirectPrint('printable')"><i class="fa fa-print"></i> Print</a>&nbsp;
+
+    </div>
+<script type="text/javascript">
+
+    function getDirectPrint(print_area) {
+        //Creating new page
+        var pp = window.open();
+        var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+
+        var sitecss = '<LINK href="@Url.Content("~/assets/css/bootstrap.min.css")" rel="stylesheet" type="text/css" >';
+        pp.document.write(sitecss);
+
+        var reportcss = '<LINK href="@Url.Content("~/Content/report.css")"  rel="stylesheet" type="text/css" />';
+        pp.document.write(reportcss);
+
+        //pp.document.write('<body MS_POSITIONING="GridLayout" bottomMargin="0" leftMargin="0" topMargin="0" rightMargin="0">');
+        //Adding form Tag
+        //pp.document.write('<form  method="post">');
+        //Writing print area of the calling page
+        pp.document.write(document.getElementById(print_area).innerHTML);
+        pp.document.write('</form></body></HTML>');
+
+        //pp.document.getElementById('pager').innerHTML = "";
+        //pp.document.getElementById('button').innerHTML = "";
+
+        //pp.document.close(htm);
+        pp.print();
+        pp.close();
+
+        return false;
+
+    }
+</script>

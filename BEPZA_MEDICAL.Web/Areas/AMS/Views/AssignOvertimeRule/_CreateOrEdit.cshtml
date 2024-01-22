@@ -1,0 +1,237 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.OverTimeRuleAssignment.OverTimeRuleAssignmentViewModel
+
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.OverTimeId)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.OverTimeId, Model.RuleNameList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+    </div>
+     <div class="GroupBox">
+         <div class="row">
+             <span class="label">
+                 @*@Html.LabelFor(model => model.InfoType)*@
+             </span>
+             <span class="field" style="text-align: right">
+                 @Html.RadioButtonFor(m => m.InfoType, "All")@Html.Label("All Employees")
+             </span>
+             <span class="label-right" style="visibility:hidden">
+                 @Html.LabelFor(model => model.InfoType)
+             </span>
+             <span class="field" style="text-align: right">
+                 @Html.RadioButtonFor(m => m.InfoType, "Individual")@Html.Label("Individual Employee")
+             </span>
+        </div>
+      </div>
+    <div class="GroupBox">
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DepartmentId)
+            </span>
+            <span class="field">
+                @Html.HiddenFor(model => model.DepId)
+                @Html.DropDownListFor(model => model.DepartmentId, Model.Departmentlist, @String.Format("{0}", Content.DDLOptionalAllLabel()))
+            </span>
+            <span class="label-right">
+                @Html.HiddenFor(model => model.EmployeeId)
+                @Html.LabelFor(model => model.EmpId)
+            </span>
+            <span class="field" id="empIdSrc" style="display: none">
+                @*@Html.HiddenFor(model => model.EmpId)
+                @Html.HiddenFor(model => model.EmpId, model => model.EmpIdList, @String.Format("{0}", Content.DDLOptionalLabel()))*@
+                </span>
+                <span class="field" id="empSrc">
+                @Html.TextBoxFor(model => model.EmpId, null, new { @style = "width:150px" })
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+            </span>
+</div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.StaffCategoryId)
+            </span>
+            <span class="field" id="ddl-category">
+                @Html.HiddenFor(model => model.StaffCatgId)
+                @Html.DropDownListFor(model => model.StaffCategoryId, Model.CategoryList, @String.Format("{0}", Content.DDLOptionalAllLabel()))
+            </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+                </span>
+         </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.GradeId)
+            </span>
+            <span class="field">
+                @Html.HiddenFor(model => model.GrdId)
+                @Html.DropDownListFor(model => model.GradeId, Model.GradeList, @String.Format("{0}", Content.DDLOptionalAllLabel()))
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.Designation)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmploymentTypeId)
+            </span>
+            <span class="field" id="ddl-employeeType">
+                @Html.HiddenFor(model => model.EmpTypeId)
+                @Html.DropDownListFor(model => model.EmploymentTypeId, Model.EmploymentTypeList, @String.Format("{0}", Content.DDLOptionalAllLabel()))
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeClassId)
+            </span>
+            <span class="field" id="ddl-employeeType">
+                @Html.HiddenFor(model => model.EmpClassId)
+                @Html.DropDownListFor(model => model.EmployeeClassId, Model.EmployeeClassList, @String.Format("{0}", Content.DDLOptionalAllLabel()))
+            </span>
+        </div>
+
+    </div>
+    <div id="divEmpList">
+        <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+            <p>
+                Your browser does not support iframes.
+            </p>
+        </iframe>
+    </div>
+    <br />
+    <div class="clear">
+    </div>
+
+    <div class="clear">
+    </div>
+
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        url = url.replace('AMS', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo() {
+        var empId = $('#EmployeeId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "AssignOvertimeRule")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $("#EmpId").val(obj.EmpId);
+                $('#EmployeeName').val(obj.EmployeeName);
+                $("#Designation").val(obj.Designation);
+                $("#GrdId").val(obj.JobGradeId);
+                $("#DepId").val(obj.DivisionId);
+                $("#StaffCatgId").val(obj.StaffCategoryId);
+                $("#EmpTypeId").val(obj.EmploymentTypeId);
+                $("#EmpClassId").val(obj.EmployeeClassId);
+            }, "json");
+        }
+
+        return false;
+    }
+
+    function Closing() {
+
+    }
+
+    function EnableDisable(val) {
+        console.log(val);
+        if (val == 'All') {
+            $('#EmployeeId').val(null);
+            $('#EmployeeName').val('');
+            $('#Designation').val('');
+            $('#empSrc').attr('hidden', true);
+
+            $('#DepartmentId').removeAttr('disabled');
+            $('#StaffCategoryId').removeAttr('disabled');
+            $('#GradeId').removeAttr('disabled');
+            $('#EmploymentTypeId').removeAttr('disabled');
+            $('#EmployeeClassId').removeAttr('disabled');
+            $("input[name=InfoType][value='All']").attr("checked", 'checked');
+        }
+        else {
+            $('#empSrc').removeAttr('hidden');
+
+            $('#DepartmentId').attr('disabled', true);
+            $('#StaffCategoryId').attr('disabled', true);
+            $('#GradeId').attr('disabled', true);
+            $('#EmploymentTypeId').attr('disabled', true);
+            $('#EmployeeClassId').attr('disabled', true);
+            $("input[name=InfoType][value='Individual']").attr("checked", 'checked');
+        }
+    }
+
+    $('input[name=InfoType]:radio').change(function () {
+        var val = $("input[name=InfoType]:checked").val();
+        EnableDisable(val);
+    });
+
+    EnableDisable('@Model.InfoType.ToString()');
+
+    //$('#DepartmentId').attr('disabled', true);
+    //$('#StaffCategoryId').attr('disabled', true);
+    //$('#GradeId').attr('disabled', true);
+    //$('#EmploymentTypeId').attr('disabled', true);
+    //$('#EmployeeClassId').attr('disabled', true);
+
+</script>
+<script>
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+

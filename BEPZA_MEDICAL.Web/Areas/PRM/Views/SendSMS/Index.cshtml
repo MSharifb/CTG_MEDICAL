@@ -1,0 +1,243 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SendSMSViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+@using (Html.BeginForm("Index", "SendSMS", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group clearfix">
+                <div class="GroupBox" id="message">
+                </div>
+            </div>
+            <div class="">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MessageOption) &nbsp; &nbsp;
+                    @Html.RadioButtonFor(model => model.MessageOption, "S", new { @checked = true, onclick = "fnDivHideOrShow();" })
+                    @Html.Label("specific employee")
+                    @Html.RadioButtonFor(model => model.MessageOption, "Z", new { onclick = "fnDivHideOrShow();" })
+                    @Html.Label("zone wise")
+                    @Html.RadioButtonFor(model => model.MessageOption, "A", new { onclick = "fnDivHideOrShow();" })
+                    @Html.Label("all employee")
+                    @Html.RadioButtonFor(model => model.MessageOption, "E", new { onclick = "fnDivHideOrShow();" })
+                    @Html.Label("External")
+                </div>
+                <div class="form-group" id="z">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>
+                                @Html.LabelFor(model => model.ZoneInfoIdByUser)
+                                @Html.DropDownListFor(model => model.ZoneInfoIdByUser, Model.ZoneListByUser, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div>
+                                @Html.LabelFor(model => model.DepartmentId)
+                                @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentList, @String.Format("{0}", Content.DDLOptionalAllLabel()), new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" id="s">
+                    @Html.LabelFor(model => model.SelectedEmployee)
+                    @Html.DropDownListFor(model => model.SelectedEmployee, Model.AllEmployeeList, new { @class = "form-control chosenMS", @multiple = "multiple" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Message)
+                    @Html.TextAreaFor(model => model.Message, new { @rows = 5, @class = "form-control", @onkeyup = "countChar(this)" })
+                    <div id="charNum"></div>
+                </div>
+                <div class="form-group" id="fileE">
+                    @*<input type="file" name="Attachment" id="Attachment" />*@
+                    <!-- File Upload -->
+                    <div class="row">
+                        <label class="col-sm-2">Select File</label><span>FileName.xlsx format only(Hints)</span>
+                        <div class="col-sm-10">
+                            <input class="input-file" id="Attachment" type="file" name="Attachment">
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    <button id="btnSendMessage" class="btn btn-success"><i class="fa fa-send"></i> Send Message</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@*<div id="dialog-message" class="DMsgBox">
+        <p>
+            Message sending........
+        </p>
+    </div>*@
+
+<!-- The Modal -->
+<div id="myModal" class="modal" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <!-- Modal content -->
+        <div class="modal-content text-center" style="padding: 10px;">
+            Message sending........
+        </div>
+    </div>
+
+
+</div>
+
+<style type="text/css">
+    .modal {
+        background-color: rgba(0,0,0,0.5);
+    }
+
+        .modal .modal-dialog {
+            margin: 250px auto 30px;
+        }
+    /*.modal-center {
+        text-align: center;
+        padding: 0 !important;
+    }
+
+        .modal-center:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -4px;
+        }
+
+        .modal-center .modal-dialog {
+            display: inline-block;
+            text-align: left;
+            vertical-align: middle;
+        }*/
+</style>
+
+<script type="text/javascript">
+
+    function fnDivHideOrShow() {
+        var rdo = $('#MessageOption:checked').val();
+        //console.log(rdo);
+        if (rdo == 'S') {
+            $('#s').show();
+            $('#z').hide();
+            $('#fileE').hide();
+        }
+        else if (rdo == 'A') {
+            $('#z').hide();
+            $('#s').hide();
+            $('#fileE').hide();
+        }
+        else if (rdo == 'Z') {
+            $('#z').show();
+            $('#s').hide();
+            $('#fileE').hide();
+        }
+        else {
+            $('#z').hide();
+            $('#s').hide();
+            $('#fileE').show();
+        }
+    }
+
+    function LoadDeptByZoneId(zoneId) {
+        var ddlDept = $('select#DepartmentId');
+        ddlDept.empty();
+        ddlDept.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalAllLabel()'
+        }));
+        if (zoneId != null && zoneId != "") {
+            $.getJSON('@Url.Action("GetDepartment")', { zoneId: zoneId }, function (data) {
+                $.each(data.items, function (index, item) {
+                    ddlDept.append($('<option />', {
+                        value: item.Id,
+                        text: item.Name
+                    }));
+                });
+            });
+        }
+        else {
+            ddlDept.append($('<option/>', {
+                value: '',
+                text: '@Content.DDLOptionalAllLabel()'
+            }));
+        }
+    }
+
+
+    function countChar(val) {
+        var len = val.value.length;
+        if (len >= 450) {
+            val.value = val.value.substring(0, 450);
+        } else {
+            $('#charNum').text("Remaining characters " + (450 - len));
+        }
+    };
+
+    $(document).ready(function () {
+        fnDivHideOrShow();
+
+        $('.chosenMS').chosen({
+            //allow_single_deselect: true
+            placeholder_text_multiple: "Select Employee",
+            no_results_text: "Oops, nothing found!"
+        });
+
+        //Dropdownlist Selectedchange event
+        $("#ZoneInfoIdByUser").change(function () {
+            if ($("#ZoneInfoIdByUser").val() != null && $("#ZoneInfoIdByUser").val() != '') {
+                LoadDeptByZoneId($("#ZoneInfoIdByUser").val());
+            }
+        });
+
+        $('#btnSendMessage').on('click', function (e) {
+            e.preventDefault();
+            $('#btnSendMessage').prop('disabled', true);
+            $('#myModal').show();
+
+            var url = '@Url.Action("SendSMS", "SendSMS")';
+            var formdd = $('#frm')[0];
+            var fd = new FormData(formdd);
+            fd.append("Attachment", document.getElementById('Attachment').files[0]);
+
+            $.ajax({
+                url: url,
+                enctype: 'multipart/form-data',
+                data: fd,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    //debugger;
+                    $('#btnSendMessage').prop('disabled', false);
+                    $('#myModal').hide();
+                    if (result.Success) {
+                        $("#message").html('<b style=\"color:Green\">' + result.Message + '</b>');
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + result.Message + '</b>');
+                    }
+
+                }
+            });
+
+            //var form = $('#frm');
+            //var form = form.serialize();
+            //$.post(url, serializedForm, function (result) {
+            //    // alert(result.Message);
+            //    $('#btnSendMessage').prop('disabled', false);
+            //    $('#myModal').hide();
+            //    $("#message").html('<b style=\"color:Green\">' + result.Message + '</b>');
+            //});
+            return false;
+        });
+
+    });
+
+
+</script>

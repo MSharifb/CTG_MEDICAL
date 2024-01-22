@@ -1,0 +1,29 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FixedDepositInfoViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/FMS/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Create", "FixedDepositInfo", FormMethod.Post, new { id = "frm" }))
+{
+
+    @Html.Partial("_CreateOrEdit", Model)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                @*@if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <button class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                }*@
+                @if (@Model.FDRTypeName != "BEPZA")
+                {
+                    <a href="#" id="btnVoucherPosting" class="btn btn-success"> <i class="fa fa-file-powerpoint-o"></i> Prepare Voucher</a>
+                }
+                <a href="@Url.Action("Index")" class="btn btn-warning"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+

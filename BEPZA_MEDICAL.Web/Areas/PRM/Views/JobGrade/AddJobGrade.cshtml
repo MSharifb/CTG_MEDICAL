@@ -1,0 +1,39 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobGradeViewModel
+
+@{
+    ViewBag.Title = "Create";
+    //Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+    Layout = null;
+}
+
+
+@using (Html.BeginForm("AddGradeStep", "JobGrade", FormMethod.Post, new { id = "frmAddGradeStep" }))
+{
+
+    <fieldset>
+        <div class="GroupBox" id="messageGadeStep" style="min-height:15px;">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div style="color:Red" id="ErrMsg" class="@Model.ErrMsg">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEditJobGrade", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSaveGradeStep" name="btnSubmit" style="margin-right: 8px;" />
+            }
+            @*<input type="button" value="Clear" id="btnClear" name="btnClear" />*@
+        </div>
+    </fieldset>
+}
+@*<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+
+
+
+

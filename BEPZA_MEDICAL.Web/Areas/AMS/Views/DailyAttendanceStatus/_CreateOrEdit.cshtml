@@ -1,0 +1,102 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.DailyAttendanceStatus.DailyAttendanceStatusModel
+
+@{
+    Layout = null;
+}
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Present)
+            <label class="required-field">
+                *
+            </label>
+         </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Present)
+        </span>
+     </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EarlyArrival)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EarlyArrival)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EarlyDeparture)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EarlyDeparture)           
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.LateArrival)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.LateArrival)     
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.LateDeparture)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.LateDeparture)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Absent)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Absent)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Leave)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Leave)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OutStationDuty)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.OutStationDuty)
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+ </div>
+
+}

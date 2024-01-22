@@ -1,0 +1,634 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.IssueReturn.IssueReturnViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <legend>Issue Return Info</legend>
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.ZoneInfoId)
+    @Html.HiddenFor(model => model.ActionType)
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ReturnDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ReturnDate, new { @class = "required" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.ReturnNo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ReturnNo, new { @class = "required" })
+
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ReceivedFrom)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.HiddenFor(model => model.ReceivedFromEmpId)
+            @Html.HiddenFor(model => model.CheckStatus)
+            @Html.EditorFor(model => model.ReceivedFrom)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openReceivedFromEmployee();" alt="Find" title="Find" />
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.ScrapId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ScrapId, Model.ScrapList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+        
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ReceivedBy)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.HiddenFor(model => model.ReceivedByEmpId)
+            @Html.EditorFor(model => model.ReceivedBy)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openReceivedByEmployee();" alt="Find" title="Find" />
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.Comment)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Comment)
+        </span>
+    </div>
+   
+</div>
+
+<fieldset>
+    <legend>Item Searching</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TypeId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.TypeId, Model.ItemTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.CategoryId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.CategoryId, Model.CategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ModelId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ModelId, Model.ModelList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ColorId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ColorId, Model.ColorList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.UnitId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Returnable Item Info</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ItemId, Model.ItemList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Quantity)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Quantity)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemStatusId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ItemStatusId, Model.StatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.CommentDetail)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.CommentDetail)
+        </span>
+    </div>
+</fieldset>
+
+
+    <div class="GroupBox">
+        <div class="row" align="center">
+            <div style="width: 70%">
+                <div class="clear"></div>
+                <div class="button-crude fixedAddButton" style="text-align: right;">
+                    <input id="btnAdd" type="button" value="Add" />
+                </div>
+
+                <div class="clear">
+                </div>
+                <table id="grid" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Item
+                            </th>
+                            <th>
+                                unit
+                            </th>
+                            <th>
+                                Quantity
+                            </th>
+                            <th>
+                                Comment
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.IssueReturnItemDetail.Count() > 0) { Html.RenderPartial("_Details", Model); }}
+                    </tbody>
+                </table>
+            </div>
+            <div class="clear" style="height:10px">
+            </div>
+        </div>
+    </div>
+
+<div class="clear"></div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function openReceivedByEmployee()
+    {
+        $('#CheckStatus').val("By");
+        openEmployee();
+    }
+    function openReceivedFromEmployee()
+    {
+        $('#CheckStatus').val("From");
+        openEmployee();
+    }
+
+
+    function openEmployee() {
+        @*var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';*@
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=1';
+
+        url = url.replace('INV', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    //function setData(id) {
+    //    if ($('#CheckStatus').val() == 'From') {
+    //        $('#ReceivedFromEmpId').val(id);
+    //        //console.log($('#IssuedToId').val());
+    //    }
+    //    else {
+    //        $('#ReceivedByEmpId').val(id);
+    //    }
+
+    //    GetEmployeeInfo();
+    //    $("#divEmpList").dialog('close');
+    //}
+
+    function setEmpData(id, useTypeEmpId) {
+        if (useTypeEmpId == 1) {
+            if ($('#CheckStatus').val() == 'From') {
+                $('#ReceivedFromEmpId').val(id);
+            }
+            else {
+                $('#ReceivedByEmpId').val(id);
+            }
+            GetEmployeeInfo();
+            $("#divEmpList").dialog('close');
+        }
+    }
+
+    function Closing() {
+
+    }
+
+    function GetEmployeeInfo() {
+        if ($('#CheckStatus').val() == 'From') {
+            var empId = $('#ReceivedFromEmpId').val();
+            $('#ReceivedFrom').val('');
+        }
+        else {
+            var empId = $('#ReceivedByEmpId').val();
+            $('#ReceivedBy').val('');
+        }
+        //console.log(empId);
+        var url = '@Url.Action("GetEmployeeInfo", "IssueReturn")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (StringHasValue(obj.Result) == true) {
+                    alert(obj.Result);
+                }
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+                else {
+                    if (obj.ReceivedFrom != $('#ReceivedFrom').val()) {
+                        LoadScrapDDL();
+                    }
+                    $('#ReceivedBy').val(obj.ReceivedBy);
+                    $("#ReceivedByEmpId").val(obj.ReceivedByEmpId);
+                    $('#ReceivedFrom').val(obj.ReceivedFrom);
+                    $("#ReceivedFromEmpId").val(obj.ReceivedFromEmpId);
+                }
+
+            }, "json");
+        }
+
+        return false;
+    }
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+
+</script>
+
+<script type="text/javascript">
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnAdd").click(function () {
+        $("#message").empty();
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+            $("#ItemId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select Item.' + "</b>");
+            return false;
+
+        }
+
+        if ($('#Quantity').val() == null || $('#Quantity').val() == '' || $('#Quantity').val() == '0') {
+            $("#Quantity").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please provide valid Quantity.' + "</b>");
+            return false;
+        }
+
+        if ($('#ItemStatusId').val() == null || $('#ItemStatusId').val() == '' || $('#ItemStatusId').val() == '0') {
+            $("#ItemStatusId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select item status.' + "</b>");
+            return false;
+        }
+
+        var id = $('#Id').val();
+        var ItemId = $('#ItemId').val();
+        var ItemStatusId = $('#ItemStatusId').val();
+        var Item = $('#ItemId option:selected').text();
+        var Quantity = $('#Quantity').val();
+        var Comment = $('#CommentDetail').val();
+        var Unit = "";
+        if ($('#UnitId').val() != null && $('#UnitId').val() != '' && $('#UnitId').val() != '0') {
+            Unit = $('#UnitId option:selected').text();
+        }
+
+        //console.log(ItemId);
+        var totalReturned = GetTotalRetQt(ItemId);
+        var recFromEmpId = $('#ReceivedFromEmpId').val();
+        var scrapId = $('#ScrapId').val();
+        
+
+        var url = '@Url.Action("AddDetail", "IssueReturn")';
+        var data = {
+            IssueReturnId: id,
+            ItemId: ItemId,
+            Item: Item,
+            Quantity: Quantity,
+            Comment: Comment,
+            Unit: Unit,
+            ItemStatusId: ItemStatusId,
+            SumQty: totalReturned,
+            EmployeeId: recFromEmpId,
+            ScrapId: scrapId
+        };
+
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                //debugger;
+                if (html.Success) {
+                    $('#message').html("<b style='color:Red'>" + html.Message + "</b>");
+                    return false;
+                }
+
+                if ($(html).val() != 'Invalid') {
+
+                    $('#grid tbody').append(html);
+
+                    $('#ItemId').val('')
+                    $('#Quantity').val('')
+                    $('#CommentDetail').val('')
+                    $('#TypeId').val('')
+                    $('#CategoryId').val('')
+                    $('#ModelId').val('')
+                    $('#ColorId').val('')
+                    $('#UnitId').val('')
+                    $('#ItemStatusId').val('1')
+
+                    $('#message').html('');
+
+                    $("#ItemId").removeClass("border-red");
+                    $("#Quantity").removeClass("border-red");
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + 'Invalid.' + "</b>");
+                }
+            }
+        });
+
+        return false;
+
+    });
+
+
+    //function RemoveDb(el, id, url) {
+
+    //    if (id == 0 || id == undefined) {
+    //        $(el).parent().parent().remove();
+    //    }
+    //    else {
+    //        $.ajax({
+    //            url: url,
+    //            type: 'POST',
+    //            dataType: 'json',
+    //            data: JSON.stringify({ Id: id }),
+    //            contentType: "application/json; charset=utf-8",
+    //            error: function () {
+    //                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+    //            },
+    //            success: function (result) {
+    //                var errMsg = result.Message;
+    //                var errg = result.Success;
+    //                if (errg) {
+    //                    $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+    //                    $(el).parent().parent().remove();
+    //                }
+    //                else {
+    //                    $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+    //                }
+    //            }
+    //        });
+    //    }
+
+    //}
+
+</script>
+
+<script type="text/javascript">
+
+    $('#ScrapId').live("change", function (e) {
+
+        $.get('@Url.Action("GetScrapDetails", "IssueReturn")', { Id: $('#ScrapId').val() }, function (data) {
+            //if (data.scrapDate != null) {
+            //    $("#ScrapDate").val(data.indentDate);
+            //}
+            $("#ReceivedFromEmpId").val(data.issuedToEmpId);
+            $("#ReceivedFrom").val(data.issuedTo);
+
+        });
+
+        LoadItemDDL();
+
+    });
+
+    //cascading dropdown
+    $("select#ItemId").change(function () {
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+
+            $("#TypeId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#CategoryId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ModelId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#UnitId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ColorId").val("0");
+            $('.select-single').trigger('chosen:updated');
+        }
+        else {
+            $.get('@Url.Action("GetItemDetails", "ItemPurchase")', { itemId: $('#ItemId').val() }, function (data) {
+                $("#TypeId").val(data.typeId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#CategoryId").val(data.categoryId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ModelId").val(data.modelId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#UnitId").val(data.unitId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ColorId").val(data.colorId);
+                $('.select-single').trigger('chosen:updated');
+
+            });
+        }
+        
+    })
+
+    $("select#TypeId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#CategoryId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ModelId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#UnitId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ColorId").change(function () {
+        LoadItemDDL();
+    })
+
+    function LoadItemDDL() {
+        var ScrapId = $("#ScrapId").val();
+        var TypeId = $("#TypeId").val();
+        var CategoryId = $("#CategoryId").val();
+        var ModelId = $("#ModelId").val();
+        var UnitId = $("#UnitId").val();
+        var ColorId = $("#ColorId").val();
+
+        var ItemSelect = $('select#ItemId');
+        ItemSelect.empty();
+
+        ItemSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        var url = '@Url.Action("GetItemList", "IssueReturn")' + '?TypeId=' + TypeId + '&CategoryId=' + CategoryId + '&ModelId=' + ModelId + '&UnitId=' + UnitId + '&ColorId=' + ColorId + '&ScrapId=' + ScrapId;
+        $.get(url, function (response) {
+            var heads = $.parseJSON(response);
+
+            var ddl = $("#ItemId");
+            // clear all previous options
+            $("#ItemId>option").remove();
+
+            // populate the products
+            for (i = 0; i < heads.length; i++) {
+
+                ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+            }
+            $('.select-single').trigger('chosen:updated');
+        });
+
+    }
+
+    function LoadScrapDDL() {
+
+        var IssuedToId = $("#ReceivedFromEmpId").val();
+        //var ScrapDate = $("#ScrapDate").val().toString("yyyy-MM-dd");
+
+        var ScrapSelect = $('select#ScrapId');
+        ScrapSelect.empty();
+
+        ScrapSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        var url = '@Url.Action("GetScrapList", "IssueReturn")';
+
+        $.get(url, { IssuedToId: IssuedToId }, function (response) {
+            var heads = $.parseJSON(response);
+
+            var ddl = $("#ScrapId");
+            // clear all previous options
+            $("#ScrapId>option").remove();
+
+            // populate the products
+            for (i = 0; i < heads.length; i++) {
+
+                ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+            }
+            $('.select-single').trigger('chosen:updated');
+        });
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    function GetTotalRetQt(itemId) {
+        var sum = 0;
+        $("#grid tbody tr .retQt :input").each(function () {
+            var currentItemId = $(this).closest('tr').find('.itemIdInfo :input[type=hidden]').val();
+            var value = $(this).val();
+            if (itemId == currentItemId) {
+                sum += parseFloat(value);
+            }
+        });
+        return sum;
+    }
+</script>
+
+

@@ -1,0 +1,26 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftChange.ShiftChangeViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/AMS/Views/Shared/_Layout.cshtml";
+}
+
+    <fieldset>
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div style="color:Red" id="ErrMsg" class="@Model.ErrMsg">
+                    @Model.ErrMsg
+                </div>
+            }
+
+        </div>
+
+        @Html.Partial("_CreateOrEdit", Model)
+
+    </fieldset>
+
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+
+</div>

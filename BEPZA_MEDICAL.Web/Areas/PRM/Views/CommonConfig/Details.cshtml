@@ -1,0 +1,36 @@
+﻿@model MFS_IWM.Web.Areas.PRM.Data.PRM_CommonConfig
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>PRM_CommonConfig</legend>
+
+    <div class="display-label">PRM_ConfigType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_ConfigType.ConfigType)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">SortOrder</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SortOrder)
+    </div>
+
+    <div class="display-label">Remarks</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Remarks)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

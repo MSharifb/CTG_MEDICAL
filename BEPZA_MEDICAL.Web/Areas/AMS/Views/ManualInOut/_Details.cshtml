@@ -1,0 +1,10 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ManualInOut.ManualInOutViewModel
+@using ERP_BEPZA.Web.Helpers
+@if (Model != null && Model.ManualInOut != null)
+{
+    foreach (var x in Model.ManualInOut)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

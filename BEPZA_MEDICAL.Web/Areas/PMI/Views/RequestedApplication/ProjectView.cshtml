@@ -1,0 +1,547 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.ProjectViewModel
+
+@{
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+        @*if ('@Model.Id' == 0) {
+            $('.ApvUpdate').hide();
+        }
+        else {
+            $('.ApvSave').hide();
+        }*@
+
+        var projectId = '@Model.Id';
+        var selectedProjectId = parseInt(projectId);
+        if (isNaN(selectedProjectId)) {
+            selectedProjectId = 0;
+        }
+        if ('@Model.ApprovalStatus' != 'Submitted') {
+            $('#btnSave').hide();
+        }
+
+        $('.page-title').html("Project Management");
+    });
+
+</script>
+
+<div>
+    @using (Html.BeginForm("SaveProject", "RequestedApplication", FormMethod.Post, new { id = "frm", enctype = "multipart/form-data" }))
+    {
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                if (@Model.errClass == "success")
+                {
+                    <div class="failed">
+                        @Model.ErrMsg
+                    </div>
+                }
+                else
+                {
+                    <div class="success">
+                        @Model.ErrMsg
+                    </div>
+                }
+            }
+
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+
+        <div class="form-horizontal">
+           
+            <fieldset>
+                <legend>General Information</legend>
+                <div class="form-group">
+                    @Html.HiddenFor(m => m.Id)
+                    @Html.HiddenFor(m => m.APPDetailsId)
+                    @Html.HiddenFor(m => m.APPMasterId)
+                    @Html.HiddenFor(m => m.ApprovalSelectionId)
+
+
+                    @Html.LabelFor(m => m.MinistryId, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.MinistryName)
+                        @Html.HiddenFor(m => m.MinistryId)
+                        @Html.HiddenFor(m => m.ConstructionTypeId)
+                    </div>
+                    @Html.LabelFor(m => m.AgencyId, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.DropDownListFor(m => m.AgencyId, Model.AgencyList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control", @disabled = "disabled" })</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NameOfWorks, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.NameOfWorks, new { @readonly = "readonly" })</div>
+                    @Html.LabelFor(m => m.BudgetApprovalDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.BudgetApprovalDate)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DevelopmentPartner, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.DevelopmentPartner)</div>
+                    @Html.LabelFor(m => m.ProjectCode, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.ProjectCode)</div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProjectZones, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">@Html.TextAreaFor(m => m.ProjectZones, new { @style = @"background:#F2F5F8; border:1px solid #CCCCCC; cursor:default;", @readonly = true })</div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProcuringEntryName, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.ProcuringEntryName)</div>
+                    @Html.LabelFor(m => m.ProcuringEntryCode, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.ProcuringEntryCode)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConstructionTypeName, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.ConstructionTypeName)</div>
+                    @Html.LabelFor(m => m.ConstructionCategoryId, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.DropDownListFor(m => m.ConstructionCategoryId, Model.ConstructionCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control", @disabled = "disabled" })</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContractorName, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.ContractorName)</div>
+                    @Html.LabelFor(m => m.DateOfIssuingNOA, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.DateOfIssuingNOA)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DateOfPGSubmission, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.DateOfPGSubmission)</div>
+                    @Html.LabelFor(m => m.DateOfPGExpire, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.DateOfPGExpire)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.InvitationRefNo, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.InvitationRefNo)</div>
+                    @Html.LabelFor(m => m.AdministrativeApprovalDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.AdministrativeApprovalDate)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TenderEvalDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.TenderEvalDate)</div>
+                    @Html.LabelFor(m => m.TenderIssueDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.TenderIssueDate)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TenderPubDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.TenderPubDate)</div>
+                    @Html.LabelFor(m => m.TenderLastSellingDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.TenderLastSellingDate)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TenderOpeningDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.EditorFor(m => m.TenderOpeningDate)</div>
+                    @Html.LabelFor(m => m.TenderOpeningTime, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">@Html.TextBoxFor(model => model.TenderOpeningTime, new { @class = "time-picker" })</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.TenderClosingDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.TenderClosingDate)
+                    </div>
+                    @Html.LabelFor(m => m.TenderClosingTime, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.TenderClosingTime, new { @class = "time-picker" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ContractSignDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.ContractSignDate)
+                    </div>
+                    @Html.LabelFor(m => m.SiteHandoverDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.SiteHandoverDate)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.AwardIssueDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.AwardIssueDate)
+                    </div>
+                    @Html.LabelFor(m => m.CreatedDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.CreatedDate)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DateOfCommencement, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.DateOfCommencement)
+                    </div>
+                    @Html.LabelFor(m => m.TimeExtensionInDays, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.TimeExtensionInDays)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.CompletionDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.CompletionDate)
+                    </div>
+
+                    @Html.LabelFor(m => m.PhysicalProgress, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.PhysicalProgress, "{0:N2}")<span style="margin-left:5px;">%</span>
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    @Html.LabelFor(m => m.ProjectStatusId, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(m => m.ProjectStatusId, Model.ProjectStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    Time Extension / Completion Date
+                </legend>
+                <div style="text-align:right;">
+
+                </div>
+                <div id="dvTimeExtension">
+                    <table id="grid" class="table table-bordered" style="width:100%;" align="center">
+                        <thead>                         
+                            <tr>
+                                <th class="day-field">No of Days Extended</th>
+                                <th class="ex-date-field">Expected Completion Date</th>
+                                <th class="date-field">Actual Completion Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (@Model.ProjectTimeExtensionList.Count() > 0)
+                            {
+                                for (int i = 0; i < Model.ProjectTimeExtensionList.Count; i++)
+                                {
+                                    var item = Model.ProjectTimeExtensionList.ToList()[i];
+                                    <tr>
+                                        <td class="day-field">
+                                            <label>@item.ExtendedDays</label>
+                                        </td>
+                                        <td class="ex-date-field">
+                                            <label>@Convert.ToDateTime(item.ExtendedDate).ToShortDateString()</label>
+                                        </td>
+                                        <td class="date-field">
+                                            <label>@Convert.ToDateTime(item.ExpectedCompletionDate).ToShortDateString()</label>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td>Total Extension (Days)</td>
+                                <td colspan="2" class="total-time-extension"><input type="text" readonly="readonly" style="background: #F2F5F8;" /></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    Project Details
+                </legend>
+                
+                <div id="dvProjectDetails">
+                    <table id="grid" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Procurement Method</th>
+                                <th>Source of Fund</th>
+                                <th>Approval Authority</th>
+                                <th>Package No</th>
+                                <th>Package Name</th>
+                                <th>Unit</th>
+                                <th>Quantity</th>
+                                <th>Estimated Cost</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (@Model.ProjectDetailList.Count() > 0)
+                            {
+                                for (int i = 0; i < Model.ProjectDetailList.Count; i++)
+                                {
+                                    var item = Model.ProjectDetailList.ToList()[i];
+
+                                    <tr>
+                                        <td>@Html.Encode(item.ProcurementType)</td>
+                                        <td>@Html.Encode(item.ProcurementMethod)</td>
+                                        <td>@Html.Encode(item.SourceOfFund)</td>
+                                        <td>@Html.Encode(item.ApprovalAuthority)</td>
+                                        <td>@Html.Encode(item.PackageNo)</td>
+                                        <td>@Html.Encode(item.PackageName)</td>
+                                        <td>@Html.Encode(item.Unit)</td>
+                                        <td>@Html.Encode(item.Quantity)</td>
+                                        <td class="estimatedCost">@Html.Encode(item.EstimatedCost)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Name and Address of the Office</legend>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SellingTenderDescription, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">@Html.TextAreaFor(m => m.SellingTenderDescription)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ReceivingTenderDescription, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">@Html.TextAreaFor(m => m.ReceivingTenderDescription)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.OpeningTenderDescription, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">@Html.TextAreaFor(m => m.OpeningTenderDescription)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PreTenderMeetingPlace, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">@Html.TextAreaFor(m => m.PreTenderMeetingPlace)</div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Information For Tender</legend>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.EligibilityOfTenderer, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">@Html.TextAreaFor(m => m.EligibilityOfTenderer)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.BriefDescription, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">@Html.TextAreaFor(m => m.BriefDescription)</div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.BriefDescriptionOfRelated, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">@Html.TextAreaFor(m => m.BriefDescriptionOfRelated)</div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Tender Document Price</legend>
+                <div id="dvTenderDetails">                    
+                    <table id="grid" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>@Html.LabelFor(m => m.TenderDetailsViewModel.LotNumber)</th>
+                                <th>@Html.LabelFor(m => m.TenderDetailsViewModel.Identification)</th>
+                                <th>@Html.LabelFor(m => m.TenderDetailsViewModel.Location)</th>
+                                <th>@Html.LabelFor(m => m.TenderDetailsViewModel.SecurityMoney)</th>
+                                <th>@Html.LabelFor(m => m.TenderDetailsViewModel.TenderPrice)</th>
+                                <th>@Html.LabelFor(m => m.TenderDetailsViewModel.CompletionDays)</th>
+                                <th>@Html.LabelFor(m => m.TenderDetailsViewModel.CompletionDate)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.TenderDetailsViewModelList.Count > 0)
+                            {
+                                for (int i = 0; i < Model.TenderDetailsViewModelList.Count; i++ )
+                                {
+                                    var item = Model.TenderDetailsViewModelList.ToList()[i];
+                                    
+                                    <tr>
+                                        <td style="width:100px;">@Html.Encode(item.LotNumber)</td>
+                                        <td>@Html.Encode(item.Identification)</td>
+                                        <td style="width:200px;">@Html.Encode(item.Location)</td>
+                                        <td style="width:120px;" class="security-money">@Html.Encode(item.SecurityMoney)</td>
+                                        <td style="width:120px;" class="tender-price">@Html.Encode(item.TenderPrice)</td>
+                                        <td style="width:130px;" class="tndrComDays">@Html.Encode(item.CompletionDays)</td>
+                                        <td style="width:130px;" class="tndrComDate">@Html.Encode(item.CompletionDate.ToShortDateString())</td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </fieldset>
+            <fieldset>
+                <legend>Procurement Entity Details</legend>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.NameOfInvitingTender, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.NameOfInvitingTender)
+                    </div>
+                    @Html.LabelFor(m => m.DesignationId, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(m => m.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control", @disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ProcureAddress, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextAreaFor(m => m.ProcureAddress)
+                    </div>
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.PhoneNumber)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.EmailAddress, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.EmailAddress)
+                    </div>
+                    @Html.LabelFor(m => m.FaxNumber, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.FaxNumber)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Notice, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.TextAreaFor(m => m.Notice, new { @class = "TextArea" })
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Financial Part</legend>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.SecurityMoneyReefingDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.SecurityMoneyReefingDate)
+                    </div>
+                    @Html.LabelFor(m => m.LiquidatedDamage, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.LiquidatedDamage)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PaymentStatusId, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(m => m.PaymentStatusId, Model.PaymentStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+                    </div>
+                    @Html.LabelFor(m => m.LastPaymentDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.LastPaymentDate)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.FinalPaymentDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.FinalPaymentDate)
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="attachment-area">
+                <legend>Attachment</legend>
+                @if (Model.FileName != null)
+                {
+                    <div class="row" style="text-align:right;">
+                        @Html.ActionLink(Model.FileName.ToString(), "DownloadFile", new { @projectId = Model.Id, @class = @"file-download" })
+                    </div>
+                }
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DrawingAttachment, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.HiddenFor(model => model.DrawingAttachment)
+                        @Html.HiddenFor(model => model.FileName)
+                        @Html.TextBoxFor(model => model.File, new { type = "file" })
+                    </div>
+                    @Html.LabelFor(m => m.DrawingApprovalDate, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-4">
+                        @Html.EditorFor(m => m.DrawingApprovalDate)
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="ApvSave">
+                <fieldset>
+                    <legend>Recommendation / Approval Flow</legend>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label labelRequired">Your Remarks</label>
+                        <div class="col-sm-10">
+                            @Html.TextAreaFor(m => m.Remarks, new { @style = @"width:50%", @required = @"required" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                        <div class="col-sm-4">
+                            @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered" style="width:100%">
+
+                        <thead style="height:10px!important">
+                            <tr style="height:10px!important">
+                                <th style="width: 30%">Designation</th>
+                                <th style="width: 45%">Employee Name & Department</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                if (Model.ApproverList != null && Model.ApproverList.Any())
+                {
+                    foreach (var x in Model.ApproverList)
+                    {
+                        @Html.Partial("_PartialEmployeeList", x);
+    }
+}
+                            }
+
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+
+            @*<div class="ApvUpdate">
+                <fieldset>
+                    <legend>Recomandation / Approval Flow</legend>
+                    <table class="table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%">Designation</th>
+                                <th style="width: 30%">Employee Name</th>
+                                <th> Department</th>
+                                <th> Remarks </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (int i = 0; i < Model.ApproverList.Count; i++)
+                            {
+                                var item = Model.ApproverList.ToList()[i];
+                                <tr>
+                                    <td>@Html.Encode(item.DesignationName)</td>
+                                    <td>@Html.Encode(item.EmployeeName)</td>
+                                    <td>@Html.Encode(item.DepartmentName)</td>
+                                    <td>@Html.Encode(item.Remarks)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </fieldset>
+            </div>*@
+
+
+            <div class="col-sm-12" style="text-align:right;">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                <button class="btn btn-primary" type="submit" value="Save" id="btnSave" name="btnSave"><i class="fa fa-save"></i> Save</button>
+                }
+            </div>
+        </div>
+        <div class="button-crude button-left" style="margin: 5px">
+            <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+        </div>
+
+
+    }
+</div>

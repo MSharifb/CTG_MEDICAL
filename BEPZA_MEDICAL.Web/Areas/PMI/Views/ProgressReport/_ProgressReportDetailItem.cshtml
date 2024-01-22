@@ -1,0 +1,76 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.ProgressReport.ProgressReportDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@*<table class="table table-bordered">
+    <tbody>*@
+        <tr>
+            @using (Html.BeginCollectionItem("ProgressReportDetailList"))
+            {
+                <td class="serialNo">
+                    <span class="head-id">
+                        @Html.HiddenFor(m => m.Id)
+                        @Html.HiddenFor(m => m.ProgressReportMasterId)
+                    </span>
+                    @Html.EditorFor(m => m.SerialNo)
+                </td>
+                <td class="project-name">
+                    @Html.TextAreaFor(m => m.NameOfWorks, new { @class = "form-control"})
+                </td>
+                <td class="Contractor-name">
+                    @Html.EditorFor(m => m.NameOfContractor, new { @class = "form-control" })
+                </td>
+                <td class="estimated-amount">
+                    @Html.TextBoxFor(m => m.EstimatedAmount,new { @class = "form-control" })
+                </td>
+                <td class="estimated-amount">
+                    @Html.EditorFor(m => m.AcceptedAmount)
+                </td>
+                <td class="construction-type">
+                    @Html.EditorFor(m => m.DateOfNOA)
+                </td>
+                <td class="construction-type">
+                    @Html.EditorFor(m => m.ExpireDateOfBG)
+                </td>
+                <td class="construction-type">
+                    @Html.EditorFor(m => m.DateOfContractAgreement)
+                </td>
+                <td class="construction-type">
+                    @Html.EditorFor(m => m.DateOfSiteHandingOver)
+                </td>
+                <td class="date-Of-commencement">
+                    @Html.EditorFor(m => m.DateOfCommencement)
+                </td>
+                <td class="day-field">
+                    @Html.EditorFor(m => m.CompletionTime)
+                </td>
+                <td class="date-Of-completion">
+                    @Html.EditorFor(m => m.DateOfCompletion)
+                </td>
+                <td class="construction-type">
+                    @Html.EditorFor(m => m.TimeElapsed)
+                </td>
+                <td class="construction-type">
+                    @Html.EditorFor(m => m.PhysicalProgress)
+                </td>
+                @Html.Partial("_ProgressReportYearlyBilled", Model.YearlyBilledList)
+                <td class="construction-type">
+                    @Html.DropDownListFor(m => m.WrokStatusId, Model.WorkStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </td>
+                <td class="remarks">
+                    @Html.TextAreaFor(m => m.Remarks)
+                </td>
+                <td class="control-option">
+                    <span class="add-button">
+                        <button type="button" class="btn btn-sm btn-primary btnAddNewProject" id="btnAddNewProject" style="padding:3px;">
+                            <i class="fa fa-plus fa-lg"></i>
+                        </button>
+                    </span>
+                    <span class="delete-button">
+                        <button type="button" class="btn btn-sm btn-primary btnDleteProject" id="btnDleteProject" style="padding:3px;">
+                            <i class="fa fa-trash fa-lg"></i>
+                        </button>
+                    </span>
+                </td>
+            }
+        </tr>
+    @*</tbody>
+</table>*@

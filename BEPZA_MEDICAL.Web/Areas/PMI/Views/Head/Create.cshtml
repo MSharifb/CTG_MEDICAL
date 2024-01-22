@@ -1,0 +1,46 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.HeadViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+@using (Html.BeginForm("Create", "Head", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+
+    @Html.Partial("_CreateOrEdit", Model)
+    <div class="col-sm-12" style="text-align:center; font-size:16px !important;">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <button class="btn btn-sm btn-primary" type="submit" value="Save" id="btnSave" name="btnSave"><i class="fa fa-save"> Save</i></button>
+        }
+        <button type="button" class="btn btn-sm btn-primary" id="btnClear" name="btnClear"><i class="fa fa-refresh"> Clear</i></button>
+    </div>
+}
+<div class="button-crude button-left">
+    <a href="@Url.Action("Index")" class="btn btn-sm btn-primary"> <i class="fa fa-backward"></i> Back to List</a>
+</div>
+
+<style type="text/css">
+    .widthField {
+        width: 800px;
+    }
+
+    .readonlyField {
+        background: #F2F5F8;
+        width: 800px;
+    }
+
+    .amount-type {
+        text-align: right;
+    }
+</style>

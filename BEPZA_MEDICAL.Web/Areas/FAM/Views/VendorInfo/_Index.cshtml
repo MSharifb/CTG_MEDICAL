@@ -1,0 +1,33 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.VendorInfo
+
+@model VendorInformationModel
+<div class="frm-content">
+        <div class="GroupBox search-content">
+       <div class="GroupBox"  style="max-height: 30px;"  id="message" ></div>
+            <div id="jqSearch">
+            </div>
+            <div class="row">
+                <div class="button-crude button-left">
+                    @Ajax.ActionLink("Add New", "create", new AjaxOptions { OnComplete = "OnCompleteAddnew" })
+                
+                </div>            
+            </div>
+        </div>
+        <div class="grid">
+            <table id="jqGrid" cellpadding="0" cellspacing="0">
+            </table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+            @Html.Partial("_GridList", Model)
+        </div>
+    </div>
+<script type="text/javascript">
+    function OnCompleteAddnew(content) {
+        if (content.statusText == 'OK') {
+            $('.search-content').hide();
+            $('.frm-content').html(content.responseText);
+        } else {
+            $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+        }
+    }
+</script>

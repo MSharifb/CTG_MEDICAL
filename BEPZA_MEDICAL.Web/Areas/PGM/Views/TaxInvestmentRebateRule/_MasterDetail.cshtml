@@ -1,0 +1,11 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxInvestmentRebateRule.TaxInvestmentRebateRuleMasterViewModel
+@using ERP_BEPZA.Web.Helpers
+
+@if (Model != null && Model.RuleDetail != null)
+{
+    foreach (var x in Model.RuleDetail)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

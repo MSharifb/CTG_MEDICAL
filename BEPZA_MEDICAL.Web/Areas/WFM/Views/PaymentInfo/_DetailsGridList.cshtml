@@ -1,0 +1,76 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.PaymentInfoViewModel
+
+@Html.HiddenFor(model => model.Id, new { id = "hfPaymentId" })
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var id = $('#hfPaymentId').val();
+
+        $('#jqGrid').jqGrid({
+        url: '@Url.Action("GetDetailsList")?id=' + id,
+        datatype: 'json',
+        mtype: 'POST',
+        colNames: ['Id', 'Payment Order No.', 'Order Date','Employee ID', 'Name', 'Designation', 'Approved Amount', 'Category', 'Prepare Voucher'],
+        colModel: [
+        { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+        { name: 'PayOrderNo', index: 'PayOrderNo', align: 'center', width: '100px', search: true, edittype: 'text' },
+        { name: 'PayOrderDate', index: 'PayOrderDate', align: 'center', width: '60px', search: true, edittype: 'text' },
+        { name: 'EmpId', index: 'EmpId', align: 'Center', width: '60px', search: false, edittype: 'text' },
+        { name: 'Name', index: 'Name', align: 'Center', width: '100px', search: false, edittype: 'text' },
+        { name: 'Designation', index: 'Designation', align: 'Center', width: '120px', search: false, edittype: 'text' },
+        { name: 'ApproveAmount', index: 'ApproveAmount', align: 'Right', width: '100px', search: false, edittype: 'text' },
+        { name: 'CategoryName', index: 'CategoryName', align: 'Center', width: '100px', search: false, edittype: 'text' },
+        { name: 'Edit', index: 'Edit', align: 'center', search: false, sortable: false, width: '80px', edittype: 'image', formatter: ViewformateadorLink },
+        ],
+        autowidth: true,
+        caption: "Payment Details Information",
+        rowList: [20, 30, 40, 50, 100],
+        pager: $('#jqGridPager'),
+        rowNum: 20,
+        viewrecords: true,
+        height: '100%',
+        width: '50%',
+        loadComplete: function () {
+            $("a.deleteItem").on('click', function (e) {
+                e.preventDefault();
+                deleteLinkObj = $(this);  //for future use
+                $('#delete-dialog').dialog('open');
+                return false; // prevents the default behaviour
+            });
+        }
+    });
+    // Pager Function
+    $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+    $('#sg_PayOrderDate').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+    });
+
+    function ViewformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "VoucherPosing", new { id = "_id_" }, new { @class = "editItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>

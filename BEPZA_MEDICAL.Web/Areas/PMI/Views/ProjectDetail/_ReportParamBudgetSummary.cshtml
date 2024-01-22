@@ -1,0 +1,12 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.BudgetSummaryParamViewModel>
+@using BEPZA_MEDICAL.Web.Helpers
+
+
+
+@using (Html.BeginCollectionItem("ParamList"))
+{
+    foreach (var item in @Model)
+    {
+        @Html.Partial("_BudgetSummaryItem", item)   
+    }
+}

@@ -1,0 +1,86 @@
+﻿
+@model BEPZA_MEDICAL.Web.Areas.CPF.Models.ProfitDistribution.ProfitDistributionViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divProcess").dialog({
+            autoOpen: false, modal: true, height: 320, width: 850
+            , title: 'Profit Distribution Information'
+            , beforeclose: function (event, ui) { Closing(); }
+        });
+        showErrMsg();
+
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+
+        }
+    }
+</script>
+
+@using (Html.BeginForm("Index", "ProfitDistribution", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" style="max-height: 15px" id="message">
+    </div>
+    <div class="GroupBox">
+        <div id="jqSearch">
+        </div>
+        <div class="clear">
+            </div>
+    </div>
+
+    <div class="button-crude pull-left">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input id="btnAdd" type="button" value="Add New" onclick="GoToProcess()" />
+        }
+    </div>
+
+    <div class="clear" style="height: 10px">
+    </div>
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+    <div id="divList">
+        @Html.Partial("_GridList")
+    </div>
+
+    <div id="divProcess">
+        <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+            padding-right: 0px;">
+            <p>
+                Your browser does not support iframes.
+            </p>
+        </iframe>
+    </div>
+}
+<script type="text/javascript">
+
+    function GoToProcess() {
+        $("#divProcess").empty();
+
+        var url = '@Url.Action("CreateOrEdit", "ProfitDistribution")';
+
+        $.post(url, function (obj) {
+
+            $('#divProcess').html(obj);
+        });
+
+        $("#divProcess").dialog('open');
+
+        return false;
+    }
+
+    function Closing() {
+
+    }
+</script>

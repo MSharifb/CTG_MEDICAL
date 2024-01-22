@@ -1,0 +1,27 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.HumanResourceRate.HumanResourceRateDetailViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("HumanResourceRateDetailList"))
+    {
+
+        if (Model != null)
+        {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.HRRateMasterId)
+        }        
+       
+        <td width="20%" style="text-align: center">
+            @Html.HiddenFor(model => model.JobGradeId)
+            @Html.EditorFor(model => model.JobGrade)
+        </td>           
+               
+        <td width="15%" style="text-align: center">
+            @Html.HiddenFor(model => model.ResourceLevelId)
+            @Html.EditorFor(model => model.ResourceLevel)
+        </td> 
+        <td width="15%" style="text-align: center">
+            @Html.EditorFor(model => model.BudgetRate, new { @maxlength = "8" })
+        </td> 
+                
+    }
+</tr>

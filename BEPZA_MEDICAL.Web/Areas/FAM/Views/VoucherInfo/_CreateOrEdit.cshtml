@@ -1,0 +1,907 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAM.Models.VoucherInfo.VoucherInfoModel
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.FinancialYearId)
+    @Html.HiddenFor(m => m.Mode)
+
+    <div class="GroupBox fixedContent">
+        <div class="row" style="color: #3C78B5;">
+            <span class="label">
+                <input type="text" class="voucher-type-id" style="display: none;" />
+                @Html.LabelFor(model => model.VoucherTypeId)
+                <label style='color: red'>
+                    *</label>
+            </span><span style="float: left; width: 110px;">
+                @Html.DropDownListFor(m => m.VoucherTypeId, Model.VoucherTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { style = "width:100px;" })
+            </span><span>@Html.RadioButtonFor(m => m.BankOrCash, "Bank", new { @checked = true })
+                @Html.Label("Bank")</span> <span>@Html.RadioButtonFor(m => m.BankOrCash, "Cash")@Html.Label("Cash")</span>
+            <span style="margin-left: 19px;">
+                @Html.LabelFor(model => model.VoucherDate)
+                <label style='color: red'>
+                    *</label>
+            </span><span style="margin-left: 54px;">
+                @Html.EditorFor(model => model.VoucherDate, new { @class = "date-picker" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.VoucherNumber)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.VoucherNumber)
+            </span><span class="label-right">
+                @Html.Label("Applicable For")
+            </span><span>@Html.RadioButtonFor(m => m.ApplicableForClient, "Staff", new { @checked = true })</span>
+            <span>@Html.Label("Staff")</span> <span>@Html.RadioButtonFor(m => m.ApplicableForClient, "Client")</span>
+            <span>@Html.Label("Client")</span> <span>@Html.RadioButtonFor(m => m.ApplicableForClient, "Vendor")</span>
+            <span>@Html.Label("Vendor")</span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PayeeId)
+            </span><span class="field ddl-payee">
+                @Html.DropDownListFor(m => m.PayeeId, Model.PayeeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">Payee Address </span><span class="field">
+                <input type="text" readonly="readonly" id="payeeAddr" />
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ReceivedBy)
+            </span><span class="field">
+                @Html.EditorFor(m => m.ReceivedBy, "keyup='return tabOnEnter(this,event)'")
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.ReceiveId)
+            </span><span class="field ddl-received">
+                @Html.DropDownListFor(m => m.ReceiveId, Model.ReceiveList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ReferenceType)
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.ReferenceType, Model.ReferenceTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.ReferenceNumber)
+            </span><span class="field">
+                @Html.EditorFor(m => m.ReferenceNumber)
+                <img id="imgSearchInvoiceVoucher" alt="Seach" onclick="return OpenProjectInformation();" src='@Url.Content("~/Content/Images/btn_search.gif")'>
+
+                 
+                    <div id = "divInvoiceAmountInfo">
+                        <span class="field" style="display:none">
+                            @Html.EditorFor(m => m.InvoiceVoucherReferenceId)
+                        </span>
+                        <span class="label">
+                        @Html.LabelFor(model => model.InvoiceVoucherAmount)
+                        </span><span class="field">
+                            @Html.TextBoxFor(m => m.InvoiceVoucherAmount, new {style = "text-align: right;" })
+                        </span><span class="label">
+                            @Html.LabelFor(model => model.RealizationVoucherTotal)
+                        </span><span class="field">
+                            @Html.TextBoxFor(m => m.RealizationVoucherTotal, new { style = "text-align: right;"})
+                    </div>
+            </span>
+
+
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PaymentTypeId)
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.PaymentTypeId, Model.PaymentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.PaymentTypeReferenceNumber)
+            </span><span class="field">
+                @Html.EditorFor(m => m.PaymentTypeReferenceNumber)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.BankId)
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.BankId, Model.BankList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.BankAccountId)
+            </span><span class="field"><span class="tmp-accno" style="display: none;">@Model.BankAccountId</span>
+                @*<input type="text" id="txtAccNo" style="display: none" />*@
+                <span class="ddl-account">@Html.DropDownListFor(m => m.BankAccountId, Model.BankAccountList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+            
+                <span class="field" id="txtAccNo" style="display:none">
+                @Html.EditorFor(m => m.BankAccountNoReceive)
+            </span>
+
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ChequeDate)
+            </span><span class="field">
+                @Html.EditorFor(m => m.ChequeDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(m => m.Narration)
+            </span><span class="field">
+                @*@Html.TextAreaFor(m => m.Narration)*@
+                @Html.TextArea("Narration", Model.Narration, new { @style="width:570"})
+            </span>
+
+            <div id="divIsRealized">
+                <span class="label-right">
+                @Html.LabelFor(model => model.IsRealized )            
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.IsRealized)
+            </span>
+            </div>
+            
+
+
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    
+    <div class="GroupBox">
+        <div class="button-crude fixedAddButton" style="text-align: right;">
+            <input id="btnAdd" type="button" value="Add" />
+            <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+        </div>
+        <div class="clear">
+        </div>
+        <table id="grid" class="contenttable fixedcontenttable">
+            <thead>
+                <tr>
+                    <th>
+                        Account Head Code
+                    </th>
+                    <th>
+                        Account Head Name
+                    </th>
+                    <th>
+                        Debit
+                    </th>
+                    <th>
+                        Credit
+                    </th>
+                    <th id="thChequeNo">
+                        Cheque No
+                    </th>
+                    @*@if (Model.Mode!="Create")
+                    {
+                        if (Model.VoucherNumber.Contains("PV"))
+                        { 
+                        <th id="thChequeNo">
+                            Cheque No
+                        </th>
+                        }
+                    }
+                    
+                    @if (Model.Mode != "Create")
+                    {
+                        if (Model.VoucherNumber.Contains("RV"))
+                        {
+                        <th id="thChequeNoRV">
+                            Cheque No
+                        </th>
+                        }
+                    }*@
+                    <th>
+                        Project
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                    <th>
+                        Remove
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.VoucherInfoDetailsClient.Count; i++)
+                {
+                    var item = Model.VoucherInfoDetailsClient.ToList()[i];
+                    <tr class="row">
+                        <td style="display: none;">
+                            <input type="text" name="@("VoucherInfoDetails[" + i + "].Id")" value="@item.Id" />
+                        </td>
+                        <td style="display: none;">
+                            <input type="text" name="@("VoucherInfoDetails[" + i + "].VoucherId")" value="@item.VoucherId" />
+                        </td>
+                        <td>
+                            @*<input style="display:none;" type="text" name="@("VoucherInfoDetails[" + i + "].ApprovalType")" value="@item.ApprovalType" />*@
+                            <select id="@("VoucherInfoDetailsClient[" + i + "].AccountHeadId")" name="@("VoucherInfoDetailsClient[" + i + "].AccountHeadId")" class="ddl-acc-head-code acc-head" style="width:90px;">
+                                <option value="">[Select One]</option>
+                                @foreach (var childItem in item.AccountHeadList)
+                                {
+                                    if (item.AccountHeadId.ToString() == childItem.Value)
+                                    {
+                                    <option value="@childItem.Value" selected="selected">@childItem.Text</option>                                        
+                                    }
+                                    else
+                                    {
+                                    <option value="@childItem.Value">@childItem.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <select class="ddl-acc-head-name acc-head" style="width: 180px;">
+                                <option value="">[Select One]</option>
+                                @foreach (var childItem in item.AccountHeadNameList)
+                                {
+                                    if (item.AccountHeadId.ToString() == childItem.Value)
+                                    {
+                                    <option value="@childItem.Value" selected="selected">@childItem.Text</option>                                        
+                                    }
+                                    else
+                                    {
+                                    <option value="@childItem.Value">@childItem.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input class="debit" style="width:100px; text-align:right;" type="text" name="@("VoucherInfoDetailsClient[" + i + "].Debit")" value="@item.Debit" />
+                        </td>
+                        <td>
+                            <input class="credit" style="width:100px; text-align: right;" type="text" name="@("VoucherInfoDetailsClient[" + i + "].Credit")" value="@item.Credit" />
+                        </td>
+                        @if (Model.Mode == "Create")
+                        { 
+                            <td id="tdChequeNo" class="clsCheque" >
+                                <input type="text" style="display: none;" class="txt-cheque-no" />
+                                <span class="@("tmp-cheque-no-" + i)">@item.ChequeNumber</span>
+                                <select class="cheque-no" style="width:120px;" id="ddlChequeNumber" name="@("VoucherInfoDetailsClient[" + i + "].ChequeNumber")">
+                                    <option value="">[Select One]</option>
+                                    @foreach (var childItem in item.ChequeNumberList)
+                                    {
+                                        if (item.ChequeNumber == childItem.Value)
+                                        {
+                                        <option value="@childItem.Value" selected="selected">@childItem.Text</option>                                        
+                                        }
+                                        else
+                                        {
+                                        <option value="@childItem.Value">@childItem.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+
+                        }
+                        @if (Model.Mode != "Create")
+                        {
+                            if (Model.VoucherNumber.Contains("PV"))
+                            { 
+                            <td id="tdChequeNo">
+                                <input type="text" style="display: none;" class="txt-cheque-no" />
+                                <span class="@("tmp-cheque-no-" + i)">@item.ChequeNumber</span>
+                                <select class="cheque-no" style="width:120px;" id="ddlChequeNumber" name="@("VoucherInfoDetailsClient[" + i + "].ChequeNumber")">
+                                    <option value="">[Select One]</option>
+                                    @foreach (var childItem in item.ChequeNumberList)
+                                    {
+                                        if (item.ChequeNumber == childItem.Value)
+                                        {
+                                        <option value="@childItem.Value" selected="selected">@childItem.Text</option>                                        
+                                        }
+                                        else
+                                        {
+                                        <option value="@childItem.Value">@childItem.Text</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+
+                            }
+                        }
+                        @if (Model.Mode == "Create")
+                        {
+
+                            <td id="tdChequeNumberRV">
+                                <input class="cheque-noRV" style="width:100px;"  id="txtChequeNumber" type="text"  name="@("VoucherInfoDetailsClient[" + i + "].ChequeNumberRV")" value="@item.ChequeNumberRV" />
+                            </td>
+
+                        }
+                        @if (Model.Mode != "Create")
+                        {
+                            if ((Model.VoucherNumber.Contains("RV")) || (Model.VoucherNumber.Contains("JV")) || (Model.VoucherNumber.Contains("IV")))
+                            {
+                            <td id="tdChequeNumberRV">
+                                <input class="cheque-noRV" style="width:100px;"  id="txtChequeNumber" type="text"  name="@("VoucherInfoDetailsClient[" + i + "].ChequeNumberRV")" value="@item.ChequeNumberRV" />
+                            </td>
+                            }
+                        }
+                        <td>
+                            <select id="ddlProject" class="ddl-project" style="width:180px;" name="@("VoucherInfoDetailsClient[" + i + "].ProjectId")">
+                                <option value="">[Select One]</option>
+                                @foreach (var childItem in item.ProjectList)
+                                {
+                                    if (item.ProjectId.ToString() == childItem.Value)
+                                    {
+                                    <option value="@childItem.Value" selected="selected">@childItem.Text</option>                                        
+                                    }
+                                    else
+                                    {
+                                    <option value="@childItem.Value">@childItem.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input style="width:100px;" type="text" name="@("VoucherInfoDetailsClient[" + i + "].Remarks")" value="@item.Remarks" />
+                        </td>
+                        <td>
+                            <a class="deleteRow fixeddeleteRow" title="delete" href="#">
+                                <img alt="delete" style="border: none;"  src="@Url.Content("~/Content/Images/Delete.png")" /></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        Total
+                    </td>
+                    <td>
+                        <input style="width: 100px; text-align: right;" type="text" id="debitTotal" />
+                    </td>
+                    <td>
+                        <input style="width: 100px; text-align: right;" type="text" id="creditTotal" />
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                    <td>
+                        &nbsp;
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <br />
+        <div class="clear">
+        </div>
+        <div class="GroupBox" style="height: 22px;">
+            <span class="label">
+                @Html.LabelFor(model => model.SelectedAccountHeadName)
+            </span><span class="field">
+                @Html.TextBoxFor(m => m.SelectedAccountHeadName, new { @style = "background-color:#C0C0C0" })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.SelectedHeadCurrentBalance)
+            </span><span class="field">
+                @Html.TextBoxFor(m => m.SelectedHeadCurrentBalance, new { @style = "text-align:right; background-color: #C0C0C0" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(m => m.ApprovalPathId)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.ApprovalPathId, Model.ApprovalPathList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(m => m.CurrentApprovalNodeId)
+            </span><span class="tmp-curr-app-node" style="display: none;">@Model.CurrentApprovalNodeId</span>
+            <span class="field ddl-next-app-path">
+                @Html.DropDownListFor(m => m.CurrentApprovalNodeId, Model.NextApprovalList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(m => m.ApprovalComment)
+            </span><span class="field">
+                @Html.TextArea("ApprovalComment", Model.ApprovalComment, new { @style="width:570px"})
+            </span>@*<span class="label-right">
+                @Html.LabelFor(model => model.SelectedHeadBalanceWillBe)
+            </span><span class="field">
+                @Html.EditorFor(m => m.SelectedHeadBalanceWillBe)
+            </span>*@ <span class="label-right" style="display: none;">
+                @Html.LabelFor(model => model.recommenderOrApprover)
+            </span><span class="field" style="display: none;">
+                @Html.EditorFor(m => m.recommenderOrApprover)
+            </span>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    
+    <div class="button-crude" id="butt">
+        @if ((Model.recommenderOrApprover == null) & (Model.VoucherStatus == "Draft" || Model.VoucherStatus == "Rejected"))
+        {
+            if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+            <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display: none;"
+                onclick="return ValidateForm();" />
+            }
+            else
+            {
+            }
+            if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display: none;"
+                onclick="return ValidateForm();" />
+            }
+        }
+        @if (Model.recommenderOrApprover != null)
+        {
+            if (Model.recommenderOrApprover.ToUpper() == "Recommender".ToUpper())
+            {
+            
+            <input type="submit" value="Recommend" id="btnRecommend" name="btnSubmit" onclick="return ValidateForm();" />
+            }
+
+            if (Model.recommenderOrApprover.ToUpper() == "Approver".ToUpper())
+            {
+            
+            <input type="submit" value="Approve" id="btnApprove" name="btnSubmit" onclick="return ValidateForm();" />
+            }
+        }
+        @if (Model.recommenderOrApprover != null)
+        {
+            if (Model.recommenderOrApprover.ToUpper() == "Recommender".ToUpper() || Model.recommenderOrApprover.ToUpper() == "Approver".ToUpper())
+            {
+                <input type="submit" value="Reject" id="btnReject" name="btnSubmit" onclick="return ValidateForm();" />
+            }
+        }
+        @if ((Model.recommenderOrApprover == null) & (Model.VoucherStatus == "Draft"))
+        {
+            <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        }
+        <div class="clear">
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="divProjectList">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.</p>
+    </iframe>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="button-crude button-left">
+    @Ajax.ActionLink("Back to List", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })
+    <input type="submit" value="Approval Comments" id="btnApproveComments" name="btnSubmit" onclick="PopulateApproverComments();" />
+</div>
+<div class="clear">
+</div>
+<script type="text/javascript">
+
+function trs()
+{
+  var v=  ValidateForm();
+  alert(v);
+  }
+
+var mode = '';
+$(function () {
+    mode = '@Model.Mode';
+    $('#debitTotal').attr('readonly',true);
+    $('#creditTotal').attr('readonly',true);        
+    $('#VoucherNumber').attr('readonly',true);
+    $('#SelectedHeadCurrentBalance').attr('readonly',true);
+    $('#SelectedAccountHeadName').attr('readonly', true);
+    
+    $.validator.unobtrusive.parse('#frm');
+    
+    $('#btnReject').live('click', function(){
+        if($(this).val()=="Reject")
+        {
+            $('#recommenderOrApprover').val("Reject");
+        }
+    });
+       
+    if (mode == 'Create') {
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+        $('#thChequeNoRV').hide();
+        $('#tdChequeNumberRV').hide();
+        $('.date-picker').val("")
+        
+        //For Invoice voucher from Report
+        var vt = $('#VoucherTypeId option:selected').text()
+        // alert(vt);
+        if(vt=='IV')
+        {
+            CheckControlDisable(vt);
+
+            $('#VoucherTypeId').attr('disabled',true);
+            $(".debit").attr('readonly','true');
+            $('#ddlProject').attr('disabled',true);
+            $('#ReferenceNumber').attr('readonly','true');
+        }
+        //else if(vt=='JV')
+        else if(vt=='AV')
+        {
+            CheckControlDisable(vt);
+            $('#VoucherTypeId').attr('disabled',true);
+            $(".debit").attr('readonly','true');
+            // $('#ddlProject').attr('disabled',true);
+            $('.ddl-project').attr('disabled',true);
+            $('#ReferenceNumber').attr('readonly','true');
+            $('#ReferenceType').attr('disabled',true);
+        }
+            
+    }
+    else {
+        $('#VoucherTypeId').attr('disabled',true);
+        $('.voucher-type-id').val($('#VoucherTypeId').val()).attr('name','VoucherTypeId');
+                
+        $('#btnUpdate').show();
+        $('#btnSave').hide();
+        
+        //default call during edit mode        
+        
+        $('#VoucherTypeId').change();
+        
+        $("#PayeeId").change();
+        $('.debit, .credit').focusout()
+        $("#ApprovalPathId").change();       
+
+
+
+
+        //For Invoice voucher from Report
+        var vt = $('#VoucherTypeId option:selected').text()
+        // alert(vt);
+        if(vt=='IV')
+        {
+            CheckControlDisable(vt);
+
+            $('#VoucherTypeId').attr('disabled',true);
+            $(".debit").attr('readonly','true');
+            $('#ddlProject').attr('disabled',true);
+            $('#ReferenceNumber').attr('readonly','true');
+        }
+        //else if(vt=='JV')
+        else if(vt=='AV')
+        {
+            CheckControlDisable(vt);
+            $('#VoucherTypeId').attr('disabled',true);
+            $(".debit").attr('readonly','true');
+            // $('#ddlProject').attr('disabled',true);
+            $('.ddl-project').attr('disabled',true);
+            $('#ReferenceNumber').attr('readonly','true');
+            $('#ReferenceType').attr('disabled',true);
+        }
+
+
+
+    }    
+})
+
+function OnCompleteBacktoList(content) {
+    if (content.statusText == 'OK') {
+        $('.search-content').hide();
+        $('.frm-content').html(content.responseText);
+    } else {
+        $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+    }
+}
+
+function OnComplete(content) {
+    
+    var data = content.responseText;
+    if (data.toLowerCase().indexOf("updated") >= 0) {
+                    
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(8000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(8000).hide();
+                    }
+                }
+            );
+    }
+    else if (data.toLowerCase().indexOf("saved") >= 0) {
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'green' });
+        $("#message").delay(8000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(8000).hide();
+                    }
+                }
+            );
+    }
+    else {
+        //$('.search-content').hide();
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'red' });
+        $("#message").delay(8000).hide('slow');
+    }
+}
+
+
+
+
+
+
+
+
+function setDisabledControl() {
+        //disable ctrols for Approver & Recommender
+        var  AppRec = '@Model.recommenderOrApprover';
+        var voucherStatus = '@Model.VoucherStatus';
+
+        if((AppRec == "Recommender") || (AppRec == "Approver") || (voucherStatus=="Approved") || (voucherStatus=="Recommended"))
+        {
+            $('.fixedContent').find('input').attr('disabled',true)
+            $('.fixedContent').find('select').attr('disabled',true)
+            $('.fixedcontenttable').find('input').attr('disabled',true)
+            $('.fixedcontenttable').find('select').attr('disabled',true)
+
+//            $('#PayeeId, #payeeAddr, #ReceivedBy, #ReceiveId').val('').attr('disabled',true);
+            
+
+            $('.fixedAddButton').find('input').attr('disabled',true)
+            $('.fixeddeleteRow').find('img').hide()
+            $('#Narration').attr('disabled',true);
+            $('.ui-datepicker-trigger').hide();
+            
+        }
+        }
+
+function CheckControlDisable(vt){
+            if(vt =='RV'){
+                
+                $('#PayeeId, #payeeAddr').val('').attr('disabled',true);
+                $('#ReceivedBy, #ReceiveId').removeAttr('disabled');
+                
+//                ddlChequeNumber.Visible = false;
+                
+//                $("#ddlChequeNumber").each(function(){
+//                   $(this).hide();
+//                });
+
+//                $('#txtChequeNumber').show();
+                    
+                $("#tdChequeNo").hide();
+                $("#thChequeNo").hide();
+
+                $("#tdChequeNumberRV").show();
+                $("#thChequeNo").show();
+
+//                var  AppRec = '@Model.recommenderOrApprover';
+//                if((AppRec == "Recommender") || (AppRec == "Approver"))
+//                {
+//                    $('#ReceiveId').attr('disabled',true);
+//                    $('#ReceivedBy').attr('disabled',true);
+//                }
+                
+            }
+            else if(vt == 'PV'){
+//                $('#ReceivedBy, #ReceiveId').val('').attr('disabled',true);
+                $('#ReceiveId').val('').attr('disabled',true);
+                $('#PayeeId, #payeeAddr').removeAttr('disabled');
+
+                $("#tdChequeNumberRV").hide();
+                $("#thChequeNoRV").hide();
+
+                $("#tdChequeNo").show();
+                $("#thChequeNo").show();
+
+                
+//                var  AppRec = '@Model.recommenderOrApprover';
+//                if((AppRec == "Recommender") || (AppRec == "Approver"))
+//                {
+//                    $('#PayeeId').attr('disabled',true);
+//                }
+
+            }
+            else
+            {
+                $('#PayeeId, #payeeAddr').removeAttr('disabled');
+                $('#ReceivedBy, #ReceiveId').removeAttr('disabled');
+                var  AppRec = '@Model.recommenderOrApprover';
+            }
+
+            if(vt=='JV' || vt=='IV' || vt=='AV'){
+                var paymentModeId = '';
+                $('#PaymentTypeId option').each(function(i){
+                    if($(this).text()=='None')
+                        paymentModeId = $(this).attr('value');
+                })
+                $('#PaymentTypeId').val(paymentModeId);
+
+                $("#tdChequeNo").hide();
+                $("#thChequeNo").hide();
+
+                $("#tdChequeNumberRV").show();
+                $("#thChequeNo").show();
+
+                $('.clsCheque').hide();
+                
+//                alert("Here");
+//                $('#BankOrCash').attr("checked", true);
+//                $('#BankOrCash').attr("checked", false);
+            }
+        }
+        
+
+    function OpenProjectInformation() {
+
+        var url = '@Url.Action("SearchInvoiceVoucher", "VoucherSearch")';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divProjectList').html(result);
+            }
+        });
+        $("#divProjectList").dialog('open');
+        return false;
+    }
+        
+        ////disable ctrols for Approver & Recommender
+        window.onload = setDisabledControl();
+        
+
+
+
+
+$(function () {
+
+        $("#divProjectList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Invoice Voucher Search', beforeclose: function (event, ui) { Closing(); } });
+
+});
+
+function Closing() { }
+
+function SetProjectIdForSearching(id) {
+
+        GetProjectInformation(id);
+
+        $("#divProjectList").dialog('close');
+    }
+
+function GetProjectInformation(voucherId) {
+
+    if (voucherId > 0) {
+
+        $("input[id$='Id']").val(voucherId);
+
+        $.getJSON('@Url.Action("LoadVoucherInfo", "VoucherInfo")', { voucherId: voucherId }, function (results) {
+            $('#InvoiceVoucherReferenceId').val(results.InvoiceVoucherReferenceId);
+            $('#ReferenceNumber').val(results.InvoiceVoucherReferenceNumber);
+            $('#InvoiceVoucherAmount').val(results.InvoiceVoucherAmount);
+            $('#RealizationVoucherTotal').val(results.RealizationVoucherTotal);
+        });
+
+//        AddDetails(projectId);
+    }
+    else {
+
+    }
+    return false;
+}
+
+$('#ReferenceType').live('change',function(){
+
+    if($('#ReferenceType').val()=='Invoice')
+    {
+
+       document.getElementById("divInvoiceAmountInfo").style.visibility = "visible";
+       document.getElementById("imgSearchInvoiceVoucher").style.visibility ="visible";
+       document.getElementById("divIsRealized").style.visibility = "visible";
+    }
+    else
+    {
+
+        $('#ReferenceNumber').val("");
+        $('#InvoiceVoucherReferenceId').val(0);
+        $('#InvoiceVoucherAmount').val(0);
+        $('#RealizationVoucherTotal').val(0);
+        $('#IsRealized').attr('checked', false);
+        document.getElementById("imgSearchInvoiceVoucher").style.visibility ="hidden";
+        document.getElementById("divInvoiceAmountInfo").style.visibility ="hidden";
+        document.getElementById("divIsRealized").style.visibility = "hidden";
+
+    }
+})
+
+
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#InvoiceVoucherAmount').attr('readonly', true);
+        $('#RealizationVoucherTotal').attr('readonly', true);
+        $('#ReferenceNumber').attr('readonly', true);
+
+        document.getElementById("imgSearchInvoiceVoucher").style.visibility = "hidden";
+        document.getElementById("divInvoiceAmountInfo").style.visibility = "hidden";
+        document.getElementById("divIsRealized").style.visibility = "hidden";
+
+        if ($('#ReferenceType').val() == 'Invoice') {
+
+            document.getElementById("divInvoiceAmountInfo").style.visibility = "visible";
+            //document.getElementById("imgSearchInvoiceVoucher").style.visibility = "visible";
+            document.getElementById("divIsRealized").style.visibility = "visible";
+
+            var voucherId = $('#InvoiceVoucherReferenceId').val();
+            var currentVoucherId = $('#Id').val();
+            $.getJSON('@Url.Action("LoadVoucherInfoEdit", "VoucherInfo")', { voucherId: voucherId, currentVoucherId: currentVoucherId }, function (results) {
+                $('#InvoiceVoucherReferenceId').val(results.InvoiceVoucherReferenceId);
+                $('#ReferenceNumber').val(results.InvoiceVoucherReferenceNumber);
+                $('#InvoiceVoucherAmount').val(results.InvoiceVoucherAmount);
+                $('#RealizationVoucherTotal').val(results.RealizationVoucherTotal);
+            });
+        }
+
+    });
+</script>
+

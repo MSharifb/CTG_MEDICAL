@@ -1,0 +1,369 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.AnnualProcurementPlan.AnnualProcurementPlanMasterViewModel
+
+@{
+    ViewBag.Title = "AppView";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+<script type="text/javascript">
+
+    $(function () {
+
+        if ('@Model.ApprovalStatus' != 'Submitted') {
+            $('#btnSave').hide();
+        }
+        $('.page-title').html("Annual Procurement Plan");
+    });
+
+</script>
+
+@using (Html.BeginForm("SaveApplication", "RequestedApplication", FormMethod.Post, new { id = "frm", enctype = "multipart/form-data" }))
+{
+    <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <div class="form-horizontal">
+        <fieldset>
+            @Html.HiddenFor(m => m.BudgetZonesString)
+            <span class="master-id-area">
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.ApprovalSelectionId)
+            </span>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MinistryOrDivisionId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MinistryOrDivisionId, Model.DivisionOrMinistryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                </div>
+
+                @Html.LabelFor(m => m.FinancialYearId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Agency, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Agency)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProcuringEntityName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProcuringEntityName)
+                </div>
+                @Html.LabelFor(m => m.ProcuringEntityCode, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProcuringEntityCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProjectName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProjectName)
+                </div>
+                @Html.LabelFor(m => m.ProjectCode, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProjectCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.APPStatusId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.APPStatusId, Model.APPStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control"})
+                </div>
+                @Html.LabelFor(m => m.ProjectOrZoneList, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.BudgetZones, Model.ProjectOrZoneList, new { @class = "form-control", @multiple = @"multiple"})
+                </div>
+            </div>
+
+        </fieldset>
+        <div>
+            @*@Html.LabelFor(m => m.TotalAmount, new { @class = "col-sm-2 control-label" })*@
+            @*<label>Total Project Cost (in Lac Taka)</label>
+            <div class="col-sm-2">
+                @Html.TextBoxFor(m => m.TotalAmount, new { @style = @"background:#F2F5F8; border:1px solid #CCCCCC; cursor:default;", @readonly = true })
+            </div>*@
+            
+            <fieldset>
+                <div style="width: 100%; overflow-x: scroll;">
+
+                    <table class="table table-bordered">
+                        <thead style="background-color:lightblue">
+                            <tr>
+                                <th>Head Name</th>
+                                <th class="APPlotNo">Lot No.</th>
+                                <th class="packageNo">Package No.</th>
+                                <th class="construction">Construction Type</th>
+                                <th class="description">Description of Procurement Package as per DPP/TPP</th>
+                                <th class="unit">Unit</th>
+                                <th class="quantity">Quantity</th>
+                                <th class="procurement">Procurement Method & (Type)</th>
+                                <th class="source">Source of Fund</th>
+                                <th class="contract">Contract Approving Authority</th>
+                                <th class="estd">Estd. Cost in Lac Taka</th>
+                                <th class="contract">Contract Value in Lac Taka</th>
+                                <th class="invitation">Invitation for Tender</th>
+                                <th class="signing">Signing of contract</th>
+                                <th class="completion">Completion of Contract</th>
+                                <th class="remarks">Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.AnnualProcurementPlanDetailList.Count; i++)
+                            {
+                                var item = Model.AnnualProcurementPlanDetailList.ToList()[i];
+                                <tr>
+                                    <td>@Html.Encode(item.BudgetHeadName)</td>
+                                    <td>@Html.Encode(item.LotNo)</td>
+                                    <td>@Html.Encode(item.PackageNo)</td>
+                                    <td>@Html.Encode(item.ConstructionTypeName)</td>
+                                    <td>@Html.Encode(item.DescritionOfAPP)</td>
+                                    <td>@Html.Encode(item.Unit)</td>
+                                    <td>@Html.Encode(item.Quantity)</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@Html.Encode(item.EstdCost)</td>
+                                    <td>@Html.Encode(item.ContractValue)</td>
+                                    <td>@Html.Encode(item.InvitationforTender)</td>
+                                    <td>@Html.Encode(item.SigningofContract)</td>
+                                    <td>@Html.Encode(item.CompletionofContract)</td>
+                                    <td>@Html.Encode(item.Remarks)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Comments, new { @class = "col-sm-2 control-label" })
+                        <div class="col-sm-10">
+                            @Html.TextAreaFor(m => m.Comments, new { @style = @"width:100%" })
+                        </div>
+                    </div>
+</fieldset>
+
+            <fieldset>
+                <legend>Recommendation / Approval Flow</legend>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label labelRequired">Your Remarks</label>
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(m => m.Remarks, new { @style = @"width:50%", @required = @"required" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                    <div class="col-sm-4">
+                        @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                    </div>
+                </div>
+
+                <table class="table table-bordered" style="width:100%">
+
+                    <thead style="height:10px!important">
+                        <tr style="height:10px!important">
+                            <th style="width: 30%">Designation</th>
+                            <th style="width: 45%">Employee Name & Department</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @{
+                            if (Model.ApproverList != null && Model.ApproverList.Any())
+                            {
+                                foreach (var x in Model.ApproverList)
+                                {
+                                    @Html.Partial("_PartialEmployeeList", x);
+                                }
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </fieldset>
+
+        </div>
+
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-12 col-sm-offset-0 text-center">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <button class="btn btn-primary" type="submit" value="Save" id="btnSave" name="btnSubmit"><i class="fa fa-save"></i> Save</button>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-0 text-left">
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<style type="text/css">
+    table tbody th {
+        background: #2980b9 !important;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        /*height: 100px;*/
+        vertical-align: middle !important;
+        display: table-cell;
+        text-align: center;
+        color: #FFFFFF;
+    }
+
+    table thead th:hover {
+        cursor: default;
+    }
+
+    .APPlotNo {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .packageNo {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .construction {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+        .construction select {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            padding: 1px !important;
+        }
+
+    .description {
+        min-width: 200px;
+        padding: 1px !important;
+    }
+
+    .unit {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .quantity {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .procurement {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .source {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .contract {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .estd {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .invitation {
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+    .signing {
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+    .completion {
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+    .remarks {
+        width: 200px;
+        min-width: 200px;
+        padding: 1px !important;
+    }
+
+        .remarks input[type=text] {
+            width: 100%;
+        }
+
+    .control-option {
+        max-width: 65px;
+        width: 65px;
+        min-width: 65px;
+        padding: 1px !important;
+    }
+
+    .budget-sub-head {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+
+    .head-devider {
+        padding: 0;
+        border: none;
+        border-top: medium double #908c8c;
+        color: #333;
+        text-align: center;
+    }
+
+        .head-devider:before { /* Not really supposed to work, but does */
+            content: "***";
+            display: inline-block;
+            position: relative;
+            top: -0.7em;
+            font-size: 1.5em;
+            padding: 0 0.25em;
+            background: white;
+        }
+
+    .select2-selection {
+        border-radius: 0px !important;
+        padding: 0px 2px !important;
+        border: 1px solid #D2D6DE !important;
+    }
+
+    .my-button {
+        min-width: 100px;
+        width: 100px;
+    }
+
+    .select2-results__option {
+        font-size: 13px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+        font-size: 13px;
+    }
+</style>

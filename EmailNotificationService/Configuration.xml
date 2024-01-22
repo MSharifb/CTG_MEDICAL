@@ -1,0 +1,261 @@
+﻿<xml encoding="UTF8">
+  <configuration>
+    
+    <appsettings>
+      <servername>PC54\SQL2008</servername>
+      <username>sa</username>
+      <password>sa1234</password>
+      <database>IWM_MFS_ServerData</database>
+      <SMTP>192.168.50.20</SMTP>
+      <FromEmail>azizur.rahman@technovista.com.bd</FromEmail>
+      <FromEmailPassword>notes8</FromEmailPassword>
+    </appsettings>
+
+    <ColorCode>
+      <TableHeaderBackgroundColor>#CCCEEE</TableHeaderBackgroundColor>
+      <TableBorderColor>1px solid #000000</TableBorderColor>
+    </ColorCode>
+
+    <EmailType>
+      
+      <ContractExpireNotificationEmail>
+        <EmailSendDateInMonth>20</EmailSendDateInMonth>
+        <ToEmailAddress>saydunnesa.shirin@technovista.com.bd</ToEmailAddress>
+
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>saydunnesa.shirin@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>saydunnesa.shirin@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification email for the Job Contract Expiration as on</Subject>
+        <Salutation> Dear Mr/Ms </Salutation>
+        <ToEmailPersonName>Obaidul,</ToEmailPersonName>
+        <BodyHeader>
+          The following employee’s contract will be expired in next month. Please take necessary action for the contract expiration.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No employee found contract expire for the month.</NoRecordFound>
+      </ContractExpireNotificationEmail>
+
+      <AnnualIncrementNotificationEmail>
+        <EmailSendDateInMonth>20</EmailSendDateInMonth>
+        <ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>
+
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification email for the Annual Increment as on</Subject>
+        <Salutation> Dear Mr/Ms </Salutation>
+        <ToEmailPersonName>Obaidul,</ToEmailPersonName>
+        <BodyHeader>
+          The following employee’s salary will be revised in next month. Please take necessary action for the increment.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No employee found annual increment for the month.</NoRecordFound>
+      </AnnualIncrementNotificationEmail>
+
+      <JobConfirmationNotificationEmail>
+        <EmailSendDateInMonth>20</EmailSendDateInMonth>
+        <ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>
+
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification email for the job confirmation as on</Subject>
+        <Salutation> Dear Mr/Ms </Salutation>
+        <ToEmailPersonName>Obaidul,</ToEmailPersonName>
+        <BodyHeader>
+          The following employees will be confirmed in next month. Please take necessary action for the confirmation.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No employee found job confirmation for the month.</NoRecordFound>
+      </JobConfirmationNotificationEmail>
+
+      <RetirementNotificationEmail>
+        <EmailSendDateInMonth>13</EmailSendDateInMonth>
+        <ToEmailAddress>saydunnesa.shirin@technovista.com.bd</ToEmailAddress>
+
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>saydunnesa.shirin@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>md.amanullah@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification email for the Job Retirement as on</Subject>
+        <Salutation> Dear Mr/Ms </Salutation>
+        <ToEmailPersonName>Sir,</ToEmailPersonName>
+        <BodyHeader>
+          The following employee’s job time will be completed in next month. Please take necessary action for the job time completion.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No employee found retiremet for the month.</NoRecordFound>
+      </RetirementNotificationEmail>
+      
+    </EmailType>
+
+    <PIMEmailNotification>
+      
+      <TimesheetEmailNotification>
+        <TimeSheetNotSubmittedLastMonthList>
+          <NoOfPreviousMonthsConsider>1</NoOfPreviousMonthsConsider>
+          <!--Time Sheet did not submit by last 1/2/3.. months-->
+          <EmailSendDateInMonth>50,24</EmailSendDateInMonth>
+          <ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>
+          <!--CC and BCC must be seperated by comma (,)-->
+          <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+          <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+          <Subject>Notification email for the time sheet not submitted as on</Subject>
+          <Salutation> Dear Mr/Ms </Salutation>
+          <ToEmailPersonName>Obaidul,</ToEmailPersonName>
+          <BodyHeader>
+            The following employees did not submit their time sheet in the said month. Please take necessary action for the following employees.
+          </BodyHeader>
+          <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+          <NoRecordFound>No employee found unable to submit time sheet for the month.</NoRecordFound>
+        </TimeSheetNotSubmittedLastMonthList>
+
+        <TimeSheetNotSubmittedLastMonthIndividual>
+          <NoOfPreviousMonthsConsider>1</NoOfPreviousMonthsConsider>
+          <!--Time Sheet did not submit by last 1/2/3.. months-->
+          <EmailSendDateInMonth>50,24</EmailSendDateInMonth>
+
+          <!--<ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>-->
+          <!--CC and BCC must be seperated by comma (,)-->
+          <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+          <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+          <Subject>Notification email for the time sheet not submitted as on</Subject>
+          <Salutation> Dear Mr/Ms </Salutation>
+          <ToEmailPersonName>Obaidul,</ToEmailPersonName>
+          <BodyHeader>
+            You did not submit the time sheet for the following month. Please submit your time sheet.
+          </BodyHeader>
+          <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+          <NoRecordFound>No employee found unable to submit time sheet for the month.</NoRecordFound>
+        </TimeSheetNotSubmittedLastMonthIndividual>
+
+      </TimesheetEmailNotification>
+
+      <MilestoneEmailNotification>
+
+        <!--Milestone Email Notification after month consider such as 1/2/3-->
+        <NoOfAfterMonthsConsider>1</NoOfAfterMonthsConsider>
+
+        <!--Mail sending day of current date-->
+        <EmailSendDateInMonth>1</EmailSendDateInMonth>
+
+        <ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>
+
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification for the milestone delivery schedule </Subject>
+        <Salutation> Dear </Salutation>
+        <ToEmailPersonName>Obaidul,</ToEmailPersonName>
+        <BodyHeader>
+          Milestone delivery schedule for the next month.Please see the following list for milestone delivery schedule.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No record found.</NoRecordFound>
+
+      </MilestoneEmailNotification>
+
+      <EquipmentDeliveryEmailNotification>
+
+        <!--Equipment Delivery Notification after month consider such as 1/2/3-->
+        <NoOfAfterMonthsConsider>1</NoOfAfterMonthsConsider>
+
+        <!--Mail sending day of current date-->
+        <EmailSendDateInMonth>2</EmailSendDateInMonth>
+
+        <ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification for the equipment delivery schedule </Subject>
+        <Salutation> Dear </Salutation>
+        <ToEmailPersonName>Obaidul</ToEmailPersonName>
+        <BodyHeader>
+          Equipment delivery schedule for the next month.Please see the following list for equipment delivery schedule.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No record found.</NoRecordFound>
+
+      </EquipmentDeliveryEmailNotification>
+
+      <InvoiceMadeEmailNotification>
+
+        <!--Equipment Delivery Notification after month consider such as 1/2/3-->
+        <NoOfAfterMonthsConsider>2</NoOfAfterMonthsConsider>
+
+        <!--Mail sending day of current date-->
+        <EmailSendDateInMonth>2</EmailSendDateInMonth>
+
+        <ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification for the invoice made schedule </Subject>
+        <Salutation> Dear </Salutation>
+        <ToEmailPersonName>Obaidul</ToEmailPersonName>
+        <BodyHeader>
+          Invoice made schedule for the next month.Please see the following list for invoice made schedule.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No record found.</NoRecordFound>
+
+      </InvoiceMadeEmailNotification>
+
+      <InvoiceRealizationEmailNotification>
+
+        <!--Equipment Delivery Notification after month consider such as 1/2/3-->
+        <NoOfPreviousMonthsConsider>2</NoOfPreviousMonthsConsider>
+
+        <!--Mail sending day of current date.It must be seperated by comma (,) if more-->
+        <EmailSendDateInMonth>3</EmailSendDateInMonth>
+
+        <ToEmailAddress>azizur.rahman@technovista.com.bd</ToEmailAddress>
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>obaidul.sarker@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification for the invoice realization schedule </Subject>
+        <Salutation> Dear </Salutation>
+        <ToEmailPersonName>Obaidul</ToEmailPersonName>
+        <BodyHeader>
+          Invoice realization schedule for the next month.Please see the following list for invoice realization schedule.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No record found.</NoRecordFound>
+
+      </InvoiceRealizationEmailNotification>
+      
+    </PIMEmailNotification>
+    
+    <ADCEmailNotification>
+      
+      <AssetReturnNotificationEmail>
+        
+        <ToEmailAddress>saydunnesa.shirin@technovista.com.bd</ToEmailAddress>
+        
+        <!--CC and BCC must be seperated by comma (,)-->
+        <CCEmailAddress>azizur.rahman@technovista.com.bd</CCEmailAddress>
+        <BCCEmailAddress>obaidul.sarker@technovista.com.bd</BCCEmailAddress>
+
+        <Subject>Notification email for the Asset return as on</Subject>
+        <Salutation> Dear Mr./Mrs. </Salutation>
+        <ToEmailPersonName>IWM Personnel,</ToEmailPersonName>
+        <BodyHeader>
+          Please take necessary action for the asset return.
+        </BodyHeader>
+        <BodyFooter>*** This is computer generated email. No require to replay.</BodyFooter>
+        <NoRecordFound>No record found.</NoRecordFound>
+      </AssetReturnNotificationEmail>
+      
+    </ADCEmailNotification>
+
+  </configuration>
+</xml>

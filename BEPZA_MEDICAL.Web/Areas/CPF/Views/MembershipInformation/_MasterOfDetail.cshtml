@@ -1,0 +1,9 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MembershipInformationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.MemberNomineeList != null && Model.MemberNomineeList.Count > 0)
+{
+    foreach (var item in Model.MemberNomineeList)
+    {
+    @Html.Partial("_Detail", item);
+    }
+}

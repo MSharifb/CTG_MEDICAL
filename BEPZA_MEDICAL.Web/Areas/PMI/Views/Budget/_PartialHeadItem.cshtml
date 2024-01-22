@@ -1,0 +1,28 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.YearWiseBudgetStatusViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<span class="delete-button pull-right">
+    <button type="button" class="btn btn-sm btn-primary" style="padding:1px 5px !important; font-weight:bold; font-size:13px !important;">X</button>
+</span>
+<span class="financial-year">
+    @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+</span>
+<span class="budget-status">
+    @Html.DropDownListFor(m => m.BudgetStatusId, Model.BudgetStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+</span>
+@Html.Label("Estimated Cost (Lac)", new { @class = @"lbl" })
+
+<style type="text/css">
+
+</style>
+
+@*<script type="text/javascript">
+
+        $('.delete-button button').on('click', function () {
+            //debugger;
+            var colIndex = $(this).closest('th').prevAll().length + 1;
+            $('table thead th:nth-child(' + (colIndex) + ')').remove();
+            $('table tbody td:nth-child(' + (colIndex) + ')').remove();
+            return false;
+
+        });
+    </script>*@

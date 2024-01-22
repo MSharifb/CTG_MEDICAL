@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DSCompanyInfoBengali" targetNamespace="http://tempuri.org/DSCompanyInfoBengali.xsd" xmlns:mstns="http://tempuri.org/DSCompanyInfoBengali.xsd" xmlns="http://tempuri.org/DSCompanyInfoBengali.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vwCompanyInformationBengaliTableAdapter" GeneratorDataComponentClassName="vwCompanyInformationBengaliTableAdapter" Name="vwCompanyInformationBengali" UserDataComponentName="vwCompanyInformationBengaliTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="DBConnectionString (Web.config)" DbObjectName="ERP_BEPZA.dbo.vwCompanyInformationBengali" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT Id, CompanyName, CompanyNameInBengali, Address, AddressInBengali, Phone1, Phone2, FaxNo, EmailAddress, WebURL, CompanyLogo, ZoneName, ZoneNameInBengali, ZoneAddress, ZoneAddressInBengali, ZoneCode FROM dbo.vwCompanyInformationBengali</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Id" DataSetColumn="Id" />
+              <Mapping SourceColumn="CompanyName" DataSetColumn="CompanyName" />
+              <Mapping SourceColumn="CompanyNameInBengali" DataSetColumn="CompanyNameInBengali" />
+              <Mapping SourceColumn="Address" DataSetColumn="Address" />
+              <Mapping SourceColumn="AddressInBengali" DataSetColumn="AddressInBengali" />
+              <Mapping SourceColumn="Phone1" DataSetColumn="Phone1" />
+              <Mapping SourceColumn="Phone2" DataSetColumn="Phone2" />
+              <Mapping SourceColumn="FaxNo" DataSetColumn="FaxNo" />
+              <Mapping SourceColumn="EmailAddress" DataSetColumn="EmailAddress" />
+              <Mapping SourceColumn="WebURL" DataSetColumn="WebURL" />
+              <Mapping SourceColumn="CompanyLogo" DataSetColumn="CompanyLogo" />
+              <Mapping SourceColumn="ZoneName" DataSetColumn="ZoneName" />
+              <Mapping SourceColumn="ZoneNameInBengali" DataSetColumn="ZoneNameInBengali" />
+              <Mapping SourceColumn="ZoneAddress" DataSetColumn="ZoneAddress" />
+              <Mapping SourceColumn="ZoneAddressInBengali" DataSetColumn="ZoneAddressInBengali" />
+              <Mapping SourceColumn="ZoneCode" DataSetColumn="ZoneCode" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DSCompanyInfoBengali" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DSCompanyInfoBengali" msprop:Generator_UserDSName="DSCompanyInfoBengali">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vwCompanyInformationBengali" msprop:Generator_TableClassName="vwCompanyInformationBengaliDataTable" msprop:Generator_TableVarName="tablevwCompanyInformationBengali" msprop:Generator_TablePropName="vwCompanyInformationBengali" msprop:Generator_RowDeletingName="vwCompanyInformationBengaliRowDeleting" msprop:Generator_RowChangingName="vwCompanyInformationBengaliRowChanging" msprop:Generator_RowEvHandlerName="vwCompanyInformationBengaliRowChangeEventHandler" msprop:Generator_RowDeletedName="vwCompanyInformationBengaliRowDeleted" msprop:Generator_UserTableName="vwCompanyInformationBengali" msprop:Generator_RowChangedName="vwCompanyInformationBengaliRowChanged" msprop:Generator_RowEvArgName="vwCompanyInformationBengaliRowChangeEvent" msprop:Generator_RowClassName="vwCompanyInformationBengaliRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="CompanyName" msprop:Generator_ColumnVarNameInTable="columnCompanyName" msprop:Generator_ColumnPropNameInRow="CompanyName" msprop:Generator_ColumnPropNameInTable="CompanyNameColumn" msprop:Generator_UserColumnName="CompanyName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CompanyNameInBengali" msprop:Generator_ColumnVarNameInTable="columnCompanyNameInBengali" msprop:Generator_ColumnPropNameInRow="CompanyNameInBengali" msprop:Generator_ColumnPropNameInTable="CompanyNameInBengaliColumn" msprop:Generator_UserColumnName="CompanyNameInBengali" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Address" msprop:Generator_ColumnVarNameInTable="columnAddress" msprop:Generator_ColumnPropNameInRow="Address" msprop:Generator_ColumnPropNameInTable="AddressColumn" msprop:Generator_UserColumnName="Address" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AddressInBengali" msprop:Generator_ColumnVarNameInTable="columnAddressInBengali" msprop:Generator_ColumnPropNameInRow="AddressInBengali" msprop:Generator_ColumnPropNameInTable="AddressInBengaliColumn" msprop:Generator_UserColumnName="AddressInBengali" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Phone1" msprop:Generator_ColumnVarNameInTable="columnPhone1" msprop:Generator_ColumnPropNameInRow="Phone1" msprop:Generator_ColumnPropNameInTable="Phone1Column" msprop:Generator_UserColumnName="Phone1" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Phone2" msprop:Generator_ColumnVarNameInTable="columnPhone2" msprop:Generator_ColumnPropNameInRow="Phone2" msprop:Generator_ColumnPropNameInTable="Phone2Column" msprop:Generator_UserColumnName="Phone2" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FaxNo" msprop:Generator_ColumnVarNameInTable="columnFaxNo" msprop:Generator_ColumnPropNameInRow="FaxNo" msprop:Generator_ColumnPropNameInTable="FaxNoColumn" msprop:Generator_UserColumnName="FaxNo" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="EmailAddress" msprop:Generator_ColumnVarNameInTable="columnEmailAddress" msprop:Generator_ColumnPropNameInRow="EmailAddress" msprop:Generator_ColumnPropNameInTable="EmailAddressColumn" msprop:Generator_UserColumnName="EmailAddress" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="WebURL" msprop:Generator_ColumnVarNameInTable="columnWebURL" msprop:Generator_ColumnPropNameInRow="WebURL" msprop:Generator_ColumnPropNameInTable="WebURLColumn" msprop:Generator_UserColumnName="WebURL" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CompanyLogo" msprop:Generator_ColumnVarNameInTable="columnCompanyLogo" msprop:Generator_ColumnPropNameInRow="CompanyLogo" msprop:Generator_ColumnPropNameInTable="CompanyLogoColumn" msprop:Generator_UserColumnName="CompanyLogo" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="ZoneName" msprop:Generator_ColumnVarNameInTable="columnZoneName" msprop:Generator_ColumnPropNameInRow="ZoneName" msprop:Generator_ColumnPropNameInTable="ZoneNameColumn" msprop:Generator_UserColumnName="ZoneName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="150" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ZoneNameInBengali" msprop:Generator_ColumnVarNameInTable="columnZoneNameInBengali" msprop:Generator_ColumnPropNameInRow="ZoneNameInBengali" msprop:Generator_ColumnPropNameInTable="ZoneNameInBengaliColumn" msprop:Generator_UserColumnName="ZoneNameInBengali" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ZoneAddress" msprop:Generator_ColumnVarNameInTable="columnZoneAddress" msprop:Generator_ColumnPropNameInRow="ZoneAddress" msprop:Generator_ColumnPropNameInTable="ZoneAddressColumn" msprop:Generator_UserColumnName="ZoneAddress" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ZoneAddressInBengali" msprop:Generator_ColumnVarNameInTable="columnZoneAddressInBengali" msprop:Generator_ColumnPropNameInRow="ZoneAddressInBengali" msprop:Generator_ColumnPropNameInTable="ZoneAddressInBengaliColumn" msprop:Generator_UserColumnName="ZoneAddressInBengali" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ZoneCode" msprop:Generator_ColumnVarNameInTable="columnZoneCode" msprop:Generator_ColumnPropNameInRow="ZoneCode" msprop:Generator_ColumnPropNameInTable="ZoneCodeColumn" msprop:Generator_UserColumnName="ZoneCode">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:vwCompanyInformationBengali" />
+      <xs:field xpath="mstns:Id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

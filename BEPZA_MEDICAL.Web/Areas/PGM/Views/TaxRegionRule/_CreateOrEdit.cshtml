@@ -1,0 +1,25 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxRegion.TaxRegionRuleViewModel
+
+@Html.HiddenFor(model => model.Id)
+<div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.IsActive)
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.strMode)
+                @Html.LabelFor(model => model.RegionName)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.RegionName, new { @class = "required" })
+            </span>
+        </div>
+    <div class="clear">
+    </div>
+</div>
+
+
+<script>
+   
+
+</script>

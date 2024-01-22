@@ -1,0 +1,28 @@
+﻿@model BOM_MPA.Web.Areas.PRM.ViewModel.SalaryHeadViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Create", "SalaryHead", FormMethod.Post, new { id = "frm" }))
+{
+    
+    <fieldset>
+        <div class="message">
+          
+            @Html.ValidationSummary(false, BOM_MPA.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <br />
+        <div class="button-center buttonSubmit">
+            @if ((new BOM_MPA.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input id="btnSave" type="submit" value="Save" style="width: auto; overflow: visible; padding-left: .25em;
+                    padding-right: .25em;" />
+            }
+            <input type="button" value="Clear" id="btnClear" name="btnClear" />
+        </div>
+    </fieldset>
+}
+<div class=" button-crude button-left ">
+    @Html.ActionLink("Back to List", "Index")
+</div>

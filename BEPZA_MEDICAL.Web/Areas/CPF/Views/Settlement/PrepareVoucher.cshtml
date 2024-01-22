@@ -1,0 +1,35 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.Settlement.SettlementViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Create", "Settlement", FormMethod.Post, new { id = "frm" }))
+{
+    <fieldset>
+        <div id="message" class="form-group messageBox clearfix">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3 text-right">
+                    @*@if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                    {
+                        <button class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                    }*@
+                    <a href="#" id="btnVoucherPosting" class="btn btn-success" onclick="SettlementVoucherPosting()"> <i class="fa fa-file-powerpoint-o"></i> Prepare Voucher</a>
+                    <a href="@Url.Action("Index")" class="btn btn-warning"> <i class="fa fa-backward"></i> Back</a>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+
+
+

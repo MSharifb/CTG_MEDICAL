@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.Adjustment.AdjustmentViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.AdjustmentItemDetail != null)
+{
+    foreach (var x in Model.AdjustmentItemDetail)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

@@ -1,0 +1,41 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.OvertimePaymentApproval.OvertimePaymentApprovalViewModel
+@using ERP_BEPZA.Web.Helpers
+
+    <tr class="dynamicRow">
+        @using (Html.BeginCollectionItem("OvertimePaymentApproval"))
+        {
+            @Html.HiddenFor(x => x.EmployeeId)
+            @Html.HiddenFor(x => x.DepartmentId) 
+            @Html.HiddenFor(x => x.SalaryMonth)
+            @Html.HiddenFor(x => x.SalaryYear)
+            @Html.HiddenFor(x => x.TotalOverTimeHours)
+            @Html.HiddenFor(x => x.TotalApprovedOvertimeHours) 
+            @Html.HiddenFor(x => x.TotalGrantedOvertimeHours)
+            @Html.HiddenFor(x => x.strRate)
+            @Html.HiddenFor(x => x.RevenueStamp)
+            @Html.HiddenFor(x => x.SalaryHeadId)
+            @Html.HiddenFor(x => x.OverTimeRuleId)
+            <td width="10%" style="text-align: center">
+                @Html.Encode(Model.EmpId)
+            </td>
+
+            <td width="20%" style="text-align: center">
+                 @Html.Encode(Model.EmployeeName)
+            </td>
+            <td width="20%" style="text-align: center">
+                @Html.Encode(Model.DepartmentName)
+
+            </td>
+            <td width="10%" style="text-align: center">
+               @Html.Encode(Model.TotalOverTimeHours)
+            </td>
+
+            <td width="10%" style="text-align: center">
+                @Html.Encode(Model.TotalApprovedOvertimeHours)
+            </td>
+            <td width="20%" style="text-align: center">
+               @Html.EditorFor(model=> model.GrantedAmount)
+            </td>
+
+        }
+    </tr>

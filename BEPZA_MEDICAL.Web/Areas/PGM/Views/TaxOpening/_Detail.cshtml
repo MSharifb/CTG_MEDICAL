@@ -1,0 +1,27 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxOpening.TaxOpeningDetailModel
+@using ERP_BEPZA.Web.Helpers
+@if (Model != null)
+{
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.TaxOpeningId)
+
+}
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("TaxOpeningDetailList"))
+    {          
+        @Html.HiddenFor(model => model.HeadSource)
+        @Html.HiddenFor(model => model.IncomeHeadId)
+        <td style="text-align: center">
+            @Html.EditorFor(model => model.IncomeHead, new { @class = "required" })
+        </td>
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.IncomeAmount, new { @class = "grandtotal required rightJustified" })
+        </td>           
+    }
+</tr>
+
+<style>
+   .rightJustified {
+        text-align: right;
+    }
+</style>

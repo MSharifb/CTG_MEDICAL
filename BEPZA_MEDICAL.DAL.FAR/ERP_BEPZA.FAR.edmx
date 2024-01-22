@@ -1,0 +1,2697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BEPZA_MEDICAL.DAL.FAR.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="acc_Accounting_Period_Information">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="createdUserDate" Type="datetime" />
+          <Property Name="createdUserId" Type="nvarchar" MaxLength="255" />
+          <Property Name="updatedUserDate" Type="datetime" />
+          <Property Name="updatedUserId" Type="nvarchar" MaxLength="255" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="isClosed" Type="bit" Nullable="false" />
+          <Property Name="periodEndDate" Type="datetime" Nullable="false" />
+          <Property Name="periodStartDate" Type="datetime" Nullable="false" />
+          <Property Name="yearName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="fundControlInformation_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FAR_AccidentInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FIxedAssetId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="Driver" Type="varchar" MaxLength="150" />
+          <Property Name="Description" Type="varchar" MaxLength="350" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_AdditionalInfoofVehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FIxedAssetId" Type="int" Nullable="false" />
+          <Property Name="SourceOfFundId" Type="int" />
+          <Property Name="Registration" Type="varchar" MaxLength="50" />
+          <Property Name="Chassis" Type="varchar" MaxLength="50" />
+          <Property Name="Engine" Type="varchar" MaxLength="50" />
+          <Property Name="CC" Type="varchar" MaxLength="50" />
+          <Property Name="Seats" Type="int" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="350" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_AdditionalInfoofVehicleDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AdditionalInfoofVehicleId" Type="int" Nullable="false" />
+          <Property Name="SparePartInfoId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_AssetCondition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="AssetStatusId" Type="int" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_AssetMaintenanceInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FIxedAssetId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="MaintenanceTypeInfoId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="350" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="500" />
+          <Property Name="Attachment" Type="varbinary(max)" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_AssetMaintenanceInformationDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AssetMaintenanceInfoId" Type="int" Nullable="false" />
+          <Property Name="SparePartInfoId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Rate" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_AssetStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_AssetTransfer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FixedAssetId" Type="int" Nullable="false" />
+          <Property Name="AssetStatusId" Type="int" Nullable="false" />
+          <Property Name="TransferDate" Type="date" Nullable="false" />
+          <Property Name="FromLocationId" Type="int" Nullable="false" />
+          <Property Name="ToLocationId" Type="int" Nullable="false" />
+          <Property Name="FromBeneficiaryEmployeeId" Type="int" />
+          <Property Name="ToBeneficiaryEmployeeId" Type="int" />
+          <Property Name="Accessories" Type="varchar" MaxLength="500" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="ExpectedDateOfReturn" Type="date" />
+          <Property Name="ReturnDate" Type="date" />
+          <Property Name="IssuedBy" Type="int" />
+          <Property Name="ReceivedBy" Type="int" />
+          <Property Name="ReturnBy" Type="int" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="ToZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="ToOrganogramLevelId" Type="int" />
+        </EntityType>
+        <EntityType Name="FAR_Catagory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CategoryName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CategoryCode" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MinimumCost" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="DepreciationMethodId" Type="int" Nullable="false" />
+          <Property Name="ReservedIDFrom" Type="bigint" Nullable="false" />
+          <Property Name="ReservedIDTo" Type="bigint" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_Depreciation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="FinancialYearId" Type="int" Nullable="false" />
+          <Property Name="FinYearName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="FinYearStartDate" Type="datetime" Nullable="false" />
+          <Property Name="FinYearEndDate" Type="datetime" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProcessDate" Type="date" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_DepreciationDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepreciationId" Type="int" Nullable="false" />
+          <Property Name="FixedAssetId" Type="int" Nullable="false" />
+          <Property Name="AssetStatusId" Type="int" Nullable="false" />
+          <Property Name="AssetConditionId" Type="int" Nullable="false" />
+          <Property Name="DepreciationRate" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="AssetCost" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="OBBookValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="OBDepreciation" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="Depreciation" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="CBDepreciation" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="CBBookValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_DepreciationMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_FixedAsset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemTypeId" Type="int" Nullable="false" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="AssetType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsRefurbishment" Type="bit" Nullable="false" />
+          <Property Name="IsCalculateDepreciation" Type="bit" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="SubCategoryId" Type="int" Nullable="false" />
+          <Property Name="AssetCode" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="AssetName" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="DepreciationRate" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="AssetStatusId" Type="int" Nullable="false" />
+          <Property Name="AssetConditionId" Type="int" />
+          <Property Name="SupplierId" Type="int" Nullable="false" />
+          <Property Name="PurchaseDate" Type="date" Nullable="false" />
+          <Property Name="DepreciationEffectiveDate" Type="date" Nullable="false" />
+          <Property Name="AssetCost" Type="decimal" Precision="16" Scale="2" Nullable="false" />
+          <Property Name="OBDepreciation" Type="decimal" Precision="16" Scale="2" />
+          <Property Name="OBBookValue" Type="decimal" Precision="16" Scale="2" />
+          <Property Name="LocationId" Type="int" Nullable="false" />
+          <Property Name="BeneficiaryEmployeeId" Type="int" />
+          <Property Name="IsAllowDepreciationCal" Type="bit" Nullable="false" />
+          <Property Name="SerialNo" Type="varchar" MaxLength="100" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+          <Property Name="OrganogramLevelId" Type="int" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="PurchaseId" Type="int" />
+          <Property Name="ItemId" Type="int" />
+        </EntityType>
+        <EntityType Name="FAR_Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_MaintenanceTypeInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaintenanceType" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsPeriodicallyRepeating" Type="bit" Nullable="false" />
+          <Property Name="RedoAfter" Type="int" />
+          <Property Name="RedoType" Type="varchar" MaxLength="50" />
+          <Property Name="Remarks" Type="varchar" MaxLength="250" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_Repair">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FixedAssetId" Type="int" Nullable="false" />
+          <Property Name="EffectiveDate" Type="date" Nullable="false" />
+          <Property Name="DepreciationRate" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="AssetStatusId" Type="int" Nullable="false" />
+          <Property Name="AssetConditionId" Type="int" />
+          <Property Name="CurrentBookValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="IsImpactWithDep" Type="bit" Nullable="false" />
+          <Property Name="RepairCost" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="AppreciatedCost" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="UpdatedBookValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="TotalCost" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_SaleDisposal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="strType" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="FixedAssetId" Type="int" Nullable="false" />
+          <Property Name="EffectiveDate" Type="date" Nullable="false" />
+          <Property Name="PreviousStatusId" Type="int" Nullable="false" />
+          <Property Name="PreviousConditionId" Type="int" />
+          <Property Name="AssetStatusId" Type="int" Nullable="false" />
+          <Property Name="AssetConditionId" Type="int" />
+          <Property Name="AssetCost" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="CurrentBookValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="AccumulatedDep" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="SalValue" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="CapitalGain" Type="decimal" Precision="12" Scale="2" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_SparePartInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SparePart" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" />
+          <Property Name="Remarks" Type="varchar" MaxLength="250" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_SubCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubCategoryName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SubCategoryCode" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="DepreciationRate" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="FAR_Supplier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="Remarks" Type="varchar" MaxLength="100" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_FAR_AccidentInformation_FAR_FixedAsset">
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="1" />
+          <End Role="FAR_AccidentInformation" Type="Self.FAR_AccidentInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AccidentInformation">
+              <PropertyRef Name="FIxedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset">
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="1" />
+          <End Role="FAR_AdditionalInfoofVehicle" Type="Self.FAR_AdditionalInfoofVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AdditionalInfoofVehicle">
+              <PropertyRef Name="FIxedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle">
+          <End Role="FAR_AdditionalInfoofVehicle" Type="Self.FAR_AdditionalInfoofVehicle" Multiplicity="1" />
+          <End Role="FAR_AdditionalInfoofVehicleDetail" Type="Self.FAR_AdditionalInfoofVehicleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AdditionalInfoofVehicle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AdditionalInfoofVehicleDetail">
+              <PropertyRef Name="AdditionalInfoofVehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation">
+          <End Role="FAR_SparePartInformation" Type="Self.FAR_SparePartInformation" Multiplicity="1" />
+          <End Role="FAR_AdditionalInfoofVehicleDetail" Type="Self.FAR_AdditionalInfoofVehicleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_SparePartInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AdditionalInfoofVehicleDetail">
+              <PropertyRef Name="SparePartInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetCondition_FAR_AssetStatus">
+          <End Role="FAR_AssetStatus" Type="Self.FAR_AssetStatus" Multiplicity="1" />
+          <End Role="FAR_AssetCondition" Type="Self.FAR_AssetCondition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetCondition">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation">
+          <End Role="FAR_MaintenanceTypeInformation" Type="Self.FAR_MaintenanceTypeInformation" Multiplicity="1" />
+          <End Role="FAR_AssetMaintenanceInformation" Type="Self.FAR_AssetMaintenanceInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_MaintenanceTypeInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetMaintenanceInformation">
+              <PropertyRef Name="MaintenanceTypeInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation">
+          <End Role="FAR_AssetMaintenanceInformation" Type="Self.FAR_AssetMaintenanceInformation" Multiplicity="1" />
+          <End Role="FAR_AssetMaintenanceInformationDetail" Type="Self.FAR_AssetMaintenanceInformationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetMaintenanceInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetMaintenanceInformationDetail">
+              <PropertyRef Name="AssetMaintenanceInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation">
+          <End Role="FAR_SparePartInformation" Type="Self.FAR_SparePartInformation" Multiplicity="1" />
+          <End Role="FAR_AssetMaintenanceInformationDetail" Type="Self.FAR_AssetMaintenanceInformationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_SparePartInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetMaintenanceInformationDetail">
+              <PropertyRef Name="SparePartInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_AssetStatus">
+          <End Role="FAR_AssetStatus" Type="Self.FAR_AssetStatus" Multiplicity="1" />
+          <End Role="FAR_AssetTransfer" Type="Self.FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_FixedAsset">
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="1" />
+          <End Role="FAR_AssetTransfer" Type="Self.FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_Location">
+          <End Role="FAR_Location" Type="Self.FAR_Location" Multiplicity="1" />
+          <End Role="FAR_AssetTransfer" Type="Self.FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="FromLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_Location1">
+          <End Role="FAR_Location" Type="Self.FAR_Location" Multiplicity="1" />
+          <End Role="FAR_AssetTransfer" Type="Self.FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="ToLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_Catagory_FAR_DepreciationMethod">
+          <End Role="FAR_DepreciationMethod" Type="Self.FAR_DepreciationMethod" Multiplicity="1" />
+          <End Role="FAR_Catagory" Type="Self.FAR_Catagory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_DepreciationMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Catagory">
+              <PropertyRef Name="DepreciationMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_Depreciation_acc_Accounting_Period_Information">
+          <End Role="acc_Accounting_Period_Information" Type="Self.acc_Accounting_Period_Information" Multiplicity="1" />
+          <End Role="FAR_Depreciation" Type="Self.FAR_Depreciation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="acc_Accounting_Period_Information">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FAR_Depreciation">
+              <PropertyRef Name="FinancialYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_AssetCondition">
+          <End Role="FAR_AssetCondition" Type="Self.FAR_AssetCondition" Multiplicity="1" />
+          <End Role="FAR_DepreciationDetail" Type="Self.FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_AssetStatus">
+          <End Role="FAR_AssetStatus" Type="Self.FAR_AssetStatus" Multiplicity="1" />
+          <End Role="FAR_DepreciationDetail" Type="Self.FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_Depreciation">
+          <End Role="FAR_Depreciation" Type="Self.FAR_Depreciation" Multiplicity="1" />
+          <End Role="FAR_DepreciationDetail" Type="Self.FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Depreciation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="DepreciationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_FixedAsset">
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="1" />
+          <End Role="FAR_DepreciationDetail" Type="Self.FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_AssetCondition">
+          <End Role="FAR_AssetCondition" Type="Self.FAR_AssetCondition" Multiplicity="0..1" />
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_AssetStatus">
+          <End Role="FAR_AssetStatus" Type="Self.FAR_AssetStatus" Multiplicity="1" />
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_Catagory">
+          <End Role="FAR_Catagory" Type="Self.FAR_Catagory" Multiplicity="1" />
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Catagory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_Location">
+          <End Role="FAR_Location" Type="Self.FAR_Location" Multiplicity="1" />
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_SubCategory">
+          <End Role="FAR_SubCategory" Type="Self.FAR_SubCategory" Multiplicity="1" />
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_SubCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="SubCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_Repair_FAR_AssetCondition">
+          <End Role="FAR_AssetCondition" Type="Self.FAR_AssetCondition" Multiplicity="0..1" />
+          <End Role="FAR_Repair" Type="Self.FAR_Repair" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Repair">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_Repair_FAR_AssetStatus">
+          <End Role="FAR_AssetStatus" Type="Self.FAR_AssetStatus" Multiplicity="1" />
+          <End Role="FAR_Repair" Type="Self.FAR_Repair" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Repair">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_Repair_FAR_FixedAsset">
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="1" />
+          <End Role="FAR_Repair" Type="Self.FAR_Repair" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Repair">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SaleDisposal_FAR_AssetCondition">
+          <End Role="FAR_AssetCondition" Type="Self.FAR_AssetCondition" Multiplicity="0..1" />
+          <End Role="FAR_SaleDisposal" Type="Self.FAR_SaleDisposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SaleDisposal">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SaleDisposal_FAR_AssetStatus">
+          <End Role="FAR_AssetStatus" Type="Self.FAR_AssetStatus" Multiplicity="1" />
+          <End Role="FAR_SaleDisposal" Type="Self.FAR_SaleDisposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SaleDisposal">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SaleDisposal_FAR_FixedAsset">
+          <End Role="FAR_FixedAsset" Type="Self.FAR_FixedAsset" Multiplicity="1" />
+          <End Role="FAR_SaleDisposal" Type="Self.FAR_SaleDisposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SaleDisposal">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SubCategory_FAR_Catagory">
+          <End Role="FAR_Catagory" Type="Self.FAR_Catagory" Multiplicity="1" />
+          <End Role="FAR_SubCategory" Type="Self.FAR_SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Catagory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SubCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="FAR_uspVoucherPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_AssetRegisterWithDepreciationCalRpt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="param_financialyYearId" Type="int" Mode="In" />
+          <Parameter Name="Option" Type="int" Mode="In" />
+          <Parameter Name="AssetCategoryId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_AssetTransferHistoryRpt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="FixedAssetId" Type="int" Mode="In" />
+          <Parameter Name="SubCategoryId" Type="int" Mode="In" />
+          <Parameter Name="ToLocationId" Type="int" Mode="In" />
+          <Parameter Name="ToBeneficiaryEmployeeId" Type="int" Mode="In" />
+          <Parameter Name="FromDate" Type="date" Mode="In" />
+          <Parameter Name="ToDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_FixedAssetRegisterRpt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="FixedAssetId" Type="int" Mode="In" />
+          <Parameter Name="CategoryId" Type="int" Mode="In" />
+          <Parameter Name="SubCategoryId" Type="int" Mode="In" />
+          <Parameter Name="FromDate" Type="date" Mode="In" />
+          <Parameter Name="ToDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_FixedAssetScheduleRpt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="ItemTypeId" Type="int" Mode="In" />
+          <Parameter Name="CategoryId" Type="int" Mode="In" />
+          <Parameter Name="FromDate" Type="date" Mode="In" />
+          <Parameter Name="ToDate" Type="date" Mode="In" />
+          <Parameter Name="RefurbishmentType" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_GetDepreciationByFixedAssetId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FixedAssetId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_GetDepreciationStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FixedAssetId" Type="varchar" Mode="In" />
+          <Parameter Name="ProcessDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_GetNextFinancialYear" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="param_financialYearId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_GetUniqueMRRList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="param_ZoneInfoIdId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_LocationWiseAssetListRpt" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="ItemTypeId" Type="int" Mode="In" />
+          <Parameter Name="CategoryId" Type="int" Mode="In" />
+          <Parameter Name="SubCategoryId" Type="int" Mode="In" />
+          <Parameter Name="LocationId" Type="int" Mode="In" />
+          <Parameter Name="StartPeriod" Type="date" Mode="In" />
+          <Parameter Name="EndPeriod" Type="date" Mode="In" />
+          <Parameter Name="BeneficiaryEmpID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_FAR_ProcDepreciationCal" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ZoneInfoId" Type="int" Mode="In" />
+          <Parameter Name="param_financialyYearId" Type="int" Mode="In" />
+          <Parameter Name="ProcessDate" Type="date" Mode="In" />
+          <Parameter Name="Remarks" Type="varchar" Mode="In" />
+          <Parameter Name="User" Type="varchar" Mode="In" />
+          <Parameter Name="numErrorCode" Type="int" Mode="InOut" />
+          <Parameter Name="strErrorMsg" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="SP_FAR_ProcDepreciationCalRollback" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ZoneInfoId" Type="int" Mode="In" />
+          <Parameter Name="param_depreId" Type="int" Mode="In" />
+          <Parameter Name="ProcessDate" Type="date" Mode="In" />
+          <Parameter Name="Remarks" Type="varchar" Mode="In" />
+          <Parameter Name="User" Type="varchar" Mode="In" />
+          <Parameter Name="numErrorCode" Type="int" Mode="InOut" />
+          <Parameter Name="strErrorMsg" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="SP_FAR_ProcDepreciationCalRollbackIndividual" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ZonrInfoId" Type="int" Mode="In" />
+          <Parameter Name="DepreciationId" Type="int" Mode="In" />
+          <Parameter Name="DetailId" Type="int" Mode="In" />
+          <Parameter Name="User" Type="varchar" Mode="In" />
+          <Parameter Name="numErrorCode" Type="int" Mode="InOut" />
+          <Parameter Name="strErrorMsg" Type="varchar" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="ERP_BEPZADALFARStoreContainer">
+          <EntitySet Name="acc_Accounting_Period_Information" EntityType="Self.acc_Accounting_Period_Information" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AccidentInformation" EntityType="Self.FAR_AccidentInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AdditionalInfoofVehicle" EntityType="Self.FAR_AdditionalInfoofVehicle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AdditionalInfoofVehicleDetail" EntityType="Self.FAR_AdditionalInfoofVehicleDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AssetCondition" EntityType="Self.FAR_AssetCondition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AssetMaintenanceInformation" EntityType="Self.FAR_AssetMaintenanceInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AssetMaintenanceInformationDetail" EntityType="Self.FAR_AssetMaintenanceInformationDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AssetStatus" EntityType="Self.FAR_AssetStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_AssetTransfer" EntityType="Self.FAR_AssetTransfer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_Catagory" EntityType="Self.FAR_Catagory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_Depreciation" EntityType="Self.FAR_Depreciation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_DepreciationDetail" EntityType="Self.FAR_DepreciationDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_DepreciationMethod" EntityType="Self.FAR_DepreciationMethod" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_FixedAsset" EntityType="Self.FAR_FixedAsset" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_Location" EntityType="Self.FAR_Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_MaintenanceTypeInformation" EntityType="Self.FAR_MaintenanceTypeInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_Repair" EntityType="Self.FAR_Repair" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_SaleDisposal" EntityType="Self.FAR_SaleDisposal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_SparePartInformation" EntityType="Self.FAR_SparePartInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_SubCategory" EntityType="Self.FAR_SubCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAR_Supplier" EntityType="Self.FAR_Supplier" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_FAR_AccidentInformation_FAR_FixedAsset" Association="Self.FK_FAR_AccidentInformation_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_AccidentInformation" EntitySet="FAR_AccidentInformation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset" Association="Self.FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_AdditionalInfoofVehicle" EntitySet="FAR_AdditionalInfoofVehicle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle" Association="Self.FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle">
+            <End Role="FAR_AdditionalInfoofVehicle" EntitySet="FAR_AdditionalInfoofVehicle" />
+            <End Role="FAR_AdditionalInfoofVehicleDetail" EntitySet="FAR_AdditionalInfoofVehicleDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation" Association="Self.FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation">
+            <End Role="FAR_SparePartInformation" EntitySet="FAR_SparePartInformation" />
+            <End Role="FAR_AdditionalInfoofVehicleDetail" EntitySet="FAR_AdditionalInfoofVehicleDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetCondition_FAR_AssetStatus" Association="Self.FK_FAR_AssetCondition_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation" Association="Self.FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation">
+            <End Role="FAR_MaintenanceTypeInformation" EntitySet="FAR_MaintenanceTypeInformation" />
+            <End Role="FAR_AssetMaintenanceInformation" EntitySet="FAR_AssetMaintenanceInformation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation" Association="Self.FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation">
+            <End Role="FAR_AssetMaintenanceInformation" EntitySet="FAR_AssetMaintenanceInformation" />
+            <End Role="FAR_AssetMaintenanceInformationDetail" EntitySet="FAR_AssetMaintenanceInformationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation" Association="Self.FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation">
+            <End Role="FAR_SparePartInformation" EntitySet="FAR_SparePartInformation" />
+            <End Role="FAR_AssetMaintenanceInformationDetail" EntitySet="FAR_AssetMaintenanceInformationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_AssetStatus" Association="Self.FK_FAR_AssetTransfer_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_FixedAsset" Association="Self.FK_FAR_AssetTransfer_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_Location" Association="Self.FK_FAR_AssetTransfer_FAR_Location">
+            <End Role="FAR_Location" EntitySet="FAR_Location" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_Location1" Association="Self.FK_FAR_AssetTransfer_FAR_Location1">
+            <End Role="FAR_Location" EntitySet="FAR_Location" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_Catagory_FAR_DepreciationMethod" Association="Self.FK_FAR_Catagory_FAR_DepreciationMethod">
+            <End Role="FAR_DepreciationMethod" EntitySet="FAR_DepreciationMethod" />
+            <End Role="FAR_Catagory" EntitySet="FAR_Catagory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_Depreciation_acc_Accounting_Period_Information" Association="Self.FK_FAR_Depreciation_acc_Accounting_Period_Information">
+            <End Role="acc_Accounting_Period_Information" EntitySet="acc_Accounting_Period_Information" />
+            <End Role="FAR_Depreciation" EntitySet="FAR_Depreciation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_AssetCondition" Association="Self.FK_FAR_DepreciationDetail_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_AssetStatus" Association="Self.FK_FAR_DepreciationDetail_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_Depreciation" Association="Self.FK_FAR_DepreciationDetail_FAR_Depreciation">
+            <End Role="FAR_Depreciation" EntitySet="FAR_Depreciation" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_FixedAsset" Association="Self.FK_FAR_DepreciationDetail_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_AssetCondition" Association="Self.FK_FAR_FixedAsset_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_AssetStatus" Association="Self.FK_FAR_FixedAsset_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_Catagory" Association="Self.FK_FAR_FixedAsset_FAR_Catagory">
+            <End Role="FAR_Catagory" EntitySet="FAR_Catagory" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_Location" Association="Self.FK_FAR_FixedAsset_FAR_Location">
+            <End Role="FAR_Location" EntitySet="FAR_Location" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_SubCategory" Association="Self.FK_FAR_FixedAsset_FAR_SubCategory">
+            <End Role="FAR_SubCategory" EntitySet="FAR_SubCategory" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_Repair_FAR_AssetCondition" Association="Self.FK_FAR_Repair_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_Repair" EntitySet="FAR_Repair" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_Repair_FAR_AssetStatus" Association="Self.FK_FAR_Repair_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_Repair" EntitySet="FAR_Repair" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_Repair_FAR_FixedAsset" Association="Self.FK_FAR_Repair_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_Repair" EntitySet="FAR_Repair" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SaleDisposal_FAR_AssetCondition" Association="Self.FK_FAR_SaleDisposal_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_SaleDisposal" EntitySet="FAR_SaleDisposal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SaleDisposal_FAR_AssetStatus" Association="Self.FK_FAR_SaleDisposal_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_SaleDisposal" EntitySet="FAR_SaleDisposal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SaleDisposal_FAR_FixedAsset" Association="Self.FK_FAR_SaleDisposal_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_SaleDisposal" EntitySet="FAR_SaleDisposal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SubCategory_FAR_Catagory" Association="Self.FK_FAR_SubCategory_FAR_Catagory">
+            <End Role="FAR_Catagory" EntitySet="FAR_Catagory" />
+            <End Role="FAR_SubCategory" EntitySet="FAR_SubCategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BEPZA_MEDICAL.DAL.FAR" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ERP_BEPZAFAREntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="FAR_AccidentInformation" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AccidentInformation" />
+          <EntitySet Name="FAR_AdditionalInfoofVehicle" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicle" />
+          <EntitySet Name="FAR_AdditionalInfoofVehicleDetail" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicleDetail" />
+          <EntitySet Name="FAR_AssetCondition" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition" />
+          <EntitySet Name="FAR_AssetMaintenanceInformation" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformation" />
+          <EntitySet Name="FAR_AssetMaintenanceInformationDetail" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformationDetail" />
+          <EntitySet Name="FAR_AssetStatus" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" />
+          <EntitySet Name="FAR_DepreciationMethod" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationMethod" />
+          <EntitySet Name="FAR_Location" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Location" />
+          <EntitySet Name="FAR_MaintenanceTypeInformation" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_MaintenanceTypeInformation" />
+          <EntitySet Name="FAR_SparePartInformation" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_SparePartInformation" />
+          <EntitySet Name="FAR_Supplier" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Supplier" />
+          <AssociationSet Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle">
+            <End Role="FAR_AdditionalInfoofVehicle" EntitySet="FAR_AdditionalInfoofVehicle" />
+            <End Role="FAR_AdditionalInfoofVehicleDetail" EntitySet="FAR_AdditionalInfoofVehicleDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation">
+            <End Role="FAR_SparePartInformation" EntitySet="FAR_SparePartInformation" />
+            <End Role="FAR_AdditionalInfoofVehicleDetail" EntitySet="FAR_AdditionalInfoofVehicleDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetCondition_FAR_AssetStatus" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetCondition_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation">
+            <End Role="FAR_MaintenanceTypeInformation" EntitySet="FAR_MaintenanceTypeInformation" />
+            <End Role="FAR_AssetMaintenanceInformation" EntitySet="FAR_AssetMaintenanceInformation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation">
+            <End Role="FAR_AssetMaintenanceInformation" EntitySet="FAR_AssetMaintenanceInformation" />
+            <End Role="FAR_AssetMaintenanceInformationDetail" EntitySet="FAR_AssetMaintenanceInformationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation">
+            <End Role="FAR_SparePartInformation" EntitySet="FAR_SparePartInformation" />
+            <End Role="FAR_AssetMaintenanceInformationDetail" EntitySet="FAR_AssetMaintenanceInformationDetail" />
+          </AssociationSet>
+          <EntitySet Name="FAR_Catagory" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Catagory" />
+          <EntitySet Name="FAR_SubCategory" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_SubCategory" />
+          <AssociationSet Name="FK_FAR_Catagory_FAR_DepreciationMethod" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Catagory_FAR_DepreciationMethod">
+            <End Role="FAR_DepreciationMethod" EntitySet="FAR_DepreciationMethod" />
+            <End Role="FAR_Catagory" EntitySet="FAR_Catagory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SubCategory_FAR_Catagory" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SubCategory_FAR_Catagory">
+            <End Role="FAR_Catagory" EntitySet="FAR_Catagory" />
+            <End Role="FAR_SubCategory" EntitySet="FAR_SubCategory" />
+          </AssociationSet>
+          <EntitySet Name="FAR_AssetTransfer" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetTransfer" />
+          <EntitySet Name="FAR_Repair" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Repair" />
+          <EntitySet Name="FAR_SaleDisposal" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_SaleDisposal" />
+          <AssociationSet Name="FK_FAR_Repair_FAR_AssetCondition" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_Repair" EntitySet="FAR_Repair" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SaleDisposal_FAR_AssetCondition" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_SaleDisposal" EntitySet="FAR_SaleDisposal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_AssetStatus" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_Repair_FAR_AssetStatus" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_Repair" EntitySet="FAR_Repair" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SaleDisposal_FAR_AssetStatus" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_SaleDisposal" EntitySet="FAR_SaleDisposal" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_Location" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location">
+            <End Role="FAR_Location" EntitySet="FAR_Location" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_Location1" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location1">
+            <End Role="FAR_Location" EntitySet="FAR_Location" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <EntitySet Name="FAR_FixedAsset" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" />
+          <AssociationSet Name="FK_FAR_AccidentInformation_FAR_FixedAsset" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AccidentInformation_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_AccidentInformation" EntitySet="FAR_AccidentInformation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_AdditionalInfoofVehicle" EntitySet="FAR_AdditionalInfoofVehicle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_AssetCondition" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_AssetStatus" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_AssetTransfer_FAR_FixedAsset" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_AssetTransfer" EntitySet="FAR_AssetTransfer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_Catagory" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Catagory">
+            <End Role="FAR_Catagory" EntitySet="FAR_Catagory" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_Location" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Location">
+            <End Role="FAR_Location" EntitySet="FAR_Location" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_FixedAsset_FAR_SubCategory" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_SubCategory">
+            <End Role="FAR_SubCategory" EntitySet="FAR_SubCategory" />
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_Repair_FAR_FixedAsset" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_Repair" EntitySet="FAR_Repair" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_SaleDisposal_FAR_FixedAsset" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_SaleDisposal" EntitySet="FAR_SaleDisposal" />
+          </AssociationSet>
+          <EntitySet Name="acc_Accounting_Period_Information" EntityType="BEPZA_MEDICAL.DAL.FAR.acc_Accounting_Period_Information" />
+          <EntitySet Name="FAR_Depreciation" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Depreciation" />
+          <EntitySet Name="FAR_DepreciationDetail" EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationDetail" />
+          <AssociationSet Name="FK_FAR_Depreciation_acc_Accounting_Period_Information" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Depreciation_acc_Accounting_Period_Information">
+            <End Role="acc_Accounting_Period_Information" EntitySet="acc_Accounting_Period_Information" />
+            <End Role="FAR_Depreciation" EntitySet="FAR_Depreciation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_AssetCondition" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetCondition">
+            <End Role="FAR_AssetCondition" EntitySet="FAR_AssetCondition" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_AssetStatus" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetStatus">
+            <End Role="FAR_AssetStatus" EntitySet="FAR_AssetStatus" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_Depreciation" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_Depreciation">
+            <End Role="FAR_Depreciation" EntitySet="FAR_Depreciation" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAR_DepreciationDetail_FAR_FixedAsset" Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_FixedAsset">
+            <End Role="FAR_FixedAsset" EntitySet="FAR_FixedAsset" />
+            <End Role="FAR_DepreciationDetail" EntitySet="FAR_DepreciationDetail" />
+          </AssociationSet>
+          <FunctionImport Name="FAR_uspVoucherPosting" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.FAR_uspVoucherPosting_Result)">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_AssetRegisterWithDepreciationCalRpt" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_AssetRegisterWithDepreciationCalRpt_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="param_financialyYearId" Mode="In" Type="Int32" />
+            <Parameter Name="Option" Mode="In" Type="Int32" />
+            <Parameter Name="AssetCategoryId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_AssetTransferHistoryRpt" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_AssetTransferHistoryRpt_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="FixedAssetId" Mode="In" Type="Int32" />
+            <Parameter Name="SubCategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="ToLocationId" Mode="In" Type="Int32" />
+            <Parameter Name="ToBeneficiaryEmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_FixedAssetRegisterRpt" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_FixedAssetRegisterRpt_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="FixedAssetId" Mode="In" Type="Int32" />
+            <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="SubCategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_FixedAssetScheduleRpt" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_FixedAssetScheduleRpt_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="ItemTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="FromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="RefurbishmentType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_GetDepreciationByFixedAssetId" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetDepreciationByFixedAssetId_Result)">
+          <Parameter Name="FixedAssetId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_GetDepreciationStatus" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetDepreciationStatus_Result)">
+            <Parameter Name="FixedAssetId" Mode="In" Type="String" />
+            <Parameter Name="ProcessDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_GetNextFinancialYear" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetNextFinancialYear_Result)">
+          <Parameter Name="param_financialYearId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_GetUniqueMRRList" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetUniqueMRRList_Result)">
+          <Parameter Name="param_ZoneInfoIdId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_LocationWiseAssetListRpt" ReturnType="Collection(BEPZA_MEDICAL.DAL.FAR.SP_FAR_LocationWiseAssetListRpt_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="ItemTypeId" Mode="In" Type="Int32" />
+            <Parameter Name="CategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="SubCategoryId" Mode="In" Type="Int32" />
+            <Parameter Name="LocationId" Mode="In" Type="Int32" />
+            <Parameter Name="StartPeriod" Mode="In" Type="DateTime" />
+            <Parameter Name="EndPeriod" Mode="In" Type="DateTime" />
+            <Parameter Name="BeneficiaryEmpID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_ProcDepreciationCal">
+            <Parameter Name="ZoneInfoId" Mode="In" Type="Int32" />
+            <Parameter Name="param_financialyYearId" Mode="In" Type="Int32" />
+            <Parameter Name="ProcessDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Remarks" Mode="In" Type="String" />
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="numErrorCode" Mode="InOut" Type="Int32" />
+            <Parameter Name="strErrorMsg" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_ProcDepreciationCalRollback">
+            <Parameter Name="ZoneInfoId" Mode="In" Type="Int32" />
+            <Parameter Name="param_depreId" Mode="In" Type="Int32" />
+            <Parameter Name="ProcessDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Remarks" Mode="In" Type="String" />
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="numErrorCode" Mode="InOut" Type="Int32" />
+            <Parameter Name="strErrorMsg" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_FAR_ProcDepreciationCalRollbackIndividual">
+            <Parameter Name="ZonrInfoId" Mode="In" Type="Int32" />
+            <Parameter Name="DepreciationId" Mode="In" Type="Int32" />
+            <Parameter Name="DetailId" Mode="In" Type="Int32" />
+            <Parameter Name="User" Mode="In" Type="String" />
+            <Parameter Name="numErrorCode" Mode="InOut" Type="Int32" />
+            <Parameter Name="strErrorMsg" Mode="InOut" Type="String" />
+          </FunctionImport>
+          </EntityContainer>
+        <EntityType Name="FAR_AccidentInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIxedAssetId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AccidentInformation_FAR_FixedAsset" FromRole="FAR_AccidentInformation" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <EntityType Name="FAR_AdditionalInfoofVehicle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIxedAssetId" Type="Int32" Nullable="false" />
+          <Property Name="SourceOfFundId" Type="Int32" />
+          <Property Name="Registration" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Chassis" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Engine" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CC" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Seats" Type="Int32" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AdditionalInfoofVehicleDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle" FromRole="FAR_AdditionalInfoofVehicle" ToRole="FAR_AdditionalInfoofVehicleDetail" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset" FromRole="FAR_AdditionalInfoofVehicle" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <EntityType Name="FAR_AdditionalInfoofVehicleDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdditionalInfoofVehicleId" Type="Int32" Nullable="false" />
+          <Property Name="SparePartInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AdditionalInfoofVehicle" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle" FromRole="FAR_AdditionalInfoofVehicleDetail" ToRole="FAR_AdditionalInfoofVehicle" />
+          <NavigationProperty Name="FAR_SparePartInformation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation" FromRole="FAR_AdditionalInfoofVehicleDetail" ToRole="FAR_SparePartInformation" />
+        </EntityType>
+        <EntityType Name="FAR_AssetCondition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AssetStatusId" Type="Int32" Nullable="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetStatus" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetCondition_FAR_AssetStatus" FromRole="FAR_AssetCondition" ToRole="FAR_AssetStatus" />
+          <NavigationProperty Name="FAR_Repair" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetCondition" FromRole="FAR_AssetCondition" ToRole="FAR_Repair" />
+          <NavigationProperty Name="FAR_SaleDisposal" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetCondition" FromRole="FAR_AssetCondition" ToRole="FAR_SaleDisposal" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetCondition" FromRole="FAR_AssetCondition" ToRole="FAR_FixedAsset" />
+          <NavigationProperty Name="FAR_DepreciationDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetCondition" FromRole="FAR_AssetCondition" ToRole="FAR_DepreciationDetail" />
+          </EntityType>
+        <EntityType Name="FAR_AssetMaintenanceInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FIxedAssetId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MaintenanceTypeInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_MaintenanceTypeInformation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation" FromRole="FAR_AssetMaintenanceInformation" ToRole="FAR_MaintenanceTypeInformation" />
+          <NavigationProperty Name="FAR_AssetMaintenanceInformationDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation" FromRole="FAR_AssetMaintenanceInformation" ToRole="FAR_AssetMaintenanceInformationDetail" />
+          <Property Name="FileName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="FAR_AssetMaintenanceInformationDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AssetMaintenanceInfoId" Type="Int32" Nullable="false" />
+          <Property Name="SparePartInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Rate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetMaintenanceInformation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation" FromRole="FAR_AssetMaintenanceInformationDetail" ToRole="FAR_AssetMaintenanceInformation" />
+          <NavigationProperty Name="FAR_SparePartInformation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation" FromRole="FAR_AssetMaintenanceInformationDetail" ToRole="FAR_SparePartInformation" />
+        </EntityType>
+        <EntityType Name="FAR_AssetStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetCondition" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetCondition_FAR_AssetStatus" FromRole="FAR_AssetStatus" ToRole="FAR_AssetCondition" />
+          <NavigationProperty Name="FAR_AssetTransfer" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_AssetStatus" FromRole="FAR_AssetStatus" ToRole="FAR_AssetTransfer" />
+          <NavigationProperty Name="FAR_Repair" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetStatus" FromRole="FAR_AssetStatus" ToRole="FAR_Repair" />
+          <NavigationProperty Name="FAR_SaleDisposal" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetStatus" FromRole="FAR_AssetStatus" ToRole="FAR_SaleDisposal" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetStatus" FromRole="FAR_AssetStatus" ToRole="FAR_FixedAsset" />
+          <NavigationProperty Name="FAR_DepreciationDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetStatus" FromRole="FAR_AssetStatus" ToRole="FAR_DepreciationDetail" />
+        </EntityType>
+        <EntityType Name="FAR_DepreciationMethod">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_Catagory" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Catagory_FAR_DepreciationMethod" FromRole="FAR_DepreciationMethod" ToRole="FAR_Catagory" />
+        </EntityType>
+        <EntityType Name="FAR_Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetTransfer" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location" FromRole="FAR_Location" ToRole="FAR_AssetTransfer" />
+          <NavigationProperty Name="FAR_AssetTransfer1" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location1" FromRole="FAR_Location" ToRole="FAR_AssetTransfer" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Location" FromRole="FAR_Location" ToRole="FAR_FixedAsset" />
+          </EntityType>
+        <EntityType Name="FAR_MaintenanceTypeInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaintenanceType" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IsPeriodicallyRepeating" Type="Boolean" Nullable="false" />
+          <Property Name="RedoAfter" Type="Int32" />
+          <Property Name="RedoType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetMaintenanceInformation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation" FromRole="FAR_MaintenanceTypeInformation" ToRole="FAR_AssetMaintenanceInformation" />
+        </EntityType>
+        <EntityType Name="FAR_SparePartInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SparePart" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AdditionalInfoofVehicleDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation" FromRole="FAR_SparePartInformation" ToRole="FAR_AdditionalInfoofVehicleDetail" />
+          <NavigationProperty Name="FAR_AssetMaintenanceInformationDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation" FromRole="FAR_SparePartInformation" ToRole="FAR_AssetMaintenanceInformationDetail" />
+        </EntityType>
+        <EntityType Name="FAR_Supplier">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <Association Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicle" Role="FAR_AdditionalInfoofVehicle" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicleDetail" Role="FAR_AdditionalInfoofVehicleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AdditionalInfoofVehicle">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AdditionalInfoofVehicleDetail">
+              <PropertyRef Name="AdditionalInfoofVehicleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_SparePartInformation" Role="FAR_SparePartInformation" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicleDetail" Role="FAR_AdditionalInfoofVehicleDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_SparePartInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AdditionalInfoofVehicleDetail">
+              <PropertyRef Name="SparePartInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetCondition_FAR_AssetStatus">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" Role="FAR_AssetStatus" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition" Role="FAR_AssetCondition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetCondition">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_MaintenanceTypeInformation" Role="FAR_MaintenanceTypeInformation" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformation" Role="FAR_AssetMaintenanceInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_MaintenanceTypeInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetMaintenanceInformation">
+              <PropertyRef Name="MaintenanceTypeInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformation" Role="FAR_AssetMaintenanceInformation" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformationDetail" Role="FAR_AssetMaintenanceInformationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetMaintenanceInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetMaintenanceInformationDetail">
+              <PropertyRef Name="AssetMaintenanceInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_SparePartInformation" Role="FAR_SparePartInformation" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformationDetail" Role="FAR_AssetMaintenanceInformationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_SparePartInformation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetMaintenanceInformationDetail">
+              <PropertyRef Name="SparePartInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FAR_Catagory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MinimumCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="DepreciationMethodId" Type="Int32" Nullable="false" />
+          <Property Name="ReservedIDFrom" Type="Int64" Nullable="false" />
+          <Property Name="ReservedIDTo" Type="Int64" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_DepreciationMethod" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Catagory_FAR_DepreciationMethod" FromRole="FAR_Catagory" ToRole="FAR_DepreciationMethod" />
+          <NavigationProperty Name="FAR_SubCategory" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SubCategory_FAR_Catagory" FromRole="FAR_Catagory" ToRole="FAR_SubCategory" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Catagory" FromRole="FAR_Catagory" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <EntityType Name="FAR_SubCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubCategoryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SubCategoryCode" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="DepreciationRate" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_Catagory" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SubCategory_FAR_Catagory" FromRole="FAR_SubCategory" ToRole="FAR_Catagory" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_SubCategory" FromRole="FAR_SubCategory" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <Association Name="FK_FAR_Catagory_FAR_DepreciationMethod">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationMethod" Role="FAR_DepreciationMethod" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Catagory" Role="FAR_Catagory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_DepreciationMethod">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Catagory">
+              <PropertyRef Name="DepreciationMethodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SubCategory_FAR_Catagory">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Catagory" Role="FAR_Catagory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_SubCategory" Role="FAR_SubCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Catagory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SubCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FAR_AssetTransfer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FixedAssetId" Type="Int32" Nullable="false" />
+          <Property Name="AssetStatusId" Type="Int32" Nullable="false" />
+          <Property Name="TransferDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FromLocationId" Type="Int32" Nullable="false" />
+          <Property Name="ToLocationId" Type="Int32" Nullable="false" />
+          <Property Name="FromBeneficiaryEmployeeId" Type="Int32" />
+          <Property Name="ToBeneficiaryEmployeeId" Type="Int32" />
+          <Property Name="Accessories" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="ExpectedDateOfReturn" Type="DateTime" Precision="0" />
+          <Property Name="ReturnDate" Type="DateTime" Precision="0" />
+          <Property Name="IssuedBy" Type="Int32" />
+          <Property Name="ReceivedBy" Type="Int32" />
+          <Property Name="ReturnBy" Type="Int32" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="ToZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="ToOrganogramLevelId" Type="Int32" />
+          <NavigationProperty Name="FAR_AssetStatus" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_AssetStatus" FromRole="FAR_AssetTransfer" ToRole="FAR_AssetStatus" />
+          <NavigationProperty Name="FAR_Location" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location" FromRole="FAR_AssetTransfer" ToRole="FAR_Location" />
+          <NavigationProperty Name="FAR_Location1" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location1" FromRole="FAR_AssetTransfer" ToRole="FAR_Location" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_FixedAsset" FromRole="FAR_AssetTransfer" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <EntityType Name="FAR_Repair">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FixedAssetId" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DepreciationRate" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="AssetStatusId" Type="Int32" Nullable="false" />
+          <Property Name="AssetConditionId" Type="Int32" />
+          <Property Name="CurrentBookValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="IsImpactWithDep" Type="Boolean" Nullable="false" />
+          <Property Name="RepairCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="AppreciatedCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="UpdatedBookValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="TotalCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetCondition" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetCondition" FromRole="FAR_Repair" ToRole="FAR_AssetCondition" />
+          <NavigationProperty Name="FAR_AssetStatus" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetStatus" FromRole="FAR_Repair" ToRole="FAR_AssetStatus" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_FixedAsset" FromRole="FAR_Repair" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <EntityType Name="FAR_SaleDisposal">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="strType" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="FixedAssetId" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="PreviousStatusId" Type="Int32" Nullable="false" />
+          <Property Name="PreviousConditionId" Type="Int32" />
+          <Property Name="AssetStatusId" Type="Int32" Nullable="false" />
+          <Property Name="AssetConditionId" Type="Int32" />
+          <Property Name="AssetCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="CurrentBookValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="AccumulatedDep" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="SalValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="CapitalGain" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetCondition" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetCondition" FromRole="FAR_SaleDisposal" ToRole="FAR_AssetCondition" />
+          <NavigationProperty Name="FAR_AssetStatus" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetStatus" FromRole="FAR_SaleDisposal" ToRole="FAR_AssetStatus" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_FixedAsset" FromRole="FAR_SaleDisposal" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <Association Name="FK_FAR_Repair_FAR_AssetCondition">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition" Role="FAR_AssetCondition" Multiplicity="0..1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Repair" Role="FAR_Repair" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Repair">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SaleDisposal_FAR_AssetCondition">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition" Role="FAR_AssetCondition" Multiplicity="0..1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_SaleDisposal" Role="FAR_SaleDisposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SaleDisposal">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_AssetStatus">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" Role="FAR_AssetStatus" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetTransfer" Role="FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_Repair_FAR_AssetStatus">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" Role="FAR_AssetStatus" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Repair" Role="FAR_Repair" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Repair">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SaleDisposal_FAR_AssetStatus">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" Role="FAR_AssetStatus" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_SaleDisposal" Role="FAR_SaleDisposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SaleDisposal">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_Location">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Location" Role="FAR_Location" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetTransfer" Role="FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="FromLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_Location1">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Location" Role="FAR_Location" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetTransfer" Role="FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="ToLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FAR_FixedAsset">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemTypeId" Type="Int32" Nullable="false" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="AssetType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsRefurbishment" Type="Boolean" Nullable="false" />
+          <Property Name="IsCalculateDepreciation" Type="Boolean" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="SubCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="AssetCode" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="AssetName" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="DepreciationRate" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="AssetStatusId" Type="Int32" Nullable="false" />
+          <Property Name="AssetConditionId" Type="Int32" />
+          <Property Name="SupplierId" Type="Int32" Nullable="false" />
+          <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DepreciationEffectiveDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AssetCost" Type="Decimal" Nullable="false" Precision="16" Scale="2" />
+          <Property Name="OBDepreciation" Type="Decimal" Precision="16" Scale="2" />
+          <Property Name="OBBookValue" Type="Decimal" Precision="16" Scale="2" />
+          <Property Name="LocationId" Type="Int32" Nullable="false" />
+          <Property Name="BeneficiaryEmployeeId" Type="Int32" />
+          <Property Name="IsAllowDepreciationCal" Type="Boolean" Nullable="false" />
+          <Property Name="SerialNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <Property Name="OrganogramLevelId" Type="Int32" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="PurchaseId" Type="Int32" />
+          <Property Name="ItemId" Type="Int32" />
+          <NavigationProperty Name="FAR_AccidentInformation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AccidentInformation_FAR_FixedAsset" FromRole="FAR_FixedAsset" ToRole="FAR_AccidentInformation" />
+          <NavigationProperty Name="FAR_AdditionalInfoofVehicle" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset" FromRole="FAR_FixedAsset" ToRole="FAR_AdditionalInfoofVehicle" />
+          <NavigationProperty Name="FAR_AssetCondition" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetCondition" FromRole="FAR_FixedAsset" ToRole="FAR_AssetCondition" />
+          <NavigationProperty Name="FAR_AssetStatus" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetStatus" FromRole="FAR_FixedAsset" ToRole="FAR_AssetStatus" />
+          <NavigationProperty Name="FAR_AssetTransfer" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_FixedAsset" FromRole="FAR_FixedAsset" ToRole="FAR_AssetTransfer" />
+          <NavigationProperty Name="FAR_Catagory" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Catagory" FromRole="FAR_FixedAsset" ToRole="FAR_Catagory" />
+          <NavigationProperty Name="FAR_Location" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Location" FromRole="FAR_FixedAsset" ToRole="FAR_Location" />
+          <NavigationProperty Name="FAR_SubCategory" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_SubCategory" FromRole="FAR_FixedAsset" ToRole="FAR_SubCategory" />
+          <NavigationProperty Name="FAR_Repair" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_FixedAsset" FromRole="FAR_FixedAsset" ToRole="FAR_Repair" />
+          <NavigationProperty Name="FAR_SaleDisposal" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_FixedAsset" FromRole="FAR_FixedAsset" ToRole="FAR_SaleDisposal" />
+          <NavigationProperty Name="FAR_DepreciationDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_FixedAsset" FromRole="FAR_FixedAsset" ToRole="FAR_DepreciationDetail" />
+        </EntityType>
+        <Association Name="FK_FAR_AccidentInformation_FAR_FixedAsset">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AccidentInformation" Role="FAR_AccidentInformation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AccidentInformation">
+              <PropertyRef Name="FIxedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicle" Role="FAR_AdditionalInfoofVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AdditionalInfoofVehicle">
+              <PropertyRef Name="FIxedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_AssetCondition">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition" Role="FAR_AssetCondition" Multiplicity="0..1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_AssetStatus">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" Role="FAR_AssetStatus" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_AssetTransfer_FAR_FixedAsset">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetTransfer" Role="FAR_AssetTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_AssetTransfer">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_Catagory">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Catagory" Role="FAR_Catagory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Catagory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_Location">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Location" Role="FAR_Location" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Location">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_FixedAsset_FAR_SubCategory">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_SubCategory" Role="FAR_SubCategory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_SubCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_FixedAsset">
+              <PropertyRef Name="SubCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_Repair_FAR_FixedAsset">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Repair" Role="FAR_Repair" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_Repair">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_SaleDisposal_FAR_FixedAsset">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_SaleDisposal" Role="FAR_SaleDisposal" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_SaleDisposal">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="acc_Accounting_Period_Information">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="createdUserDate" Type="DateTime" Precision="3" />
+          <Property Name="createdUserId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="updatedUserDate" Type="DateTime" Precision="3" />
+          <Property Name="updatedUserId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="isClosed" Type="Boolean" Nullable="false" />
+          <Property Name="periodEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="periodStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="yearName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="fundControlInformation_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FAR_Depreciation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Depreciation_acc_Accounting_Period_Information" FromRole="acc_Accounting_Period_Information" ToRole="FAR_Depreciation" />
+        </EntityType>
+        <EntityType Name="FAR_Depreciation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="FinancialYearId" Type="Int32" Nullable="false" />
+          <Property Name="FinYearName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FinYearStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FinYearEndDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Remarks" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProcessDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="acc_Accounting_Period_Information" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Depreciation_acc_Accounting_Period_Information" FromRole="FAR_Depreciation" ToRole="acc_Accounting_Period_Information" />
+          <NavigationProperty Name="FAR_DepreciationDetail" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_Depreciation" FromRole="FAR_Depreciation" ToRole="FAR_DepreciationDetail" />
+        </EntityType>
+        <EntityType Name="FAR_DepreciationDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepreciationId" Type="Int32" Nullable="false" />
+          <Property Name="FixedAssetId" Type="Int32" Nullable="false" />
+          <Property Name="AssetStatusId" Type="Int32" Nullable="false" />
+          <Property Name="AssetConditionId" Type="Int32" Nullable="false" />
+          <Property Name="DepreciationRate" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <Property Name="AssetCost" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="OBBookValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="OBDepreciation" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="Depreciation" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="CBDepreciation" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="CBBookValue" Type="Decimal" Nullable="false" Precision="12" Scale="2" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="FAR_AssetCondition" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetCondition" FromRole="FAR_DepreciationDetail" ToRole="FAR_AssetCondition" />
+          <NavigationProperty Name="FAR_AssetStatus" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetStatus" FromRole="FAR_DepreciationDetail" ToRole="FAR_AssetStatus" />
+          <NavigationProperty Name="FAR_Depreciation" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_Depreciation" FromRole="FAR_DepreciationDetail" ToRole="FAR_Depreciation" />
+          <NavigationProperty Name="FAR_FixedAsset" Relationship="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_FixedAsset" FromRole="FAR_DepreciationDetail" ToRole="FAR_FixedAsset" />
+        </EntityType>
+        <Association Name="FK_FAR_Depreciation_acc_Accounting_Period_Information">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.acc_Accounting_Period_Information" Role="acc_Accounting_Period_Information" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Depreciation" Role="FAR_Depreciation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="acc_Accounting_Period_Information">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="FAR_Depreciation">
+              <PropertyRef Name="FinancialYearId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_AssetCondition">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition" Role="FAR_AssetCondition" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationDetail" Role="FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetCondition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="AssetConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_AssetStatus">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" Role="FAR_AssetStatus" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationDetail" Role="FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_AssetStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="AssetStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_Depreciation">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_Depreciation" Role="FAR_Depreciation" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationDetail" Role="FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_Depreciation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="DepreciationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAR_DepreciationDetail_FAR_FixedAsset">
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Role="FAR_FixedAsset" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationDetail" Role="FAR_DepreciationDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAR_FixedAsset">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="FAR_DepreciationDetail">
+              <PropertyRef Name="FixedAssetId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="FAR_uspVoucherPosting_Result">
+          <Property Type="Int64" Name="VoucherId" Nullable="true" />
+          <Property Type="Int32" Name="VouchrTypeId" Nullable="true" />
+          <Property Type="Int32" Name="FundControlId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_AssetRegisterWithDepreciationCalRpt_Result">
+          <Property Type="String" Name="AssetCode" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="AssetName" Nullable="false" MaxLength="250" />
+          <Property Type="Int32" Name="CategoryId" Nullable="false" />
+          <Property Type="String" Name="CategoryCode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CategoryName" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="AssetCost" Nullable="false" Precision="16" Scale="2" />
+          <Property Type="DateTime" Name="PurchaseDate" Nullable="false" />
+          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="SupplierName" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="AssetCostUptoPreYr" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="AdditionDuringFY" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="DisposalAdjFY" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="TotalCostUptoCurrentYear" Nullable="true" Precision="20" Scale="2" />
+          <Property Type="Decimal" Name="Rate" Nullable="true" Precision="5" Scale="2" />
+          <Property Type="String" Name="FY" Nullable="true" MaxLength="9" />
+          <Property Type="Decimal" Name="DepreciationUptoPreYr" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="WrittenDownValueUptoPreYr" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationDuringFY" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationAdjDuringFY" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationCumulativeUptoCurYr" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="Decimal" Name="WrittenDownValueUptoCurYr" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_AssetTransferHistoryRpt_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="AssetCode" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="AssetName" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="SubCategoryId" Nullable="true" />
+          <Property Type="String" Name="SubCategoryName" Nullable="true" MaxLength="100" />
+          <Property Type="Int32" Name="FromAssetConditionId" Nullable="false" />
+          <Property Type="Int32" Name="AssetStatusId" Nullable="false" />
+          <Property Type="Int32" Name="FromLocationId" Nullable="false" />
+          <Property Type="Int32" Name="ToLocationId" Nullable="false" />
+          <Property Type="Int32" Name="FromBeneficiaryEmployeeId" Nullable="true" />
+          <Property Type="String" Name="FromBeneficiaryEmployee" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="FromBeneficiaryEmpID" Nullable="true" MaxLength="15" />
+          <Property Type="Int32" Name="ToBeneficiaryEmployeeId" Nullable="true" />
+          <Property Type="String" Name="ToBeneficiaryEmployee" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ToBeneficiaryEmpID" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="AssetCondition" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AssetStatus" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="FromLocation" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ToLocation" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="ReceiveDate" Nullable="false" />
+          <Property Type="DateTime" Name="ReturnDate" Nullable="true" />
+          <Property Type="Int32" Name="DiffDate" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_FixedAssetRegisterRpt_Result">
+          <Property Type="Int32" Name="ZoneInfoId" Nullable="false" />
+          <Property Type="String" Name="ZoneName" Nullable="false" MaxLength="150" />
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="CategoryName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="SubCategoryName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="AssetCode" Nullable="false" MaxLength="150" />
+          <Property Type="DateTime" Name="PurchaseDate" Nullable="false" />
+          <Property Type="String" Name="AssetName" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="Supplier" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="TotalCost" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="CostAddition" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="CostAdjustment" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationRate" Nullable="true" Precision="5" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationUptoFromDate" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationInPeriod" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationAdjustment" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="String" Name="Remarks" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_FixedAssetScheduleRpt_Result">
+          <Property Type="String" Name="ZoneName" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="ItemTypeName" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="ItemParentId" Nullable="true" />
+          <Property Type="String" Name="ItemTypeParentName" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="ItemParentsParentId" Nullable="true" />
+          <Property Type="String" Name="ItemParentsParentName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="AssetCode" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="AssetName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CategoryName" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="SubCategoryName" Nullable="true" MaxLength="150" />
+          <Property Type="Decimal" Name="TotalCost" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="CostAddition" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="CostAdjustment" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationRate" Nullable="true" Precision="5" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationUptoFromDate" Nullable="true" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationInPeriod" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="DepreciationAdjustment" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_GetDepreciationStatus_Result">
+          <Property Type="Int32" Name="DepreciationId" Nullable="false" />
+          <Property Type="Int32" Name="FixedAssetId" Nullable="false" />
+          <Property Type="DateTime" Name="ProcessDate" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_GetNextFinancialYear_Result">
+          <Property Type="Int32" Name="FinancialYearId" Nullable="false" />
+          <Property Type="String" Name="FinancialYearName" Nullable="false" MaxLength="10" />
+          <Property Type="DateTime" Name="periodStartDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="periodEndDate" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_GetUniqueMRRList_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="MRR" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_LocationWiseAssetListRpt_Result">
+          <Property Type="Int32" Name="ZoneInfoId" Nullable="false" />
+          <Property Type="String" Name="ZoneName" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="ItemTypeName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="CategoryName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="SubCategoryName" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="AssetCode" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="AssetName" Nullable="false" MaxLength="250" />
+          <Property Type="String" Name="AssetNameWithCode" Nullable="false" MaxLength="403" />
+          <Property Type="DateTime" Name="PurchaseDate" Nullable="false" />
+          <Property Type="String" Name="AssetLocation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="AssetCondition" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="EmpID" Nullable="false" MaxLength="218" />
+          <Property Type="String" Name="Remarks" Nullable="false" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SP_FAR_GetDepreciationByFixedAssetId_Result">
+          <Property Type="Decimal" Name="Depreciation" Nullable="true" Precision="38" Scale="2" />
+        </ComplexType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ERP_BEPZADALFARStoreContainer" CdmEntityContainer="ERP_BEPZAFAREntities" >
+          <EntitySetMapping Name="FAR_AccidentInformation">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AccidentInformation">
+              <MappingFragment StoreEntitySet="FAR_AccidentInformation">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Driver" ColumnName="Driver" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="FIxedAssetId" ColumnName="FIxedAssetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_AdditionalInfoofVehicle">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicle">
+              <MappingFragment StoreEntitySet="FAR_AdditionalInfoofVehicle">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Seats" ColumnName="Seats" />
+                <ScalarProperty Name="CC" ColumnName="CC" />
+                <ScalarProperty Name="Engine" ColumnName="Engine" />
+                <ScalarProperty Name="Chassis" ColumnName="Chassis" />
+                <ScalarProperty Name="Registration" ColumnName="Registration" />
+                <ScalarProperty Name="SourceOfFundId" ColumnName="SourceOfFundId" />
+                <ScalarProperty Name="FIxedAssetId" ColumnName="FIxedAssetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_AdditionalInfoofVehicleDetail">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicleDetail">
+              <MappingFragment StoreEntitySet="FAR_AdditionalInfoofVehicleDetail">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SparePartInfoId" ColumnName="SparePartInfoId" />
+                <ScalarProperty Name="AdditionalInfoofVehicleId" ColumnName="AdditionalInfoofVehicleId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_AssetCondition">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition">
+              <MappingFragment StoreEntitySet="FAR_AssetCondition">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="AssetStatusId" ColumnName="AssetStatusId" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_AssetMaintenanceInformation">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformation">
+              <MappingFragment StoreEntitySet="FAR_AssetMaintenanceInformation">
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="MaintenanceTypeInfoId" ColumnName="MaintenanceTypeInfoId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="FIxedAssetId" ColumnName="FIxedAssetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_AssetMaintenanceInformationDetail">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformationDetail">
+              <MappingFragment StoreEntitySet="FAR_AssetMaintenanceInformationDetail">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="SparePartInfoId" ColumnName="SparePartInfoId" />
+                <ScalarProperty Name="AssetMaintenanceInfoId" ColumnName="AssetMaintenanceInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_AssetStatus">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus">
+              <MappingFragment StoreEntitySet="FAR_AssetStatus">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_DepreciationMethod">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationMethod">
+              <MappingFragment StoreEntitySet="FAR_DepreciationMethod">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_Location">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_Location">
+              <MappingFragment StoreEntitySet="FAR_Location">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_MaintenanceTypeInformation">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_MaintenanceTypeInformation">
+              <MappingFragment StoreEntitySet="FAR_MaintenanceTypeInformation">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="RedoType" ColumnName="RedoType" />
+                <ScalarProperty Name="RedoAfter" ColumnName="RedoAfter" />
+                <ScalarProperty Name="IsPeriodicallyRepeating" ColumnName="IsPeriodicallyRepeating" />
+                <ScalarProperty Name="MaintenanceType" ColumnName="MaintenanceType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_SparePartInformation">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_SparePartInformation">
+              <MappingFragment StoreEntitySet="FAR_SparePartInformation">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="SparePart" ColumnName="SparePart" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_Supplier">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_Supplier">
+              <MappingFragment StoreEntitySet="FAR_Supplier">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_Catagory">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_Catagory">
+              <MappingFragment StoreEntitySet="FAR_Catagory">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="ReservedIDTo" ColumnName="ReservedIDTo" />
+                <ScalarProperty Name="ReservedIDFrom" ColumnName="ReservedIDFrom" />
+                <ScalarProperty Name="DepreciationMethodId" ColumnName="DepreciationMethodId" />
+                <ScalarProperty Name="MinimumCost" ColumnName="MinimumCost" />
+                <ScalarProperty Name="CategoryCode" ColumnName="CategoryCode" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_SubCategory">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_SubCategory">
+              <MappingFragment StoreEntitySet="FAR_SubCategory">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="DepreciationRate" ColumnName="DepreciationRate" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="SubCategoryCode" ColumnName="SubCategoryCode" />
+                <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_AssetTransfer">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_AssetTransfer">
+              <MappingFragment StoreEntitySet="FAR_AssetTransfer">
+                <ScalarProperty Name="ToOrganogramLevelId" ColumnName="ToOrganogramLevelId" />
+                <ScalarProperty Name="ToZoneInfoId" ColumnName="ToZoneInfoId" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="ReturnBy" ColumnName="ReturnBy" />
+                <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+                <ScalarProperty Name="IssuedBy" ColumnName="IssuedBy" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+                <ScalarProperty Name="ExpectedDateOfReturn" ColumnName="ExpectedDateOfReturn" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Accessories" ColumnName="Accessories" />
+                <ScalarProperty Name="ToBeneficiaryEmployeeId" ColumnName="ToBeneficiaryEmployeeId" />
+                <ScalarProperty Name="FromBeneficiaryEmployeeId" ColumnName="FromBeneficiaryEmployeeId" />
+                <ScalarProperty Name="ToLocationId" ColumnName="ToLocationId" />
+                <ScalarProperty Name="FromLocationId" ColumnName="FromLocationId" />
+                <ScalarProperty Name="TransferDate" ColumnName="TransferDate" />
+                <ScalarProperty Name="AssetStatusId" ColumnName="AssetStatusId" />
+                <ScalarProperty Name="FixedAssetId" ColumnName="FixedAssetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_Repair">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_Repair">
+              <MappingFragment StoreEntitySet="FAR_Repair">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+                <ScalarProperty Name="UpdatedBookValue" ColumnName="UpdatedBookValue" />
+                <ScalarProperty Name="AppreciatedCost" ColumnName="AppreciatedCost" />
+                <ScalarProperty Name="RepairCost" ColumnName="RepairCost" />
+                <ScalarProperty Name="IsImpactWithDep" ColumnName="IsImpactWithDep" />
+                <ScalarProperty Name="CurrentBookValue" ColumnName="CurrentBookValue" />
+                <ScalarProperty Name="AssetConditionId" ColumnName="AssetConditionId" />
+                <ScalarProperty Name="AssetStatusId" ColumnName="AssetStatusId" />
+                <ScalarProperty Name="DepreciationRate" ColumnName="DepreciationRate" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="FixedAssetId" ColumnName="FixedAssetId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_SaleDisposal">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_SaleDisposal">
+              <MappingFragment StoreEntitySet="FAR_SaleDisposal">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="CapitalGain" ColumnName="CapitalGain" />
+                <ScalarProperty Name="SalValue" ColumnName="SalValue" />
+                <ScalarProperty Name="AccumulatedDep" ColumnName="AccumulatedDep" />
+                <ScalarProperty Name="CurrentBookValue" ColumnName="CurrentBookValue" />
+                <ScalarProperty Name="AssetCost" ColumnName="AssetCost" />
+                <ScalarProperty Name="AssetConditionId" ColumnName="AssetConditionId" />
+                <ScalarProperty Name="AssetStatusId" ColumnName="AssetStatusId" />
+                <ScalarProperty Name="PreviousConditionId" ColumnName="PreviousConditionId" />
+                <ScalarProperty Name="PreviousStatusId" ColumnName="PreviousStatusId" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="FixedAssetId" ColumnName="FixedAssetId" />
+                <ScalarProperty Name="strType" ColumnName="strType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_FixedAsset">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset">
+              <MappingFragment StoreEntitySet="FAR_FixedAsset">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="PurchaseId" ColumnName="PurchaseId" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="OrganogramLevelId" ColumnName="OrganogramLevelId" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SerialNo" ColumnName="SerialNo" />
+                <ScalarProperty Name="IsAllowDepreciationCal" ColumnName="IsAllowDepreciationCal" />
+                <ScalarProperty Name="BeneficiaryEmployeeId" ColumnName="BeneficiaryEmployeeId" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="OBBookValue" ColumnName="OBBookValue" />
+                <ScalarProperty Name="OBDepreciation" ColumnName="OBDepreciation" />
+                <ScalarProperty Name="AssetCost" ColumnName="AssetCost" />
+                <ScalarProperty Name="DepreciationEffectiveDate" ColumnName="DepreciationEffectiveDate" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="AssetConditionId" ColumnName="AssetConditionId" />
+                <ScalarProperty Name="AssetStatusId" ColumnName="AssetStatusId" />
+                <ScalarProperty Name="DepreciationRate" ColumnName="DepreciationRate" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+                <ScalarProperty Name="AssetCode" ColumnName="AssetCode" />
+                <ScalarProperty Name="SubCategoryId" ColumnName="SubCategoryId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="IsCalculateDepreciation" ColumnName="IsCalculateDepreciation" />
+                <ScalarProperty Name="IsRefurbishment" ColumnName="IsRefurbishment" />
+                <ScalarProperty Name="AssetType" ColumnName="AssetType" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="ItemTypeId" ColumnName="ItemTypeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="acc_Accounting_Period_Information">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.acc_Accounting_Period_Information">
+              <MappingFragment StoreEntitySet="acc_Accounting_Period_Information">
+                <ScalarProperty Name="fundControlInformation_id" ColumnName="fundControlInformation_id" />
+                <ScalarProperty Name="yearName" ColumnName="yearName" />
+                <ScalarProperty Name="periodStartDate" ColumnName="periodStartDate" />
+                <ScalarProperty Name="periodEndDate" ColumnName="periodEndDate" />
+                <ScalarProperty Name="isClosed" ColumnName="isClosed" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="updatedUserId" ColumnName="updatedUserId" />
+                <ScalarProperty Name="updatedUserDate" ColumnName="updatedUserDate" />
+                <ScalarProperty Name="createdUserId" ColumnName="createdUserId" />
+                <ScalarProperty Name="createdUserDate" ColumnName="createdUserDate" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_Depreciation">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_Depreciation">
+              <MappingFragment StoreEntitySet="FAR_Depreciation">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="ProcessDate" ColumnName="ProcessDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="FinYearEndDate" ColumnName="FinYearEndDate" />
+                <ScalarProperty Name="FinYearStartDate" ColumnName="FinYearStartDate" />
+                <ScalarProperty Name="FinYearName" ColumnName="FinYearName" />
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAR_DepreciationDetail">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationDetail">
+              <MappingFragment StoreEntitySet="FAR_DepreciationDetail">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="CBBookValue" ColumnName="CBBookValue" />
+                <ScalarProperty Name="CBDepreciation" ColumnName="CBDepreciation" />
+                <ScalarProperty Name="Depreciation" ColumnName="Depreciation" />
+                <ScalarProperty Name="OBDepreciation" ColumnName="OBDepreciation" />
+                <ScalarProperty Name="OBBookValue" ColumnName="OBBookValue" />
+                <ScalarProperty Name="AssetCost" ColumnName="AssetCost" />
+                <ScalarProperty Name="DepreciationRate" ColumnName="DepreciationRate" />
+                <ScalarProperty Name="AssetConditionId" ColumnName="AssetConditionId" />
+                <ScalarProperty Name="AssetStatusId" ColumnName="AssetStatusId" />
+                <ScalarProperty Name="FixedAssetId" ColumnName="FixedAssetId" />
+                <ScalarProperty Name="DepreciationId" ColumnName="DepreciationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="FAR_uspVoucherPosting" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.FAR_uspVoucherPosting">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.FAR_uspVoucherPosting_Result">
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="VouchrTypeId" ColumnName="VouchrTypeId" />
+                <ScalarProperty Name="FundControlId" ColumnName="FundControlId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_AssetRegisterWithDepreciationCalRpt" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_AssetRegisterWithDepreciationCalRpt">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_AssetRegisterWithDepreciationCalRpt_Result">
+                <ScalarProperty Name="AssetCode" ColumnName="AssetCode" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="CategoryCode" ColumnName="CategoryCode" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="AssetCost" ColumnName="AssetCost" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="SupplierName" ColumnName="SupplierName" />
+                <ScalarProperty Name="AssetCostUptoPreYr" ColumnName="AssetCostUptoPreYr" />
+                <ScalarProperty Name="AdditionDuringFY" ColumnName="AdditionDuringFY" />
+                <ScalarProperty Name="DisposalAdjFY" ColumnName="DisposalAdjFY" />
+                <ScalarProperty Name="TotalCostUptoCurrentYear" ColumnName="TotalCostUptoCurrentYear" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="FY" ColumnName="FY" />
+                <ScalarProperty Name="DepreciationUptoPreYr" ColumnName="DepreciationUptoPreYr" />
+                <ScalarProperty Name="WrittenDownValueUptoPreYr" ColumnName="WrittenDownValueUptoPreYr" />
+                <ScalarProperty Name="DepreciationDuringFY" ColumnName="DepreciationDuringFY" />
+                <ScalarProperty Name="DepreciationAdjDuringFY" ColumnName="DepreciationAdjDuringFY" />
+                <ScalarProperty Name="DepreciationCumulativeUptoCurYr" ColumnName="DepreciationCumulativeUptoCurYr" />
+                <ScalarProperty Name="WrittenDownValueUptoCurYr" ColumnName="WrittenDownValueUptoCurYr" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_AssetTransferHistoryRpt" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_AssetTransferHistoryRpt">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_AssetTransferHistoryRpt_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AssetCode" ColumnName="AssetCode" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+                <ScalarProperty Name="SubCategoryId" ColumnName="SubCategoryId" />
+                <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+                <ScalarProperty Name="FromAssetConditionId" ColumnName="FromAssetConditionId" />
+                <ScalarProperty Name="AssetStatusId" ColumnName="AssetStatusId" />
+                <ScalarProperty Name="FromLocationId" ColumnName="FromLocationId" />
+                <ScalarProperty Name="ToLocationId" ColumnName="ToLocationId" />
+                <ScalarProperty Name="FromBeneficiaryEmployeeId" ColumnName="FromBeneficiaryEmployeeId" />
+                <ScalarProperty Name="FromBeneficiaryEmployee" ColumnName="FromBeneficiaryEmployee" />
+                <ScalarProperty Name="FromBeneficiaryEmpID" ColumnName="FromBeneficiaryEmpID" />
+                <ScalarProperty Name="ToBeneficiaryEmployeeId" ColumnName="ToBeneficiaryEmployeeId" />
+                <ScalarProperty Name="ToBeneficiaryEmployee" ColumnName="ToBeneficiaryEmployee" />
+                <ScalarProperty Name="ToBeneficiaryEmpID" ColumnName="ToBeneficiaryEmpID" />
+                <ScalarProperty Name="AssetCondition" ColumnName="AssetCondition" />
+                <ScalarProperty Name="AssetStatus" ColumnName="AssetStatus" />
+                <ScalarProperty Name="FromLocation" ColumnName="FromLocation" />
+                <ScalarProperty Name="ToLocation" ColumnName="ToLocation" />
+                <ScalarProperty Name="ReceiveDate" ColumnName="ReceiveDate" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+                <ScalarProperty Name="DiffDate" ColumnName="DiffDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_FixedAssetRegisterRpt" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_FixedAssetRegisterRpt">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_FixedAssetRegisterRpt_Result">
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+                <ScalarProperty Name="AssetCode" ColumnName="AssetCode" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+                <ScalarProperty Name="Supplier" ColumnName="Supplier" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+                <ScalarProperty Name="CostAddition" ColumnName="CostAddition" />
+                <ScalarProperty Name="CostAdjustment" ColumnName="CostAdjustment" />
+                <ScalarProperty Name="DepreciationRate" ColumnName="DepreciationRate" />
+                <ScalarProperty Name="DepreciationUptoFromDate" ColumnName="DepreciationUptoFromDate" />
+                <ScalarProperty Name="DepreciationInPeriod" ColumnName="DepreciationInPeriod" />
+                <ScalarProperty Name="DepreciationAdjustment" ColumnName="DepreciationAdjustment" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_FixedAssetScheduleRpt" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_FixedAssetScheduleRpt">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_FixedAssetScheduleRpt_Result">
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+                <ScalarProperty Name="ItemTypeName" ColumnName="ItemTypeName" />
+                <ScalarProperty Name="ItemParentId" ColumnName="ItemParentId" />
+                <ScalarProperty Name="ItemTypeParentName" ColumnName="ItemTypeParentName" />
+                <ScalarProperty Name="ItemParentsParentId" ColumnName="ItemParentsParentId" />
+                <ScalarProperty Name="ItemParentsParentName" ColumnName="ItemParentsParentName" />
+                <ScalarProperty Name="AssetCode" ColumnName="AssetCode" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+                <ScalarProperty Name="CostAddition" ColumnName="CostAddition" />
+                <ScalarProperty Name="CostAdjustment" ColumnName="CostAdjustment" />
+                <ScalarProperty Name="DepreciationRate" ColumnName="DepreciationRate" />
+                <ScalarProperty Name="DepreciationUptoFromDate" ColumnName="DepreciationUptoFromDate" />
+                <ScalarProperty Name="DepreciationInPeriod" ColumnName="DepreciationInPeriod" />
+                <ScalarProperty Name="DepreciationAdjustment" ColumnName="DepreciationAdjustment" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_GetDepreciationByFixedAssetId" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_GetDepreciationByFixedAssetId" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetDepreciationByFixedAssetId_Result">
+                <ScalarProperty Name="Depreciation" ColumnName="Depreciation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_GetDepreciationStatus" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_GetDepreciationStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetDepreciationStatus_Result">
+                <ScalarProperty Name="DepreciationId" ColumnName="DepreciationId" />
+                <ScalarProperty Name="FixedAssetId" ColumnName="FixedAssetId" />
+                <ScalarProperty Name="ProcessDate" ColumnName="ProcessDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_GetNextFinancialYear" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_GetNextFinancialYear">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetNextFinancialYear_Result">
+                <ScalarProperty Name="FinancialYearId" ColumnName="FinancialYearId" />
+                <ScalarProperty Name="FinancialYearName" ColumnName="FinancialYearName" />
+                <ScalarProperty Name="periodStartDate" ColumnName="periodStartDate" />
+                <ScalarProperty Name="periodEndDate" ColumnName="periodEndDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_GetUniqueMRRList" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_GetUniqueMRRList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_GetUniqueMRRList_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MRR" ColumnName="MRR" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_LocationWiseAssetListRpt" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_LocationWiseAssetListRpt">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.FAR.SP_FAR_LocationWiseAssetListRpt_Result">
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+                <ScalarProperty Name="ItemTypeName" ColumnName="ItemTypeName" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="SubCategoryName" ColumnName="SubCategoryName" />
+                <ScalarProperty Name="AssetCode" ColumnName="AssetCode" />
+                <ScalarProperty Name="AssetName" ColumnName="AssetName" />
+                <ScalarProperty Name="AssetNameWithCode" ColumnName="AssetNameWithCode" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="AssetLocation" ColumnName="AssetLocation" />
+                <ScalarProperty Name="AssetCondition" ColumnName="AssetCondition" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_ProcDepreciationCal" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_ProcDepreciationCal" >
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_FAR_ProcDepreciationCalRollback" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_ProcDepreciationCalRollback" />
+          <FunctionImportMapping FunctionImportName="SP_FAR_ProcDepreciationCalRollbackIndividual" FunctionName="BEPZA_MEDICAL.DAL.FAR.Store.SP_FAR_ProcDepreciationCalRollbackIndividual" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

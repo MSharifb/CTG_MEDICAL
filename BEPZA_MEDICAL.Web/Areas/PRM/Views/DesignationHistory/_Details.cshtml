@@ -1,0 +1,15 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.DesignationHistoryViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="tr_clone">
+    <td width="20%" style="text-align: center">
+        @Html.DropDownListFor(x => x.OldJobGradeId, Model.OldJobGradeList, @String.Format("{0}", Content.DDLOptionalLabel()), new {@style = "width:100%" })
+
+    </td>
+    <td width="20%" style="text-align: center">
+        @Html.DropDownListFor(x => x.NewJobGradeId, Model.NewJobGradeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @style = "width:100%" })
+    </td>
+    <td width="20%" style="text-align: center">
+        @Html.DropDownListFor(x => x.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new {@style = "width:100%" })
+    </td>   
+</tr>

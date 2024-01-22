@@ -1,0 +1,48 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.HouseMaintenanceCharge.HouseMaintenanceChargeDetailViewModel
+@using ERP_BEPZA.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("HouseMaintenanceDetail"))
+    {
+        if (Model != null)
+        {
+        @Html.HiddenFor(model => model.Id)
+
+        }
+
+
+        <td>
+            @Html.DropDownListFor(model => model.FromGradeId, Model.GradeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "ddl-acc-head-code required" })
+        </td>
+
+        <td>
+            @Html.DropDownListFor(model => model.ToGradeId, Model.GradeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "ddl-acc-head-code required" })
+        </td>
+
+
+        <td>
+            @Html.TextBoxFor(model => model.AmountPercent, new { @class = "Amount required" })  @*<input id="AmountPercent" class="Amount" style="text-align: right;" type="text" name="@("HouseMaintenanceDetail[" + i + "].AmountPercent")" value="@item.AmountPercent" />*@
+        </td>
+        <td>
+        @if (Model.Id > 0)
+            {
+
+
+            <a title="delete" href="javascript:void(0)" onclick="RemoveDb(this,@Model.Id)">
+                <img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" />
+            </a>
+
+
+            }
+            else
+            {
+
+                <a class="deleteRow" title="delete" href="javascript:void(0)">
+                    <img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" />
+                </a>
+
+            }
+        </td>
+
+    }
+</tr>

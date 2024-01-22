@@ -1,0 +1,39 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalNomineeDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr>
+    @using (Html.BeginCollectionItem("PersonalNomineeDetail"))
+    {       
+        <td width="30%">
+            @if (Model != null)
+            {
+                @Html.HiddenFor(model => model.Id)                
+                @Html.HiddenFor(model => model.NomineeId)      
+
+            }           
+            @Html.DropDownListFor(model => model.FamilyMemberId, Model.FamilyMemberList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @style = "width:100%", @class = "ddl required" })     
+          
+        </td>
+        <td width="18%">
+           @Html.TextBoxFor(model => model.Relation, new { @style = "width:95%;cursor:default;background-color: #f2f5f8;", @readonly = true })
+        </td>
+        <td width="12%">
+           @Html.TextBoxFor(model => model.DateOfBirth, new { @style = "width:90%;cursor:default;background-color: #f2f5f8;", @readonly = true })
+        </td>
+         <td width="10%" style=" text-align:center">
+          @Html.TextBoxFor(model => model.Age, new { @style = "width:90%;cursor:default;background-color: #f2f5f8;text-align:right", @readonly = true })
+        </td>
+       <td width="10%">
+           @Html.TextBoxFor(model => model.PercentOfShare, new { @style = "width:90%;text-align:right", @class = "sharePCT required" })
+        </td>
+        <td width="10%">
+           @Html.TextBoxFor(model => model.Remarks, new { @style = "width:90%", @maxlength = 100 })
+        </td>   
+        <td width="10%">
+            <a href="#" class="deleteRow" title="delete">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' style="border: none; "/></a>
+        </td>               
+    }
+</tr>
+
+

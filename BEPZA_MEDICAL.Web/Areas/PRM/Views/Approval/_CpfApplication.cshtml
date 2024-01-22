@@ -1,0 +1,378 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+
+@Html.HiddenFor(m => m.Id)
+@Html.HiddenFor(m => m.ApprovalProcessId)
+@Html.HiddenFor(m => m.RequestedAmount)
+@Html.HiddenFor(m => m.NextStepName)
+
+<div class="col-sm-12" style="text-align:center; text-decoration:underline; text-transform:uppercase;">
+    <h4><strong>@Model.CpfApplication.CompanyName</strong></h4>
+</div>
+<div class="form-horizontal">
+    <div class="form-group" style="margin-bottom:20px;">
+        <div class="col-sm-3 pull-left">
+            No.
+        </div>
+        <div class="col-sm-3 pull-right">
+            Date : @DateTime.Now.Date.ToString("dd-MMMM-yyyy")
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-12">
+            To<br />
+            @Model.CpfApplication.ApplicationTo<br />
+            @Model.CpfApplication.ApplicationAddress1<br />
+            @Model.CpfApplication.ApplicationAddress2
+        </div>
+    </div>
+    <div class="form-group" style="margin-top:20px; margin-bottom:20px;">
+        <div class="col-sm-2">
+            Subject :
+        </div>
+        <div class="col-sm-10">
+            <span><strong>@Model.CpfApplication.ApplicationSubject</strong></span>
+        </div>
+    </div>
+    <div class="form-group" style="margin-bottom:10px; text-align:justify;">
+        <div class="col-sm-12">
+            @Model.CpfApplication.ApplicationBody1
+        </div>
+    </div>
+    <div class="form-group" style="text-align:justify;">
+        <div class="col-sm-12">
+            @Model.CpfApplication.ApplicationBody2
+        </div>
+    </div>
+    <div class="form-group appItem" style="margin:20px 0;">
+        <div class="col-sm-12">
+            <div class="col-sm-5 lbl">1. Full Name of the Applicant (In Block Letter)</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.ApplicantName, new { @readonly = @"readonly", @style = @"text-transform: uppercase;" })</div>
+
+            <div class="col-sm-5 lbl">2. Designation</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.Designation, new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">3. Identity Card No.</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.IdNo, new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">4. Nature of Employment (Regular/Ad-hoc)</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.EmployeeType, new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">5. Section</div>
+            <div class="col-sm-3">@Html.TextBoxFor(m => m.CpfApplication.Section, new { @readonly = @"readonly" })</div>
+            <div class="col-sm-1 lbl">Department</div>
+            <div class="col-sm-3">@Html.TextBoxFor(m => m.CpfApplication.Department, new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">6. Date of entry in to the Service of the Authority</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.JoiningDate, "{0:dd-MMMM-yyyy}", new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">7. Present Pay Scale</div>
+            <div class="col-sm-2">@Html.TextBoxFor(m => m.CpfApplication.PresentPayScale, new { @readonly = @"readonly" })</div>
+            <div class="col-sm-3 lbl">8. Present Basic Pay</div>
+            <div class="col-sm-2">@Html.TextBoxFor(m => m.CpfApplication.BasicPay, new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">9. Nationality</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.Nationality, new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">10. Date of Birth</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.DateOfBirth, "{0:dd-MMMM-yyyy}", new { @readonly = @"readonly" })</div>
+
+            <div class="col-sm-5 lbl">11. Permanent Address</div>
+            <div class="col-sm-7">@Html.TextBoxFor(m => m.CpfApplication.PermanentAddress, new { @readonly = @"readonly" })</div>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-6" style="text-align:center;">
+            <span style="text-decoration:underline;">@Model.CpfApplication.Witness</span>
+            <br />
+            (Witness)<br />Date : <span style="text-decoration:underline;"> @Model.CpfApplication.EmployeeSignatureDate.ToString("dd/MM/yyyy")</span>
+        </div>
+        <div class="col-sm-6" style="text-align:center;">
+            <span style="text-decoration:underline;">@Model.CpfApplication.ApplicantName</span><br />
+            (Signature of Applicant)<br />Date : <span style="text-decoration:underline;"> @Model.CpfApplication.EmployeeSignatureDate.ToString("dd/MM/yyyy")</span>
+        </div>
+    </div>
+    <div class="form-group" style="margin:5px 0;">
+        <div class="col-sm-12">
+            [N.B] Form of Nomination is also attached herewith
+        </div>
+    </div>
+    <div class="col-sm-12" style="border:1px solid #000000;"></div>
+    <div class="col-sm-12" style="text-align:center; text-transform:uppercase; margin-bottom:20px;">
+        <strong>(To be filled by personal section)</strong>
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-3">Date of Receipt</div>
+        <div class="col-sm-3 appItem">@Html.TextBoxFor(m => m.CpfApplication.ReceiptDate, "{0:dd-MM-yyyy}", new { @readonly = @"readonly" })</div>
+    </div>
+    <div class="col-sm-12 appItem" style="margin:20px 0;">
+        Applicant joined service of the Authority on @Html.TextBoxFor(m => m.CpfApplication.JoiningDate, "{0:dd-MMMM-yyyy}", new { @readonly = @"readonly", @style = @"width:150px !important;" }) He/She is a @Html.TextBoxFor(m => m.CpfApplication.EmployeeType, new { @readonly = @"readonly", @style = @"width:150px !important;" }) Employee and is eligible to become a member of the Fund.
+    </div>
+
+    <div class="col-sm-12 appItem">
+        <div class="col-sm-6 lbl">
+            1. His/Her Present Pay Scale is
+        </div>
+        <div class="col-sm-6">
+            @Html.TextBoxFor(m => m.CpfApplication.PresentPayScale, new { @readonly = @"readonly" })
+        </div>
+
+        <div class="col-sm-6 lbl">
+            2. His/Her Present Basic Pay is
+        </div>
+        <div class="col-sm-6">
+            @Html.TextBoxFor(m => m.CpfApplication.BasicPay, new { @readonly = @"readonly" })
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin:70px 0 0 20px;">
+        <div class="col-sm-6" style="text-align:center; text-transform:uppercase; text-decoration:overline;">
+            Dealing Assistant
+        </div>
+        <div class="col-sm-6" style="text-align:center; text-transform:uppercase; text-decoration:overline;">
+            Asst. Secretary (Personnel)
+        </div>
+    </div>
+</div>
+<div class="col-sm-12" style=" margin:50px 0 20px 0;">
+    <div class="col-sm-2">@Html.LabelFor(m => m.ApproverComments)</div>
+    <div class="col-sm-9">
+        @Html.TextAreaFor(m => m.ApproverComments, new { @class = @"form-control" })
+    </div>
+</div>
+@if (Model.IsConfigurableApprovalFlow)
+    {
+<div id="dvForward" class="col-sm-12" style="margin-bottom:20px;">
+    <div class="col-sm-2">
+        Forward To
+    </div>
+    <div class="col-sm-9">
+        @Html.DropDownListFor(m => m.ApproverId, @Model.NextApproverList, new { @class = @"form-control" })
+    </div>
+</div>
+}
+else
+{
+    <div id="dvForward" class="col-sm-12" style="margin-bottom:20px;">
+        @Html.HiddenFor(model => model.ApproverId)
+        @Html.LabelFor(model => model.SignatoryEmpId, new { @class = "col-sm-2 control-label labelRequired" })
+        <div class="col-sm-2">
+            @Html.TextBoxFor(model => model.SignatoryEmpId, new { @style = "width:130px", @class = "form-control read-only required", @readonly = true })
+        </div>
+        <div class="col-sm-2">
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+        </div>
+    </div>
+        <div id="dvSuggest" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.LabelFor(model => model.SignatoryEmpName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SignatoryEmpName, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+        <div id="dvSuggest" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.LabelFor(model => model.SignatoryEmpDesignation, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SignatoryEmpDesignation, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+}
+<div class="col-sm-12 approval-action-area" style="text-align:center;">
+    <button class="btn btn-sm btn-info" id="btnRecommend"><i class="fa fa-edit"></i> Recommend</button>
+    <button class="btn btn-sm btn-success" id="btnApprove"><i class="fa fa-save"></i> Approve</button>
+    <button class="btn btn-sm btn-danger" id="btnReject"><i class="fa fa-recycle"></i> Reject</button>
+</div>
+
+<fieldset>
+    <legend>Approval History</legend>
+    @if (Model.ApprovalHistory != null && @Model.ApprovalHistory.Count > 0)
+    {
+        @Html.Partial("_ApprovalHistory", @Model.ApprovalHistory)
+    }
+</fieldset>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "OnlineWelfareFundApplicationInformation")?UseTypeEmpId=1';
+        url = url.replace('PRM', 'WFM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+       function setEmpData(id) {
+        $('#ApproverId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+        }
+
+    function GetEmployeeInfo() {
+        var empId = $('#ApproverId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "OnlineWelfareFundApplicationInformation")';
+        url = url.replace('PRM', 'WFM');
+
+        if (empId > 0) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { employeeId: empId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $("#SignatoryEmpId").val(result.EmpID);
+                $('#SignatoryEmpName').val(result.EmployeeName);
+                $("#SignatoryEmpDesignation").val(result.Designation);
+            }
+        });
+        }
+        return false;
+    }
+    function Closing() {
+
+    }
+
+    function GetLoggedInZoneId() {
+        var url = '@Url.Action("GetLoggedZoneId", "ApprovalFlow")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                return data;
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var stepName = '@Model.NextStepName';
+        if ('@Model.IsConfigurableApprovalFlow' == 'True') {
+            if (stepName == "Recommendation") {
+                $('#btnApprove').hide();
+            }
+            else {
+                $('#btnRecommend').hide();
+                $('#dvForward').hide();
+            }
+        }
+    });
+
+    function ProceedToNextStep(actionName) {
+        //debugger;
+        var applicationId = $('#Id').val();
+        var comments = $('#ApproverComments').val();
+        var forwardToId = $('#ApproverId option:selected').val();
+        if ('@Model.IsConfigurableApprovalFlow' == 'True') {
+            forwardToId = $('#ApproverId option:selected').val();
+        }
+        else {
+            forwardToId = $('#ApproverId').val();
+        }
+        var url = '@Url.Action("ExecuteApprovalAction", "Approval")';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { applicationId: applicationId, actionName: actionName, approverComment: comments, nextApproverId: forwardToId },
+            timeout: 5000,
+            error: function () {
+
+            },
+            success: function (result) {
+                $('#btnSearch').trigger('click');
+            }
+        });
+
+    }
+
+    $('#btnApprove').on('click', function () {
+        var action = "Approved";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+
+    $('#btnReject').on('click', function () {
+        var action = "Reject";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+
+    $('#btnRecommend').on('click', function () {
+        var action = "Recommend";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+
+</script>
+
+<style type="text/css">
+    input[readonly] {
+        border: 1px solid #CFCFCF !important;
+        background-color: #e6e6fa;
+        border: 0;
+        font-size: 1em;
+        cursor: not-allowed;
+    }
+
+    .form-group {
+        margin: 2px 10px;
+    }
+
+    .control-label {
+        color: #000000;
+    }
+
+    .approval-action-area .btn {
+        min-width: 120px;
+    }
+
+    .appItem div {
+        margin: 2px 0;
+    }
+
+    .appItem .lbl {
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    .appItem input[type='text'] {
+        border: 0px solid #FFFFFF !important;
+        border-bottom: 1px solid #c0c0c0 !important;
+        background: inherit !important;
+        cursor: default;
+    }
+</style>

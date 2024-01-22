@@ -1,0 +1,28 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RecruitmentQualificationDetailsViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddRecruitmentQualificationInfo", "RecruitmentQualificationInfo", FormMethod.Post, new { id = "frm" }))
+{
+    <fieldset>
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateEditAddRecruitmentQualification", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <button class="btn btn-success" id="btnRecruitmentQualificationSave"><i class="fa fa-save"></i> Save</button>
+            }
+        </div>
+    </fieldset>
+}

@@ -1,0 +1,132 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PunishmentTypeInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="GroupBox">
+
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.DisciplinaryActionTypeId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.DisciplinaryActionTypeId, Model.DisciplinaryActionTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PunishmentName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.PunishmentName)
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RestrictionName)
+        </span>
+        <span class="field">
+            @for (var i = 0; i < Model.PunishmentRestrictionList.Count; i++)
+            {
+                <span style="margin-right:5px">
+                    @Html.CheckBoxFor(m => m.PunishmentRestrictionList[i].Selected)
+                    @Html.HiddenFor(m => m.PunishmentRestrictionList[i].Text)
+                    @Html.HiddenFor(m => m.PunishmentRestrictionList[i].Value)
+                    @*<span>@Model.PunishmentRestrictionList[i].Text</span>*@
+                    @Html.LabelFor(m => m.PunishmentRestrictionList[i].Selected, @Model.PunishmentRestrictionList[i].Text)
+                </span>
+            }
+
+        </span>
+        <div class="clear"></div>
+    </div>
+    <fieldset>
+        <legend>If Restriction applied on "Salary Deduction"</legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Days)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Days, new { @class = "read-only",@readonly=true })
+            </span>
+            <div class="clear">
+            </div>
+        </div>
+    </fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Remarks)
+        </span>
+        <div class="clear">
+        </div>
+    </div>
+
+</div>
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $(document).ready(function () {
+
+        //$('#DisciplinaryActionTypeId').chosen({
+        //    allow_single_deselect: true
+        //});
+
+        $('input[type="checkbox"]:checked').each(function () {
+            //alert($(this).attr("id"));
+          //  debugger;
+            var myid = $(this).attr("id")
+            var strLabel = $('label[for=' + myid + ']').text();
+            if (strLabel == "SalaryDeduction" && $(this).is(':checked')) {
+                $("#Days").addClass("required");
+                $("#Days").removeClass("read-only");
+                $('#Days').attr('readonly', false);
+            }
+            if (strLabel == "SalaryDeduction" && !$(this).is(':checked')) {
+                $("#Days").removeClass("required");
+                $('#Days').attr('readonly', true);
+                $("#Days").addClass("read-only");
+                $('#Days').val('');
+            }
+        });
+
+    });
+
+    $('input[type="checkbox"]').live('click', function () {
+      
+        var myid = this.id;
+        var strLabel = $('label[for=' + myid + ']').text();
+        if (strLabel == "SalaryDeduction" && $(this).is(':checked')) {
+            $("#Days").addClass("required");
+            $("#Days").removeClass("read-only");
+            $('#Days').attr('readonly', false);
+        }
+        if (strLabel == "SalaryDeduction" && !$(this).is(':checked')) {
+            $("#Days").removeClass("required");
+            $('#Days').attr('readonly', true);
+            $("#Days").addClass("read-only");
+            $('#Days').val('');
+        }
+
+    });
+</script>
+

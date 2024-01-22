@@ -1,0 +1,65 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginForm("ViewINVItemBalance", "Approval", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+    <fieldset>
+        <legend>Item Balance Info</legend>
+        <div class="row" align="center">
+            <div style="width: 90%">
+                <div class="clear"></div>
+                <table id="grid" class="table table-bordered table-hovered table-responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Item Name
+                            </th>
+                            <th>
+                                Requested Quantity
+                            </th>
+                            <th>
+                                Balance
+                            </th>
+                            <th>
+                                Unit
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.INVRequisitionDtlList.Count; i++)
+                        {
+                            var item1 = Model.INVRequisitionDtlList.ToList()[i];
+                            <tr>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.INVRequisitionDtlList[i].Id)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.INVRequisitionDtlList[i].ItemId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.INVRequisitionDtlList[i].RequisitionId)
+                                </td>
+                                <td>
+                                    <label> @item1.ItemName</label>
+                                </td>
+                                <td style="width:20%">
+                                    <label> @item1.Quantity</label>
+                                </td>
+                                <td style="width:30%">
+                                    <label> @item1.BalanceQuantity</label>
+                                </td>
+                                <td style="text-align:left">
+                                    <label> @item1.Unit</label>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="clear" style="height:10px">
+            </div>
+        </div>
+    </fieldset>
+}

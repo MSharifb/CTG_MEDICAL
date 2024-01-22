@@ -1,0 +1,44 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.BankWiseOfferRateViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("BankWiseOfferRateList"))
+{
+
+<tr>
+    <td class="APPlotNo">
+        <span class="budget-sub-head-id">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(model => model.FDRTypeId)
+        </span>
+        @Html.DropDownListFor(m => m.BankId, Model.BankList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl", @required = @"required", @onChange = "GetBranch(this);"})
+    </td>
+    <td class="packageNo">
+        @Html.DropDownListFor(m => m.BranchId, Model.BranchList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+    </td>
+    <td class="construction">
+        @Html.EditorFor(m => m.OfferRate , new { @required = @"required" })
+    </td>
+    <td class="description">
+        @Html.EditorFor(m => m.Duration, new { @required = @"required" })
+    </td>
+    <td class="unit">
+        @Html.DropDownListFor(m => m.Type, Model.TypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl", @required = @"required" })
+    </td>
+    <td class="remarks">
+        @Html.EditorFor(m => m.Remarks)
+    </td>
+    <td class="control-option">
+        <span class="add-button">
+            <button type="button" class="btn btn-sm btn-primary btnAddNewProject" id="btnAddNewProject" style="padding:3px;">
+                <i class="fa fa-plus fa-lg"></i>
+            </button>
+        </span>
+        <span class="delete-button">
+            <button type="button" class="btn btn-sm btn-primary btnDleteProject" id="btnDleteProject" style="padding:3px;">
+                <i class="fa fa-trash fa-lg"></i>
+            </button>
+        </span>
+    </td>
+</tr>
+
+}

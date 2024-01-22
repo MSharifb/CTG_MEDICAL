@@ -1,0 +1,55 @@
+﻿@*@using ERP_BEPZA.Web.Areas.INV.ViewModel.ItemType
+    @model ItemTypeViewModel*@
+@{
+    Layout = null;
+}
+
+<div class="form-group">
+    <div class="col-md-8">
+
+        <div style="background: #FFFFFF" id="treeViewSearch">
+        </div>
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                PopulateTreeView();
+            });
+
+            $('#ZoneId').change(function () {
+                $("#treeViewSearch").jstree("destroy");
+                PopulateTreeView();
+            });
+
+            function PopulateTreeView() {
+                var url = '@Url.Action("GetTreeData", "FixedAsset")';
+                $('#treeViewSearch').jstree({
+                    'core': {
+                        //'expand_selected_onload': false,
+                        'check_callback': true,
+                        'opened': true,
+                        'data': {
+                            'url': url,
+                            'data': function (node) {
+                                return { "id": node.title };
+                            }
+                        },
+                        "plugins": ["search"]
+                    }
+                });
+
+
+                $(document).on('click', '.jstree-anchor', function (e) {
+                    var anchorId = $(this).parent().attr('id');
+                    if (anchorId > 0) {
+                        bindItemCombo(anchorId);
+                    }
+
+                });
+
+
+            };
+
+
+        </script>
+    </div>
+</div>

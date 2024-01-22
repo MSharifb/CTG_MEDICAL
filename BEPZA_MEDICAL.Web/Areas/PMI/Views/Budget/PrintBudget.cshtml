@@ -1,0 +1,142 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.PrintBudgetViewModel
+
+<div class="form-horizontal">
+    <div class="divblock">
+        <div class="form-group">
+            <div class="report-header">@Html.Label("Budget")</div>
+            <div class="col-sm-12" style="text-align:center; margin:10px 0;">
+                <button type="button" class="btn btn-sm btn-primary" value="Print Budget" id="btnPrintBudget"><i class="fa fa-print">Print</i></button>
+            </div>
+        </div>
+    </div>
+    <div class="divblock">
+        <div class="form-group">
+            <div class="report-header">@Html.Label("Workwise Budget")</div>
+            @Html.LabelFor(m => m.ProjectId, new { @class = "col-sm-4 control-label" })
+            <div class="col-sm-8">
+                @Html.DropDownListFor(m => m.ProjectId, Model.ProjectList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+            <div class="col-sm-12" style="text-align: center; margin: 10px 0;">
+                <button type="button" class="btn btn-sm btn-primary" value="Print Workwise Budget" id="btnPrintWorkwiseBudget"><i class="fa fa-print">Print</i></button>
+            </div>
+        </div>
+    </div>
+    @*<div class="divblock">
+        <div class="form-group">
+            <div class="report-header">@Html.Label("Financial Budget")</div>
+            @Html.LabelFor(m => m.FinancialYearId, new { @class = "col-sm-4 control-label" })
+            <div class="col-sm-8">
+                @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.BudgetStatusId, new { @class = "col-sm-4 control-label" })
+            <div class="col-sm-8">
+                @Html.DropDownListFor(m => m.BudgetStatusId, Model.BudgetStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" style="text-align: center; margin: 10px 0;">
+                <button type="button" class="btn btn-sm btn-primary" value="Print Financial Budget" id="btnPrintFinancialBudget"><i class="fa fa-print">Print</i></button>
+            </div>
+        </div>
+    </div>*@
+</div>
+
+
+
+
+<script type="text/javascript">
+    $('#btnPrintBudget').click(function (e) {
+        var budgetMasterId = $('#Id').val();
+
+        e.preventDefault();
+
+        var url = '@Url.Action("BudgetInformation", "Report")';
+        $.ajax({
+            url: url,
+            data: { budgetId: budgetMasterId, budgetDetailId: 0, financialYearId: 0, budgetStatusId: 0 },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                window.open(url, '_blank');
+            }
+        })
+    })
+
+    $('#btnPrintWorkwiseBudget').click(function (e) {
+        //debugger;
+        var budgetMasterId = $('#Id').val();
+        var detailsId = $('#ProjectId').val();
+
+        if (detailsId === "" || detailsId === undefined || detailsId === 0) {
+            return;
+        }
+
+        console.log("Project Id : " + detailsId);
+        e.preventDefault();
+        var url = '@Url.Action("BudgetInformation", "Report")';
+        $.ajax({
+            url: url,
+            data: { budgetId: budgetMasterId, budgetDetailId: detailsId, financialYearId: 0, budgetStatusId: 0 },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                window.open(url, '_blank');
+            }
+        })
+    })
+
+    $('#btnPrintFinancialBudget').click(function (e) {
+        var budgetMasterId = $('#Id').val();
+        var detailsId = $('#ProjectId').val();
+        var fyId = $('#FinancialYearId').val();
+        var budgetStatusId = $('#BudgetStatusId').val();
+        e.preventDefault();
+        var url = '@Url.Action("BudgetInformation", "Report")';
+        $.ajax({
+            url: url,
+            data: { budgetId: budgetMasterId, budgetDetailId: detailsId, financialYearId: fyId, budgetStatusId: budgetStatusId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                window.open(url, '_blank');
+            }
+        })
+    })
+
+</script>
+
+
+<style type="text/css">
+    #tblParam select {
+        width: 200px;
+    }
+
+    .divblock {
+        width: 100%;
+        border: 1px solid #C0C0C0;
+        border-radius: 2px;
+        overflow: hidden;
+        float: left;
+        margin: 5px;
+    }
+
+    .report-header {
+        text-align: center;
+    }
+
+        .report-header label {
+            background: #c0c0c0;
+            padding: 2px 20px;
+            border: 1px solid #C0C0C0;
+            border-radius: 2px;
+            font-weight: bold;
+            margin: 1px 0 5px 0;
+            min-width: 50%;
+        }
+
+    .control-label {
+        font-size: 12px;
+    }
+</style>

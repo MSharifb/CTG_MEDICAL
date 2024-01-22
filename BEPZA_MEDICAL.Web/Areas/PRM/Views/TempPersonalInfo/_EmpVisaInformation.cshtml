@@ -1,0 +1,171 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.VisaInfoViewModel
+
+@{
+    ViewBag.Title = "CreateOrEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Visa Info","CreateVisaInfo/" + 20, "TempPersonalInfo", new { controlType = "Visa"}, null)
+@Html.ActionLink("PassportInfo", "CreateVisaInfo/" + 20, new { controlType = "Passport" }, null)
+
+
+@using (Html.BeginForm(@Model.ActionType, "TempPersonalInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Type)
+        @Html.HiddenFor(model => model.EmpTop.Name)
+
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+
+        <div class="GroupBox">      
+            <div class="row">
+                <span class="label">
+                    @*@Html.LabelFor(model => model.VisaPassportFor)*@
+                    <span class="visa-passport">@Html.LabelFor(model => model.VisaPassportFor)</span>
+                </span><span class="field">
+                    @Html.RadioButtonFor(model => model.VisaPassportFor, "Own", new { @checked=true })
+                    @Html.Label("Own")
+            
+                    @Html.RadioButtonFor(model => model.VisaPassportFor, "Family Member")
+                    @Html.Label("Family Member")
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.FamilyMemberId)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.FamilyMemberId, Model.FamilyMemberList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                @*@Html.LabelFor(model => model.VisaPassportNo)*@
+                <span class="visa-passportNo">@Html.LabelFor(model => model.VisaPassportNo)</span>
+                <label class="required-field">
+                        *</label></span>
+                <span class="field">@Html.EditorFor(model => model.VisaPassportNo)</span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.VisaTypeId)<label class="required-field">
+                        </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.VisaTypeId, Model.VisaTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.IssueDate)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.IssueDate)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.ExpireDate)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.ExpireDate)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.IssuePlace)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.IssuePlace)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.IssueCountryId)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.IssueCountryId, Model.CountryList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Notes)
+                </span><span class="field" style="width: 76%; padding: 0px;">
+                    @Html.EditorFor(model => model.Notes)
+                </span>
+                <div class="clear">
+                </div>
+            </div>
+            @*<div style="width: 340px; float:left;">
+            
+            <div class="row " >
+                <span class="label">&nbsp;</span>
+                <span class="field" style="color: #3C78B5;">@Html.EditorFor(model => model.IsAddPhoto)&nbsp;@Html.LabelFor(model => model.IsAddPhoto)</span>
+            </div>
+            <div class="row">
+                <span class="label">&nbsp;</span>
+                <span class="field add-photo"><input name="Photo" id="Photo" type="file" /></span>
+            </div>
+            </div>*@
+            @*<div style="float:left;margin:0 0 0 160px;"><img width="150px" height="150px" src="@Url.Action("GetReferenceGuarantorImage", "TempPersonalInfo", new { id=Model.Id })" /></div>*@
+            <div class="clear"></div>
+        </div>
+         
+         <div class="button-crude">
+            <input type="submit" value="@Model.ButtonText"  />
+            @if (Model.DeleteEnable)
+            {
+                @Html.ActionLink("Delete", "DeleteVisaInfo", new { id = Model.Id }, new { onclick = "return DeleteConfirm();" })
+            }
+            
+            
+                @Html.ActionLink("Clear", "CreateVisaInfo/" + @Model.EmployeeId.ToString(), new { controlType=Model.Type }, null)
+            
+        </div>
+    </fieldset>
+    
+    <div class="grid">
+        <table id="jqGrid" cellpadding="0" cellspacing="0">
+        </table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_VisaInformationList", Model)
+    </div>
+    <div class="clear"> 
+    </div>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "CreateVisaInfo", new { id=Model.EmployeeId } )
+</div>
+
+@*<script type="text/javascript">
+    if (!$('#IsAddPhoto').is(':checked')) {
+        $('.add-photo').hide();
+    }
+
+    $('#IsAddPhoto').click(function () {
+        if ($('#IsAddPhoto').is(':checked')) {
+            $('.add-photo').show();
+        }
+        else {
+            $('.add-photo').hide();
+        }
+    })
+
+    $("#FirstName, #MiddleName, #LastName").focusout(function () {
+        $("#FullName").val($('#FirstName').val() + ' ' + $('#MiddleName').val() + ' ' + $('#LastName').val());
+    })
+</script>*@
+
+<script type="text/javascript">
+    var type = $('#Type').val();
+
+    if (type == 'Visa') {
+        //alert($('.visa-passport label').text());
+        $('.visa-passport label').text('Visa For');
+        $('.visa-passportNo label').text('Visa No');
+    }
+    else {
+        $('.visa-passport label').text('Passport For');
+        $('.visa-passportNo label').text('Passport No');
+    }
+</script>

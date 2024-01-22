@@ -1,0 +1,1181 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmploymentInfoViewModel
+@using (Html.BeginForm(Model.ActionType, "Employee"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        <div class="GroupBox">
+            <div class="leftColumn">
+                <div class="row">
+                    <span class="label" style="width:32%">
+                        @Html.LabelFor(model => model.EmpID)
+                    </span><span class="field" style="width:60%">
+                        @Html.TextBoxFor(model => model.EmpID)
+                        <div id="divIsEmpIdAvailable"></div>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:32%">
+                        @Html.LabelFor(model => model.FullName)
+                    </span>
+                    <span class="field" style="width:60%">
+                        @Html.EditorFor(m => m.FullName, new { @class = "read-only", @readonly = true })
+                    </span>
+                </div>
+            </div>
+            <div class="rightColumn">
+                <div class="row">
+                    <div class="field" style="width: auto;">
+                        @if (Model.IsPhotoExist)
+                        {
+                            <div class="Photo-Top">
+                                <img alt="Employe Photo" height="110" width="110" src="@Url.Action("GetImage", "Employee", new { id = Model.Id, isPhoto = true })" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.TitleId)
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.TitleId, Model.TitleList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.HonoraryDegree)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(m => m.HonoraryDegree)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.FirstName)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.FirstName)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.LastName)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.LastName)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.FullNameBangla)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.FullNameBangla)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Gender, new { @class = "label-required" })
+
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.Gender, Model.GenderList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => Model.ReligionId, new { @class = "label-required" })
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.ReligionId, Model.ReligionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.DateofBirth, new { @class = "label-required" })
+                </span><span class="field">
+                    @Html.EditorFor(model => model.DateofBirth)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmialAddress)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.EmialAddress)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.MobileNo)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.MobileNo)
+                </span>
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.OrganogramLevelId)
+                    @Html.LabelFor(model => model.OrganogramLevelName)
+                </span>
+                <span class="field">
+                    @*@Html.TextBoxFor(model => model.OrganogramLevelName, new { @class = "read-only", @readonly = true })
+                        <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openOrganogram();" />*@
+
+                </span>
+                <div class="divToOrg" style="height:200px;overflow:auto">
+                    @Html.Partial("~/Areas/PRM/Views/OrganogramLevel/_TreeViewDisplay.cshtml")
+                </div>
+            </div>
+            @*<div class="row">
+                    <span class="label">
+                        &nbsp;
+                    </span>
+                    <div class="divToOrg">
+                        <span class="field">
+                            @Html.LabelFor(model => model.OrganogramLevelDetail, @Model.OrganogramLevelDetail)
+                        </span>
+                    </div>
+                </div>*@
+        </div>
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DesignationId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList @*, @String.Format("{0}", Content.DDLOptionalLabel())*@)
+                </span>
+
+                <span class="label-right">
+                    @Html.HiddenFor(model => model.SelectedEmploymentType)
+                    @Html.LabelFor(model => model.EmploymentTypeId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+
+                    @Html.DropDownListFor(model => model.EmploymentTypeId, Model.EmploymentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.StatusDesignationId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.StatusDesignationId, Model.StatusDesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.SalaryScaleId)
+                    @Html.LabelFor(model => model.SalaryScaleId)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.SalaryScaleName, new { @class = "read-only", @readonly = true })
+                    @*@Html.DropDownListFor(model => model.SalaryScaleId, Model.SalaryScaleList, @String.Format("{0}", Content.DDLOptionalLabel()))*@
+                </span>
+
+                @if (@Model.IsSalaryStructureProcess == true)
+                {
+                    <span class="label-right">
+                        @Html.HiddenFor(model => model.JobGradeId)
+                        @Html.LabelFor(model => model.JobGradeId, new { @class = "label-required" })
+
+                    </span>
+                    <span class="field">
+                        @Html.TextBoxFor(model => model.JobGradeName, new { @class = "read-only", @readonly = true })
+                    </span>
+                }
+                else
+                {
+                    <span class="label-right">
+                        @Html.LabelFor(model => model.JobGradeId, new { @class = "label-required" })
+                    </span>
+                    <span class="field">
+                        @Html.DropDownListFor(model => model.JobGradeId, Model.JobGradeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "" })
+                    </span>
+                }
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateofAppointment, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateofAppointment)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.EmploymentProcessId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.EmploymentProcessId, Model.EmploymentProcessList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateofJoining, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateofJoining)
+                </span>
+                <span class="label-right">
+                    @Html.HiddenFor(model => model.EmployeeClassId)
+                    @Html.LabelFor(model => model.EmployeeClassId)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeClassName, new { @class = "read-only", @readonly = true })
+                    @*@Html.DropDownListFor(model => model.JobGradeId, Model.JobGradeList, @String.Format("{0}", Content.DDLOptionalLabel()))*@
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.OrderNo)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.OrderNo)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.StaffCategoryId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.StaffCategoryId, Model.StaffCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ProvisionMonth)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.ProvisionMonth)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.SeniorityPosition)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.SeniorityPosition)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateofConfirmation)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateofConfirmation)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.DateofSeniority)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateofSeniority)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateofPosition)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateofPosition)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.PRLDate)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.PRLDate)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.JobLocationId, new { @class = "label-required" })
+                    @*&nbsp;<span class="required-field">*</span>*@
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.JobLocationId, Model.JobLocationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+                </span>
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    &nbsp;
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.BankId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.BankId, Model.BankList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.BankBranchId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.BankBranchId, Model.BankBranchList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.BankAccountNo)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.BankAccountNo)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.SalaryWithdrawFromZoneId)
+                    <span class="required-field">*</span>
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.SalaryWithdrawFromZoneId, Model.SalaryWithdrawFromList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.TelephoneOffice)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.TelephoneOffice)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Intercom)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.Intercom)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmploymentStatusId, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.HiddenFor(model => model.EmploymentStatusId)
+                    @Html.EditorFor(model => model.EmploymentStatusName)
+                    @*@Html.DropDownListFor(model => model.EmploymentStatusId, Model.EmploymentStatusList, @String.Format("{0}", Content.DDLOptionalLabel()))*@
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.DateofInactive)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.DateofInactive)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.QuotaId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.QuotaId, Model.QuotaList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ETIN)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.ETIN)
+                </span>
+            </div>
+            <div class="GroupBox">
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.TaxRegionId)
+                    </span>
+                    <span class="field">
+                        @Html.DropDownListFor(model => model.TaxRegionId, Model.TaxRegionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                    </span>
+                    <span class="label-right">
+                        @Html.LabelFor(model => model.TaxAssesseeType)
+                    </span>
+                    <span class="field">
+                        @Html.DropDownListFor(model => model.TaxAssesseeType, Model.AssesseTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">
+                        &nbsp;
+                    </span>
+                    <span class="field">
+                        @Html.CheckBoxFor(model => model.HavingChildWithDisability) &nbsp;Having Child With Disability
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div id="DivDateOfRetirement">
+                    <span class="label">
+                        @Html.LabelFor(model => model.DateOfRetirement)
+                    </span>
+                    <span class="field">
+                        @Html.EditorFor(model => model.DateOfRetirement)
+                    </span>
+                </div>
+                <div id="DivContractExpireDate">
+                    <span class="label">
+                        @Html.LabelFor(model => model.ContractExpireDate, new { @class = "label-required" })
+                    </span>
+                    <span class="field">
+                        @Html.EditorFor(model => model.ContractExpireDate)
+                    </span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div id="DivContractDuration">
+                    <span class="label">
+                        @Html.LabelFor(model => model.ContractDuration)
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ContractDuration)
+                    </span>
+                </div>
+
+                <div id="DivContractualType">
+                    <span class="label-right">
+                        @Html.LabelFor(model => model.ContractType)
+                    </span>
+                    <span class="field">
+                        @Html.DropDownListFor(model => model.ContractType, Model.ContractualTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                    </span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsContractual, new { onclick = "return false" })&nbsp;Is Contractual Employee?
+                </span>
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsPensionEligible)&nbsp;Is Pension Eligible?
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsBonusEligible)&nbsp;Is Bonus Eligible?
+                </span>
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsLeverageEligible)&nbsp;Is Out from Loan Installment?
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsRefreshmentEligible)&nbsp;Is Refreshment Eligible?
+                </span>
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsOvertimeEligible)&nbsp;Is Overtime Eligible?
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div class="clear">
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" name="btnCreate" id="btnCreate" style="margin: 0 10px 0 0;" />
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+            <div class="clear">
+            </div>
+        </div>
+    </fieldset>
+
+}
+<div class="button-crude button-left" style="float: left;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+<div class="clear">
+</div>
+<script type="text/javascript">
+
+    /*
+        Revision History (RH):
+        SL	    : 01
+        Author	: AMN
+        Date	: 2015-Aug-04
+        SCR     : ERP_BEPZA_PRM_SCR.doc (SCR#167)
+        Desc.	: Resource level should change while job grade will change. Remove Resource level combo and then replace non editable text box
+        ---------
+
+        Author: Suman Chandar Roy
+        Date: 2016-10-15
+    */
+
+
+    $(function () {
+
+        $('#ProvisionMonth').live('change', function () {
+
+            @*if ($('#DateofJoining').val() != '' && $('#ProvisionMonth').val() != '') {
+                $.get('@Url.Action("GetConfirmationDate", "Employee")', { JoiningDate: $('#DateofJoining').val(), duration: $('#ProvisionMonth').val() }, function (data) {
+                    if (data.confirmationDate != null) {
+                        $("#DateofConfirmation").val(data.confirmationDate);
+                    }
+                });
+            }
+            else {
+                $('#ProvisionMonth').val('');
+                if ($('#DateofJoining').val() == '') {
+                    alert('Please enter joining date.');
+                }
+                return false;
+            }*@
+        });
+
+        $('#DateofConfirmation').live('change', function () {
+            if ($('#DateofJoining').val() != '' && $('#DateofConfirmation').val() != '') {
+
+                $.get('@Url.Action("GetProbationaryPeriod", "Employee")', { JoiningDate: $('#DateofJoining').val(), ConfirmationDate: $('#DateofConfirmation').val() }, function (data) {
+                    if (data.duration != 'msg') {
+                        $("#ProvisionMonth").val(data.duration);
+                    }
+                    else {
+                        $("#ProvisionMonth").val('');
+                        alert('Confirmation date must be greater than or equal to joining date.');
+                    }
+                });
+            }
+            else {
+                $('#DateofConfirmation').val('');
+                $("#ProvisionMonth").val('0');
+
+                if ($('#DateofJoining').val() == '') {
+                    alert('Please enter joining date.');
+                }
+                return false;
+            }
+        });
+
+        $('#ContractDuration').live('change', function () {
+
+            if ($('#DateofJoining').val() != '' && $('#ContractDuration').val() != '') {
+
+                $.get('@Url.Action("GetContractEndDate", "Employee")', { JoiningDate: $('#DateofJoining').val(), duration: $('#ContractDuration').val() }, function (data) {
+                    if (data.contractEndDate != null) {
+                        $("#ContractExpireDate").val(data.contractEndDate);
+                    }
+                });
+            }
+            else {
+                $('#ContractDuration').val('');
+
+                if ($('#DateofJoining').val() == '') {
+                    alert('Please enter joining date.');
+                }
+                return false;
+            }
+        });
+
+        $('#ContractExpireDate').live('change', function () {
+            if ($('#DateofJoining').val() != '' && $('#ContractExpireDate').val() != '') {
+
+                $.get('@Url.Action("GetContractDuration", "Employee")', { JoiningDate: $('#DateofJoining').val(), ContractExpireDate: $('#ContractExpireDate').val() }, function (data) {
+                    if (data.duration != 'msg') {
+                        $("#ContractDuration").val(data.duration);
+                    }
+                    else {
+                        $("#ContractDuration").val('');
+                        alert('Contract end date must be greater than joining date.');
+                    }
+                });
+            }
+            else {
+                $('#ContractExpireDate').val('');
+                $("#ContractDuration").val('0');
+
+                if ($('#DateofJoining').val() == '') {
+                    alert('Please enter joining date.');
+                }
+                return false;
+            }
+        });
+        $('#DateofJoining').live('change', function () {
+            if ($('#DateofJoining').val() != '' && $('#ContractExpireDate').val() != '') {
+
+                $.get('@Url.Action("GetContractDuration", "Employee")', { JoiningDate: $('#DateofJoining').val(), ContractExpireDate: $('#ContractExpireDate').val() }, function (data) {
+                    if (data.duration != 'msg') {
+                        $("#ContractDuration").val(data.duration);
+                    }
+                    else {
+                        $("#ContractDuration").val('');
+                        alert('Contract end date must be greater than joining date.');
+                    }
+                });
+            }
+            else {
+                $('#ContractExpireDate').val('');
+                $("#ContractDuration").val('0');
+
+                if ($('#DateofJoining').val() == '') {
+                    alert('Please enter joining date.');
+                }
+                return false;
+            }
+        });
+
+    });
+
+    $('#EmpID').focusout(function () {
+        CheckAvailityofEmpId($(this).val());
+    });
+
+
+
+</script>
+<script type="text/javascript">
+    //Regular
+    $(function () {
+
+        if ('@Model.EmploymentType' == '') {
+            $('#DivDateOfRetirement').hide();
+            $('#DivContractExpireDate').hide();
+            $('#DivContractDuration').hide();
+            $('#DivContractualType').hide();
+        }
+
+        if (($('#EmploymentTypeId').children("option").filter(":selected").text().toLowerCase() == 'Contractual'.toLowerCase()) ||
+            ($('#EmploymentTypeId').children("option").filter(":selected").text().toLowerCase() == 'Contract'.toLowerCase())) {
+            $('#DivContractExpireDate').show();
+            $('#DivDateOfRetirement').hide();
+            $('#DivContractDuration').show();
+            $('#DivContractualType').show();
+
+        }
+        else if ($('#EmploymentTypeId').children("option").filter(":selected").text().toLowerCase() == 'Permanent'.toLowerCase()) {
+            $('#DivDateOfRetirement').show();
+            $('#DivContractExpireDate').hide();
+            $('#DivContractDuration').hide();
+            $('#DivContractualType').hide();
+
+            if ($('#DateofBirth').val() != '') {
+                $.get('@Url.Action("GetRetirementDate", "Employee")', { Id: $('#Id').val(), DOB: $('#DateofBirth').val() }, function (data) {
+                    if (data.retirementDate != null) {
+                        $("#PRLDate").val(data.prlDate);
+                        $("#DateOfRetirement").val(data.retirementDate);
+                    }
+                });
+            }
+            else {
+
+            }
+        }
+        else {
+            $('#DivDateOfRetirement').hide();
+            $('#DivContractExpireDate').hide();
+        }
+
+        $('#EmploymentTypeId').live("change", function (e) {
+
+            var dd = $(this).children("option").filter(":selected").text();
+            var dddd = $('#Id').val();
+            if (dd != '[Select One]') {
+                if ('Contractual'.toLowerCase() == dd.toLowerCase() || dd.toLowerCase() == 'Contract'.toLowerCase()) {
+                    $('#DivContractExpireDate').show();
+                    $('#DivDateOfRetirement').hide();
+                    $('#DivContractDuration').show();
+                    $('#DivContractualType').show();
+
+                    $("#PRLDate").val('');
+                    $("#DateOfRetirement").val('');
+                    $('#IsContractual').attr('checked', 'checked');
+                    $('#DateofConfirmation').val('');
+                    $('#IsConsultant').attr('checked', false);
+
+                    $('#ProvisionMonth').removeClass('read-only');
+                    $('#ProvisionMonth').attr('readonly', false);
+
+                }
+                else if ('Permanent'.toLowerCase() == dd.toLowerCase()) {
+                    $('#DivDateOfRetirement').show();
+                    $('#DivContractExpireDate').hide();
+                    $('#DivContractDuration').hide();
+                    $('#DivContractualType').hide();
+
+                    $('#ContractExpireDate').val('');
+                    $('#ContractDuration').val('');
+                    $('#IsContractual').attr('checked', false);
+                    $('#IsConsultant').attr('checked', false);
+                    $('#DivContractualType').val('');
+
+                    $('#ProvisionMonth').val('0');
+                    $('#ProvisionMonth').addClass('read-only');
+                    $('#ProvisionMonth').attr('readonly', true);
+
+                    if ($('#DateofBirth').val() != '') {
+                        $.get('@Url.Action("GetRetirementDate", "Employee")', { Id: $('#Id').val(), DOB: $('#DateofBirth').val() }, function (data) {
+                            if (data.retirementDate != null) {
+                                $("#PRLDate").val(data.prlDate);
+                                $("#DateOfRetirement").val(data.retirementDate);
+                            }
+                        });
+                    }
+                    else {
+
+                    }
+                }
+                else {
+
+                    $('#DivDateOfRetirement').hide();
+                    $('#DivContractExpireDate').hide();
+                    $('#DivContractDuration').hide();
+                    $('#DivContractualType').hide();
+
+                    $("#PRLDate").val('');
+                    $("#DateOfRetirement").val('');
+                    $('#ContractExpireDate').val('');
+                    $('#ContractDuration').val('');
+                    $('#DivContractualType').val('');
+
+                    $('#IsContractual').attr('checked', false);
+                    $('#IsConsultant').attr('checked', true);
+
+                    $('#ProvisionMonth').removeClass('read-only');
+                    $('#ProvisionMonth').attr('readonly', false);
+                }
+            }
+            else {
+
+                $('#DivDateOfRetirement').hide();
+                $('#DivContractExpireDate').hide();
+                $('#DivContractDuration').hide();
+                $('#IsContractual').attr('checked', false);
+            }
+        });
+
+        $('#DateofBirth').live("change", function (e) {
+            $("#PRLDate").val('');
+            $("#DateOfRetirement").val('');
+            if ($('#DateofBirth').val() != '') {
+                $.get('@Url.Action("GetRetirementDate", "Employee")', { Id: $('#Id').val(), DOB: $('#DateofBirth').val() }, function (data) {
+                    if (data.retirementDate != null) {
+                        $("#PRLDate").val(data.prlDate);
+                        $("#DateOfRetirement").val(data.retirementDate);
+                    }
+                });
+            }
+            else {
+
+            }
+        });
+
+    });
+
+
+</script>
+<script type="text/javascript">
+
+    $(function () {
+        $("form").submit(function () {
+            var selTypeText = $("#EmploymentTypeId option:selected").text();
+            $("#SelectedEmploymentType").val(selTypeText);
+        });
+    });
+
+    if ('@Model.DateofInactive' != '') {
+        fnDisableEditMode();
+        $(".delete-confirm").hide();
+    }
+
+    //$("#FirstName, #LastName,#TitleId").focusout(function () {
+    //    $("#FullName").val(($('#TitleId').val() == '' ? '' : ($('#TitleId option:selected').text()) + ' ') + $.trim($('#FirstName').val()) + ' ' + $.trim($('#LastName').val()));
+    //});
+
+
+    $("#FirstName, #LastName,#TitleId,#HonoraryDegree").live('change keyup blur', function () {
+        $("#FullName").val(($('#TitleId').val() == '' ? '' : ($('#TitleId option:selected').text()) + ' ') + $.trim($('#FirstName').val()) + ' ' + $.trim($('#LastName').val()) + ' ' + $.trim($('#HonoraryDegree').val()));
+    });
+
+    $('#DateofJoining, #DateofConfirmation').focusout(function () {
+        var strConfirmDate = $('#DateofConfirmation').val();
+        var strJoinDate = $('#DateofJoining').val();
+
+        if (strConfirmDate != '' && strJoinDate != '') {
+            var confirmDate; var joinDate;
+            try {
+                confirmDate = new Date(strConfirmDate.split('-')[2] + '-' + strConfirmDate.split('-')[1] + '-' + strConfirmDate.split('-')[0]);
+                joinDate = new Date(strJoinDate.split('-')[2] + '-' + strJoinDate.split('-')[1] + '-' + strJoinDate.split('-')[0]);
+
+                if (confirmDate < joinDate)
+                    alert('Date of confirmation must be grater than the date of joining');
+            }
+            catch (err) { }
+        }
+    });
+
+    $('#DateofConfirmation').change(function () {
+
+        if ($('#IsContractual').is(':checked') && $('#DateofConfirmation').val() != '') {
+            $('#DateofConfirmation').val('');
+            alert('Confirmation date is not allowed for contractual employee.');
+            //$('.message').html('<b>Confirmation date is not allowed for contractual employee.</b>').css('color', 'Red');
+        }
+        else {
+            $('.message').html('');
+        }
+    });
+
+    $("#IsContractual").click(function (e) {
+        if ('@Model.isExist' != 'True') {
+            if ($('#IsContractual').is(':checked') && $('#DateofConfirmation').val() != '') {
+                $('#DateofConfirmation').val('');
+                //alert('Confirmation date is not allowed for contractual employee.');
+                $('.message').html('<b>Confirmation date is not allowed for contractual employee.</b>').css('color', 'Red');
+            }
+            else {
+                $('.message').html('');
+            }
+        }
+        else {
+            alert('Salary structure already exist, so it can not be changed.');
+            //$('.message').html('<b>Salary structure already exist, so it can not be changed.</b>').css('color', 'Red');
+        }
+    });
+
+    $("#IsContractual").click(function (e) {
+        if ('@Model.isExist' == 'True') {
+            e.preventDefault();
+        }
+    });
+
+    $('#DateofPosition').focusout(function () {
+        var strJoinDate = $('#DateofJoining').val();
+        var strPresentDate = $('#DateofPosition').val();
+
+        if (strPresentDate != '' && strJoinDate != '') {
+            var presentDate;
+            var joinDate;
+            try {
+                presentDate = new Date(strPresentDate.split('-')[2] + '-' + strPresentDate.split('-')[1] + '-' + strPresentDate.split('-')[0]);
+                joinDate = new Date(strJoinDate.split('-')[2] + '-' + strJoinDate.split('-')[1] + '-' + strJoinDate.split('-')[0]);
+
+                if (presentDate < joinDate)
+                    alert('Date of present job position must be equal or greater than the date of joining.');
+            } catch (err) {
+            }
+        }
+    });
+
+</script>
+
+<script type="text/javascript">
+
+
+    function CheckAvailityofEmpId(empId) {
+        var url = '@Url.Action("IsEmpIdAvailable", "Employee")' + '?EmpId=' + empId;
+
+        $.get(url,
+            function (response) {
+                var result = $.parseJSON(response);
+
+                $('#divIsEmpIdAvailable').css('font-weight', 'bold');
+                $('#divIsEmpIdAvailable').css('font-style', 'italic');
+
+                if (result.toLowerCase() === 'true') {
+                    $('#divIsEmpIdAvailable').css('color', 'red');
+                    $('#divIsEmpIdAvailable').html('Sorry! This ID has already taken.');
+                } else {
+                    $('#divIsEmpIdAvailable').css('color', 'green');
+                    $('#divIsEmpIdAvailable').html('This ID is available.');
+                }
+            });
+
+    }
+
+
+
+
+    function LoadBankBranchDDLByBankId(BankId) {
+        var BranchSelect = $('select#BankBranchId');
+        BranchSelect.empty();
+
+        BranchSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (BankId != null && BankId != '') {
+            var url = '@Url.Action("GetBankBranchByBankId", "Employee")' + '?Id=' + BankId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+
+                var ddl = $("#BankBranchId");
+                // clear all previous options
+                $("#BankBranchId>option").remove();
+
+                // populate the products
+                for (i = 0; i < heads.length; i++) {
+
+                    ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+            });
+        }
+        else {
+
+            $("#BankBranchId>option").remove();
+            $("#BankBranchId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+
+    // JobGrade
+    function FillJobGradeComboBySalaryScaleId(SalScaleId) {
+        var BranchSelect = $('select#JobGradeId');
+        BranchSelect.empty();
+
+        BranchSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (SalScaleId != null && SalScaleId != '') {
+
+            var url = '@Url.Action("GetJobGradeBySalaryScaleId", "Employee")' + '?Id=' + SalScaleId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var ddl = $("#JobGradeId");
+                // clear all previous options
+                $("#JobGradeId>option").remove();
+                // populate the products
+                for (i = 0; i < heads.length; i++) {
+                    ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+            });
+        }
+        else {
+            $("#JobGradeId>option").remove();
+            $("#JobGradeId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+
+    $(document).ready(function () {
+        //cascading dropdown
+        $("select#BankId").change(function () {
+            $("input#BankId").val($(this).val());
+            LoadBankBranchDDLByBankId($(this).val());
+        });
+
+        //cascading dropdown
+        $("select#SalaryScaleId").change(function () {
+            $("input#SalaryScaleId").val($(this).val());
+            //console.debug($("input#SalaryScaleId").val($(this).val()));
+            FillJobGradeComboBySalaryScaleId($(this).val());
+        });
+    });
+</script>
+
+@*Organogram*@
+
+<script type="text/javascript">
+
+    // This function is call from client view
+    function SetOrganogramId(organogramId, organogramName) {
+        $('#OrganogramLevelId').val(organogramId);
+        if ($('#IsEmpEditDesignation').val()) {
+
+        }
+        else {
+            FillDesignaitonCombo(organogramId);
+            $("#JobGradeId").val('');
+            $("#JobGradeName").val('');
+
+            $("#SalaryScaleId").val('');
+            $("#SalaryScaleName").val('');
+
+            $("#EmployeeClassId").val('');
+            $("#EmployeeClassName").val('');
+        }
+    }
+
+    $(window).load(function () {
+        setTimeout(function () {   //calls fuction after a certain time
+            selectedNode();
+        }, 2000);
+    });
+
+    function selectedNode() {
+        $('#treeViewSearch').jstree('deselect_all');
+        var nodeId = $('#OrganogramLevelId').val();
+        if (nodeId != '') {
+            var node = '#' + nodeId;
+            $("#treeViewSearch").jstree("open_all");
+            $('#treeViewSearch').jstree('deselect_all');
+            $("#treeViewSearch").jstree("select_node", node);
+        }
+    }
+
+    // This function is call from client view
+    function SetOrganogramId(organogramId, organogramName, OrgIdentityName) {
+        if (OrgIdentityName = '1') {
+            $('#OrganogramLevelId').val(organogramId)
+            $('#OrganogramLevelName').val(organogramName);
+            //  GetEmployeeDeptOfficeSecInfo();
+            SetOrganogramInfo(organogramId, "label[for*='OrganogramLevelDetail']");
+            if ($('#IsEmpEditDesignation').val()) {
+
+            }
+            else {
+                FillDesignaitonCombo(organogramId);
+                $("#JobGradeId").val('');
+                $("#JobGradeName").val('');
+
+                $("#SalaryScaleId").val('');
+                $("#SalaryScaleName").val('');
+
+                $("#EmployeeClassId").val('');
+                $("#EmployeeClassName").val('');
+            }
+
+        }
+    }
+
+    function SetOrganogramInfo(OrganogramLevelId, orgDetail) {
+        var url = '@Url.Action("GetOrganogramHierarchyInfo", "EmployeeTransferInfo", "PRM")';
+        if (OrganogramLevelId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(orgDetail).html(data.OrgLabel);
+                },
+
+                failure: function (response) {
+                    $(orgDetail).html("");
+                }
+            });
+        }
+    }
+
+    function Closing() {
+
+    }
+
+
+</script>
+
+@*End Organogram*@
+
+
+<script type="text/javascript">
+
+    // Designation by OrganogramLevel
+    function FillDesignaitonCombo(OrgId) {
+        if (OrgId != '') {
+            var url = '@Url.Action("GetDesignationByOrganogramLevelId", "Employee")' + '?Id=' + OrgId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var ddlDesignations = $("#DesignationId");
+                // clear all previous options
+                $("#DesignationId>option").remove();
+                // populate the products
+                for (i = 0; i < heads.length; i++) {
+                    ddlDesignations.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+            });
+        }
+        else {
+
+            $("#DesignationId>option").remove();
+            $("#DesignationId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+    //cascading dropdown
+    $("select#DesignationId").change(function () {
+        //  $("input#DesignationId").val($(this).val());
+        FillJobGrade($(this).val());
+        FillEmployeeClass($(this).val());
+    });
+
+    // Employee Class by Designaiton
+    function FillEmployeeClass(designationId) {
+        //reset value
+        $("#EmployeeClassId").val('');
+        $("#EmployeeClassName").val('');
+
+        if (designationId != '') {
+            var url = '@Url.Action("GetEmployeeClassByDesignaitonId", "Employee")' + '?Id=' + designationId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var employeeClassId = heads.EmployeeClassId;
+                var employeeClassName = heads.EmployeeClassName;
+                $("#EmployeeClassId").val(employeeClassId);
+                $("#EmployeeClassName").val(employeeClassName);
+            });
+        }
+    }
+
+    // JobGrade by Designaiton
+    function FillJobGrade(designationId) {
+        //reset value
+        $("#JobGradeId").val('');
+        $("#JobGradeName").val('');
+
+        $("#SalaryScaleId").val('');
+        $("#SalaryScaleName").val('');
+
+        if (designationId != '') {
+            var url = '@Url.Action("GetJobGradeByDesignaitonId", "Employee")' + '?Id=' + designationId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var jobgradeId = heads.GradeId;
+                var jobgradeName = heads.GradeName;
+                $("#JobGradeId").val(jobgradeId);
+                $("#JobGradeName").val(jobgradeName)
+
+                FillSalaryScale(jobgradeId);
+            });
+        }
+    }
+
+    // SalaryScale by JobGrade
+    function FillSalaryScale(jobGradeId) {
+        //reset value
+        $("#SalaryScaleId").val('');
+        $("#SalaryScaleName").val('');
+        if (jobGradeId != '') {
+            var url = '@Url.Action("GetSalaryScaleByJobGradeId", "Employee")' + '?Id=' + jobGradeId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var salaryScaleId = heads.SalaryScaleId;
+                var salaryScaleName = heads.SalaryScaleName;
+                $("#SalaryScaleId").val(salaryScaleId);
+                $("#SalaryScaleName").val(salaryScaleName);
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        buttonHide();
+    });
+
+    function buttonHide() {
+        if ('@Model.ErrorClass' == "success delete-emp" && '@Model.IsError' == "0") {
+            $('#btnCreate').hide();
+        }
+    }
+
+</script>

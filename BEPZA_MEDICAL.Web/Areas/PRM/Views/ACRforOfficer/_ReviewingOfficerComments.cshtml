@@ -1,0 +1,219 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRforOfficer.ReviewingOfficerComments
+
+@{
+    Layout = null;
+}
+@using (Html.BeginForm(Model.ActionType, "ACRforOfficer"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.OfficerInfoId)
+                    @Html.HiddenFor(model => model.EmployeeId)
+                    @Html.LabelFor(model => model.EmpId)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRDate)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRDate, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRPeriodFrom)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRPeriodFrom, new { @class = "read-only", @readonly = true })
+                </span>
+
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeDesignation)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeDesignation, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRPeriodTo)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRPeriodTo, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeDepartment)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeDepartment, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.SeniorityNumber)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.SeniorityNumber, new { @class = "read-only", @readonly = true })
+                </span>
+
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.GeneralRemarks)
+                </span><span class="field" style="width: 50%">
+                    @Html.TextAreaFor(model => model.GeneralRemarks)
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.TotalMarks)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.TotalMarks)
+                </span>
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label" style="width:18%">
+                    @Html.HiddenFor(model => model.ReviewingOfficerId)
+                    @Html.LabelFor(model => model.NameOfReportingOfficer, new { @class = "label-required" })
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.NameOfReportingOfficer, new { @class = "read-only required", @readonly = true })
+                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+                </span>
+            </div>
+            <div class="row">
+                <span class="label" style="width:18%">
+                    @Html.LabelFor(model => model.Designation)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label" style="width:18%">
+                    @Html.LabelFor(model => model.Department)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.Department, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label" style="width:18%">
+                    @Html.LabelFor(model => model.ReviewingDate)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.ReviewingDate)
+                </span>
+            </div>
+
+        </div>
+        <div class="clear">
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" name="btnCreate" id="btnCreate" style="margin: 0 10px 0 0;" />
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteReviewingOfficerComments", new { id = Model.OfficerInfoId }, new { @class = "delete-confirm", @style = "margin: 0 10px 0 0;" })
+            }
+            <div class="clear">
+            </div>
+        </div>
+    </fieldset>
+}
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<div class="button-crude button-left" style="float: left;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+<div class="clear">
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#ReviewingOfficerId').val(id);
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "EmployeeClearanceInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#NameOfReportingOfficer').val(obj.EmployeeName);
+                    $("#Designation").val(obj.Designation);
+                    $("#Department").val(obj.Department);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>

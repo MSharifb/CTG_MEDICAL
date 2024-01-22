@@ -1,0 +1,51 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.DailyAttendanceStatus.DailyAttendanceStatusModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/AMS/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "DailyAttendanceStatus", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div style="color:Red" id="ErrMsg" class="@Model.ErrMsg">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <fieldset>
+        @Html.HiddenFor(model => model.Id)
+        @Html.Partial("_CreateOrEdit", Model)
+
+        <div class="button-crude">
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+        </div>
+    </fieldset>
+    <div class="clear">
+        </div>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+    @*@Ajax.ActionLink("Back to List", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })*@
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        if ('@Model.ErrMsg' != "") {
+
+            if ('@Model.IsError' == 1) {
+                $('#message').html("<b style='color:Green'>" + '@Model.ErrMsg' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + '@Model.ErrMsg' + "</b>");
+            }
+        }
+    });
+
+</script>

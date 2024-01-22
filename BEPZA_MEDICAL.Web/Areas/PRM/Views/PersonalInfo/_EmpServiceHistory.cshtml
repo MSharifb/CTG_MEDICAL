@@ -1,0 +1,332 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmpServiceHistoryViewModel
+
+@using (Html.BeginForm("CreateOrEditServiceHistory", "PersonalInfo"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.strMode)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+
+        @*@Html.HiddenFor(model => model.OfficeId)
+        @Html.HiddenFor(model => model.DepartmentId)
+        @Html.HiddenFor(model => model.SectionId)
+        @Html.HiddenFor(model => model.OrganogramLevelId)
+        <fieldset>
+            <legend>Organogram</legend>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.OrganogramLevelName)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.OrganogramLevelName, new { @class = "read-only", @readonly = true })
+
+                </span>
+            </div>
+            <div style="height: 200px; overflow-y: auto;overflow-x:hidden">
+                @Html.Partial("~/Areas/PRM/Views/OrganogramLevel/_AllZonesDisplay.cshtml")
+            </div>
+        </fieldset>
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DesignationId)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList)
+
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.StaffCategoryId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.StaffCategoryId, Model.StaffCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()))
+
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.OrderDate)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.OrderDate)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.EmployeeClassId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.EmployeeClassId, Model.EmployeeClassList, @String.Format("{0}", Content.DDLOptionalLabel()))
+
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EffectiveDate)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.EffectiveDate)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.EmploymentTypeId)
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.EmploymentTypeId, Model.EmploymentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Duration)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.Duration)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.EmploymentProcessId)
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.EmploymentProcessId, Model.EmploymentProcessList, @String.Format("{0}", Content.DDLOptionalLabel()))
+
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.SalaryScaleId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.SalaryScaleId, Model.SalaryScaleIdList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadJobGrade();" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.JobGradeId)
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.JobGradeId, Model.JobGradeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "GetSalaryScaleName();" })
+
+                </span>
+
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.SalaryScaleName)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.SalaryScaleName, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Remarks)
+                </span><span class="field">
+
+                    @Html.TextAreaFor(model => model.Remarks)
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" />
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "ServiceHistoryIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteServiceHistory", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+        </div>*@
+      
+        <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_EmpServiceHistoryList", Model)
+    </fieldset>
+
+
+
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<br />
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+    function LoadJobGrade() {
+        $('#SalaryScaleName').val('');
+        var selectedSalaryScale = $('#SalaryScaleId').val();
+        var JobGradeSelect = $('#JobGradeId');
+        JobGradeSelect.empty();
+        JobGradeSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (selectedSalaryScale != null && selectedSalaryScale != '') {
+            $.getJSON('@Url.Action("GetJobGrade")', { salaryScaleId: selectedSalaryScale }, function (jobGrade) {
+                $.each(jobGrade, function (index, jobGrade) {
+                    JobGradeSelect.append($('<option/>', {
+                        value: jobGrade.Id,
+                        text: jobGrade.GradeName
+                    }));
+                });
+            });
+        }
+
+
+    }
+
+    function GetSalaryScaleName() {
+        $('#JobGradeId').live('change', function () {
+            $('#SalaryScaleName').val('');
+            var Id = $(this).val();
+
+            $.get("@Url.Action("GetSalaryScaleName")",
+                     { 'Id': Id },
+                     function (r) {
+                         if (r != '') {
+                             $("#SalaryScaleName").val(r.SalaryScaleName);
+                         }
+                     }
+                   );
+        })
+
+    }
+
+
+
+    function Closing() {
+
+    }
+</script>
+
+@*Organogram*@
+
+<script type="text/javascript">
+
+    // This function is call from client view
+    function SetOrganogramId(organogramId, organogramName) {      
+        if (OrgIdentityName = '1') {
+            $('#OrganogramLevelId').val(organogramId)
+            $('#OrganogramLevelName').val(organogramName);
+            if ($('#IsEmpEditDesignation').val()) {
+
+            }
+            else {
+                GetEmpOrganogramInfo(organogramId);
+                FillDesignaitonCombo(organogramId);
+                $("#JobGradeId").val('');
+                $("#JobGradeName").val('');
+
+                $("#SalaryScaleId").val('');
+                $("#SalaryScaleName").val('');
+
+                $("#EmployeeClassId").val('');
+                $("#EmployeeClassName").val('');
+            }
+
+        }
+    }
+
+    function GetEmpOrganogramInfo(OrganogramLevelId) {       
+        var url = '@Url.Action("GetOrganogramInfo", "JobRequisitionInfo", "PRM")';
+        if (OrganogramLevelId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#OfficeId').val(obj.OfficeId);
+
+                    if (obj.DepId == 0) {
+                        $("#DepartmentId").val(null);
+                    }
+                    else {
+                        $("#DepartmentId").val(obj.DepId);
+                    }
+
+                    if (obj.SecId == 0) {
+                        $('#SectionId').val(null);
+                    }
+                    else {
+                        $('#SectionId').val(obj.SecId);
+                    }
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    $(window).load(function () {
+        setTimeout(function () {   //calls fuction after a certain time
+            selectedNode();
+        }, 2000);
+    });
+
+    function selectedNode() {        
+        $('#treeViewAllZones').jstree('deselect_all');
+        var nodeId = $('#OrganogramLevelId').val();
+
+        if (nodeId != '') {
+            var node = '#' + nodeId;
+            $("#treeViewAllZones").jstree("open_all");
+            $('#treeViewAllZones').jstree('deselect_all');
+            $("#treeViewAllZones").jstree("select_node", node);
+        }
+    }
+
+</script>
+
+@*End Organogram*@
+<script type="text/javascript">
+
+    // Designation by OrganogramLevel
+    function FillDesignaitonCombo(OrgId) {
+        if (OrgId != '') {
+            var url = '@Url.Action("GetDesignationByOrganogramLevelId", "Employee")' + '?Id=' + OrgId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var ddlDesignations = $("#DesignationId");
+                // clear all previous options
+                $("#DesignationId>option").remove();
+                // populate the products
+                for (i = 0; i < heads.length; i++) {
+                    ddlDesignations.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+            });
+        }
+        else {
+
+            $("#DesignationId>option").remove();
+            $("#DesignationId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+</script>
+
+

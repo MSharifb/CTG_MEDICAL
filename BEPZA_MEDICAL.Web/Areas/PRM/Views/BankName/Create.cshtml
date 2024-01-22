@@ -1,0 +1,32 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.BankNameViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "BankName", FormMethod.Post, new { id = "frm" }))
+{
+    <fieldset>
+        <div class="messageBox" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+            <input type="button" value="Clear" id="btnClear" name="btnClear" />
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left" style="padding-left: 5px;">
+    
+    @Html.ActionLink("Back to List", "Index")
+</div>

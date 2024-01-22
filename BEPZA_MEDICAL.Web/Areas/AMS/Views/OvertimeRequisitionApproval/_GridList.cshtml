@@ -1,0 +1,166 @@
+﻿<script type="text/javascript">
+    var EmployeeList = [];
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Employee ID', 'I.C. No.', 'Employee Name', 'Department Name', 'Department', 'Requisition Date', 'Overtime Date', 'Approved Status'],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                           // { name: 'Check_Box', editable: true, index: 'Check_Box', width: 100, align: 'left', edittype: 'checkbox', formatoptions: { disabled: false }, editoptions: { value: "True:False" }, formatter: checkboxFormatter, sortable: false },
+                            { name: 'EmployeeId', index: 'EmployeeId', align: 'left', search: false, hidden: true, width: '200px', edittype: 'text' },
+                            { name: 'EmpID', index: 'EmpID', align: 'left', search: false, width: '200px', edittype: 'text' },
+                            { name: 'EmployeeName', index: 'EmployeeName', align: 'left', search: false, width: '200px', edittype: 'text' },
+                            { name: 'DepartmentName', index: 'DepartmentName', align: 'left', search: false, width: '200px' },
+                            { name: 'DepartmentId', index: 'DepartmentId', align: 'left', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetDivision")' },
+                            { name: 'RequisitionDate', index: 'RequisitionDate', align: 'center', search: true, width: '200px', edittype: 'text' },
+                            { name: 'OvertimeDate', index: 'OvertimeDate', align: 'center', search: true, width: '200px' },
+                            { name: 'IsApproved', index: 'IsApproved', align: 'center', search: true, sortable: false, edittype: 'select', editoptions: { value: "false:Pending;true:Approved" }, formatter: viewReplace }
+                          ],
+            autowidth: true,
+            caption: "Overtime Requisition Approval Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            multiselect: true,
+            onSelectAll: function (aRowids, status) {
+                if (status === false)
+                    EmployeeList.length = 0;
+                else
+                    EmployeeList = aRowids;
+            },
+            loadComplete: function () {
+                if($("#sg_IsApproved").val() == "false")
+                    $(".cbox").show();
+                else
+                    $(".cbox").hide();
+            }
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function checkboxFormatter(cellvalue, options, rowObject) {
+        return "<input type='checkbox' class='check' name='checkboxIsCC'>";
+    }
+
+    function viewReplace(cellvalue, options, rowObject) {
+        if (cellvalue)
+            return "Yes";
+        else
+            return "No";
+    }
+
+</script>
+
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 320, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+
+                    $.post(deleteLinkObj[0].href, function (obj) {  //Post to action
+
+                        if (obj.Success) {
+                            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+                            $('#sButton').trigger('click');
+                        }
+                        else {
+                            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $('#sg_RequisitionDate, #sg_OvertimeDate').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+
+        $("#jqGrid td input").live('click', function (e) {
+            var id = $(this).parent().next('td').text();
+            if ($(this).attr('checked') === true) {
+                EmployeeList.push(id);
+            }
+            else {
+                var index = EmployeeList.indexOf(id);
+                EmployeeList.splice(index, 1);
+            }
+            console.log(EmployeeList);
+        });
+
+        $('.addItem').live('click', function (e) {
+            e.preventDefault();
+            ApprovedReject('@Url.Action("ApprovedEmployee")');
+        });
+        $('.rejectItem').live('click', function (e) {
+            e.preventDefault();
+            ApprovedReject('@Url.Action("RejectEmployee")');
+        });
+        
+        function ApprovedReject(actionUrl) {
+            var PostingEmp = new Array();
+            function logArrayElements(element, index, array) {
+                PostingEmp.push({ 'EmployeeId': element });
+            }
+
+            EmployeeList.forEach(logArrayElements);
+            if (PostingEmp.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: actionUrl,
+                    cache: false,
+                    data: {
+                        'EmployeeCodes': PostingEmp
+                    },
+                    success: (function (result) {
+                        window.location = window.location.href;
+                    })
+                });
+            }
+        }
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+     
+</script>
+

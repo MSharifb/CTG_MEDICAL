@@ -1,0 +1,14 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.BSPLReportHeadMapping
+
+@model BSPLReportHeadMappingModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/FAM/Views/Shared/_Layout.cshtml";
+}
+
+<div class="GroupBox">
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+    @Html.Partial("_Index",Model)    
+</div>

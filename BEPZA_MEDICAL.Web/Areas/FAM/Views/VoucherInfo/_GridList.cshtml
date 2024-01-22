@@ -1,0 +1,147 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.VoucherInfo
+@model IList<BEPZA_MEDICAL.DAL.FAM.CustomEntities.VoucherSearch>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'ProjectId', 'Voucher Number', 'Voucher Type', 'Voucher Date', 'Payee', 'Received By', 'Division', 'Project', 'Voucher Date From', 'To', 'Voucher Status', 'Client', 'Pending For Approval', 'Delete'],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'ProjectId', index: 'ProjectId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'VoucherNumber', index: 'VoucherNumber', align: 'center', search: true, width: '200px', edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'VoucherTypeId', index: 'VoucherTypeId', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetVoucherTypeList")' },
+                            { name: 'VoucherDate', index: 'VoucherDate', align: 'center', search: false, edittype: 'text' },
+                            { name: 'Payee', index: 'Payee', align: 'left', search: true, edittype: 'text' },
+                            { name: 'ReceivedBy', index: 'ReceivedBy', align: 'left', search: false, edittype: 'text' },
+                            { name: 'DivisionId', index: 'DivisionId', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetDivisionList")' },
+                            { name: 'ProjectId', index: 'ProjectId', align: 'left', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetProjectList")' },
+                            
+                            { name: 'VoucherDateFrom', index: 'VoucherDateFrom', align: 'left', search: true, hidden: true, stype: 'text', searchoptions: { dataInit: function (el) { alert(el);  }, attr: { title: 'Select Date'}} },
+                            { name: 'VoucherDateTo', index: 'VoucherDateTo', align: 'left', search: true, hidden: true, edittype: 'text' },
+                            
+                            { name: 'VoucherStatus', index: 'VoucherStatus', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetVoucherStatusList")' },
+                            { name: 'ClientId', index: 'ClientId', align: 'left', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetClientList")' },
+                            
+                            { name: 'PendingApproval', index: 'PendingApproval', align: 'left', search: true, hidden: true/*, stype: 'checkbox', formatoptions: { disabled: false }, formatter: viewCheckbox, editoptions: { value: "0"}*/ },
+                            
+                            { name: 'Delete', index: 'Delete', align: 'right', search: false, hidden: IsDeleteAssigned, sortable: false, width: '70px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+            autowidth: true,
+            caption: "Voucher List",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Ajax.ActionLink("_name_", "Edit", null, new AjaxOptions { OnComplete = "OnCompleteAddnew" }, new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        url = url.replace(/Edit/, 'Edit/' + rowObject[0]);
+        return url;
+    }
+    function viewCheckbox(cellvalue, options, rowObject) {
+        var chkBox = "<input type='checkbox' name='PendingApproval' />";
+        //alert(chkBox);
+        return chkBox;
+    }
+    $(function () {
+
+        $('#sg_VoucherDateFrom, #sg_VoucherDateTo').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' })
+        .css({ 'width': '100px' });
+        
+        $('#chkApproval').remove();
+        $('#sg_PendingApproval').css({ 'display': 'none' })
+        .parent().append("<input type='checkbox' id='chkApproval' />");
+
+        //$('#sg_PendingApproval').replaceWith("<input type='checkbox' id='sg_PendingApproval' name='PendingApproval' />");
+
+    })
+
+    $('#chkApproval').live('click', function () {
+        if ($(this).is(':checked'))
+            $('#sg_PendingApproval').val(1);
+        else
+            $('#sg_PendingApproval').val(0);
+    })
+</script>
+
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 320, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+
+                    $.post(deleteLinkObj[0].href, function (obj) {  //Post to action
+
+                        if (obj.Success) {
+                            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+                            $('#sButton').trigger('click');
+                        }
+                        else {
+                            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+     
+</script>
+

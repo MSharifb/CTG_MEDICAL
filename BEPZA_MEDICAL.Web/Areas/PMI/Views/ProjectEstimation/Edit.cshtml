@@ -1,0 +1,168 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.EstimationSetupViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginForm("Edit", "ProjectEstimation", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+         @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                  <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        @*@Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)*@
+    </div>
+    <fieldset>
+        <fieldset>
+            <legend>Estimation Details</legend>
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.HiddenFor(model => model.ItemCount)
+                    @Html.HiddenFor(model => model.IUser)
+                    @Html.HiddenFor(model => model.IDate)
+                    @Html.LabelFor(model => model.SerialNo)
+                    @*<label class="required-field">
+                        *
+                    </label>*@
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.SerialNo, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.EstimationHeadId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.EstimationHeadId, Model.EstimationHeadList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.StatusId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.StatusId, Model.StatusList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Description)
+                </span>
+                <span class="field">
+                    @Html.TextAreaFor(model => model.Description)
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Edit Item</legend>
+            @foreach(var item in Model.EstimationItemList)
+            {
+               @Html.Partial("_EditItem", item)
+            }
+        </fieldset>
+        @*<fieldset>
+            <legend>Estimation Items</legend>
+            <input type="button" id="btnAddNewItemDetails" value="+ Add Item" />
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>Sl. No.</th>
+                        <th>Estimation Item</th>
+                        <th>Unit</th>
+                        <th>Unit Price</th>
+                        <th>Description</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.EstimationItemList)
+                    {
+                        @Html.Partial("_PartialDetail", item)
+                    }
+                </tbody>
+            </table>
+        </fieldset>
+        <script type="text/javascript">
+            function DeleteItem(row) {
+                //var count = $("#ItemCount").val();
+                //if (count > 0 && i == 1)
+                //{
+                //    i = 0;
+                //}
+                count--;
+                $(row).closest('tr').remove();
+            }
+        </script>*@
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }           
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    
+    $(document).ready(function () {
+        buttonHide();
+    });
+    @*var count = $("#ItemCount").val();;
+    $("#btnAddNewItemDetails").click(function () { 
+        //if (count > 0 && i == 0) {
+        //    var c = +count;
+        //    i = i + c;
+        //}
+        count++;
+        var headSlNo = $("#SerialNo").val();
+        var slNo = headSlNo + "." + count;
+        var url = '@Url.Action("AddItemFields", "EstimationSetup")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { slNo: slNo },
+            cache: false,
+            success: function (html) {
+                console.log(html);
+                $('#grid tbody').append("<tr>" + html + "</tr>");
+                //$('#grid tbody').append(html);
+            }
+        });
+    });*@
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function buttonHide() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    $("#EstimationHeadId").change(function () {
+        var EstimationHead = $(this).val();
+        if(EstimationHead>0)
+        {
+        $.ajax({
+            url: '@Url.Action("LoadHeadDescription", "EstimationSetup")',
+            data: JSON.stringify({ EstimationHead: EstimationHead }),
+            type: 'POST',
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (result) {
+                $('#Description').val(result);
+            }
+        });
+    }
+    });
+
+    
+
+</script>

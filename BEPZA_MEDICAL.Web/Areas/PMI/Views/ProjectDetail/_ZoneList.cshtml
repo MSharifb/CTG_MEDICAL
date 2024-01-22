@@ -1,0 +1,17 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.ZoneListViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("ZoneViewModelList"))
+{
+    @*@Html.HiddenFor(m=>m.ZoneId)*@
+    @*@Html.CheckBoxFor(m => m.IsSelected, new { @value = @Model.ZoneId})*@
+
+    @*<div class="checkbox"> <label> <input type="checkbox" name="ZoneInfoList" value="@Model.ZoneId" /> @Model.ZoneName </label> </div>*@
+    <li>@Model.ZoneName</li>
+    @*<div>
+        @Html.CheckBoxFor(x => x.IsSelected)
+        @Html.LabelFor(x => x.IsSelected, Model.ZoneName)
+        @Html.HiddenFor(x => x.ZoneId)
+        @Html.HiddenFor(x => x.Id)
+    </div>*@
+}   

@@ -1,0 +1,90 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.BankInfoBranchDetailViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("BankInfoBranchList"))
+    {
+
+        <td class="item-id-info" style="display: none;">
+            @Html.HiddenFor(model => model.Id)
+            @Html.Encode(Model.Id)
+        </td>
+
+        <td class="item-id-info" style="display: none;">
+            @Html.HiddenFor(model => model.BankInfoId)
+            @Html.Encode(Model.BankInfoId)
+        </td>
+            <td style="width: 20%">
+                @Html.HiddenFor(model => model.BranchName)
+
+                <a href="#" class="editRow" title="edit" style="border: none; color:#000000;">
+                    @Html.Encode(Model.BranchName)
+                </a>
+            </td>
+            <td width="20%" style="text-align: left">
+                @Html.HiddenFor(model => model.BranchAddress)
+                @Html.Encode(Model.BranchAddress)
+            </td>
+            <td width="10%" style="text-align: center">
+                @Html.HiddenFor(model => model.SWIFTCode)
+                @Html.Encode(Model.SWIFTCode)
+            </td>
+            <td width="10%" style="text-align: left">
+                @Html.HiddenFor(model => model.BranchContactNo)
+                @Html.Encode(Model.BranchContactNo)
+            </td>
+            <td width="15%" style="text-align: left">
+                @Html.HiddenFor(model => model.BranchEmail)
+                @Html.Encode(Model.BranchEmail)
+            </td>
+            <td width="15%">
+                <span class="item-id-info">
+                    @Html.HiddenFor(model => model.CountryId)
+                </span>
+                @Html.Encode(Model.CountryName)
+            </td>
+            <td>
+                <a href="#" class="deleteIcon-tempGrid deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                    @*<img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />*@
+                </a>
+            </td>
+    }
+</tr>
+
+<script type="text/javascript">
+    $('table tbody tr .editRow').click(function (){
+
+        debugger;
+        var CountryId = $(this).closest('tr').find('td').eq(7).find('input').val();
+        var branchName = $(this).closest('tr').find('td').eq(2).find('input').val();
+        var branchAddress = $(this).closest('tr').find('td').eq(3).find('input').val();
+        var sWIFTCode = $(this).closest('tr').find('td').eq(4).find('input').val();
+        var branchContactNo = $(this).closest('tr').find('td').eq(5).find('input').val();
+        var branchEmail =$(this).closest('tr').find('td').eq(6).find('input').val();
+
+        var bankInfoId = $(this).closest('tr').find('td').eq(1).find('input').val();
+
+
+        $('#BankInfoId').val(bankInfoId);
+        $('#BranchName').val(branchName);
+        $('#BranchAddress').val(branchAddress);
+        $('#SWIFTCode').val(sWIFTCode);
+        $('#BranchContactNo').val(branchContactNo);
+        $('#BranchEmail').val(branchEmail);
+        $('#CountryId').val(CountryId);
+
+        $('#BankInfoId').trigger('change');
+
+
+        $(this).closest('tr').remove();
+
+
+
+        return false;
+    })
+
+    $('table tbody tr .deleteRow').click(function () {
+        $(this).closest('tr').remove();
+        return false;
+    })
+</script>

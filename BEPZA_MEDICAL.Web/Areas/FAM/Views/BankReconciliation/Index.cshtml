@@ -1,0 +1,220 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.BankReconciliation
+@model BankReconciliationModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/FAM/Views/Shared/_Layout.cshtml";
+}
+@*@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Model.Mode == "Create" ? Url.Action("Create") : Url.Action("Edit") }))*@
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    @Html.Hidden("ButtonClick")
+    
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(m => m.BankId)
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.BankId, Model.BankList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(m => m.AccountId)
+            </span><span class="field ddl-account">
+                @Html.DropDownListFor(m => m.AccountId, Model.AccountList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(m => m.VoucherDateFrom)
+            </span><span class="field">
+                @Html.TextBox("VoucherDateFrom", Model.VoucherDateFrom.Value.ToString("dd-MM-yyyy"), new { @class = "date-picker" })
+            </span><span class="label-right">
+                @Html.LabelFor(m => m.VoucherDateTo)
+            </span><span class="field">
+                @Html.TextBox("VoucherDateTo", Model.VoucherDateTo.Value.ToString("dd-MM-yyyy"), new { @class = "date-picker" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(m => m.IsReconciled)
+            </span><span class="field">
+                @Html.CheckBoxFor(m => m.IsReconciled)
+            </span><span class="label-right">&nbsp; </span>
+            <div class="field button-crude">
+                <input class="filterbutton" style="float:left;" type="submit" value="Search" onclick=" $('#frm').attr('action','@Url.Action("Search")'); $('#ButtonClick').val('search'); return true; " />
+                @*@Ajax.ActionLink("Search", "Search", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })*@
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+    <center style="color: #3C78B5; font-size: 14px;">
+        <b>Debits/Deposit </b>
+    </center>
+    <div class="button-crude" style="text-align: right;">
+        <input id="btnAddDebit" type="button" value="Add" />
+    </div>
+    <div class="clear">
+    </div>
+    <div class="search-result">
+        @Html.Partial("_Search", Model)
+    </div>
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" onclick="$('#frm').attr('action','@Url.Action("Create")'); return ValidateForm();" />
+        }
+        else
+        {
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" onclick="$('#frm').attr('action','@Url.Action("Edit")');return ValidateForm();" />
+        }
+        <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        <div class="clear">
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(function () {
+        var mode = '@Model.Mode';
+        $.validator.unobtrusive.parse('#frm');
+
+        $('.date-picker').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' })
+        .css({'width':'100px'});
+
+        if (mode == 'Create') {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        else {
+            $('#btnUpdate').show();
+            $('#btnSave').hide();
+        }
+    })
+
+    function OnCompleteBacktoList(content) {
+    if (content.statusText == 'OK') {
+        $('.search-content').hide();
+        $('.frm-content').html(content.responseText);
+    } else {
+        $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+    }
+}
+
+    function OnComplete(content) {
+        var data = content.responseText;
+        if (data.toLowerCase().indexOf("updated") >= 0) {
+                        
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(3000).hide('slow');
+        }
+        else if (data.toLowerCase().indexOf("inserted") >= 0) {
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(3000).hide('slow');
+        }
+        else if($('#ButtonClick').val() == 'search'){
+            $('.search-result').html(data);
+        }
+        else {        
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'red' });
+            $("#message").delay(3000).hide('slow');
+        }
+    }
+
+    $("#BankId").live('change',function(){
+        var id = $(this).val();
+        if(id!='')
+            $.get(
+                    "@Url.Action("GetAccountNumber")",
+                    {'id': id},
+                    function(r){
+                        if(r != ''){
+                            $('.ddl-account').html(r);
+                            $('.ddl-account').find('select').attr('id','AccountId').attr('name','AccountId');
+                            //$('#BankAccountId').val($('.tmp-accno').text());
+                            //$('.tmp-accno').text('')
+                            //$('#BankAccountId').change();
+                        }
+                        else{
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color':'red' });
+                            $("#message").delay(3000).hide();
+                        }
+                    }
+                );
+    })
+
+    function ValidateForm(){
+        return true;
+    }
+
+</script>
+<script type="text/javascript">
+    $('#btnAddDebit, #btnAddCredits').live('click', function () {
+        $('#message').empty();
+
+        var gridName = '';
+        if ($(this).attr('id') == 'btnAddDebit')
+            gridName = '#gridDebit';
+        else
+            gridName = '#gridCredit';
+
+        var tr = $(gridName + ' tbody tr').first().clone();
+
+        var Id = $(tr).find("td:eq(0)").find("input");
+        var IsReconciled = $(tr).find("td:eq(1)").find("input");
+
+        var ChequeDate = $(tr).find("td:eq(2)").find("input");
+
+        var ChequeNo = $(tr).find("td:eq(3)").find("input");
+        var Amount = $(tr).find("td:eq(4)").find("input");
+
+        var VoucherNo = $(tr).find("td:eq(5)").find("input");
+        var VoucherDate = $(tr).find("td:eq(6)").find("input");
+
+        var ClearDate = $(tr).find("td:eq(7)").find("input");
+        var Description = $(tr).find("td:eq(8)").find("input");
+
+        //reset the value
+        $(Id).val('0');
+        $(IsReconciled).attr('checked', false);
+        $(ChequeDate, ChequeNo, Amount, VoucherNo, VoucherDate, ClearDate, Description).val('');
+
+
+
+        $(gridName).find('tbody').append('<tr class="row">' + $(tr).html() + '</tr>')
+
+        RearrengeControlName(gridName);
+
+        $('.date-picker').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' })
+        .css({ 'width': '100px' });
+    })
+
+    $('.row a.deleteRow').live('click', function () {
+
+        var gridName = '';
+        if ($(this).parent().parent().parent().parent().attr('id') == 'gridDebit')
+            gridName = '#gridDebit';
+        else
+            gridName = '#gridCredit';
+
+        if ($(gridName + ' tbody tr').length > 1)
+            $(this).parent().parent().remove();
+
+        RearrengeControlName(gridName);
+    })
+
+    function RearrengeControlName(gridName) {
+        $(gridName + ' tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('select').length > 0)
+                    $(this).find('select').attr('name', $(this).find('select').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+                else if ($(this).find('input').length > 0)
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+            })
+        })
+    }
+</script>

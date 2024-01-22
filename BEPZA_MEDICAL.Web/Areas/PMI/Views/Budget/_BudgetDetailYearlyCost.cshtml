@@ -1,0 +1,13 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.BudgetDetailYearlyCostViewModel>
+@using BEPZA_MEDICAL.Web.Helpers
+
+@*<div id="@Html.ViewData.TemplateInfo.HtmlFieldPrefix.Trim('.')">*@
+
+
+    @foreach (var item in Model.AsEnumerable())
+{
+    @Html.Raw("<td class='yearly-cost'>")
+    @Html.Partial("_BudgetDetailYearlyCostItem", @item)
+    @Html.Raw("</td>")
+}
+@*</div>*@

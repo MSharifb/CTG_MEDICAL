@@ -1,0 +1,43 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmployeeSearchViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+@*@using (Ajax.BeginForm("Index", "AssetTransfer", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+    {*@
+<div id="message">
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="success">
+            @Model.Message
+        </div>
+    }
+</div>
+<div class="GroupBox" id="dvEmpSearchType">
+    @Html.RadioButtonFor(x => x.EmployeeStatus, 0, new { id = "AllEmployee", @class = "empStatus" })
+    <label for="paiement_cash">
+        All Employee
+    </label>
+    @Html.RadioButtonFor(x => x.EmployeeStatus, 1, new { id = "ActiveEmployee", @class = "empStatus" })
+    <label for="paiement_cash">
+        Active Employee
+    </label>
+    @Html.RadioButtonFor(x => x.EmployeeStatus, 2, new { id = "InactiveEmployee", @class = "empStatus" })
+    <label for="paiement_cash">
+        Inactive Employee
+    </label>
+</div>
+<fieldset>
+    <div id="jqSearch">
+    </div>
+</fieldset>
+<br />
+<table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+<div id="jqGridPager" style="text-align: center;">
+</div>
+<div id="divList">
+    @Html.Partial("_ZoneWiseEmployeeSearchGridList", Model)
+</div>
+
+@*}*@

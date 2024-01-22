@@ -1,0 +1,84 @@
+﻿body {
+    font-family: 'Roboto Condensed', 'Roboto', Calibri, Arial, Helvetica, sans-serif;
+    font-size: 1.8rem;
+    color: #1c2833;
+} 
+
+  h1{
+    font-size: 22px;
+}
+h2 {
+    font-size: 20px;
+}
+h3 {
+    font-size: 18px;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 4px;
+    /* line-height: 1; */
+    vertical-align: top;
+ 
+}
+
+.watermark {
+    position: absolute;
+    top: 43%;
+    left: 40%;
+    color: #000;
+    opacity: 0.15;
+    filter: alpha(opacity=15); /* For IE8 and earlier */
+    display: inline-block;
+    text-align: center;
+    font-size: 100px;
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+   .col1 {
+                    width: 200px;
+                    font-weight: bold;
+                    font-size: 1.9rem;
+                }
+                .col2 {
+                    width: 10px;
+                    font-weight: bold;font-size: 1.9rem;
+                }
+@media print{
+    .watermark {
+        left: 30%;
+    } 
+     .col1 {
+                    width: 200px;
+                    font-weight: bold;font-size: 1.9rem;
+                }
+                .col2 {
+                    width: 10px;
+                    font-weight: bold;font-size: 1.9rem;
+                }    
+}
+
+.table-noborder>tbody>tr>td,
+.table-noborder>tbody>tr>th,
+.table-noborder>tfoot>tr>td,
+.table-noborder>tfoot>tr>th,
+.table-noborder>thead>tr>td,
+.table-noborder>thead>tr>th{
+    border-top-width: 0;
+}
+
+.admit-print-head{
+    position: relative;
+}
+
+.admit-print-head .logo{
+    position: absolute;
+    left: 63px;
+    top: 10px;
+    width:50px;
+}
+.admit-border {
+    border:1px solid #ccc;
+    padding:20px;
+}

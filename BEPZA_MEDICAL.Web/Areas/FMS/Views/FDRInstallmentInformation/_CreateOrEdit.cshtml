@@ -1,0 +1,262 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRInstallmentInformationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend> Interest Receive Info.</legend>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-6">
+                @Html.EditorFor(model => model.Date, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankInfoId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.BankInfoId, Model.BankInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankInfoBranchDetailId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.BankInfoBranchDetailId, Model.BankInfoBranchDetailList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FixedDepositInfoId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.FixedDepositInfoId, Model.FDRNoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required chosen-ddl" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FDRAmount, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.FDRAmount, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestRate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.InterestRate, new { @class = "form-control read-only", @readonly = true })
+            </div>
+            <div class="col-sm-1">
+                %
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProfitRecvId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.ProfitRecvId, Model.ProfitRecvList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required chosen-ddl" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InstallmentAmount, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.InstallmentAmount, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+                @Html.LabelFor(model => model.TAXAmount, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.TAXAmount, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankCharge, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.BankCharge, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Profit, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Profit, new { @class = "form-control required read-only", @readonly = true })
+            </div>
+            <div class="col-sm-8">
+                <label>Net Profit = Interest Amount - (Bank Charge + Tax Amount)</label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestReceiveAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.InterestReceiveAmount, new { @class = "form-control" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.ChequeId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.ChequeId, Model.ChequeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required", onchange = "LoadReason();" })
+            </div>
+        </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-6">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="divFileAttach">
+                    @Html.LabelFor(model => model.Attachment, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-6">
+
+                    @Html.HiddenFor(model => model.Attachment)
+                    @Html.HiddenFor(model => model.FileName)
+                    <input type="file" name="Attachment" id="Attachment" />
+                    <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+                </div>
+
+                </div>
+        </div>
+   </fieldset>
+</div>
+
+<script type="text/javascript">
+
+    $("#FixedDepositInfoId").on('change keyup blur', function () {
+        $("#FDRAmount").val('');
+        $("#InterestRate").val('');
+        $("#InstallmentAmount").val('');
+        $("#ProfitRecvId").val('');
+        $("#TAXAmount").val('');
+        $("#BankCharge").val('');
+        $("#Profit").val('');
+        $("#CheckId").val('');
+        $("#Description").val('');
+        $("#InterestReceiveAmount").val('');
+
+        getFDRDetails($(this).val(), $("#Date").val());
+    });
+
+    function getFDRDetails(Id, date) {
+        if (Id > 0) {
+            var url = '@Url.Action("GetInstallmentInfo", "FDRInstallmentInformation")' + '?id=' + Id + "&date=" + date;
+            $.get(url, function (response) {
+                $("#FDRAmount").val(response.FDRAmount);
+                $("#InterestRate").val(response.InterestRate);
+                $("#ProfitRecvId").val(response.ProfitRecvId);
+                $("#InstallmentAmount").val(response.InstallmentAmount);
+                $("#TAXAmount").val(response.TAXAmount);
+                $("#BankCharge").val(response.BankCharge);
+                $("#Profit").val(response.Profit);
+                $("#InterestReceiveAmount").val(response.Profit);
+                $("#ChequeId").val(response.ChequeId);
+
+                $("#ProfitRecvId").trigger("chosen:updated")
+            });
+        }
+    }
+
+    //$("#ProfitRecvId").on('change', function () {
+    //    fillBankChequeNo($(this).val());
+    //})
+
+    // bank Cheque No
+    function fillBankChequeNo(bankAccountId) {
+        var cheque = $('#ChequeId');
+        cheque.empty();
+        cheque.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankAccountId != '') {
+            $.getJSON('@Url.Action("GetBankCheckNo")', { id: bankAccountId }, function (obj) {
+                $.each(obj, function (index, data) {
+                    cheque.append($('<option/>', {
+                        value: data.Id,
+                        text: data.Name
+                    }));
+                });
+            });
+
+        }
+    }
+
+    //cascading dropdown
+    $("#BankInfoId").on('change', function () {
+        fillBankBranch($(this).val());
+    });
+    $("#BankInfoBranchDetailId").on('change', function () {
+        getFDRNo($(this).val());
+    });
+
+    // bank brances
+    function fillBankBranch(bankInfoId) {
+        var presentBranch = $('#BankInfoBranchDetailId');
+        //presentBranch.empty();
+
+        // clear all previous options
+        $("select#BankInfoBranchDetailId>option").remove();
+
+        presentBranch.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankInfoId != '') {
+            $.getJSON('@Url.Action("GetBankBranch")', { id: bankInfoId }, function (branchs) {
+                $.each(branchs, function (index, data) {
+                    presentBranch.append($('<option/>', {
+                        value: data.branchId,
+                        text: data.branchName
+                    }));
+                });
+                presentBranch.trigger("chosen:updated")
+            });
+        }
+    }
+
+    // Geting FDR by Bank Branch
+    function getFDRNo(branchId) {
+        var fdrNo = $('#FixedDepositInfoId');
+        fdrNo.empty();
+
+        fdrNo.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (branchId != '') {
+            $.getJSON('@Url.Action("GetFDRNo")', { id: branchId }, function (branchs) {
+                $.each(branchs, function (index, data) {
+                    fdrNo.append($('<option/>', {
+                        value: data.Value,
+                        text: data.Text
+                    }));
+                });
+                fdrNo.trigger("chosen:updated")
+            });
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $("#InstallmentAmount, #TAXAmount, #BankCharge, #InterestReceiveAmount").on('change keyup blur', function () {
+        var installmentAmount = parseFloat($('#InstallmentAmount').val());
+        var taxAmount = parseFloat($('#TAXAmount').val());
+        var bankCharg = parseFloat($('#BankCharge').val());
+
+        //total profit
+        if (installmentAmount > 0 && taxAmount >= 0 && bankCharg >= 0) {
+            $('#Profit').val(installmentAmount - taxAmount - bankCharg);
+        }
+
+        var profit = parseFloat($('#Profit').val());
+        var interestReceiveAmount = parseFloat($('#InterestReceiveAmount').val());
+        if (interestReceiveAmount > profit && profit>0) {
+            //alert("Interest Receive Amount will not more then Net Profit");
+            //$('#InterestReceiveAmount').val('0');
+        }
+
+    });
+</script>

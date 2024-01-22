@@ -1,0 +1,152 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.HolidayAllowanceRuleSetup.HolidayAllowanceRuleSetupViewModel
+
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.AllowanceRuleName)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.AllowanceRuleName)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EffFromDate)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EffFromDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EffToDate)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EffToDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+        </span>
+        <span class="field">
+            @Html.RadioButtonFor(m => m.AllowanceType, "Allowance", new { @checked = true })
+            @Html.Label("Fixed Allowance")
+        </span> <span>@Html.RadioButtonFor(m => m.AllowanceType, "Overtime")@Html.Label("Will be Considered as Overtime")</span>
+    </div>
+    <fieldset>
+        <legend> For Fixed Allowance </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.MaxWeekendPerYear)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.MaxWeekendPerYear) Day(S)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Rate)
+            </span>
+            <span class="field">
+                (Basic Salary /  @Html.EditorFor(model => model.Rate))
+            </span>
+        </div>
+    </fieldset>
+</div>
+
+<script type="text/javascript">
+    $('input[name=AllowanceType]:radio').change(function () {
+        var val = $("input[name=AllowanceType]:checked").val();
+        EnableDisable(val);
+    });
+
+    function EnableDisable(val) {
+        console.log(val);
+        if (val == 'Overtime') {
+            $('#MaxWeekendPerYear').val(null);
+            $('#Rate').val(null);
+            $('#MaxWeekendPerYear').attr('disabled', true);
+            $('#Rate').attr('disabled', true);
+        }
+        else {
+            $('#Rate').removeAttr('disabled');
+            $('#MaxWeekendPerYear').removeAttr('disabled');
+
+        }
+    }
+
+    EnableDisable('@Model.AllowanceType.ToString()');
+
+</script>
+
+<script>
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#EffToDate").live('change', function () {
+            var from = $('#EffFromDate').val();
+            var to = $('#EffToDate').val();
+            getDate(from, to);
+        })
+
+        $("#EffFromDate").live('change', function () {
+            var from = $('#EffFromDate').val();
+            var to = $('#EffToDate').val();
+            getDate(from, to);
+        })
+
+        function getDate(from, to) {
+            $('#message').empty();
+            if ((new Date(from).getTime() > new Date(to).getTime())) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'Effective Date To' must be greater than or equal to 'Effective Date From'.</span> </div> ");
+                return;
+            }
+        }
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            $("#message").empty();
+
+            if ($('#AllowanceRuleName').val() == '' || $('#AllowanceRuleName').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if ($('#EffFromDate').val() == '' || $('#EffFromDate').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if ($('#EffToDate').val() == '' || $('#EffToDate').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+        });
+    });
+</script>
+
+

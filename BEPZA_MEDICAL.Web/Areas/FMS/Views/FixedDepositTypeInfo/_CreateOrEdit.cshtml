@@ -1,0 +1,140 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FixedDepositTypeInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend> Fixed Deposit Type Information </legend>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FixedDepositType, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-6">
+                @Html.EditorFor(model => model.FixedDepositType, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Duration, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Duration, new { @class = "form-control required" })
+            </div>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.DurationType, Model.DurationTypeList, new { @class = "form-control required", onchange = "LoadReason();" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestRate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.InterestRate, new { @class = "form-control required" })
+            </div>
+            <div class="col-sm-1">
+                %
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InstallmentIn, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.InstallmentIn, new { @class = "form-control required" })
+            </div>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.InstallmentType, Model.InstallmentInList, new { @class = "form-control required", onchange = "LoadReason();" })
+            </div>
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tax, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.Tax, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-1">
+                %
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankChargePerc, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.BankChargePerc, new { @class = "form-control required" })
+            </div>
+            <div class="col-sm-1">
+                %
+            </div>
+            <div class="col-sm-1">
+                @Html.LabelFor(model => model.BankChargeFix, new { @class = "control-label" })
+                </div>
+                <div class="col-sm-2">
+                    @Html.EditorFor(model => model.BankChargeFix, new { @class = "form-control required" })
+                </div>
+            </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-6">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+            </div>
+        </div>
+   </fieldset>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#BankChargePerc").on('change', function () {
+            var bank = $("#BankChargePerc").val();
+            if (bank > 0) {
+                $('#BankChargeFix').prop("readonly", true);
+                $('#BankChargeFix').addClass("read-only");
+                return;
+            }
+            else {
+                $('#BankChargeFix').prop("readonly", false);
+                $('#BankChargeFix').removeClass("read-only");
+                return;
+            }
+        });
+
+        $("#BankChargeFix").on('change', function () {
+            var bankFix = $("#BankChargeFix").val();
+            if (bankFix > 0) {
+                $('#BankChargePerc').prop('readonly', true);
+                $('#BankChargePerc').addClass("read-only");
+                return;
+            }
+            else {
+                $('#BankChargePerc').prop('readonly', false);
+                $('#BankChargePerc').removeClass("read-only");
+                return;
+            }
+        });
+
+        var tempBank = ('@Model.BankChargePerc');
+        var tempBankfix = ('@Model.BankChargeFix');
+        
+        if (tempBank > 0) {
+            $('#BankChargeFix').prop("readonly", true);
+            $('#BankChargeFix').addClass("read-only");
+        }
+        else {
+            $('#BankChargeFix').prop("readonly", false);
+            $('#BankChargeFix').removeClass("read-only");
+        }
+        if (tempBankfix > 0) {
+            $('#BankChargePerc').prop("readonly", true);
+            $('#BankChargePerc').addClass("read-only");
+        }
+        else {
+            $('#BankChargePerc').prop("readonly", false);
+            $('#BankChargePerc').removeClass("read-only");
+        }
+
+
+    });
+</script>

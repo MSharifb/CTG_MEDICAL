@@ -1,0 +1,71 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+
+@using (Html.BeginCollectionItem("ApplicationList"))
+{
+    <tr>
+        <td class="application-Date">
+            <span class="id-area">@Html.HiddenFor(m => m.Id)</span>
+            <span class="application-id-area">@Html.HiddenFor(m => m.ApplicationId)</span>
+            <span class="application-date-area"> @Model.ApplicationDate.ToString("dd-MMM-yyyy")</span>
+        </td>
+        <td class="applicant-Id">
+            @Model.ApplicantId
+        </td>
+        <td class="applicant-Name">
+            @Model.ApplicantName
+        </td>
+        <td class="dpt-dsg">
+            @Model.Department
+        </td>
+        <td class="dpt-dsg">
+            @Model.Designation
+        </td>
+        <td class="zone">
+            @Model.Zone
+        </td>
+        <td class="approval-status">
+            @Model.ApprovalStatusName
+            <span class="status-id-area">@Html.HiddenFor(m => m.ApprovalStatusId)</span>
+        </td>
+        <td class="approver-action">
+            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</button>
+        </td>
+    </tr>
+}
+
+<script type="text/javascript">
+    $('.approver-action button').click(function () {
+        //debugger;
+        var applicationId = $(this).closest('tr').find('.id-area :input').val();
+
+        var approvalProcessId = $('#ApprovalProcessId option:selected').val();
+        var applicationDate = $(this).closest('tr').find('.application-date-area').html();
+        var statusId = $('#ApprovalStatusId option:selected').val();
+        var approvalStatusId = parseInt(statusId);
+        if (isNaN(approvalStatusId)) {
+            approvalStatusId = 5;
+        }
+
+        var url = '@Url.Action("ViewINVRequisitionApplication", "Approval")';
+        //debugger;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            data: { approvalProcessId: approvalProcessId, requestedApplicationId: applicationId, applicationDate: applicationDate, statusId: approvalStatusId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divApplicationViewer').html(result);
+                console.log("success");
+            }
+        });
+
+        $("#divApplicationViewer").dialog('open');
+    });
+</script>
+

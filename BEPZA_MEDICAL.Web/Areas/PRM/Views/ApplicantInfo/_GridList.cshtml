@@ -1,0 +1,154 @@
+﻿
+<script type="text/javascript">
+
+</script>
+<style>
+    .ui-datepicker-trigger {
+        z-index: 1000;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Advertisement Code', 'Advertisement Code', 'Applicant Name', 'Father Name', 'Job Position', 'Job Position', 'Department', 'Department', 'Mob No.', 'Status', 'View', 'Delete'],
+            colModel: [
+                    { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+
+                    { name: 'JobAdvertisementInfoId', index: 'JobAdvertisementInfoId', align: 'center', width: '60px', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetJobAdvertisement")' },
+                    { name: 'AdCode', index: 'AdCode', align: 'Center', width: '140px', search: false, edittype: 'text' },
+
+                    { name: 'ApplicantNameE', index: 'ApplicantNameE', align: 'left', search: true, edittype: 'text', formatter: viewformatEdiorLink },
+                    { name: 'FatherName', index: 'FatherName', align: 'left', width: '140px', search: true, edittype: 'text' },
+
+                    { name: 'DesignationId', index: 'DesignationId', align: 'center', width: '60px', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetDesignation")' },
+                    { name: 'DesignationName', index: 'DesignationName', align: 'Center', width: '140px', search: false, edittype: 'text' },
+
+                    { name: 'DepartmentId', index: 'DepartmentId', align: 'center', width: '60px', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetDivision")' },
+                    { name: 'DepartmentName', index: 'DepartmentName', align: 'Center', width: '140px', search: false, edittype: 'text' },
+
+                    { name: 'MobNo', index: 'MobNo', align: 'Center', width: '140px', search: true, edittype: 'text' },
+                    { name: 'Status', index: 'Status', align: 'center', width: '60px', search: false, edittype: 'text' },
+                    { name: 'View', index: 'View', align: 'Center', search: false, sortable: false, width: '40px', edittype: 'image', formatter: viewformateadorLink },
+                    { name: 'Delete', index: 'Delete', align: 'Center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Applicant Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        if (rowObject[10] == 'Pending') {
+            var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+            url = url.replace(/_id_/, rowObject[0]);
+            return url;
+        }
+        return "";
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+        if (rowObject[10] == 'Pending') {
+            var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+            url = url.replace(/_name_/, cellvalue);
+            url = url.replace(/_id_/, rowObject[0]);
+            return url;
+        }
+        return rowObject[3];
+    }
+
+    function viewformateadorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink(" ", "ViewApplicantInfo", new { id = "_id_" }, new { @class = "viewItem",@style="text-decoration:none" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+<div id="divApplicantInfo">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divApplicantInfo").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Applicant Information', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+
+    $(".viewItem").live("click", function (e) {
+        e.preventDefault();
+
+        var url = $(this).attr('href');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divApplicantInfo').html(result);
+            }
+        });
+
+        $("#divApplicantInfo").dialog('open');
+        return false;
+
+    });
+
+    function Closing() {
+
+    }
+
+</script>
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6f2029e193f041598448dcbde091917e" Name="Diagram1" ZoomLevel="94">
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_AccountHeadCategory" Width="2.25" PointX="0.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_BankAccountInfo" Width="2.5" PointX="6.125" PointY="19" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_ContributionRateSetup" Width="2.5" PointX="3.75" PointY="0.875" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_DocumentType" Width="1.5" PointX="2.625" PointY="28.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_ForfeitedRule" Width="1.5" PointX="0.75" PointY="4.875" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_GratuityInterestRate" Width="1.5" PointX="7.125" PointY="4" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_LoanPolicy" Width="1.5" PointX="5.25" PointY="10.25" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_MemberNominee" Width="1.5" PointX="8.875" PointY="35.875" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_PaymentType" Width="2.625" PointX="3" PointY="18" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_ProfitDistributionDetail" Width="1.5" PointX="5.25" PointY="23.375" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_SpecialParameter" Width="1.5" PointX="3.25" PointY="7.375" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CommonConfigType" Width="1.5" PointX="2.75" PointY="4.875" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_DefaultMapping" Width="1.5" PointX="6.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.vwCPFNominee" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_MembershipInfo" Width="1.5" PointX="5.75" PointY="29.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.CPF.FK_CPF_MemberNominee_CPF_MembershipInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.CPF.FK_CPF_ProfitDistributionDetail_CPF_MembershipInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.APV_ApprovalStatus" Width="2.125" PointX="0.75" PointY="14" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.CPF.FK_CPF_MembershipInfo_APV_ApprovalStatus" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CustomPropertyAttribute" Width="1.5" PointX="5" PointY="4" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_ProfitInterestRate" Width="1.5" PointX="7.375" PointY="7.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_OpeningBalance" Width="1.5" PointX="8" PointY="41" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.CPF.FK_CPF_OpeningBalance_CPF_MembershipInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_ProfitDistribution" Width="1.5" PointX="9.375" PointY="1" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.CPF.FK_CPF_ProfitDistributionDetail_CPF_ProfitDistribution" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_Settlement" Width="1.5" PointX="8" PointY="27.625" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.CPF.CPF_Withdraw" Width="1.5" PointX="8" PointY="47" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.CPF.FK_CPF_Settlement_CPF_MembershipInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.CPF.FK_CPF_Withdraw_CPF_MembershipInfo" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

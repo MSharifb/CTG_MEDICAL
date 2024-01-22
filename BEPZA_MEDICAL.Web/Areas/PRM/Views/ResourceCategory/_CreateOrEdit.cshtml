@@ -1,0 +1,93 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ResourceCategoryViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+    });
+
+    $(document).ready(function () {
+        $("#ResourceTypeId").focus();
+        if ('@Model.ErrMsg' != "") {
+
+            if ('@Model.IsError' == "1") {
+                $("#message").html("<b>" + '@Model.ErrMsg' + "</b>").css("color", "red");
+            }
+            else {
+                $("#message").html("<b>" + '@Model.ErrMsg' + "</b>").css("color", "Green");
+            }
+        }
+    });    
+   
+
+</script>
+<div class="GroupBox" id="message">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+</div>
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ResourceTypeId)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.ResourceTypeId, Model.ResourceTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.UOMId)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.UOMId, Model.UOMTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ResourceCategory)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ResourceCategory)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.EffectiveDate)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ActualRate)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ActualRate, new { maxlength = 10, @style = "text-align:right" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.BudgetRate)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.BudgetRate, new { maxlength = 10, @style = "text-align:right" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks, new { @style = "width:570px" })
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>

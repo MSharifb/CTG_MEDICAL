@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<parameterMappings>
+  <parameterType name ="varchar"  sql="varchar" oracle="varchar" mysql="">
+  </parameterType>
+  <parameterType name ="int"  sql="int" oracle="number" mysql="">
+  </parameterType>
+</parameterMappings>

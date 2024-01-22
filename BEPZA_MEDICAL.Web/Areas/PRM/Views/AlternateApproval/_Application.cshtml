@@ -1,0 +1,37 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Approval.ViewApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="col-sm-12" style="margin-bottom:15px;">
+    Date : @Model.ApplicationDate.ToString("dd-MM-yyyy")
+</div>
+<div class="col-sm-12">
+    To,
+</div>
+<div class="col-sm-12" style="margin-bottom:15px;">
+    @Model.ApplicationTo
+</div>
+<div class="col-sm-12" style="margin-bottom:15px;">
+    <strong> Subject : @Model.ApplicationSubject</strong>
+</div>
+<div class="col-sm-12">
+    @Model.ApplicationBody
+</div>
+
+<div class="col-sm-12" style="margin:30px 0;">
+    @Model.ApplicantName (@Model.ApplicantEmployeeId)
+</div>
+<div class="col-sm-12">
+    @Model.ApplicantDepartment
+</div>
+<div class="col-sm-12">
+    @Model.ApplicantDesignation
+</div>
+<hr />
+
+
+
+<style type="text/css">
+    .panel-heading {
+        cursor: default;
+    }
+</style>

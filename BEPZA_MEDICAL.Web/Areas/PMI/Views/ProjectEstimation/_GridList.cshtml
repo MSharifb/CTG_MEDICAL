@@ -1,0 +1,134 @@
+﻿
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'EstimationDetailId', 'ProjectId', 'Name of Project', 'EstimationItemId', 'Item Name', 'Quantity', 'Unit Price', 'Total Amount', 'Estimation Date', 'To', 'Zone', 'Budget', ''],
+            colModel: [
+                  { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                  { name: 'EstimationDetailId', index: 'EstimationDetailId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                  { name: 'ProjectId', index: 'ProjectId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                  { name: 'ProjectName', index: 'ProjectName', align: 'left', search: true, summaryTpl: "Total", hidden: false, edittype: 'select', surl: '@Url.Action("GetProjectList")' },
+                  { name: 'EstimationItemId', index: 'EstimationItemId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                  { name: 'ItemName', index: 'ItemName', align: 'left', search: true, summaryTpl: "Total", summaryType: "sum", width: '600px', hidden: false, edittype: 'select', surl: '@Url.Action("GetItemList")' },
+                  { name: 'Quantity', index: 'Quantity', align: 'left', search: false, width: '100px', summaryTpl: "{0}", summaryType: "sum" },
+                  { name: 'UnitPrice', index: 'UnitPrice', align: 'left', search: false, width: '100px' },
+                  { name: 'TotalAmount', index: 'TotalAmount', align: 'left', width: '100px', search: false, summaryTpl: "{0}", summaryType: "sum" },
+                  { name: 'EstimationDate', index: 'EstimationDate', align: 'left', hidden: true, search: true, edittype: 'text' },
+                  { name: 'EstimationDateTo', index: 'EstimationDateTo', align: 'left', hidden: true, search: true, edittype: 'text' },
+                  { name: 'ZoneCode', index: 'ZoneCode', align: 'left', width: '200px', search: true, hidden: false, edittype: 'select', surl: '@Url.Action("GetZoneList")' },
+                  { name: 'BudgetAmount', index: 'BudgetAmount', align: 'left', search: false, hidden: true },
+                  { name: 'Delete', index: 'Delete', align: 'left', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            grouping: true,
+            groupingView: {
+                groupField: ['ProjectName'],
+                groupColumnShow: [false],
+                groupSummary: [true],
+                groupCollapse: false,
+                groupDataSorted: true,
+                groupText: ["<b>{0}</b>"]
+            },
+            caption: "Estimation",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            //footerrow: true,
+            //userDataOnFooter: true,
+            loadComplete: function () {
+                $("a.deleteItem").on('click', function (e) {
+                    e.preventDefault();
+                    deleteLinkObj = $(this);
+                    $('#delete-dialog').dialog('open');
+                    return false;
+                });
+                setTimeout(MakeDropdownSearchable, 3000);
+
+                var i, group, cssClass, headerIdPrefix = this.id + "ghead_",
+                groups = $(this).jqGrid("getGridParam", "groupingView").groups,
+                l = groups.length;
+                for (i = 0; i < l; i++) {
+                    group = groups[i];
+                    cssClass = "myHeaderStyle";
+                    // listghead_0_1
+                    if (cssClass !== "") {
+                        $("#" + headerIdPrefix + group.idx + "_" + i).addClass(cssClass);
+                    }
+                }
+            }
+        });
+        //custom grid ends
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_EstimationDetailId_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_EstimationDetailId_/, rowObject[1]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_EstimationDetailId_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_EstimationDetailId_/, rowObject[1]);
+        return url;
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+
+        $('#sg_EstimationDate, #sg_EstimationDateTo').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+        $('#sg_ComplaintDate').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+    });
+
+    $(function () {
+
+        $("a.deleteItem").on("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        @*$('#EstimationDateFrom, #EstimationDateTo').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });*@
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+<style type="text/css">
+    .myHeaderStyle {
+        font-weight: bolder;
+        color: black;
+        text-decoration: underline;
+        cursor: pointer;
+        text-transform: uppercase;
+    }
+
+        .myHeaderStyle:hover {
+            background: #E9E9E9;
+        }
+</style>

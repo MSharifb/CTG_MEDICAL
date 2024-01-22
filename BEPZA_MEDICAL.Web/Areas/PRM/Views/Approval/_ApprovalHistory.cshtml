@@ -1,0 +1,53 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Approval.ApprovalHistoryViewModel>
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th class="approver-info">
+                Recommender / Approver
+            </th>
+            <th class="approver-info">
+                Recommend / Approve Date
+            </th>
+            <th class="comments">Comment</th>
+            <th class="approval-status">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+        <tr>
+            <td class="approver-info">
+                @item.ApproverIdAndName
+            </td>
+            <td class="approver-info">
+                @item.ApproveDate
+            </td>
+            <td class="comments">
+                @item.ApproverComment
+            </td>
+            <td class="approval-status">
+                @item.ApprovalStatus
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<style type="text/css">
+    .approver-info {
+        width: 35%;
+        vertical-align:top !important;
+    }
+
+    .approval-status {
+        width: 15%;
+        vertical-align: top !important;
+    }
+
+    .comments {
+        width: 50%;
+        word-break: normal;
+        vertical-align: top !important;
+    }
+</style>

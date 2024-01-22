@@ -1,0 +1,239 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginForm(@Model.ActionType, "Approval", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+    @Html.Partial("_Application", @Model.Application)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ApprovalProcessId)
+    @Html.HiddenFor(m => m.RequestedAmount)
+    <fieldset>
+        <legend>
+            Attachment
+        </legend>
+        @if (@Model.AttachmentFilesList != null && @Model.AttachmentFilesList.Count > 0)
+        {
+            @Html.Partial("_WFMAttachment", @Model.AttachmentFilesList);
+        }
+    </fieldset>
+    <div class="col-sm-12" style=" margin:50px 0 20px 0;">
+        <div class="col-sm-2 labelRequired">@Html.LabelFor(m => m.ApproverComments)</div>
+        <div class="col-sm-9">
+            @Html.TextAreaFor(m => m.ApproverComments, new { @class = "form-control" })
+        </div>
+    </div>
+    if (Model.IsConfigurableApprovalFlow)
+    {
+        <div id="dvForward" class="col-sm-12" style="margin-bottom:20px;">
+            <div class="col-sm-2 labelRequired">
+                Forward To
+            </div>
+            <div class="col-sm-8">
+                @Html.DropDownListFor(m => m.ApproverId, @Model.NextApproverList, new { @class = @"form-control" })
+            </div>
+        </div>
+    }
+    else
+    {
+        <div id="dvForward" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.HiddenFor(model => model.ApproverId)
+            @Html.LabelFor(model => model.SignatoryEmpId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.SignatoryEmpId, new { @style = "width:130px", @class = "form-control read-only required", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+            </div>
+        </div>
+        <div id="dvSuggest" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.LabelFor(model => model.SignatoryEmpName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SignatoryEmpName, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+        <div id="dvSuggest" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.LabelFor(model => model.SignatoryEmpDesignation, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SignatoryEmpDesignation, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+    }
+
+    <div id="dvSuggest" class="col-sm-12" style="margin-bottom:20px;">
+        <div class="col-sm-2">
+            Suggest Amount
+        </div>
+        <div class="col-sm-4">
+            @Html.TextBoxFor(m => m.SuggestAmount, new { @class = @"form-control" })
+        </div>
+    </div>
+    <div class="col-sm-12 approval-action-area" style="text-align:center;">
+        <button id="btnRecommend" type="button" class="btn btn-sm btn-primary">Recommend</button>
+        <button id="btnApprove" type="button" class="btn btn-sm btn-primary">Forward to Committee</button>
+        <button id="btnReject" type="button" class="btn btn-sm btn-primary">Reject</button>
+    </div>
+
+    <fieldset>
+        <legend>Approval History</legend>
+        @if (Model.ApprovalHistory != null && @Model.ApprovalHistory.Count > 0)
+        {
+            @Html.Partial("_ApprovalHistory", @Model.ApprovalHistory)
+        }
+    </fieldset>
+    <div id="divEmpList">
+        <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+            <p>
+                Your browser does not support iframes.
+            </p>
+        </iframe>
+    </div>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "OnlineWelfareFundApplicationInformation")?UseTypeEmpId=1';
+        url = url.replace('PRM', 'WFM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+       function setEmpData(id) {
+        $('#ApproverId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+        }
+
+    function GetEmployeeInfo() {
+        var empId = $('#ApproverId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "OnlineWelfareFundApplicationInformation")';
+        url = url.replace('PRM', 'WFM');
+
+        if (empId > 0) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { employeeId: empId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $("#SignatoryEmpId").val(result.EmpID);
+                $('#SignatoryEmpName').val(result.EmployeeName);
+                $("#SignatoryEmpDesignation").val(result.Designation);
+            }
+        });
+        }
+        return false;
+    }
+    function Closing() {
+
+    }
+
+    function GetLoggedInZoneId() {
+        var url = '@Url.Action("GetLoggedZoneId", "ApprovalFlow")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                return data;
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var stepName = '@Model.NextStepName';
+        if ('@Model.IsConfigurableApprovalFlow' == 'True') {
+            if (stepName == "Recommendation") {
+                $('#btnApprove').hide();
+                $('#dvSuggest').hide();
+            }
+            else {
+                $('#btnRecommend').hide();
+                $('#dvForward').hide();
+                $('#dvSuggest').show();
+            }
+        }
+    });
+
+    function ProceedToNextStep(actionName) {
+
+        var applicationId = $('#Id').val();
+        var comments = $('#ApproverComments').val();
+        var suggestAmount = $('#SuggestAmount').val();
+        if (comments == '') {
+            alert("Please fill up the mandatory field(s)");
+            return;
+        }
+        var forwardToId = $('#ApproverId option:selected').val();
+        if ('@Model.IsConfigurableApprovalFlow'=='True'){
+             forwardToId = $('#ApproverId option:selected').val();
+        }
+        else {
+             forwardToId = $('#ApproverId').val();
+        }
+        var url = '@Url.Action("ExeWFMApprovalAction", "Approval")';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { applicationId: applicationId, actionName: actionName, approverComment: comments, nextApproverId: forwardToId, suggestAmount: suggestAmount },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+
+                $('#btnSearch').trigger('click');
+            }
+        });
+
+    }
+
+    $('#btnApprove').on('click', function () {
+        var action = "Approved";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+
+    $('#btnReject').on('click', function () {
+        var action = "Reject";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+
+    $('#btnRecommend').on('click', function () {
+        var action = "Recommend";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+</script>

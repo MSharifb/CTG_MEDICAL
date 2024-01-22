@@ -1,0 +1,39 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.ScrapViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/INV/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Create", "OnlineScrap", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+
+    <fieldset>
+        <div class="GroupBox" id="message" style="min-height:15px;">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSave" style="margin-right: 8px;" />
+            }
+            <input type="button" value="Clear" id="btnClear" name="btnClear" />
+        </div>
+    </fieldset>
+    if (@Model.ApprovalHistory != null && @Model.ApprovalHistory.Count > 0)
+    {
+        <fieldset>
+            <legend>Approval History</legend>
+            @Html.Partial("~/Areas/PRM/Views/Approval/_ApprovalHistory.cshtml", Model.ApprovalHistory)
+        </fieldset>
+    }
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+

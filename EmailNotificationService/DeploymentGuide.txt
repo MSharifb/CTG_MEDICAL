@@ -1,0 +1,28 @@
+﻿
+
+Windows Scheduler Guidelines:-
+
+Start >> All Programs >> Accessories >> System Tools >> Task Scheduler
+
+	1.	Right click on the "Task Scheduler Library" and select "Create Basic Task". 
+		Write the name of Task as "IWM_EmailNotification" and Description if you need.
+		And click the Next Button.
+
+	2.	Select any of the Radio buttons named Trigger according to your demand.(When do you want the task to start?).
+		And Click the Next Button.
+
+	3.	please enter the start timer that the scheduler will run on your demand.And Click the Next Button.
+
+	4.	Select scheduler action (Start a program).And Click the Next Button.
+
+	5.	Browse the program/Script (EmailNotificationService.exe file of console program). Give arguments if you need.And Click the Next Button.
+
+	6.	Click the Finish Button to complete the windows scheduler.
+
+	7.	Put the Configuration.xml file to the following location
+		
+		For Windows 32 Bit:
+		Start >> My Computer >> C:\Windows\System32	
+
+		For Windows 64 Bit:
+		Start >> My Computer >> C:\Windows\SysWOW64	

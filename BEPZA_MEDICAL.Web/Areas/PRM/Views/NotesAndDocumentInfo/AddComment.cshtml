@@ -1,0 +1,308 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NotesAndDocumentInfoCommentsDetailViewModel
+
+@{
+    
+    Layout = null;
+}
+
+
+@using (Html.BeginForm("AddComment", "NotesAndDocumentInfo", FormMethod.Post, new { id = "frmAddComment" }))
+{
+
+    <fieldset>
+        <div class="GroupBox" id="messagePopupWindow" style="min-height:15px;">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.ErrMsg">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("CreateOrEditAddComment", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+            @*<input type="button" value="Clear" id="btnClear" name="btnClear" />*@
+        </div>
+    </fieldset>
+}
+
+
+
+
+@*Employee Info*@
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<br />
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList2").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing2(); } });
+
+    });
+    //Employee Info
+    function openEmployeeCommentBy() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=2';       
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList2').html(result);
+            }
+        });
+
+        $("#divEmpList2").dialog('open');
+
+        return false;
+    }
+
+
+    function setEmpData(id, useTypeEmpId) {
+        //Employee Info
+        if (useTypeEmpId == 2) {
+            $('#CommentByEmployeeId').val(id);
+            GetEmployeeInfo2(id);
+            $("#divEmpList2").dialog('close');
+        }
+
+
+    }
+    //Employee Info
+    function GetEmployeeInfo2(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "NotesAndDocumentInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#CommentByEmpId").val(obj.EmpId);
+                    $('#Employee').val(obj.EmployeeName);
+                    $("#Designation").val(obj.DesignationName);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function Closing2() {
+
+    }
+
+</script>
+@*End *@
+
+
+<script type="text/javascript">
+
+    $("#CommentByEmployeeId").val('');
+    $('#CommentByEmpId').val('');
+    $('#Employee').val('');
+    $('#Designation').val('');
+
+    $('#btnAddComment').click(function (e) {
+        e.preventDefault();
+        $("#messagePopupWindow").empty();
+        $("#Comments").removeClass("border-red");
+        $("#CommentByEmpId").removeClass("border-red");
+
+
+        var notesAndDocumentInfoAttachmentDetailId = $('#NotesAndDocumentInfoAttachmentDetailId').val();
+        var commentByEmployeeId = $('#CommentByEmployeeId').val();
+        var comment = $('#Comments').val();
+        var employeeName = $('#Employee').val();
+
+        if (comment == null || comment == "") {
+            $("#Comments").addClass("border-red");
+            $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (commentByEmployeeId == null || commentByEmployeeId == "") {
+            $("#CommentByEmpId").addClass("border-red");
+            $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+
+
+        var trClone = '<tr>' +
+       '<td style="display: none;">' + '<input type="text" value="0" name="NotesAndDocumentInfoCommentsDetailList[0].Id" ></td>' +
+       '<td style="display: none;">' + '<input type="text"name="NotesAndDocumentInfoCommentsDetailList[0].NotesAndDocumentInfoAttachmentDetailId" value="' + notesAndDocumentInfoAttachmentDetailId + '"></td>' +
+       '<td style="display: none;">' + '<input type="text" name="NotesAndDocumentInfoCommentsDetailList[0].Comments" value="' + comment + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="NotesAndDocumentInfoCommentsDetailList[0].CommentByEmployeeId" value="' + commentByEmployeeId + '" ></td>' +
+       '<td>' + '<label for="Comments">' + comment + '</td>' +
+       '<td>' + '<label for="EmployeeName" >' + employeeName + '</td>' +
+        '<td>' + '<a class="deleteRow" href="#" title="delete" onclick="RemoveDb(this,0,&quot;/PRM/NotesAndDocumentInfo/DeleteCommentDetail&quot;)"><img src="../../../Content/Images/Delete.png" style="border: none;" alt="delete"></a></td>' +
+
+       '</tr>';
+        $('#CommnetGrid tbody').append(trClone);
+
+        RearrengeControlName();
+
+        $("#Comments").val('');
+        $("#CommentByEmployeeId").val('');
+
+        $("#CommentByEmpId").val('');
+        $("#Employee").val('');       
+        $("#Designation").val('');
+
+    })
+
+    function RemoveDb2(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#messagePopupWindow").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+
+
+        RearrengeControlName();
+    }
+
+
+    function RearrengeControlName() {
+        $('#CommnetGrid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+
+
+</script>
+
+@*AutoComple EmpInfo*@
+
+<script type="text/javascript">
+
+    $('#CommentByEmpId').keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+            // let it happen, don't do anything
+            return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+
+    $(function () {
+        $("#CommentByEmpId").autocomplete({
+            source: function (request, response) {
+                $('#Employee').val('');
+                $('#Designation').val('');
+                var url = '@Url.Action("AutoCompleteEmployeeList", "EmployeeSeperation")';
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            var EmpIdName = item.EmpID + '-' + item.FullName;
+                            return { label: EmpIdName, value: item.EmpID };
+                        }))
+                    }
+                })
+            },
+            select: function (event, ui) {
+                GetEmployeeInfoAutocomplete(ui.item ? ui.item.value : 0);
+            }
+        });
+
+    });
+
+    function GetEmployeeInfoAutocomplete(icno) {
+        if (icno > 0) {
+            var url = '@Url.Action("GetEmployeeInfoAutocomplete", "EmployeeSeperation")';
+            $.post(url, { ICNO: icno }, function (obj) {
+                $("#CommentByEmployeeId").val('');
+                $('#CommentByEmpId').val('');
+                $('#Employee').val('');
+                $('#Designation').val('');
+               
+                if (obj.Result == false) {
+                    $('#CommentByEmpId').val('');
+                    alert('System is unable to load data please try again.');
+                }
+                else if (obj.Result == 'InactiveEmployee') {
+                    $('#CommentByEmpId').val('');
+                    alert('Employee must be active as a signatory.');
+                }
+                else {
+                    $("#CommentByEmployeeId").val(obj.EmployeeId);
+                    $("#CommentByEmpId").val(obj.EmpId);
+                    $('#Employee').val(obj.EmployeeName);
+                    $("#Designation").val(obj.EmployeeDesignation);
+                }
+            }, "json");
+        }
+        return false;
+    }
+
+</script>
+
+@*End AutoComple EmpInfo*@
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $("#frmAddComment").submit(function () {          
+            var rowCount = $('#CommnetGrid tbody tr').length;
+            if (rowCount == 0 || rowCount < 0) {
+                $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, add an comment.</span> </div> ");
+                return false;
+            }
+        });
+    });
+</script>*@
+
+
+
+

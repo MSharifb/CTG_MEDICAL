@@ -1,0 +1,127 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.FixedParameters.FixedParametersSetupModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Index", "FixedParameters", FormMethod.Get, new { id = "frm" }))
+{
+    <div class="GroupBox" style="max-height: 15px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            if (Model.IsError == 1)
+            {
+                <div style="font-weight:bold; color:red" id="ErrMsg" class="@Model.ErrMsg">
+                    @Model.Message
+                </div>
+            }
+            else if (Model.IsError == 0)
+            {
+                <div style="font-weight:bold; color:green" id="ErrMsg" class="@Model.ErrMsg">
+                    @Model.Message
+                </div>
+            }
+        }
+    </div>
+
+    @Html.HiddenFor(model => model.CPFContributionRateSetupModel.Id)
+    @*@Html.HiddenFor(model => model.GratuityInterestRateSetupModel.Id)*@
+
+    <div class="GroupBox">
+        <div class="row">
+            <div class="col-sm-6">
+                <fieldset>
+                    <legend>CPF Contribution Rate Setup</legend>
+                    <div class="row">
+                        <span class="label" style="width:35%;">
+                            @Html.LabelFor(model => model.CPFContributionRateSetupModel.OwnContributionRate)
+                            <label class="required-field">*</label>
+                        </span>
+                        <span class="field" style="width:50%;">
+                            @Html.TextBoxFor(model => model.CPFContributionRateSetupModel.OwnContributionRate)
+                            % Of Basic
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:35%;">
+                            @Html.LabelFor(model => model.CPFContributionRateSetupModel.OfficeContributionRate)
+                            <label class="required-field">*</label>
+                        </span>
+                        <span class="field" style="width:50%;">
+                            @Html.TextBoxFor(model => model.CPFContributionRateSetupModel.OfficeContributionRate)
+                            % Of Basic
+                        </span>
+                    </div>                    
+                </fieldset>
+            </div>
+
+            @*<div class="col-sm-6">
+                <fieldset>
+                    <legend>Gratuity Interest Rate Setup</legend>
+                    <div class="row">
+                        <span class="label" style="width:35%;">
+                            @Html.LabelFor(model => model.GratuityInterestRateSetupModel.PeriodId)
+                            <label class="required-field">*</label>
+                        </span>
+                        <span class="field" style="width:50%;">
+                            @Html.DropDownListFor(model => model.GratuityInterestRateSetupModel.PeriodId, Model.GratuityInterestRateSetupModel.PeriodList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:35%;">
+                            @Html.LabelFor(model => model.GratuityInterestRateSetupModel.InterestRate)
+                            <label class="required-field">*</label>
+                        </span>
+                        <span class="field" style="width:50%;">
+                            @Html.TextBoxFor(model => model.GratuityInterestRateSetupModel.InterestRate)
+                        </span>
+                    </div>
+                </fieldset>
+            </div>*@
+        </div>
+
+        <div class="clear"></div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSave" style="margin-right: 8px;" />
+            }
+
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    $(function () {
+        $("#btnCancel").live("click", function () {
+            document.getElementById('frm').reset();
+            var url = '@Url.Action("Index", new { })';
+            window.location.href = url;
+        });
+
+        $('#btnSave').click(function (event) {
+            event.preventDefault();
+            
+            var url = '@Url.Action("Create", "FixedParameters")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+
+            $.post(url, serializedForm, function (obj) {  //Post to action
+
+                if (obj != null) {
+                    var url = '@Url.Action("Index", new { })';
+                    window.location.href = url;
+                }
+                else {
+                    $("#message").html("<b>" + obj + "</b>").css("color", "red");
+                }
+            });
+        });
+
+    })
+</script>

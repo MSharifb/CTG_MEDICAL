@@ -1,0 +1,560 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.OnlineWelfareFundApplicationInformationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<div class="form-horizontal">
+
+    <fieldset>
+        <legend> Applicant Information </legend>
+        <div class="form-group">
+
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.strMode)
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.LabelFor(model => model.EmpID, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.EmpID, new { @class = "form-control read-only", @readonly = true })
+            </div>
+
+            @Html.LabelFor(model => model.Department, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.Department, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control read-only", @readonly = true })
+            </div>
+
+            @Html.LabelFor(model => model.JoiningDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+
+                @Html.TextBoxFor(model => model.JoiningDate, new { @class = "form-control read-only", @readonly = true })
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Designation, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+
+                @Html.TextBoxFor(model => model.Designation, new { @class = "form-control read-only", @readonly = true })
+            </div>
+
+            @Html.LabelFor(model => model.ConfirmationDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+
+                @Html.TextBoxFor(model => model.ConfirmationDate, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ServiceDuration, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+
+                @Html.TextBoxFor(model => model.ServiceDuration, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+
+        <div class="clear"></div>
+    </fieldset>
+
+    <fieldset>
+        <legend> Application Details </legend>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.ApplicationDate, new { @class = "form-control required" })
+            </div>
+            @Html.LabelFor(model => model.RefNo, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.RefNo, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationNo, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.ApplicationNo, new { @class = "form-control read-only", @readonly = true })
+            </div>
+            @Html.LabelFor(model => model.WelfareFundCategoryId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.WelfareFundCategoryId, Model.WelfareFundCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required", onchange = "LoadReason();" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.HiddenFor(model => Model.MaxAmount)
+            @Html.LabelFor(model => model.AppliedAmount, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.AppliedAmount, new { @class = "form-control required" })
+            </div>
+            @Html.LabelFor(model => model.Reason, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.Reason, Model.ReasonList, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AppTo, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextAreaFor(model => model.AppTo, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subject, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-10">
+                @Html.TextBoxFor(model => model.Subject, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Body, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-10">
+                @Html.TextAreaFor(model => model.Body, new { @class = "form-control required", @rows = 10 })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Signature", new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10 portrait-box">
+                <span id="portrait-holder" class="applicant-img-preview">
+                    @if (Model.SignatureAttachment != null)
+                    {
+                        <img id="mainPortrait" alt="Applicant Photo" height="100" width="180" src="data:image;base64,@System.Convert.ToBase64String(Model.SignatureAttachment)" />
+                    }
+                    <img id="previewImg" class="applicant-img-preview" src="#" alt="" />
+
+                </span>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend> Forward To </legend>
+        @if (Model.IsConfigurableApprovalFlow)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.SignatoryId, new { @class = @"col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(model => model.SignatoryId, Model.SignatoryList, new { @class = "form-control required" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                @Html.HiddenFor(model => model.SignatoryId)
+                @Html.LabelFor(model => model.SignatoryEmpId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.SignatoryEmpId, new { @style = "width:150px", @class = "form-control read-only required", @readonly = true })
+                </div>
+                <div class="col-sm-2">
+                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SignatoryEmpName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.SignatoryEmpName, new { @class = "form-control read-only", @readonly = true })
+                </div>
+            </div>
+
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SignatoryEmpDesignation, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SignatoryEmpDesignation, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+    </fieldset>
+    <div class="clear"></div>
+    <div id="divEmpList">
+        <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+            <p>
+                Your browser does not support iframes.
+            </p>
+        </iframe>
+    </div>
+    <br />
+    <div class="clear">
+    </div>
+
+    <fieldset>
+        <legend>Attachment</legend>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Attachment, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                <input type="file" name="attachment" id="Attachment" />
+            </div>
+        </div>
+
+        <div style="width: 70%">
+            <div class="clear"></div>
+            <div class="text-right">
+                <button class="btn btn-success" id="btnAddAttachment"><i class="fa fa-plus"></i> Add</button>
+                @*<input id="btnAddAttachment" class="btn btn-success" type="button" value="Add" />*@
+            </div>
+            <div class="clear">
+            </div>
+            <table id="attachment" class="contenttable custom-grid" width="100%">
+                <thead>
+                    <tr>
+                        <th width="20%" align="center">
+                            Title
+                        </th>
+                        <th width="8%" align="center">
+                            View
+                        </th>
+                        <th width="5%">
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.strMode == "Edit") { Html.RenderPartial("_DetailAtt", Model); }}
+                </tbody>
+
+            </table>
+        </div>
+
+    </fieldset>
+    <fieldset>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApplicationStatusId, new { @class = @"col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                <span class="application-status-select">
+                    @Html.DropDownListFor(model => model.ApplicationStatusId, Model.ApplicationStatusList, new { @class = "form-control required" })
+                    @Html.TextBoxFor(model => model.ApplicationStatusName, new { @class = "form-control read-only", @readonly = true })
+                </span>
+            </div>
+        </div>
+    </fieldset>
+    @if (@Model.ApprovalHistory != null && @Model.ApprovalHistory.Count > 0)
+    {
+        <fieldset>
+            <legend>
+                Approval History
+            </legend>
+            @{Html.RenderPartial("~/Areas/WFM/Views/OnlineWelfareFundApplicationInformation/_ApprovalHistory.cshtml", @Model.ApprovalHistory);}
+        </fieldset>
+    }
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+    function openEmployee() {
+        //debugger;
+        var url = '@Url.Action("EmployeeSearch", "OnlineWelfareFundApplicationInformation")?UseTypeEmpId=1';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setEmpData(id) {
+
+        $('#SignatoryId').val(id)
+        if (id == $('#EmployeeId').val()) {
+            $("#divEmpList").dialog('close');
+            alert("Applicant and the Signatory cannot be the same person");
+            return;
+        }
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+
+    }
+
+    $('#SignatoryId').on('change', function () {
+        GetEmployeeInfo();
+    });
+
+    function GetEmployeeInfo() {
+        var empId = $('#SignatoryId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "OnlineWelfareFundApplicationInformation")';
+        if (empId > 0) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { employeeId: empId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $("#SignatoryEmpId").val(result.EmpID);
+                $('#SignatoryEmpName').val(result.EmployeeName);
+                $("#SignatoryEmpDesignation").val(result.Designation);
+            }
+        });
+        }
+
+        //var form = $('#frm');
+        //var serializedForm = form.serialize();
+
+        //if (empId > 0) {
+        //    $.post(url, serializedForm, function (obj) {
+        //        $("#SignatoryEmpId").val(obj.EmpID);
+        //        $('#SignatoryEmpName').val(obj.EmployeeName);
+        //        $("#SignatoryEmpDesignation").val(obj.Designation);
+        //        $("#SignatoryEmpPhone").val(obj.Phone);
+        //        $("#SignatoryEmpEmail").val(obj.Email);
+        //    }, "json");
+        //}
+
+        return false;
+    }
+
+    $('#SignatoryEmpId').on('change', function () {
+        GetEmployeeInfo();
+    })
+
+    function Closing() {
+
+    }
+</script>
+
+@*for attachment table*@
+<script type="text/javascript">
+    $('#btnAddAttachment').on('click', function (e) {
+        e.preventDefault();
+        $("#message").empty();
+        var title = $('#Title').val();
+        $("#Title").removeClass("border-red");
+
+        if (title == null || title == "") {
+            $("#Title").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+
+        var url = '@Url.Action("AddAttachemnt", "OnlineWelfareFundApplicationInformation")';
+
+        //another way
+        var xhr = new XMLHttpRequest();
+        var fd = new FormData();
+        fd.append("Title", title);
+        fd.append("file", document.getElementById('Attachment').files[0]);
+
+        xhr.open("POST", url, true);
+        xhr.send(fd);
+        xhr.addEventListener("load", function (event) {
+            if (event.target.response != 'Invalid') {
+                $("#attachment tbody").append(event.target.response);
+            }
+
+        }, false);
+    });
+
+    function RemoveDb(el, id, url) {
+        $("#message").empty();
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    function LoadReason() {
+        var welfareFundId = $('#WelfareFundCategoryId').val();
+        $("#MaxAmount").val('');
+
+        if (welfareFundId != null && welfareFundId != '') {
+            LoadReasonDDList(welfareFundId);
+
+            var url = '@Url.Action("LoadAmount","OnlineWelfareFundApplicationInformation")' + '?welfareFundId=' + welfareFundId;
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+
+            $.post(url, serializedForm, function (obj) {
+                $("#MaxAmount").val(obj.Amount);
+            }, "json");
+        }
+    }
+
+    function LoadReasonDDList(welfareFundId) {
+        var reason = $('#Reason');
+        reason.empty();
+        reason.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (welfareFundId != null && welfareFundId != '') {
+            $.getJSON('@Url.Action("LoadReasonDDList")', { welfareFundId: welfareFundId }, function (data) {
+                $.each(data, function (index, obj) {
+                    reason.append($('<option/>', {
+                        value: obj.Id,
+                        text: obj.Name
+                    }));
+                });
+            });
+        }
+    }
+
+    $("#AppliedAmount").on('change keyup blur', function () {
+
+        $("#message").empty();
+        var welfareFundId = $('#WelfareFundCategoryId').val();
+        $("#WelfareFundCategoryId").removeClass("border-red");
+        $("#AppliedAmount").removeClass("border-red");
+
+        if (welfareFundId == null || welfareFundId == "") {
+            $("#WelfareFundCategoryId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please, Select Welfare Fund Category First. </span>  </div> ");
+            $('#AppliedAmount').val('');
+        }
+
+        var appliedAmount = parseFloat($('#AppliedAmount').val());
+        var maxAmount = parseFloat($('#MaxAmount').val());
+
+        if (appliedAmount > maxAmount) {
+            $("#AppliedAmount").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Applied amount will not more than " + maxAmount + "</span>  </div> ");
+            $('#AppliedAmount').val('');
+        }
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        setTimeout(ToggleApplicationStatus, 500);
+        showErrMsg();
+        $('#SignatoryId').trigger('change');
+        setTimeout(ToggleSubmitButton, 500);
+    });
+
+    function ToggleApplicationStatus() {
+        //debugger;
+        if ('@Model.strMode' == 'Edit') {
+            var applicationStatus = '@Model.ApplicationStatusName';
+            var statusId = '@Model.ApplicationStatusId';
+            if (applicationStatus == "Submitted" || applicationStatus == "Submit") {
+                $('#ApplicationStatusName').val("Submitted");
+                $("#btnSave").hide();
+                $('.application-status-select select').hide();
+            }
+            if (applicationStatus == "Draft") {
+                $("#btnSave").text(' Update');
+                $('.application-status-select select').show();
+                $('.application-status-select select').val(statusId);
+                $('.application-status-select input[type=text]').hide();
+            }
+            else {
+                $('#ApplicationStatusName').val(applicationStatus);
+                $("#btnSave").hide();
+                $('.application-status-select select').hide();
+            }
+        }
+        else {
+            $('.application-status-select select').show();
+            $('.application-status-select input[type=text]').hide();
+        }
+    }
+
+    function showErrMsg() {
+
+        if ('@Model.strMode' == 'Edit') {
+            $("#btnSave").text(' Update');
+        }
+    }
+
+    $('#ApplicationStatusId').on('change', function () {
+        ToggleSubmitButton();
+    })
+
+    function ToggleSubmitButton() {
+        var selectedStatus = $('#ApplicationStatusId option:selected').text();
+        $('#btnSave').text(selectedStatus);
+    }
+</script>
+@*View*@
+
+<div id="divView">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divView").dialog({ autoOpen: false, draggable: true, modal: true, height: 600, width: 700, title: 'Application', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function ViewApplicantInfo(el, id , type) {
+
+        var url = '@Url.Action("ViewApplicantInfo", "OnlineWelfareFundApplicationInformation")';
+        if (id > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: id, type: type },
+                timeout: 5000,
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                },
+                success: function (result) {
+                    $('#divView').html(result);
+                }
+            });
+
+            $("#divView").dialog('open');
+            return false;
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+@*View End*@

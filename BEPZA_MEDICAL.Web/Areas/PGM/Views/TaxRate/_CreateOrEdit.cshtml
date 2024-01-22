@@ -1,0 +1,178 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxRate.TaxRateModel
+@using ERP_BEPZA.Web.Helpers
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        showErrMsg();
+
+        if ('@Model.Mode' == "Edit")
+        {
+            $("#NumberOfSlab").css('background-color', '#F2F5F8');
+            $('#NumberOfSlab').attr('readonly', 'true');
+        }
+        else
+        {
+            $('#NumberOfSlab').removeAttr('readonly');
+        }
+
+        $('#NumberOfSlab').live("change", function () {
+
+            $('.dynamicRow').each(function () {
+                $(this).remove();
+            })
+
+            var url = '@Url.Action("AddDetail", "TaxRate")'
+            var Value = $(this).val();
+
+
+            if (Value <= 10) {
+                $('#message').html('');
+
+                for (a = 0; a < Value; a++) {
+
+                    var table = $('#grid')
+                    $.ajax({
+                        url: url,
+                        cache: false,
+                        success: function (html) {
+                            $(table).append(html);
+                        },
+                        complete: function () {
+                            $('.dynamicRow').each(function () {
+                                $(this).find('td:first').find('input:first').val($(this).index());
+                            })
+                        }
+                    });
+                }
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + 'Too Much Grade Step!' + "</b>");
+            }
+        })
+
+        if ('@Model.ErrMsg' != "") {
+
+            if ('@Model.IsError ' == "1") {
+                $('#message').html("<b style='color:Red'>" + '@Model.ErrMsg' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + '@Model.ErrMsg' + "</b>");
+            }
+        }
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+    $('#IncomeYear').live('change', function () {
+        var incomeYear = $(this).val();
+        var len = 0;
+        //alert(incomeYear);
+        $('#AssessmentYear').val("");
+        incomeYear = incomeYear.split('-');
+       // alert(incomeYear[0].length);
+        if (incomeYear[0].length == 4) {
+            $('#AssessmentYear').val((parseInt(incomeYear[0]) + 1) + '-' + (parseInt(incomeYear[1]) + 1));
+        }
+    });
+
+</script>
+ <script type="text/javascript">
+     $(document).ready(function () {
+         $("#LowerLimit,#UpperLimit,#TRate").keydown(function (event) {
+
+             if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                 return;
+             }
+             else {
+                 if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                     event.preventDefault();
+                 }
+             }
+         });
+     });
+
+</script>
+<div class="GroupBox" id="message">
+    @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+</div>
+
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.IncomeYear)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.IncomeYear, Model.IncomeYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.AssessmentYear)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.AssessmentYear)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AssesseeTypeId)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.AssesseeTypeId, Model.ApplicableForList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.NumberOfSlab)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.NumberOfSlab)
+            </span>
+        </div>
+    </div>
+    
+    <div class="GroupBox">
+        <div class="row" align="center">
+            <div style="width: 60%">
+                <table id="grid" class="contenttable" width="95%">
+                    <tr>
+                        <th width="10%" align="center">
+                            Slab No.
+                            <label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                        <th width="25%" align="center">
+                            Lower Limit
+                            <label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                        <th width="25%" align="center">
+                            Upper Limit
+                            <label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                        <th width="25%" align="center">
+                            Tax Rate
+                            <label style='color: red; font-weight: normal;'>
+                                *</label>
+                        </th>
+                    </tr>
+                    @if (Model != null && Model.TaxRateDetail != null)
+                    {
+                        foreach (var x in Model.TaxRateDetail)
+                        {
+                        @Html.Partial("_Detail", x);
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+   

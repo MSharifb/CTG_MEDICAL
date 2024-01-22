@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Site Under Maintenance</title>
+    <style type="text/css">
+        body {
+            background-color: #e9d4b3;
+            font-family: verdana, georgia;
+        }
+
+    </style>
+</head>
+<body>
+    <div style="margin-left: auto; margin-right: auto; text-align: center;">
+        <h1>This site is down for maintenance.</h1>
+        <h3>We will come back very shortly. Please check back in thirty minutes.</h1>
+        <h3>Thank you for your patience.</h1>
+            <img src="~/Content/Images/software-maintenance.jpg" alt="[Under Maintenance]" />
+    </div>
+</body>
+</html>

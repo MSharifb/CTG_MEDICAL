@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="97c0bde3e23d4916b9c0a04f2986a745" Name="Diagram1" ZoomLevel="88">
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_ReasonOfWelfareCategory" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfoDetailAttachment" Width="1.5" PointX="5.25" PointY="11.125" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfoDetailAttachment" Width="1.5" PointX="5.25" PointY="17.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfo" Width="1.5" PointX="9.625" PointY="10.375" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoCommittee" Width="1.5" PointX="9.875" PointY="15" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplication" Width="1.5" PointX="10.375" PointY="0.875" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfoEmployeeDetails" Width="1.5" PointX="11.875" PointY="10.75" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplicationDetails" Width="1.5" PointX="12.625" PointY="1.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo" Width="1.5" PointX="7.625" PointY="1.5" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfo_WFM_PaymentInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_CycleInfo" Width="1.5" PointX="10.375" PointY="6" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundPolicy" Width="1.5" PointX="3" PointY="22.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.vwWfmApplicationInformation" Width="1.5" PointX="14.375" PointY="6.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoEmployeeDetails" Width="1.5" PointX="9.875" PointY="20.25" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfo" Width="1.5" PointX="3" PointY="7.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfo" Width="1.5" PointX="3" PointY="15.5" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory" Width="1.5" PointX="0.75" PointY="12.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

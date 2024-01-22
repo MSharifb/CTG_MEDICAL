@@ -1,0 +1,44 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.EstimationSetupViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("EstimationSetupViewModelList"))
+{
+    <tr>
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.EstimationHeadId)
+        <td class="itemCode" style="width:150px;">@Html.TextBoxFor(model => model.ItemCode, new { @required = "required" })</td>
+        <td class="itemName" style="width:250px;">@Html.TextBoxFor(model => model.ItemName, new { @required = "required" })</td>
+        <td class="estimationUnit">@Html.DropDownListFor(model => model.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @required = "required", @width = "80px" })</td>
+        <td class="estimationUnitPrice">@Html.TextBoxFor(model => model.UnitPrice, new { @required = "required" })</td>
+        <td>@Html.TextBoxFor(model => model.ItemDescription)</td>
+        <td class="delete-area" style="width:70px;">
+            <button type="button" class="btn btn-sm btn-primary btnDelete" id="btnDelete" style="padding:3px;">
+                <i class="fa fa-trash fa-lg"></i>
+            </button>
+        </td>
+    </tr>
+}
+
+<style type="text/css">
+    .estimationUnitPrice {
+        width: 100px;
+    }
+
+        .estimationUnitPrice input[type=text] {
+            text-align: right;
+        }
+
+    .estimationUnit {
+        width: 110px;
+    }
+
+        .estimationUnit select {
+            width: 100px;
+        }
+</style>
+<script type="text/javascript">
+    $('table tbody tr .delete-area .btn').on('click', function () {
+        $(this).closest('tr').remove();
+        return false;
+    });
+</script>

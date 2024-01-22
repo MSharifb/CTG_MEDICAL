@@ -1,0 +1,93 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.DepreciationViewModel
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("DepreciationProcess", "Depreciation", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+    <div class="form-horizontal">
+        <fieldset>
+            <legend>Depreciation Info</legend>   
+            <div class="form-group">
+                @Html.LabelFor(model => model.FinancialYearId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(model => model.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required" })
+                </div>
+                @Html.LabelFor(model => model.Remarks, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextAreaFor(model => model.Remarks, new { @maxlength = "500", @class = "form-control" })
+                </div>
+            </div>     
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.strYear, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(model => model.strYear, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(model => model.strMonth, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(model => model.strMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+            </div>*@
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.ProcessDate, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(model => model.ProcessDate, new { @class = "form-control" })
+                </div>
+               
+            </div>*@        
+            
+        </fieldset>
+    </div>
+    <div class="text-right">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <button class="btn btn-success" id="btnAdd"><i class="fa fa-repeat"></i> Process</button>
+            @*<input type="button" value="Process" id="btnAdd" name="btnSubmit" />*@
+        }
+    </div>
+
+}
+
+<script type="text/javascript">
+
+    $('#btnAdd').on('click', function (e) {
+        e.preventDefault();      
+        var financialYear = $('#FinancialYearId').val();
+        //var year = $('#strYear').val();
+        //var month = $('#strMonth').val();
+        //var processDate = $('#ProcessDate').val();
+        //var processDate = $('#ProcessDate').val();
+        var remarks = $('#Remarks').val();
+
+        var url = '@Url.Action("DepreciationProcess", "Depreciation")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (financialYear == '') {
+            alert('Please select financial year.');
+            //if (month == '') {
+            //    alert('Please select month.');
+            //}
+        }
+        else {
+
+            $.post(url, { financialYearId: financialYear, remarks: remarks }, function (obj) {
+                alert(obj.Message);
+
+                if (obj.Success == true) {
+                    $("#divEmpList").dialog('close');
+                    var url = '@Url.Action("Index", "Depreciation")';
+                    window.location.href = url;
+                }
+
+            }, "json");
+        }
+
+
+    });
+
+</script>

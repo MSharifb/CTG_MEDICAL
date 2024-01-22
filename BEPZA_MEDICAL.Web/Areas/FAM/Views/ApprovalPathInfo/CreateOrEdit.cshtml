@@ -1,0 +1,96 @@
+﻿@model MFS_IWM.Web.Areas.FAM.Models.ApprovalPathInfo.ApprovalPathDetails
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>ApprovalPathDetails</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NodeId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NodeId)
+            @Html.ValidationMessageFor(model => model.NodeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PathId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PathId)
+            @Html.ValidationMessageFor(model => model.PathId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoleDesignationId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RoleDesignationId)
+            @Html.ValidationMessageFor(model => model.RoleDesignationId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NodeEmpId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NodeEmpId)
+            @Html.ValidationMessageFor(model => model.NodeEmpId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.NodeOrder)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.NodeOrder)
+            @Html.ValidationMessageFor(model => model.NodeOrder)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ParentNodeEmpId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ParentNodeEmpId)
+            @Html.ValidationMessageFor(model => model.ParentNodeEmpId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IUser)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IUser)
+            @Html.ValidationMessageFor(model => model.IUser)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EUser)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EUser)
+            @Html.ValidationMessageFor(model => model.EUser)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IDate)
+            @Html.ValidationMessageFor(model => model.IDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EDate)
+            @Html.ValidationMessageFor(model => model.EDate)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

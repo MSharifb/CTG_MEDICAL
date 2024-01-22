@@ -1,0 +1,164 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRClosingViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend> FDR Information </legend>
+
+        <div class="form-group">
+            @Html.HiddenFor(model => model.FixedDepositInfoId)
+            @Html.LabelFor(model => model.FixedDepositInfoId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.FDRNo, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.FDRDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.FDRDate, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            @Html.LabelFor(model => model.Bank, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.Bank, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.Branch, new { @class = "col-sm-2 control-label " })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.Branch, new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FDRAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.FDRAmount, new { @class = "form-control required" })
+            </div>
+        </div>
+
+    </fieldset>
+    <fieldset>
+        <legend> FDR Closing History </legend>
+
+        <div class="form-horizontal">
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>Maturity Date</th>
+                        <th>Renew #</th>
+                        <th>FDR Amount</th>
+                        <th>Interest Rate(%)</th>
+                        <th>Interest Amount</th>
+                        <th>Tax Amount</th>
+                        <th>Bank Charge</th>
+                        <th>Profit Amount</th>
+                        <th>Closing Amount</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.FDRClosingHistoryList.Count; i++)
+                    {
+                        var item = Model.FDRClosingHistoryList.ToList()[i];
+                        <tr>
+                            <td style="text-align: center">
+                                @Html.Encode(@item.MaturityDate.Value.ToString("yyyy-MM-dd"))
+                            </td>
+                            <td style="text-align: center">
+                                @Html.Encode(@item.Renew)
+                            </td>
+                            <td style="text-align: right">
+                                @Html.Encode(@item.FDRAmount)
+                            </td>
+
+                            <td style="text-align: right">
+                                @Html.Encode(@item.InterestRate)
+                            </td>
+                            <td style="text-align: right">
+                                @Html.Encode(@item.InterestAmount)
+                            </td>
+                            <td style="text-align: right">
+                                @Html.Encode(@item.TaxAmount)
+                            </td>
+
+                            <td style="text-align: right">
+                                @Html.Encode(@item.BankCharge)
+                            </td>
+                            <td style="text-align: right">
+                                @Html.Encode(@item.ProfitAmount)
+                            </td>
+                            <td style="text-align: right">
+                                @Html.Encode(@item.ClosingAmount)
+                            </td>
+                            <td width="5%" style="text-align: center">
+                                <a href="#" title="view" onclick="ViewInstallationInfo(this,@Model.FixedDepositInfoId)">
+                                    <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+</div>
+
+@*View*@
+
+<div id="divView">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divView").dialog({ autoOpen: false, modal: true, height: 500, width: 800, title: 'View Schedule', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function ViewInstallationInfo(el, id) {
+
+        var url = '@Url.Action("GetInstallationInfo", "FDRClosing")';
+        if (id > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: id },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                },
+                success: function (result) {
+                    $('#divView').html(result);
+                }
+            });
+
+            $("#divView").dialog('open');
+            return false;
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+@*View End*@

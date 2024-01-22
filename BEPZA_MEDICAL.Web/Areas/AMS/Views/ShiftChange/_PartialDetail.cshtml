@@ -1,0 +1,40 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftChange.ShiftChangeViewModel
+@using ERP_BEPZA.Web.Helpers
+
+    <tr class="dynamicRow">
+        @using (Html.BeginCollectionItem("ShiftChange"))
+        {
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.EmployeeId)
+            @Html.HiddenFor(x => x.DepartmentId)
+            @Html.HiddenFor(x=> x.ApplyType)
+            <td width="5%" align="center">
+               @Html.EditorFor(x=> x.IsMark)
+            </td>
+            <td width="10%" style="text-align: center">
+                @Html.Encode(Model.EmpId)
+            </td>
+            <td width="15%" style="text-align: center">
+                 @Html.Encode(Model.EmployeeName)
+            </td>
+            <td width="10%" align="center">
+                @Html.Encode(Model.DesignationName)
+            </td>
+            <td width="10%" align="center">
+                @Html.Encode(Model.DateOfJoining.ToString("dd/MM/yyyy"))
+            </td>
+            <td width="10%" align="center">
+                @Html.Encode(Model.RestDay)
+            </td>
+            <td width="10%" align="center">
+                @Html.DropDownListFor(x => x.RosterId, Model.ShiftGroup, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl", @style = "width:100%" })
+            </td>
+            <td width="10%" align="center">
+                @Html.DropDownListFor(x => x.ShiftId, Model.Shift, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl ", @style = "width:100%" })
+            </td>
+            <td width="10%" align="center">
+                @Html.EditorFor(model => model.EffectiveDate)
+            </td>           
+            
+        }
+    </tr>

@@ -1,0 +1,188 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.WithheldSalaryPayment.WithheldSalaryPaymentViewModel
+@using ERP_BEPZA.Web.Helpers
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        showErrMsg();
+
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+            //$("#message").delay(10000).hide('slow');
+        }
+        else {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "green");
+            //$("#message").delay(10000).hide('slow');
+        }
+    }
+  
+</script>
+<div class="GroupBox" id="message">
+    @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+</div>
+@using (Html.BeginForm("Create", "WithheldSalaryPayment", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">@* @Html.HiddenFor(model => model.SalaryId)
+            @Html.HiddenFor(model=>model.EmployeeId)*@
+                @Html.LabelFor(model => model.SalaryYear)
+                <label class="required-field">
+                    *</label>
+            </span><span class="field">
+                @Html.TextBoxFor(m => m.SalaryYear, new { @class = "read-only", @readonly = true })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.SalaryMonth)
+                <label class="required-field">
+                    *</label>
+            </span><span class="field">
+                @Html.TextBoxFor(m => m.SalaryMonth, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            @*<span class="label">@Html.LabelFor(m => m.PaymentDate)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(m => m.PaymentDate)
+            </span>*@@*   <span class="label-right">
+                @Html.LabelFor(model => model.Payable)
+            </span><span class="field">
+                @Html.TextBoxFor(m => m.Payable, new { @class = "read-only", @readonly = true })
+            </span>*@
+        </div>
+        @*        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeInitial)
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.EmployeeInitial, new { @class = "read-only", @readonly = true })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.FullName)
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.FullName, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AccountNo)
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.AccountNo, new { @class = "read-only", @readonly = true })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.BankNBranch)
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.BankNBranch, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Remarks)
+            </span><span class="field">
+                @Html.TextAreaFor(model => model.Remarks, new { @style = "width:570px", @maxLength = "200" })
+            </span>
+        </div>*@
+        <div class="clear">
+        </div>
+    </div>
+    
+    <div class="GroupBox">
+        <div class="row" align="center">
+            <div style="width: 80%">
+                <table id="grid" class="contenttable" width="95%">
+                    <tr>
+                        @if (Model.Mode == "Create")
+                        {
+                            <th width="4%" align="center">
+                                @Html.CheckBoxFor(model => model.IsPaid, new { id = "SelectAll" })
+                            </th>
+                        }
+                        <th width="20%" align="center">
+                            Payment Date
+                            <label style='color: red'>
+                                *
+                            </label>
+                        </th>
+                        <th width="10%" align="center">
+                            Employee ID
+                        </th>
+                        <th width="30%" align="center">
+                            Employee Name
+                        </th>
+                        <th width="10%" align="center">
+                            Account No.
+                        </th>
+                        <th width="8%" align="center">
+                            Amount
+                        </th>
+                        <th width="20%" align="center">
+                            Remarks
+                        </th>
+
+                        @if (Model.Mode == "Edit")
+                        {
+                            <th width="10%" align="center">
+                                Rollback
+                            </th>
+                        }
+                    </tr>
+                    @if (Model != null && Model.PaymentList != null && Model.PaymentList.Count > 0)
+                    {
+                        foreach (var detail in Model.PaymentList)
+                        {
+                        @Html.Partial("_Detail", detail);
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+        @*<div class="row">
+            <span class="label">@Html.LabelFor(m => m.Remarks)
+            </span><span class="field">
+                @Html.TextAreaFor(m => m.Remarks, new { @style = "width:590px;" })
+            </span>
+        </div>*@
+        <div class="clear">
+        </div>
+    </div>
+       
+    <script type="text/javascript">
+
+        $("#SelectAll").click(function () {
+
+            if (this.checked == 1) {
+                $(".eachSelect").attr("checked", "checked");
+            } else {
+                $(".eachSelect").removeAttr("checked");
+
+            }
+
+        });
+
+        function WithheldRollbackDb(el, id, url) {
+            $("#message").empty();
+            if (id == 0 || id == undefined) {
+                $(el).parent().parent().remove();
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                    success: function (result) {
+                        $("#message").html('<b style=\"color:Green\">' + result.Message + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,0 +1,15 @@
+﻿@*@model Dictionary<int, string>*@
+@*<select name="TitleId">
+    <option selected="selected" value='0'>All</option>
+    <option value='1'>test</option>
+    @if (Model != null)
+    {
+        foreach (KeyValuePair<int, string> value in Model)
+        {
+            <option value='@value.Key.ToString()'>@value.Value</option>
+        }
+    }
+</select>*@
+
+@model IEnumerable<SelectListItem>
+@Html.DropDownList("",Model)

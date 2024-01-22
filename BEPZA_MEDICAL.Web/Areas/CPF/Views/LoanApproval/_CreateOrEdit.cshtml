@@ -1,0 +1,131 @@
+﻿@model ERP_BEPZA.Web.Areas.CPF.Models.LoanApplication.LoanApplicationViewModel
+@using ERP_BEPZA.Web.Helpers
+<div class="GroupBox">
+    <fieldset>
+        <legend>Member Information</legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeCode)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmployeeCode)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.EmployeeInitial)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmployeeInitial)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeName)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmployeeName)
+            </span><span class="label-right">
+                @Html.HiddenFor(model => model.MembershipId)
+                @Html.LabelFor(model => model.MembershipCode)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.MembershipCode)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.PeriodId)
+                @Html.LabelFor(model => model.CpfPeriod)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.CpfPeriod)
+            </span><span class="label-right">
+               
+                @Html.LabelFor(model => model.ApplicationStatus)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.ApplicationStatus)
+            </span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Loan Information</legend>
+        <div class="row hideButton">
+            <span class="label">
+                @Html.LabelFor(model => model.ApplicationNo)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.ApplicationNo)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.LoanRequestDate)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.LoanRequestDate, new { @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeBalance)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmployeeBalance)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.LoanRequestAmount)
+                <label style='color: red'>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.LoanRequestAmount, new { @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.NoOfInstallment)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.NoOfInstallment, new { @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+                @*@Html.DropDownListFor(model => model.NoOfInstallment, Model.NoOfInstallmentList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required", @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })*@
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.ApproveAmount)
+            </span><span class="field">
+                @Html.EditorFor(model => model.ApproveAmount)
+            </span>
+        </div>
+       
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Reason)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.TextAreaFor(m => m.Reason, new { @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;width:570px;", @maxlength = "500" })
+            </span>
+        </div>
+
+         <div class="row" >
+            <span class="label" style="margin-top:10px;">
+                @Html.LabelFor(model => model.Comments)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field" style="margin-top:10px;">
+                @Html.TextAreaFor(m => m.Comments, new {@style = "width:570px;", @maxlength = "500" })
+            </span>
+        </div>
+    </fieldset>
+    <div class="clear">
+    </div>
+</div>
+
+
+

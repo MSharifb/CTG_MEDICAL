@@ -1,0 +1,136 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.OvertimePaymentApproval.OvertimePaymentApprovalViewModel
+    @Html.HiddenFor(m => m.Mode)
+    <div class="GroupBox" id="shiftInfo">
+        @Html.HiddenFor(m => m.Id)
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.SalaryYear)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(m => m.SalaryYear, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+
+                </span>
+            </div>
+            <div class="row roster-ctr">
+                <div class="label">
+                    @Html.LabelFor(model => model.SalaryMonth)
+                    <label class="required-field">*</label>
+                </div>
+                <div class="field">
+                    @Html.DropDownListFor(m => m.SalaryMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </div>
+            </div>
+            <div class="row roster-ctr">
+                <div class="label">
+                    @Html.LabelFor(model => model.DepartmentId)
+                    <label class="required-field">*</label>
+                </div>
+                <div class="field">
+                    @Html.DropDownListFor(m => m.DepartmentId, Model.DepartmentList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </div>
+            </div>
+
+        <div class="clear">
+        </div>
+    </div>
+
+    <div class="GroupBox" id="DetailInfo">
+    
+        <table id="shiftGrid" class="contenttable fixedcontenttable custom-grid">
+            <thead>
+                <tr>
+                    <th>
+                        I.C No.
+                    </th>
+                    <th>
+                       Employee Name
+                    </th>
+                    <th>
+                        Department 
+                    </th>
+                    <th>
+                        Overtime Hours
+                    </th>
+                    <th id="thChequeNo">
+                        Approved Hours
+                    </th>
+                    <th>
+                        Granted Amounts
+                    </th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+
+        </table>
+    </div>
+
+<br/>
+<div class="clear">
+</div>
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('#SalaryYear').live('change', function () {
+
+                if ($('#SalaryYear').val() != "" && $('#SalaryMonth').val() != "" && $('#DepartmentId').val() != "") {
+
+                    GetOvertimeInfo($('#SalaryYear').val(), $('#SalaryMonth').val(), $('#DepartmentId').val());
+                }
+              
+            });
+
+            $('#SalaryMonth').live('change', function () {
+
+                if ($('#SalaryYear').val() != "" && $('#SalaryMonth').val() != "" && $('#DepartmentId').val() != "") {
+
+                    GetOvertimeInfo($('#SalaryYear').val(), $('#SalaryMonth').val(), $('#DepartmentId').val());
+                }
+               
+            });
+
+            $('#DepartmentId').live('change', function () {
+
+                if ($('#SalaryYear').val() != "" && $('#SalaryMonth').val() != "" && $('#DepartmentId').val() != "") {
+
+                    GetOvertimeInfo($('#SalaryYear').val(), $('#SalaryMonth').val(), $('#DepartmentId').val());
+                }
+               
+            });
+
+            function GetOvertimeInfo(salYear, salMonth, depId)
+            {
+                $.ajax({
+                    url: '@Url.Action("GetOvertimeEmployee")',
+                    type: 'GET',
+                    data: { SalaryYear: $('#SalaryYear').val(), SalaryMonth: $('#SalaryMonth').val(), departmentId: $('#DepartmentId').val() },
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                    success: function (result) {
+                        $("#DetailInfo tbody").html(result);
+                    }
+                });
+            }
+        });
+       
+        </script>
+
+<script>
+    // new Add
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+
+
+

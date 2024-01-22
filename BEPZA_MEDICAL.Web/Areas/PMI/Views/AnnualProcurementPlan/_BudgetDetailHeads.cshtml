@@ -1,0 +1,50 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.AnnualProcurementPlan.AnnualProcurementPlanMasterViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@*@foreach(var item in @Model.BudgetDetailHeadList)
+{
+    <tr>
+        @Html.Partial("_BudgetDetailHead", item)
+    </tr>
+    <tr>
+        @Html.Partial("_BudgetDetail", Model.AnnualProcurementPlanDetailList.Where(q => q.APPHeadId == item.APPHeadId).ToList())
+    </tr>
+}*@
+<div style="width: 100%; overflow-x: scroll;">
+    @foreach (var item in @Model.BudgetDetailHeadList)
+    {
+        <div class="form-horizontal">
+            <table class="table table-bordered appTbl">
+                <thead>
+                    <tr>
+                        <th class="APPlotNo">Lot No.</th>
+                        <th class="packageNo">Package No.</th>
+                        <th class="construction">Construction <br /> Type</th>
+                        <th class="description">Description of Procurement Package as per DPP/TPP</th>
+                        <th class="unit">Unit</th>
+                        <th class="quantity">Quantity</th>
+                        <th class="procurement">Procurement Method & (Type)</th>
+                        <th class="source">Source of Fund</th>
+                        <th class="contract">Contract Approving Authority</th>
+                        <th class="estd">Estd. Cost in Taka (Lakh)</th>
+                        <th class="timeCode">Time code for process</th>
+                        <th class="invitation">Invitation for Tender</th>
+                        <th class="invitation">Tender Opening</th>
+                        <th class="invitation">Tender Evaluation</th>
+                        <th class="invitation">Approval to Award</th>
+                        <th class="invitation">Notification of Award</th>
+                        <th class="signing">Signing of contract</th>
+                        <th class="invitation">Total time to contract</th>
+                        <th class="completion">Completion of Contract</th>
+                        <th class="remarks">Remarks</th>
+                        <th class="control-option">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.Partial("_BudgetDetailHead", item)
+                    @Html.Partial("_BudgetDetail", Model.AnnualProcurementPlanDetailList.Where(q => q.APPHeadId == item.APPHeadId).ToList())
+                </tbody>
+            </table>
+        </div>
+    }
+    </div>

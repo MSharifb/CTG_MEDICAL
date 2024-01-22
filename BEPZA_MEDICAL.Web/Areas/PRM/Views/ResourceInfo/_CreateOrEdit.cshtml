@@ -1,0 +1,272 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ResourceInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+    });
+    // ******** functions for open popup *************
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 420, width: 750, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+        CheckHumanResourceForEdit();
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'text',
+            ascync: false,
+            timeout: 5000,
+            success: function (result) {
+                $('#divEmpList').html(result);
+            },
+            error: function () {
+                alert('System is unable to load data please try again.');
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+    }
+
+
+    function Closing() {
+
+    }
+    // ---------------------------------
+
+    function GetCategoryInfo() {
+        var RCId = $('#ResourceCategoryId').val();
+        var url = '@Url.Action("GetResourceCategoryDetail", "ResourceInfo")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        $('#UOM').val('');
+        $('#ActualRate').val('');
+        $('#BudgetRate').val('');
+
+        if (RCId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $("#UOM").val(obj.UOM);
+                $("#ActualRate").val(obj.ActualRate);
+                $("#BudgetRate").val(obj.BudgetRate);
+            }, "json");
+        }
+        return false;
+    }
+
+//    function GetEmployeeInfo() {
+//        var empId = $('#EmployeeId').val();
+//        var url = '@Url.Action("GetEmployeeInfo", "ResourceInfo")';
+//        var form = $('#frm');
+//        var serializedForm = form.serialize();
+
+//        $('#EmpId').val('');
+//        $('#EmployeeInitial').val('');
+//        $('#ResourceName').val('');
+//        $('#Designation').val('');
+//        $('#Division').val('');
+
+//        if (empId > 0) {
+//            $.post(url, serializedForm, function (obj) {
+//                $("#EmpId").val(obj.EmpId);
+//                $("#EmployeeInitial").val(obj.EmployeeInitial);
+//                $("#Designation").val(obj.Designation);
+//                $("#Division").val(obj.Division);
+//                $('#ResourceName').val(obj.FullName);
+//                $('input:hidden[name=ResourceName]').val(obj.FullName);
+//                $('select#ResourceTypeId').val(obj.ResourceTypeId);
+//                $('input#ResourceTypeId').val(obj.ResourceTypeId);
+//                LoadResourceCategory(obj.ResourceCategoryId);
+
+//            }, "json");
+//        }
+//        return false;
+//    }
+
+//    function CheckHumanResource() {
+//        var IsSelect = $('#IsHumanResource').attr('checked');
+//        if (IsSelect) {
+//            $(".emp").show();
+//            fnEnableDisableMode("ResourceTypeId");
+//            fnEnableDisableMode("ResourceCategoryId");
+//            fnEnableDisableMode("ResourceName");
+//        }
+//        else {
+//            $('#EmployeeId').val(0);
+//            $('#EmpId,#EmployeeInitial,#Designation,#Division').val('');
+//            $(".emp").hide();
+//            fnRemoveDisableMode("ResourceTypeId");
+//            fnRemoveDisableMode("ResourceCategoryId");
+//            fnRemoveDisableMode("ResourceName");
+//            $('#ResourceTypeId').val(0);
+//            $('#ResourceCategoryId').val(0);
+//            $('#ResourceName').val("");
+//            $('#UOM').val("");
+//            $('#ActualRate').val("");
+//            $('#BudgetRate').val("");
+//            $('#EffectiveDate').val("");
+//            $('#BudgetRate').val("");
+//            $('#Remarks').val("");
+//            jQuery('#IsExternal').removeAttr('checked');
+//            jQuery('#IsActive').removeAttr('checked');
+//        }
+//    }
+
+//    function CheckHumanResourceForEdit() {
+//        var IsSelect = $('#IsHumanResource').attr('checked');
+//        if (IsSelect) {
+//            $(".emp").show();
+//            fnEnableDisableMode("ResourceTypeId");
+//            fnEnableDisableMode("ResourceCategoryId");
+//            fnEnableDisableMode("ResourceName");
+//        }
+//        else {
+//            $('#EmployeeId').val(0);
+//            $('#EmpId,#EmployeeInitial,#Designation,#Division').val('');
+//            $(".emp").hide();
+//            fnRemoveDisableMode("ResourceTypeId");
+//            fnRemoveDisableMode("ResourceCategoryId");
+//            fnRemoveDisableMode("ResourceName");
+//        }
+//    }
+
+
+    function LoadResourceCategory(id) {
+        var parentID = $('#ResourceTypeId').val();
+        var childCtrl = $('#ResourceCategoryId');
+        childCtrl.empty();
+        childCtrl.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        if (parentID != null && parentID != '') {
+            $.getJSON('@Url.Action("LoadResourceCategory")', { Id: parentID }, function (items) {
+                $.each(items, function (index, item) {
+                    childCtrl.append($('<option/>', {
+                        value: item.Id,
+                        text: item.ResourceCategory
+                    }));
+                });
+                if (id > 0) {
+                    $("select#ResourceCategoryId").val(id);
+                    $('input#ResourceCategoryId').val(id);
+                    GetCategoryInfo();
+                }
+            });
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+
+<div class="GroupBox" id="message">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+</div>
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ResourceTypeId)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.ResourceTypeId, Model.ResourceTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required", @onchange = "LoadResourceCategory(0);" })
+            @Html.HiddenFor(model => model.ResourceTypeId)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.ResourceCategoryId)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.ResourceCategoryId, Model.ResourceCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required", @onchange = "return GetCategoryInfo();" })
+            @Html.HiddenFor(model => model.ResourceCategoryId)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ResourceName)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ResourceName)
+            @Html.HiddenFor(model => model.ResourceName)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.UOM)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.UOM, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ActualRate)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.ActualRate)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.BudgetRate)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.BudgetRate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EffectiveDate)
+            <label class="required-field">
+                *</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveDate)
+        </span><span class="label-right">
+            @Html.CheckBoxFor(model => model.IsExternal)
+            @Html.LabelFor(model => model.IsExternal)
+        </span><span class="label">
+            @Html.CheckBoxFor(model => model.IsActive)
+            @Html.LabelFor(model => model.IsActive)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks, new { @style = "width:570px" })
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.</p>
+    </iframe>
+</div>

@@ -1,0 +1,5 @@
+﻿@model System.Nullable<Decimal>
+@if (Model != null)
+{      
+    @Html.Encode(String.Format("{0:###,###.00}", Model))    
+}

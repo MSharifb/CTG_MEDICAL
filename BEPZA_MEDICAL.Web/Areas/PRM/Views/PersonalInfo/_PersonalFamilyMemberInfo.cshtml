@@ -1,0 +1,703 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalFamilyMemberInformationViewModel
+@using Microsoft.Web.Helpers;
+@using (Html.BeginForm(Model.ActionType, "PersonalInfo", FormMethod.Post, new { @encType = "multipart/form-data", id = "frm" }))
+{
+    <fieldset>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ActionType)
+        @Html.HiddenFor(d => d.Photo)
+        @Html.HiddenFor(d => d.isAddPhoto)
+        @Html.HiddenFor(d => d.Witness1EmpId)
+        @Html.HiddenFor(d => d.Witness2EmpId)
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(d => d.RelationId)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">@Html.DropDownListFor(model => model.RelationId, Model.RelationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })</span>
+                <span class="label-right">&nbsp; </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.isDependent)
+                    <label style="color: #3C78B5;">
+                        @Html.LabelFor(model => model.isDependent)
+                    </label>
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(d => d.TitleId)
+                </span><span class="field">@Html.DropDownListFor(model => model.TitleId, Model.TitleList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })</span>
+                <span class="label-right">
+                    @Html.LabelFor(d => d.FirstName)<label class="required-field">
+                        *
+                    </label>
+                </span> <span class="field">@Html.EditorFor(d => d.FirstName)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.LastName)</span> <span class="field">@Html.EditorFor(d => d.LastName)</span>
+                <span class="label-right">@Html.LabelFor(d => d.FullName)</span> <span class="field">@Html.EditorFor(model => model.FullName)</span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateofBirth)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.DateofBirth)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.Age)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.Age, new { @readonly = true, @style = "cursor:default;background-color:#f2f5f8; text-align:right;" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Gender)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+
+                    @Html.DropDownListFor(model => model.Gender, Model.GenderList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">
+                    @Html.LabelFor(d => d.MaritalStatusId)
+                    @* <label class="required-field">
+                            *
+                        </label>*@
+                </span><span class="field">@Html.DropDownListFor(model => model.MaritalStatusId, Model.MaritalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(d => d.ProfessionId)
+                    @* <label class="required-field">
+                            *
+                        </label>*@
+                </span> <span class="field">@Html.DropDownListFor(model => model.ProfessionId, Model.ProfessionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })</span>
+                <span class="label-right">@Html.LabelFor(d => d.DegreeLevelId)</span> 
+                <span class="field">@Html.DropDownListFor(model => model.DegreeLevelId, Model.DegreeLevelList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.BloodGroupId)</span> 
+                <span class="field">@Html.DropDownListFor(model => model.BloodGroupId, Model.BloodGroupList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })</span>
+                <span class="label-right">
+                    @Html.LabelFor(d => d.NationalityId)<label class="required-field">
+                        *
+                    </label>
+                </span> <span class="field">@Html.DropDownListFor(model => model.NationalityId, Model.NationalityList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.ContractNo)</span> <span class="field">@Html.EditorFor(model => model.ContractNo)</span>
+                <span class="label-right">@Html.LabelFor(d => d.FaxNo)</span> <span class="field">@Html.EditorFor(model => model.FaxNo)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.EmailAddress)</span> <span class="field">@Html.EditorFor(model => model.EmailAddress)</span>
+                <span class="label-right">@Html.LabelFor(d => d.NationalID)</span> <span class="field">@Html.EditorFor(model => model.NationalID)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.PresentAddress)</span>
+                <span class="field">@Html.TextAreaFor(d => d.PresentAddress, new { @maxlength = 200 })</span>
+                <span class="label-right">@Html.LabelFor(d => d.PermanentAddress)</span>
+                <span class="field">@Html.TextAreaFor(d => d.PermanentAddress, new { @maxlength = 200 })</span>
+            </div>
+
+            <div class="clear">
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(d => d.NomineeBankName)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(d => d.NomineeBankName)
+                </span>
+
+                <span class="label-right">
+                    @Html.LabelFor(d => d.NomineeBranchName)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(d => d.NomineeBranchName)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(d => d.NomineeAccountNo)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(d => d.NomineeAccountNo)
+                </span>
+                <span class="label-right">&nbsp; </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.isNomineeImmature)
+                    <label style="color: #3C78B5;">
+                        @Html.LabelFor(model => model.isNomineeImmature)
+                    </label>
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(d => d.NomineeAddress)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(d => d.NomineeAddress)
+                </span>
+                <span class="label-right">&nbsp; </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.isNomineeDisable)
+                    <label style="color: #3C78B5;">
+                        @Html.LabelFor(model => model.isNomineeDisable, new { style = "width:180px", rows = '1' })
+                    </label>
+                </span>
+                <div class="clear"></div>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(d => d.Remarks)
+                </span>
+                <span class="field">
+                    @Html.TextAreaFor(d => d.Remarks, new { @maxlength = 200 })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(d => d.PersonOnBehalfId)
+                </span>
+                <span class="field">
+                @Html.DropDownListFor(model => model.PersonOnBehalfId, Model.PersonOnBehalfList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <table style="width:100%">
+                <tr>
+                    <td style="width:50%">
+                        <div id="divWitness1" class="GroupBox" style="width:95%;height:170px">
+                            <legend>(1) Witness Information</legend>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness1Id)
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness1Id, new { style = "width:180px" })
+                                </span>
+                            </div>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness1Name, new { style = "width:150px" })
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness1Name, new { style = "width:180px", @class = "read-only", @readonly = true })
+                                </span>
+                            </div>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness1Designation, new { style = "width:150px" })
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness1Designation, new { style = "width:180px", @class = "read-only", @readonly = true })
+                                </span>
+                            </div>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness1Address, new { style = "width:150px" })
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness1Address, new { style = "width:180px", @class = "read-only", @readonly = true })
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="width:50%">
+                        <div id="divWitness2" class="GroupBox" style="width:95%;height:170px">
+                            <legend>(2) Witness information</legend>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness2Id)
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness2Id, new { style = "width:180px" })
+                                </span>
+                            </div>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness2Name, new { style = "width:150px" })
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness2Name, new { style = "width:180px", @class = "read-only", @readonly = true })
+                                </span>
+                            </div>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness2Designation, new { style = "width:150px" })
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness2Designation, new { style = "width:180px", @class = "read-only", @readonly = true })
+                                </span>
+                            </div>
+                            <div class="row">
+                                <span class="label" style="width:40%">
+                                    @Html.LabelFor(model => model.Witness2Address, new { style = "width:150px" })
+                                </span>
+                                <span class="field" style="width:60%">
+                                    @Html.TextBoxFor(m => m.Witness2Address, new { style = "width:180px", @class = "read-only", @readonly = true })
+                                </span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+          
+            <div class="row">
+
+                @*<div class="clear"></div>*@
+            </div>
+
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                <div class="row">
+                    <br />
+                    <br />
+                    <label style="color: #3C78B5;">
+                        <input type="checkbox" id="AddPhotoCheckBox" />&nbsp;Add/Remove Photo ?
+                    </label>
+                </div>
+            }
+
+            <div style="clear: both">
+            </div>
+
+        </div>
+        <div class="clear">
+        </div>
+
+        <div class="GroupBox" align="center" id="photoUpload">
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                <div class="row">
+                    @FileUpload.GetHtml(initialNumberOfFiles: 1, allowMoreFilesToBeAdded: false,
+            includeFormTag: false, addText: "Add Files", uploadText: "Upload File")
+                </div>
+            }
+            <div class="row">
+                <div style="border: 1px solid #D2DDE7; width: 150px; height: 150px; margin: 20px">
+                    @if (Model != null)
+                    {
+                        if (String.IsNullOrEmpty(Model.ImageUrl) && Model.isAddPhoto)
+                        {
+                            <img height="150" width="150" class="imgThumb" src="@Url.Action("GetFamilyMemberPhoto", "PersonalInfo", new { id = Model.Id })" />
+                        }
+                        else
+                        {
+                            <img height="150" width="150"
+                                 src="@(Model.ImageUrl)"
+                                 id="uploadedImage" alt="@Model.ImageAltText" />
+
+                        }
+                    }
+                </div>
+            </div>
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                <div class="row">
+                    <div class="button-crude">
+                        <input type="submit" value="Upload" name="btnSubmit" id="btnPhotoUpload" style="margin-right: 8px;" />
+                        <input type="submit" value="Remove" name="btnSubmit" id="btnPhotoRemove" style="margin-right: 8px;" />
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+                {
+                    <input type="submit" value="Delete" id="btnDelete" name="btnSubmit" />
+                }
+                @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+                {
+                    <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+                }
+            </div>
+        </div>
+        <div class="GroupBox">
+            <table id="jqGrid" cellpadding="0" cellspacing="0" class="ui-jqgrid-view"></table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+        </div>
+        <div class="button-crude button-left">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </fieldset>
+}
+<script type="text/javascript">
+
+    //Scripts for New Witness Info
+
+    $(document).ready(function () {
+        enableOrdisableWitness();
+    });
+
+    $("#isNomineeImmature").change(function () {
+        enableOrdisableWitness();
+    });
+    $("#isNomineeDisable").change(function () {
+        enableOrdisableWitness();
+    });
+    function enableOrdisableWitness() {
+        var isImmature = $('#isNomineeImmature:checked').val();
+        var isDisable = $('#isNomineeDisable:checked').val();
+        if (isImmature == 'true' || isDisable == 'true') {
+            //$("#divWitness1").find("input,button,textbox,select,label").attr("disabled", false);
+            //$("#divWitness2").find("input,button,textbox,select,label").attr("disabled", false);
+            $("#PersonOnBehalfId").attr("disabled", false);
+        }
+        else {
+            //$("#divWitness1").find("input,button,textbox,select,label").attr("disabled", "disabled");
+            //$("#divWitness2").find("input,button,textbox,select,label").attr("disabled", "disabled");
+            $("#PersonOnBehalfId").attr("disabled", "disabled");
+        }
+    }
+
+    $(function () {
+        //Witness1
+        $("#Witness1Id").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("AutoCompleteMembershipList", "PersonalInfo")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.EmpID, value: item.EmpID };
+                        }));
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('#Witness1Id').val(ui.item ? ui.item.value : '');
+                GetWitness1Information(ui.item.value);
+            }
+        });
+        
+        $("#Witness1Id").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8) {
+                $('#Witness1Name').val('');
+                $('#Witness1Address').val('');
+                $('#Witness1Designation').val('');
+            }
+        });
+            //witness2
+            $("#Witness2Id").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("AutoCompleteMembershipList", "PersonalInfo")',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: { term: request.term },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.EmpID, value: item.EmpID };
+                            }));
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $('#Witness2Id').val(ui.item ? ui.item.value : '');
+                    GetWitness2Information(ui.item.value);
+                }
+            });
+            $("#Witness2Id").keydown(function (event) {
+                if (event.keyCode == 46 || event.keyCode == 8) {
+                    $('#Witness2Name').val('');
+                    $('#Witness2Address').val('');
+                    $('#Witness2Designation').val('');
+                }
+            });
+        });
+        function GetWitness1Information(witnessID) {
+            var url = '@Url.Action("GetMembershipInformation", "PersonalInfo")';
+
+            if (witnessID != '') {
+                $.post(url, { empID: witnessID }, function (obj) {
+                    if (obj.Result == false) {
+                        $('#Witness1Name').val('');
+                        $('#Witness1Address').val('');
+                        $('#Witness1Designation').val('');
+                        alert('System is unable to load data please try again.');
+                    }
+                    //else if (obj.Result == 'Inactive') {
+                    //    $('#Witness1Name').val('');
+                    //    $('#Witness1Address').val('');
+                    //    $('#Witness1Designation').val('');
+
+                    //    alert('The selected member is either inactive or not approved.');
+                    //}
+                    else {
+                        $('#Witness1EmpId').val(obj.Id);
+                        $('#Witness1Id').val(obj.WitnessID);
+                        $('#Witness1Name').val(obj.WitnessName);
+                        $('#Witness1Address').val(obj.WitnessAddress);
+                        $('#Witness1Designation').val(obj.WitnessDesignation);
+                    }
+                }, "json");
+            }
+            return false;
+        }
+
+        function GetWitness2Information(witnessID) {
+
+            var url = '@Url.Action("GetMembershipInformation", "PersonalInfo")';
+
+            if (witnessID != '') {
+                $.post(url, { empID: witnessID }, function (obj) {
+                    if (obj.Result == false) {
+                        $('#Witness2Name').val('');
+                        $('#Witness2Address').val('');
+                        $('#Witness2Designation').val('');
+                        alert('System is unable to load data please try again.');
+                    }
+                    //else if (obj.Result == 'Inactive') {
+                    //    $('#Witness2Name').val('');
+                    //    $('#Witness2Address').val('');
+                    //    $('#Witness2Designation').val('');
+
+                    //    alert('The selected member is either inactive or not approved.');
+                    //}
+                    else {
+                        $('#Witness2EmpId').val(obj.Id);
+                        $('#Witness2Id').val(obj.WitnessID);
+                        $('#Witness2Name').val(obj.WitnessName);
+                        $('#Witness2Address').val(obj.WitnessAddress);
+                        $('#Witness2Designation').val(obj.WitnessDesignation);
+                    }
+                }, "json");
+            }
+            return false;
+        }
+
+    //end scripts for witness Info
+
+    function CalculateAge() {
+        var start = $('#DateofBirth').datepicker('getDate');
+        var end = new Date();
+        var diff = new Date(end - start);
+        var year = diff / 1000 / 60 / 60 / 24 / 365;
+        year = year.toFixed(0);
+        $('#Age').val(year);
+    }
+
+    $(function () {
+        if ('@Model.NationalityId' == 0 || '@Model.NationalityId' == '') {
+            $("#NationalityId option:contains(Bangladeshi)").attr('selected', 'selected');
+        }
+
+        $('#DateofBirth').live("change", function () {
+            CalculateAge();
+        })
+
+        $('#RelationId').live("change", function () {
+
+            var dd = $(this).children("option").filter(":selected").text();
+
+            if ($(this).val() != '') {
+
+                if (dd.toLowerCase() == 'Wife'.toLowerCase() || dd.toLowerCase() == 'Daughter'.toLowerCase() || dd.toLowerCase() == 'Sister'.toLowerCase() || dd.toLowerCase() == 'Mother'.toLowerCase()) {
+                    $('#Gender').children("option:eq(2)").attr('selected', true);
+                    if (dd.toLowerCase() == 'Wife'.toLowerCase() || dd.toLowerCase() == 'Mother'.toLowerCase()) {
+                        $('#MaritalStatusId').children('option[text="Married"]').attr("selected", true);
+                    }
+                    else {
+                        $('#MaritalStatusId').children("option:eq(0)").attr('selected', true);
+                    }
+                }
+
+                if (dd.toLowerCase() == 'Son'.toLowerCase() || dd.toLowerCase() == 'Father'.toLowerCase() || dd.toLowerCase() == 'Brother'.toLowerCase() || dd.toLowerCase() == 'Husband'.toLowerCase()) {
+                    $('#Gender').children("option:eq(1)").attr('selected', true);
+
+                    if (dd.toLowerCase() == 'Father'.toLowerCase() || dd.toLowerCase() == 'Husband'.toLowerCase()) {
+                        $('#MaritalStatusId').children('option[text="Married"]').attr("selected", true);
+                    }
+                    else {
+                        $('#MaritalStatusId').children("option:eq(0)").attr('selected', true);
+                    }
+                }
+
+            }
+            else {
+                $('#Gender').children("option:eq(0)").attr('selected', true);
+            }
+
+        });
+
+    });
+
+    $("#TitleId").change(function () {
+        AutoFullName();
+    });
+
+    $("#FirstName, #LastName").keyup(function () {
+        AutoFullName();
+    })
+
+    function AutoFullName() {
+        $("#FullName").val(($('#TitleId').val() == '' ? '' : ($('#TitleId option:selected').text()) + ' ')
+            + $.trim($('#FirstName').val()) + ' ' + $.trim($('#LastName').val()));
+    }
+
+    $(function () {
+
+        if ('@Model.isAddPhoto' == 'True') {
+            $("#photoUpload").show();
+            $('#AddPhotoCheckBox').attr("checked", true);
+        }
+        else {
+            $('#AddPhotoCheckBox').attr("checked", false);
+            $("#photoUpload").hide();
+        }
+        $('#AddPhotoCheckBox').live("click", function () {
+            if ($('#AddPhotoCheckBox').is(':checked')) {
+                $("#photoUpload").slideDown("slow");
+            }
+            else {
+                $("#photoUpload").slideUp("slow");
+            }
+        });
+
+        $(function () {
+            $("input[type='file']").change(function () {
+                var val = $("input[type='file']").val();
+
+                var aval = val.split('.');
+                val = aval[aval.length - 1].toUpperCase();
+                if (val == 'JPG' || val == 'GIF') {
+                }
+                else {
+                    alert("Please select JPG or GIF image file only.");
+                    $("input[type='file']").val("");
+                }
+            });
+        })
+
+        $("#btnDelete").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("DeleteConfirmforFamilyMember", "PersonalInfo")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success) {
+                            var indexUrl = '@Url.Action("PersonalFamilyInformationIndex", "PersonalInfo", new { id = Model.EmployeeId, message = "_msg_" })';
+                            indexUrl = indexUrl.replace(/_msg_/, obj.Message)
+                            window.document.location = indexUrl;
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $("#btnClear").live("click", function () {
+            var url = '@Url.Action("PersonalFamilyInformationIndex", new { id = Model.EmployeeId })';
+            window.location.href = url;
+        });
+
+        if ('@Model.Message' != "") {
+            if ('@Model.IsSuccessful' == 'True') {
+                //                console.log('@Model.IsSuccessful');
+                //                console.log('@Model.Message');
+
+                $('#message').html("<b style='color:Green'>" + '@Model.Message' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + '@Model.Message' + "</b>");
+            }
+        }
+
+
+        if ('@Model.ActionType' == "PersonalFamilyInformationEdit") {
+            $("#btnSave").hide();
+            $("#btnUpdate").show();
+            $("#btnDelete").show();
+        }
+        else {
+
+            $("#btnSave").show();
+            $("#btnUpdate").hide();
+            $("#btnDelete").hide();
+        }
+
+
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetPersonalFamilyInformationList", null, new { id = Model.EmployeeId })',
+            datatype: 'json',
+            mtype: 'POST',
+            autowidth: true,
+            colNames: ['ID', 'Name', 'Relation', 'Date of Birth', 'Gender', 'Blood Group', 'Contact No.'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: true, hidden: true, edittype: 'text' },
+                        { name: 'Name', index: 'FullName', align: 'left', width: '150px', search: true, edittype: 'text', formatter: editorLink, sortable: true },
+                        { name: 'Relation', index: 'RelationId', align: 'left', width: '120px', search: false, edittype: 'text' },
+                        { name: 'DateofBirth', index: 'DateofBirth', align: 'center', width: '120px', search: false, sortable: true },
+                        { name: 'Gender', index: 'Gender', align: 'center', width: '120px', search: true, edittype: 'text' },
+                        { name: 'BloodGroup', index: 'BloodGroupId', align: 'center', width: '120px', search: true, edittype: 'text' },
+                        { name: 'ContractNo.', index: 'ContractNo', align: 'center', width: '100px', search: true, edittype: 'text' }
+            ],
+            caption: "Family Member's Information",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '100%'
+        });
+    })
+
+
+    @*function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "PersonalFamilyMemberDelete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }*@
+
+    function editorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink("_CellValue_", "PersonalFamilyInformationEdit", new { memberid = "_ID_", employeeid = "_employeeID_" })';
+        url = url.replace(/_CellValue_/, cellvalue)
+        url = url.replace(/_ID_/, rowObject[0])
+        url = url.replace(/_employeeID_/, '@Model.EmployeeId')
+        return url;
+    }
+
+</script>

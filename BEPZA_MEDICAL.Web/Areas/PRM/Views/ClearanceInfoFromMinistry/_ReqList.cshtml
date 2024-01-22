@@ -1,0 +1,22 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ClearanceInfoFromMinistryViewModel
+@Html.HiddenFor(m => m.strMode)
+@foreach (var item in Model.RequsitionClearanceDetailList)
+{
+    <tr>
+        <td style="width: 30px; text-align: center">
+            @Html.CheckBox("empId", item.IsChecked, new { @class = "rchk", @value = item.RequisionId })
+        </td>
+        <td style="width: 30px; text-align: center">
+            @Html.Encode(item.RequisitionNo)
+        </td>
+        <td style="text-align: left">
+            @Html.Encode(item.ReqPreparedBy)
+        </td>
+        <td width="10%" align="center">
+            @Html.Encode(item.Designation)
+        </td>
+        <td style="text-align: left;">
+            @Html.Encode(item.SubmissionDate)
+        </td>
+    </tr>
+}

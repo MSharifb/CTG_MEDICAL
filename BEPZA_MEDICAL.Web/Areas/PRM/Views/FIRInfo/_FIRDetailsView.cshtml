@@ -1,0 +1,195 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.FIRInfoViewModel
+
+<style type="text/css">
+    .details-view .label {
+        width: 25%;
+    }
+</style>
+
+<div class="GroupBox details-view">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)         
+            @Html.LabelFor(model => model.ComplaintNoteSheetId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintNoteSheetName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</div>
+
+<fieldset class="details-view">
+    <legend>Charge Sheet (FIR) Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FIRDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FIRDate, "{0:dd-MM-yyyy}", new { @class = "read-only", @readonly = true })
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FIRDescription)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field" style="width:70%">
+            @Html.TextAreaFor(model => model.FIRDescription, new { @class = "read-only", @readonly = true, Style = "width:95%", @rows = 10, @maxlength = "500" })
+
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">&nbsp;</span>
+        <span class="field" style="width:60%">
+            <fieldset>
+                <legend>Signatory</legend>
+                <div class="row">
+                    <span class="label" style="width:50%">
+                        @Html.LabelFor(model => model.SignatoryEmpId)
+                        <label class="required-field">*</label>
+                    </span>
+                    <span class="field">
+                        @Html.TextBoxFor(model => model.SignatoryEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })                      
+                    </span>
+
+                </div>
+                <div class="row">
+                    <span class="label" style="width:50%">
+                        @Html.LabelFor(model => model.SignatoryEmployeeName)
+                        <label class="required-field">*</label>
+                    </span>
+                    <span class="field">
+                        @Html.TextBoxFor(model => model.SignatoryEmployeeName, new { @class = "read-only", @style = "width:150px", @readonly = true })
+                    </span>
+                </div>
+
+                <div class="row">
+                    <span class="label" style="width:50%">
+                        @Html.LabelFor(model => model.SignatoryDesignationName)
+                    </span>
+                    <span class="field">
+                        @Html.TextBoxFor(model => model.SignatoryDesignationName, new { @class = "read-only", @style = "width:150px", @readonly = true })
+                    </span>
+                </div>
+            </fieldset>
+        </span>
+    </div>
+</fieldset>
+
+<fieldset class="details-view">
+    <legend>Complaint Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RefNo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.RefNo, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDate, "{0:dd-MM-yyyy}", new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmpId, new { @class = "read-only", @readonly = true })
+
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDepartmentName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDetails)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field" style="width:70%">
+            @Html.TextAreaFor(model => model.ComplaintDetails, new { @class = "read-only", @readonly = true, Style = "width:95%", @rows = 10, @maxlength = "500" })
+        </span>
+
+    </div>
+    <div class="clear">
+    </div>
+</fieldset>
+<div class="clear">
+</div>
+
+<fieldset class="details-view">
+    <legend>Complainant Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplainantEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantEmpId, new { @class = "read-only", @readonly = true })
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplainantEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplainantDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplainantDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDepartmentName, new { @class = "read-only", @readonly = true })
+
+        </span>
+    </div>
+</fieldset>

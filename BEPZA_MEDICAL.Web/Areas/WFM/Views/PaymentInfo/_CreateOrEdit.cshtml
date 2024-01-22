@@ -1,0 +1,261 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.PaymentInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend>Payment Info</legend>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PayOrderNo, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.PayOrderNo, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.PayOrderDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.PayOrderDate, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comments, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextAreaFor(model => model.Comments, new { @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Meeting Info</legend>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApprovalWelfareFundInfoId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @if (Model.strMode == "Edit")
+                {   @Html.HiddenFor(model => model.ApprovalWelfareFundInfoId)
+                    @Html.TextBoxFor(model => model.ApprovalWelfareFundInfoRefNo, new { @class = "read-only", @readonly = true })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ApprovalWelfareFundInfoId, Model.ApprovalWelfareFundInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                }
+
+            </div>
+            @Html.LabelFor(model => model.CommitteeName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.CommitteeName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MeetDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.MeetDate, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.MeetTime, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.MeetTime, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MeetPlace, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.MeetPlace, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.MeetCycle, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-5">@Html.EditorFor(model => model.MeetCycle, new { @class = "form-control" })</div>
+                    <div class="col-sm-4">@Html.EditorFor(model => model.MeetCycleMonth, new { @class = "form-control" })</div>
+                    <div class="col-sm-3">@Html.EditorFor(model => model.MeetCycleYear, new { @class = "form-control" })</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MeetAgenda, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.EditorFor(model => model.MeetAgenda, new { @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Approved Applicant Information</legend>
+        <div class="form-group" align="center">
+            <div style="width: 98%">
+                <table id="gridEmpList" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Select
+                            </th>
+                            <th>
+                                Employee ID
+                            </th>
+                            <th>
+                                Employee&nbsp;Name
+                            </th>
+                            <th>
+                                Designation
+                            </th>
+                            <th>
+                                Department
+                            </th>
+                            <th>
+                                Section
+                            </th>
+                            <th>
+                                Approved&nbsp;Amount
+                            </th>
+                            <th>
+                                View
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.strMode == "Edit" || Model.ShowRecord == "Show") { Html.RenderPartial("_Details", Model); }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+
+<script type="text/javascript">
+
+    $("#ApprovalWelfareFundInfoId").on('change', function () {
+        $("#CommitteeName").val('');
+        $("#MeetDate").val('');
+        $("#MeetTime").val('');
+        $("#MeetPlace").val('');
+        $("#MeetAgenda").val('');
+        $("#MeetCycle").val('');
+        $("#MeetCycleMonth").val('');
+        $("#MeetCycleYear").val('');
+
+        $('#gridEmpList tbody tr').empty();
+        loadMeetingInfoById($("#ApprovalWelfareFundInfoId").val());
+        LoadEmployee($("#ApprovalWelfareFundInfoId").val());
+
+    });
+
+    var loadEmpUrl = "@Url.Action("GetEmployeeList")";
+    function LoadEmployee(approvalWelfareFundInfoId) {
+        if (approvalWelfareFundInfoId > 0) {
+            $.ajax({
+                type: "GET",
+                url: loadEmpUrl,
+                data: { approvalWelfareFundInfoId: approvalWelfareFundInfoId },
+                success: (function (result) {
+                    $("#gridEmpList tbody").html(result);
+                })
+            });
+        }
+    }
+
+    function loadMeetingInfoById(approvalWelfareFundInfoId) {
+        if (approvalWelfareFundInfoId > 0) {
+
+            var url = '@Url.Action("loadMeetingInfoById", "ApprovalWelfareFundInfo")' + '?Id=' + approvalWelfareFundInfoId;
+            $.get(url, function (response) {
+                $("#CommitteeName").val(response.CommitteeName);
+                $("#MeetDate").val(response.MeetDate);
+                $("#MeetTime").val(response.MeetTime);
+                $("#MeetPlace").val(response.MeetPlace);
+                $("#MeetAgenda").val(response.MeetAgenda);
+                $("#MeetCycle").val(response.Cycle);
+                $("#MeetCycleMonth").val(response.CycleMonth);
+                $("#MeetCycleYear").val(response.Year);
+            });
+        }
+    }
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<span style=\"color:Green\">' + errMsg + '</span>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<span style=\"color:red\">' + errMsg + '</span>');
+                    }
+                }
+            });
+        }
+
+    }
+</script>
+
+@*View*@
+
+<div id="divView">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#divView").dialog({ autoOpen: false, modal: true, height: 600, width: 800, title: 'View Applicant Information', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function ViewApplicantInfo(el, employeeId) {
+        var url = '@Url.Action("ViewApplicantInfo", "VerifytheApplicationInfo")';
+        if (employeeId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { employeeId: employeeId },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                },
+                success: function (result) {
+                    $('#divView').html(result);
+                }
+            });
+
+            $("#divView").dialog('open');
+            return false;
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+@*View End*@

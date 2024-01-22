@@ -1,0 +1,64 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SelectedApplicantInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ApplicantInformationListDetail"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ApplicantInfoId)
+        @Html.HiddenFor(x => x.JobAdvertisementInfoId)
+        @Html.HiddenFor(x => x.DesignationId)
+        @Html.HiddenFor(x => x.QuotaId)
+        @Html.HiddenFor(x => x.ApplicantName)
+        @Html.HiddenFor(x => x.RollNo)
+        @Html.HiddenFor(x => x.IsFinalExam)
+
+        <td style="width: 30px; text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.HiddenFor(x => x.DesignationId, new { @class = "appDesignationId" })
+            @Html.Encode(Model.DesignationName)
+        </td>
+        <td width="10%" style="text-align: center">
+            @Html.Encode(Model.RollNo)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.ApplicantName)
+        </td>
+        <td width="8%" style="text-align: center">
+            @Html.Encode(Model.DateOfBirth)
+        </td>
+        <td width="8%" style="text-align: center; display:none">
+            <a href="#" title="view" onclick="ViewApplicantInfo(this,@Model.ApplicantInfoId,@Model.JobAdvertisementInfoId,@Model.DesignationId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>
+        <td width="8%" style="text-align: center;" class="pass-mark">
+            @Html.Encode(Model.PassMark)
+        </td>
+        <td width="10%" style="text-align: center;" class="obtain-mark">
+            @Html.Encode(Model.ObtainedMarks)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.Quota)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.DropDownListFor(x => x.SelectedForNextExamId, Model.SelectedForNextExamList, @String.Format("{0}", Content.DDLOptionalLabel()), new{@style = "width:100%"})
+        </td>
+        if(Model.IsFinalExam == true) {
+            Model.IsFinallySelected = true;
+        <td width="10%" style="text-align: left" class="forFinal">
+            @Html.DropDownListFor(x => x.IsFinallySelected, Model.IsFinallySelectedList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @style = "width:100%" })
+        </td>
+        <td width="10%" style="text-align: left" class="forFinal">
+            @Html.TextBoxFor(x => x.SelectedId)
+        </td>
+        }
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

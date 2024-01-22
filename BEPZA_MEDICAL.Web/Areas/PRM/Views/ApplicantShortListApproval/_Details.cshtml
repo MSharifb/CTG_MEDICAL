@@ -1,0 +1,12 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantShortListApprovalViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.ApplicantShortListApproval != null)
+{
+    foreach (var x in Model.ApplicantShortListApproval)
+    {
+        @Html.Partial("_ApplicantInfo", x);
+    }
+
+}
+

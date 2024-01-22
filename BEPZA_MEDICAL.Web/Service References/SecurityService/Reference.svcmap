@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="efc63778-b887-4a33-80f1-e426b6c30aa3" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:91/BEPZA_MEDICAL_Service/UserManagementService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="UserManagementService.xsd" MetadataType="Schema" ID="005c6d7c-99a2-4892-ab08-dfb364c89098" SourceId="1" SourceUrl="http://localhost:91/BEPZA_MEDICAL_Service/UserManagementService.svc?xsd=xsd1" />
+    <MetadataFile FileName="UserManagementService.disco" MetadataType="Disco" ID="ab3f914d-6205-42b2-aa04-559e0aa36fd9" SourceId="1" SourceUrl="http://localhost:91/BEPZA_MEDICAL_Service/UserManagementService.svc?disco" />
+    <MetadataFile FileName="UserManagementService.wsdl" MetadataType="Wsdl" ID="79c13233-dbd1-492f-8d5e-fba5af818293" SourceId="1" SourceUrl="http://localhost:91/BEPZA_MEDICAL_Service/UserManagementService.svc?wsdl" />
+    <MetadataFile FileName="UserManagementService1.xsd" MetadataType="Schema" ID="056865ad-5a5d-49f2-84eb-f06ddafad931" SourceId="1" SourceUrl="http://localhost:91/BEPZA_MEDICAL_Service/UserManagementService.svc?xsd=xsd2" />
+    <MetadataFile FileName="UserManagementService2.xsd" MetadataType="Schema" ID="f74bada3-f4d4-4eb0-933b-fc5c9db7715c" SourceId="1" SourceUrl="http://localhost:91/BEPZA_MEDICAL_Service/UserManagementService.svc?xsd=xsd0" />
+    <MetadataFile FileName="UserManagementService3.xsd" MetadataType="Schema" ID="e3719fc8-f280-4f8e-897f-5caca9072484" SourceId="1" SourceUrl="http://localhost:91/BEPZA_MEDICAL_Service/UserManagementService.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

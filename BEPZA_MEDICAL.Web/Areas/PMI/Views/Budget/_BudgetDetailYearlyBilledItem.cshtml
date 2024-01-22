@@ -1,0 +1,22 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.BudgetDetailYearlyBilledViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (@Html.BeginHtmlFieldPrefix(Model.PreviousFieldId))
+{
+    using (Html.BeginCollectionItem("YearlyBilledList"))
+    {
+        <span class="yearly-billed-amount">
+            @Html.TextBoxFor(m => m.BilledAmount,"{0:0.00}")
+        </span>
+        <span class="financial-year">
+            @Html.HiddenFor(m => m.FinancialYearId)
+        </span>
+        <span class="sub-head-info">
+            @Html.HiddenFor(m => m.BudgetSubHeadId)
+        </span>
+        <span class="other-field">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.BudgetDetailsId)
+        </span>
+    }
+}

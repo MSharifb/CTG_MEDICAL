@@ -1,0 +1,105 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.PrintProjectParamViewModel
+@*<div class="form-horizontal">*@
+<div class="form-group">
+    <div class="col-sm-3" style="border:1px solid #3498db; padding:5px; margin-right:10px;">
+        <div class="col-sm-8" style="margin:5px 0;">
+            <button id="btnProcurementPlan" class="btn btn-sm btn-primary" style="width:180px;">Annual Procurement Plan</button>
+        </div>
+        <div class="col-sm-8" style="margin:5px 0;">
+            <button id="btnTenderNotice" class="btn btn-sm btn-primary" style="width:180px;">Tender Notice</button>
+        </div>
+        @*<div class="col-sm-8" style="margin:5px 0;">
+            <button id="btnBudgetSummary" class="btn btn-sm btn-primary" style="width:180px;">Budget Summary</button>
+        </div>*@
+        @*<div class="col-sm-8" style="margin:5px 0;">
+            <button id="btnProjectStatus" class="btn btn-sm btn-primary" style="width:180px;">Project Status</button>
+        </div>*@
+    </div>
+    <div class="col-sm-8" style="border: 1px solid #3498db; padding: 5px; min-height: 350px;">
+        <div class="param-menu">
+
+        </div>
+    </div>
+</div>
+@*</div>*@
+
+<script type="text/javascript">
+    $('#btnProcurementPlan').click(function () {
+        var url = '@Url.Action("ShowProcurementPlanParam", "ProjectDetail")';
+        var projectId = $('#Id').val();
+        if (projectId == '') {
+            projectId = 0;
+        }
+        $.ajax({
+            url: url,
+            data: { projectId: projectId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                $('.param-menu').html(result);
+            }
+        })
+    })
+
+
+
+    $('#btnTenderNotice').click(function () {
+        var url = '@Url.Action("ShowTenderNoticeParam", "ProjectDetail")';
+        var projectId = $('#Id').val();
+        if (projectId == '') {
+            projectId = 0;
+        }
+        $.ajax({
+            url: url,
+            data: { projectId: projectId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                $('.param-menu').html(result);
+            }
+        })
+    })
+    $('#btnBudgetSummary').click(function () {
+        var url = '@Url.Action("ShowBudgetSummaryParam", "ProjectDetail")';
+        var projectId = $('#Id').val();
+        if (projectId == '') {
+            projectId = 0;
+        }
+        $.ajax({
+            url: url,
+            data: { projectId: projectId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                $('.param-menu').html(result);
+            }
+        })
+    })
+    $('#btnProjectStatus').click(function () {
+        console.log("btnProjectStatus");
+    })
+</script>
+<style type="text/css">
+    /*.print-menu {*/
+    /*border: 1px solid #3498db;*/
+    /*float: left;*/
+    /*overflow: hidden;*/
+    /*padding: 10px;*/
+    /*border-radius: 4px;*/
+    /*margin-right: 10px;*/
+    /*}*/
+
+    /*.print-menu button {
+            width: 200px;
+        }*/
+
+    .param-menu {
+        /*border: 1px solid #3498db;*/
+        /*float: left;
+        overflow: hidden;*/
+        /*padding: 10px;
+        border-radius: 4px;
+        width: 630px;
+        height: 350px;*/
+    }
+</style>

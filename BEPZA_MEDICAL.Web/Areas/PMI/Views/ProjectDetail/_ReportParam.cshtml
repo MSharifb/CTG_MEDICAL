@@ -1,0 +1,259 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.PrintProjectParamViewModel
+@*@using BEPZA_MEDICAL.Web.Helpers*@
+
+@using (Html.BeginForm(@Model.ActionType, "Report", FormMethod.Post, new { id = "frm", target = "_blank" }))
+{
+    <div class="form-horizontal">
+        @if (@Model.ReportName == "Annual Procurement Plan")
+        {
+            <div class="form-group">
+                <div class="col-sm-12" style="text-align:center;">@Html.Label("ReportName", @Model.ReportName, new { @id = @"lblTitle", @style = @"font-weight:bold;" })</div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.FinancialYearName, new { @class = @"col-sm-4 control-label" })
+                <div class="col-sm-7">
+                    @*@Html.HiddenFor(m => m.FinancialYearId)*@
+                    @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProjectDateStr, new { @class = @"col-sm-4 control-label" })
+                <div class="col-sm-7">
+                    @Html.HiddenFor(m => m.ProjectDate)
+                    @Html.EditorFor(m => m.ProjectDateStr)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.NameOfWork, new { @class = @"col-sm-4 control-label" })
+                <div class="col-sm-7">
+                    @Html.HiddenFor(m => m.ProjectId)
+                    @Html.TextBoxFor(m => m.NameOfWork, new { @readonly = true, @style = @"background:#F2F5F8;" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProjectStatusId, new { @class = @"col-sm-4 control-label" })
+                <div class="col-sm-7">
+                    <span class="proc-plan-projSts">
+                        @Html.DropDownListFor(m => m.ProjectStatusId, @Model.ProjectStatusList, new { @class = @"form-control" })
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group" style="text-align:center;">
+                <button type="button" id="btnPrintProcurementPlan" class="btn btn-sm btn-primary"><i class="fa fa-print fa-lg"></i>Print</button>
+            </div>
+        }
+
+        @if (@Model.ReportName == "Tender Notice")
+        {
+            <div class="form-group" style="text-align:center;">
+                @Html.Label("ReportName", @Model.ReportName, new { @id = @"lblTitle", @style = @"font-weight:bold;" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FinancialYearName, new { @class = @"col-sm-3 control-label" })
+                <div class="col-sm-3">
+                    @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+                </div>
+
+                @Html.LabelFor(m => m.ProjectDateStr, new { @class = @"col-sm-3 control-label" })
+                <div class="col-sm-3">
+                    @Html.HiddenFor(m => m.ProjectDate)
+                    @Html.EditorFor(m => m.ProjectDateStr)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.NameOfWork, new { @class = @"col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.HiddenFor(m => m.ProjectId)
+                    @Html.TextBoxFor(m => m.NameOfWork, new { @class = @"name-of-work", @readonly = true, @style = @"background:#F2F5F8;" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-11" style="text-align:center;">
+                    @foreach (var item in @Model.TenderNoticeFormatList)
+                    {
+                        <div class="report-format-name">@item</div>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (@Model.ReportName == "Budget Summary")
+        {
+
+            <div class="form-group" style="text-align:center;">@Html.Label("ReportName", @Model.ReportName, new { @id = @"lblTitle", @style = @"font-weight:bold;" })</div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.NameOfWork, new { @class = @"col-sm-4 control-label" })
+                <div class="col-sm-8">
+                    @Html.HiddenFor(m => m.ProjectId)
+                    @Html.TextBoxFor(m => m.NameOfWork, new { @class = @"name-of-work", @readonly = true, @style = @"background:#F2F5F8;" })
+                </div>
+            </div>
+
+            <div id="dvParamBudgetSummary">
+                <table class="table table-condensed table-responsive">
+                    @if (@Model.ParamList != null && Model.ParamList.Count > 0)
+                    {
+                        @Html.Partial("_ReportParamBudgetSummary", Model.ParamList)
+                    }
+
+
+                </table>
+            </div>
+            <div class="form-group" style="text-align:center; margin-top:50px;">
+                <button type="submit" value="Print" class="btn btn-sm btn-primary"><i class="fa fa-print fa-lg"></i>Print</button>
+            </div>
+
+
+        }
+
+    </div>
+}
+<style type="text/css">
+    .param-menu .label {
+        width: 140px !important;
+        font-size: 12px;
+    }
+
+    .param-menu select {
+        width: 150px !important;
+    }
+
+    #lblTitle {
+        padding: 2px 20px;
+        border: 1px solid #E9E9E9;
+        text-align: center;
+        background: #E9E9E9;
+        border-radius: 2px;
+    }
+
+    .name-of-work {
+        background: #F2F5F8;
+    }
+
+
+
+    .report-format-name {
+        padding: 10px 10px;
+        border: 1px solid #CCCCCC;
+        border-radius: 4px;
+        float: left;
+        overflow: hidden;
+        width: 48%;
+        height: 100px;
+        text-align: center;
+        margin: 5px;
+        background: #E9E9E9;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 11px;
+    }
+
+        .report-format-name:hover {
+            background: #3498db;
+            border: 1px solid #3498db;
+            color: #FFFFFF;
+            cursor: pointer;
+        }
+
+    .label-param {
+        width: 100px;
+    }
+
+    .field-param {
+        padding: 2px 10px;
+    }
+</style>
+
+<script type="text/javascript">
+    $('#btnPrintProcurementPlan').click(function (e) {
+        //debugger;
+        e.preventDefault();
+        var projectId = $('#Id').val();
+        var financialYearId = $('#FinancialYearId').val();
+        var projectStatusId = $('.proc-plan-projSts #ProjectStatusId').val();
+        if (projectId == '') {
+            return;
+        }
+
+        var url = '@Url.Action("PrintProcurementPlan", "Report")';
+        $.ajax({
+            url: url,
+            data: { projectId: projectId, financialYearId: financialYearId, projectStatusId: projectStatusId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                console.log(result);
+                window.open(url, '_blank');
+            }
+        })
+    })
+
+    $('.report-format-name').on('click', function (e) {
+        var formatName = $(this).text();
+        e.preventDefault();
+        var projectId = $('#Id').val();
+        var financialYearId = $('#FinancialYearId').val();
+        if (projectId == '') {
+            return;
+        }
+
+        var url = '@Url.Action("PrintTenderNotice", "Report")';
+        $.ajax({
+            url: url,
+            data: { projectId: projectId, financialYearId: financialYearId, formatName: formatName },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                console.log(result);
+                window.open(url, '_blank');
+            }
+        })
+    })
+
+
+    $("#dvParamBudgetSummary table tr .add-param :button").on('click', (function (e) {
+        e.preventDefault();
+        var projectId = $('#Id').val();
+        //console.log("Clicked");
+        var url = '@Url.Action("AddParamBudgetSummaryDetails", "ProjectDetail")';
+        $.ajax({
+            data: { ProjectId: projectId },
+            url: url,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                $('#dvParamBudgetSummary table').append("<tr>" + html + "</tr>");
+            }
+        });
+    }));
+
+
+
+    @*$('#btnPrintBudgetSummary').live('click', function (e) {
+        //debugger;
+        e.preventDefault();
+        var projectId = $('#Id').val();
+
+        $.validator.unobtrusive.parse($('#frm'));
+        if ($('#frm').valid()) {
+            var url = '@Url.Action("PrintBudgetSummary", "ProjectDetail")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+            $.post(url, function (obj) {  //Post to action
+                if (obj != null) {
+                    if (obj.IsError == false) {
+                        $('.message').html("<b>" + obj.Message + "</b>").css("color", "green");
+                    }
+                    else {
+                        $('.message').html("<b>" + obj.Message + "</b>").css("color", "red");
+                    }
+
+                }
+
+            });
+        }
+    });*@
+
+</script>

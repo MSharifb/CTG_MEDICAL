@@ -1,0 +1,13 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NoteOrderInfoViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.NoteOrderInfoTypeList != null)
+{
+    foreach (var x in Model.NoteOrderInfoTypeList)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}
+
+

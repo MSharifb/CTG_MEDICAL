@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Enterprise Resource Planning  &bull; BEPZA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Base Css Files -->
+    <link href="@Url.Content("~/assets/libs/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/font-awesome/css/font-awesome.min.css")" rel="stylesheet" />
+
+
+    <link rel="shortcut icon" href="@Url.Content("~/Content/Images/favicon.png")">
+    <link rel="stylesheet" href="@Url.Content("~/assets/css/login.css?ver=1.0.0")">
+
+    <style>
+        .validation-summary-errors {
+            border-radius: 0;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+            color: #a94442;
+        }
+    </style>
+</head>
+<body class="fixed-left login-page">
+
+
+    <div id="login-container">
+
+        <div class="behave-table">
+            <div class="behave-table-cell">
+
+                <div id="login-container2">
+                    <header id="login-header" class="text-center">
+                        <img class="logo" src="~/Content/Images/bepza-logo.png" alt="Bangladesh Export Processing Zone Authority">
+                        <h1 class="site-title">Chattogram EPZ Medical Hospital</h1>
+                        <h2 class="site-description"></h2>
+                    </header>
+                    @RenderBody()
+                    <!-- /#login-form -->
+
+                </div>
+                <!-- /#login-container -->
+
+            </div>
+        </div>
+
+        <footer id="login-footer">
+            <div class="credit-area text-center">
+                Copyright © BEPZA, Maintained By <a href="https://www.bepza.gov.bd/"><span class="">BEPZA MIS</span></a>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /#login-container -->
+
+    <div id="bg-overlay"></div>
+
+    <div class="clearfix"></div>
+
+
+    <!-- End of eoverlay modal -->
+    <script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
+</body>
+</html>

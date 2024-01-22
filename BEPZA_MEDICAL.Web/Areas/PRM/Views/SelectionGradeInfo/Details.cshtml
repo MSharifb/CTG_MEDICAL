@@ -1,0 +1,125 @@
+﻿@model BEPZA_MEDICAL.DAL.PRM.PRM_EmpStatusChange
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>PRM_EmpStatusChange</legend>
+
+    <div class="display-label">PRM_EmploymentInfo</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_EmploymentInfo.EmpID)
+    </div>
+
+    <div class="display-label">Type</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Type)
+    </div>
+
+    <div class="display-label">EffectiveDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EffectiveDate)
+    </div>
+
+    <div class="display-label">PRM_Division</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_Division.Name)
+    </div>
+
+    <div class="display-label">PRM_JobLocation</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_JobLocation.Name)
+    </div>
+
+    <div class="display-label">FromDesignationId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FromDesignationId)
+    </div>
+
+    <div class="display-label">ToDesignationId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ToDesignationId)
+    </div>
+
+    <div class="display-label">PRM_JobGrade</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_JobGrade.GradeName)
+    </div>
+
+    <div class="display-label">PRM_JobGrade1</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_JobGrade1.GradeName)
+    </div>
+
+    <div class="display-label">PRM_GradeStep</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_GradeStep.StepName)
+    </div>
+
+    <div class="display-label">PRM_GradeStep1</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_GradeStep1.StepName)
+    </div>
+
+    <div class="display-label">FromEmploymentTypeId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FromEmploymentTypeId)
+    </div>
+
+    <div class="display-label">ToEmploymentTypeId</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ToEmploymentTypeId)
+    </div>
+
+    <div class="display-label">FromBasicSalary</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FromBasicSalary)
+    </div>
+
+    <div class="display-label">ToBasicSalary</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ToBasicSalary)
+    </div>
+
+    <div class="display-label">FromGrossSalary</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FromGrossSalary)
+    </div>
+
+    <div class="display-label">ToGrossSalary</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.ToGrossSalary)
+    </div>
+
+    <div class="display-label">IncrementAmount</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IncrementAmount)
+    </div>
+
+    <div class="display-label">IUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IUser)
+    </div>
+
+    <div class="display-label">EUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EUser)
+    </div>
+
+    <div class="display-label">IDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IDate)
+    </div>
+
+    <div class="display-label">EDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

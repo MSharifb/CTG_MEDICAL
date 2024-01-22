@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Payroll Management System";
+    ViewBag.Area = "PGM";
+    ViewBag.ModuleName = "Payroll Management System";
+    
+}
+@RenderBody()
+<script>
+    var title = $(".page-title").text();
+    document.title = title;
+</script>

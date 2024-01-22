@@ -1,0 +1,128 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.ProfitDistribution.ProfitDistributionViewModel
+
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("ProfitDistributionProcess", "ProfitDistribution", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+
+    <div class="GroupBox">
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PeriodYear)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.PeriodYear, Model.PFYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+            <span class="label-right">
+                @if (Model.ProfitRateType == BEPZA_MEDICAL.Utility.CPFEnum.ProfitRateType.Monthly.ToString())
+                {
+                    @Html.LabelFor(model => model.PeriodMonth)
+                }
+            </span>
+            <span class="field">
+                @if (Model.ProfitRateType == BEPZA_MEDICAL.Utility.CPFEnum.ProfitRateType.Monthly.ToString())
+                {
+                    @Html.DropDownListFor(model => model.PeriodMonth, Model.PFMonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.PeriodMonth)
+                }
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ProfitRate)
+                <label class="required-field"></label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.ProfitRate, new { @Readonly = "Readonly" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Remarks)
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(model => model.Remarks)
+            </span>
+        </div>
+
+        <div class="clear">
+        </div>
+    </div>
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="button" value="Process" id="btnProcess" name="btnSubmit" style="margin-right: 8px;" />
+        }
+    </div>
+}
+
+<script type="text/javascript">
+
+    $('#btnProcess').live('click', function () {
+
+        var year = $('#PeriodYear').val();
+        var month = $('#PeriodMonth').val();
+        var ProfitRate = parseFloat($('#ProfitRate').val());
+        var remarks = $('#Remarks').val();
+
+        if (month == '') month = 0;
+        console.log(month);
+
+        var url = '@Url.Action("ProfitDistributionProcess", "ProfitDistribution")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (year == '') {
+            alert('Please select year.');
+            //if (ProfitRate <= 0) {
+            //    alert('Enter Profit Rate.');
+            //}
+        }
+        else {
+
+            $.post(url, { PeriodYear: year, PeriodMonth: month, ProfitRate: ProfitRate, Remarks: remarks }, function (obj) {
+                alert(obj.Message);
+
+                if (obj.Success == true) {
+                    $("#divEmpList").dialog('close');
+                    var url = '@Url.Action("Index", "ProfitDistribution")';
+                    window.location.href = url;
+                }
+
+            }, "json");
+        }
+    });
+
+    $(function () {
+
+        $('#PeriodYear, #PeriodMonth').live('change', function () {
+
+            var PeriodYear = $('#PeriodYear').val();
+            var PeriodMonth = $('#PeriodMonth').val();
+            if (PeriodMonth == '') PeriodMonth = 0;
+
+            if (PeriodYear != '') {
+
+                $.get('@Url.Action("GetProfitRate", "ProfitDistribution")', { PeriodYear: PeriodYear, PeriodMonth: PeriodMonth }, function (data) {
+
+                    $("#ProfitRate").val(data.ProfitRate);
+                });
+            }
+            else {
+
+                return false;
+            }
+        });
+
+    });
+
+</script>
+

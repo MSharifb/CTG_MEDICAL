@@ -1,0 +1,38 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAM.Models.BankInfo.BankInformationModel
+
+@Html.HiddenFor(m=> m.Id)
+       
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.BankId)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.BankId, Model.BankList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.BranchId)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.BranchId, Model.BranchList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SWIFTCode)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.SWIFTCode)                
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Address)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(m => m.Address, new { rows = "3", cols = "177", style="width:570px" })
+        </span>
+    </div>
+<div class="clear"></div>

@@ -1,0 +1,78 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.FixedAssetViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/FAR/Views/Shared/_Layout.cshtml";
+}
+@using (Ajax.BeginForm("Barcode", "GenerateAssetBarcode", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    if (Model.Attachment != null)
+    {
+        <div id="printable">
+            <table style="border: 1px solid gray">
+                <thead>
+                    <tr></tr>
+                </thead>
+                <tbody>
+                        <tr>
+                            <td>
+                                <span>@Model.CategoryName</span>
+                                <span style="padding-left:20px">@Model.AssetName</span>
+                                <br />
+                                <img id="mainPortrait" alt="Applicant Photo" height="80" width="200" src="data:image;base64,@System.Convert.ToBase64String(Model.Attachment)" />
+                                <br />
+                                <span style="padding-left:40px">@Model.AssetCode</span>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+    <div class="clear">
+    </div>
+    <a href="#" class="Button btn-success" id="btnPrintPreview" onclick="getPrint('printable')">Preview</a>
+}
+<script>
+    //Generating Pop-up Print Preview page
+    function getPrint(print_area) {
+        //Creating new page
+        var pp = window.open();
+        var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+
+        //pp.document.write(doctype);
+        var htm = '<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><title>Print Preview</title>'
+
+        pp.document.write(htm);
+        //var css = '<LINK href=' + '"<%= Url.Content("~/Content/css/PStyles.css") %>"' + ' type="text/css" rel="stylesheet" type="text/css" >';
+        //pp.document.write(css);
+
+        var sitecss = '<LINK href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" >';
+        pp.document.write(sitecss);
+
+        var gridcss = '<LINK href="@Url.Content("~/Content/grid.css")" rel="stylesheet" type="text/css" />';
+        pp.document.write(gridcss);
+
+        var reportcss = '<LINK href="@Url.Content("~/Content/report.css")"  rel="stylesheet" type="text/css" />';
+        pp.document.write(reportcss);
+
+        pp.document.write('<body MS_POSITIONING="GridLayout" bottomMargin="0" leftMargin="0" topMargin="0" rightMargin="0">');
+        //Adding form Tag
+        pp.document.write('<form  method="post">');
+        //Creating two buttons Print and Close within a table
+        //pp.document.write('<TABLE width=100%><TR><TD></TD></TR><TR><TD align=right><INPUT ID="PRINT" type="button" value="Print" onclick="javascript:location.reload(true);window.print();"><INPUT ID="CLOSE" type="button" value="Close" onclick="window.close();"></TD></TR><TR><TD></TD></TR></TABLE>');
+        pp.document.write('<TABLE width=100%><TR><TD></TD></TR><TR><TD align=right><a href="#" class="button" onclick="javascript:window.print();window.close();"><span>Print</span></a><a class="button" href="#" onclick="window.close();"><span>Close</span></a></TD></TR><TR><TD></TD></TR></TABLE>');
+        
+        pp.document.write('<div class="border"></div>');
+        //Writing print area of the calling page
+        pp.document.write(document.getElementById(print_area).innerHTML);
+        pp.document.write('</form></body></HTML>');
+
+        pp.document.getElementById('pager').innerHTML = "";
+        pp.document.getElementById('button').innerHTML = "";
+        pp.document.close(htm);
+        //$('#pager').removeClass('pager');
+
+        return false;
+
+    }
+</script>

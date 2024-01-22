@@ -1,0 +1,312 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.OverTimePayment.OverTimePaymentModel
+
+@Html.HiddenFor(model => model.Id)
+
+<div class="GroupBox">
+    <fieldset>
+        <div class="row">
+            <span class="label">
+                <label for="PeriodFrom"> Employee ID  </label> <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.ICNo, new { @class = "required" })
+
+                @Html.HiddenFor(model => model.EmployeeId)
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.EmployeeName)
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.EmployeeName, new { @readonly = "readonly" })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Designation)
+
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.Designation, new { @readonly = "readonly" })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.Department)
+
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.Department, new { @readonly = "readonly" })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ElectricMeterNo)
+
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.ElectricMeterNo, new { @readonly = "readonly" })
+            </span><span class="label-right">
+
+
+            </span><span class="field">
+
+            </span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.BillNo)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.BillNo)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.PrepareDate)
+
+            </span><span class="field">
+                @Html.EditorFor(model => model.PrepareDate)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FromDate)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.FromDate)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.BillMonth)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.BillMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ToDate)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.ToDate)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.BillYear)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.BillYear, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ReadingFrom)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.ReadingFrom, new { @style = "width:270px" })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.ReadingTo)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.ReadingTo, new { @style = "width:270px" })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.TotalUsageUnit)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.TotalUsageUnit, new { @readonly="readonly", @style = "width:270px" })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.BillAmount)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.BillAmount)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FineAmount)
+            </span><span class="field">
+                @Html.EditorFor(model => model.FineAmount)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.TotalBill)
+                <label class="required-field">*</label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.TotalBill, new { @readonly = "readonly" })
+            </span>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <span class="label">
+            <label for="PeriodFrom"> Deduct From Salary?  </label> <label class="required-field">*</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.IsDeductFromSalary)
+        </span><span class="label-right">
+        </span><span class="field">
+        </span>
+    </div>
+
+    <div class="salaryDeduct">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.SalaryHeadId)
+                <label class="required-field salaryLebel">*</label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.SalaryHeadId, Model.SalaryHeadList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.SalaryMonth)
+                 <label class="required-field salaryLebel">*</label>
+            </span><span class="field">
+                       @Html.DropDownListFor(model => model.SalaryMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.SalaryYear)
+                <label class="required-field salaryLebel">*</label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.SalaryYear, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span><span class="label-right">
+            </span><span class="field">
+            </span>
+        </div>
+
+    </div>
+
+    <div class="cashPaid">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.CashPaidAmount)
+                <label class="required-field cashLebel">*</label>
+            </span><span class="field">
+               @Html.EditorFor(model=> model.CashPaidAmount)
+            </span><span class="label-right">
+            </span><span class="field">
+            </span>
+        </div>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span><span class="label-right">
+        </span><span class="field">
+        </span>
+    </div>
+
+    <div class="clear">
+    </div>
+
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script>
+    $(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 940, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        $("#IsDeductFromSalary").live('click', function () {
+            FormatControl();
+
+        });
+
+        $("#ReadingTo").live('change', function () {
+            CalculateUnits();
+        });
+
+        $("#ReadingFrom").live('change', function () {
+            CalculateUnits();
+        });
+        $("#BillAmount").live('change', function () {
+            CalculateBill();
+        });
+        $("#FineAmount").live('change', function () {
+            CalculateBill();
+        });
+
+        function CalculateBill() {
+            if (parseFloat($("#FineAmount").val()) >= 0 && parseFloat($("#BillAmount").val()) > 0)
+                $("#TotalBill").val(parseFloat($("#FineAmount").val()) + parseFloat($("#BillAmount").val()));
+        }
+        function CalculateUnits() {
+            if (parseFloat($("#ReadingTo").val()) > 0 && parseFloat($("#ReadingFrom").val()) > 0)
+                $("#TotalUsageUnit").val(parseFloat($("#ReadingTo").val()) - parseFloat($("#ReadingFrom").val()));
+        }
+
+        function FormatControl() {
+            if ($("#IsDeductFromSalary").attr('checked')) {
+                $(".salaryDeduct").show();
+                $(".cashPaid").hide();
+                $("#SalaryHeadId").addClass('required');
+                $("#SalaryMonth").addClass('required');
+                $("#SalaryYear").addClass('required');
+                $("#CashPaidAmount").removeClass('required');
+            }
+            else {
+                $(".salaryDeduct").hide();
+                $(".cashPaid").show();
+                $("#SalaryHeadId").removeClass('required');
+                $("#SalaryMonth").removeClass('required');
+                $("#SalaryYear").removeClass('required');
+                $("#CashPaidAmount").addClass('required');
+            }
+        }
+        FormatControl();
+    });
+
+    function openEmployee() {
+
+        $.ajax({
+            url: '@Url.Action("EmployeeSearch", "Employee", new { area="PRM"})?searchEmpType=active',
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo() {
+        var empId = $('#EmployeeId').val();
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post('@Url.Action("GetEmployeeInfo", "EmployeeSeperation", new { area = "PRM" })', serializedForm, function (obj) {
+                $("#ICNo").val(obj.EmpId);
+                $('#EmployeeName').val(obj.EmployeeName);
+                $("#Designation").val(obj.Designation);
+                $("#Department").val(obj.DepartmentName);
+                $("#ElectricMeterNo").val(obj.MetterNo);
+            }, "json");
+        }
+
+        return false;
+    }
+
+    function Closing() {
+
+    }
+
+</script>

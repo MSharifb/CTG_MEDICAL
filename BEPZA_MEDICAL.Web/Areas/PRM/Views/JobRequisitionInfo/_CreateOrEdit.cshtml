@@ -1,0 +1,822 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobRequisitionInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@{
+    Layout = null;
+}
+<fieldset>
+    <legend> Job Requisition Information </legend>
+
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model=>model.PreparedById)
+            @Html.LabelFor(model => model.RequisitionNo)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.RequisitionNo)
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.RequisitionSubDate)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.RequisitionSubDate)
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RequisitionPreparedBy)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.RequisitionPreparedBy, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Designation)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FinancialYearId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+</fieldset>
+
+    <fieldset>
+        <legend> Requisition for Job Post </legend>
+
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.OrganogramLevelId)
+                @Html.LabelFor(model => model.OrganogramLevelName)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.OrganogramLevelName, new { @class = "read-only", @readonly = true })
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openOrganogram();" />
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                &nbsp;
+            </span>
+            <div class="divToOrg">
+                <span class="field">
+                    @Html.LabelFor(model => model.OrganogramLevelDetail, @Model.OrganogramLevelDetail)
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DepartmentId)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentList, @String.Format("{0}", Content.DDLOptionalLabel()), new { disabled = "disabled" })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.RequireDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.RequireDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.OfficeId)
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.OfficeId, Model.OfficeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { disabled = "disabled" })
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.EmploymentTypeId)
+                <label>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.EmploymentTypeId, Model.EmploymentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.SectionId)
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.SectionId, Model.SectionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { disabled = "disabled" })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.SalaryScaleId)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.FirstAndLastStep, new { @class = "read-only", @readonly = true })
+            </span>
+            <div style="display:none">
+                @Html.DropDownListFor(model => model.SalaryScaleId, Model.SalaryScaleList, new { disabled = "disabled" })
+            </div>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DesignationId)
+                <label>
+                    *
+                </label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadSalaryScale();" })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.NumOfRequiredPost)
+                <label>
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.NumOfRequiredPost)
+            </span>
+        </div>
+        <div class="row">
+
+        </div>
+        <div class="=row">
+            <div style="width:33%; float:left;margin-right:10px;">
+                <fieldset>
+                    <legend>Number of Sanctioned post</legend>                 
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.TotalSanctionedPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.TotalSanctionedPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+
+                </fieldset>
+            </div>
+            <div style="width: 32%; float: left; margin-right:10px; ">
+                <fieldset>
+                    <legend>Number of Filled Up post</legend>
+                    <div class="row" >
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.DiRecFillPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.DiRecFillPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.PromFillPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.PromFillPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.TotalFilledUpPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.TotalFilledUpPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
+            <div style="width: 32%; float: left">
+                <fieldset>
+                    <legend>Number of Vacant post</legend>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.TotalVacantPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.TotalVacantPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.JobDescription)
+            </span><span class="field">
+                @Html.TextAreaFor(model => model.JobDescription)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.ExpRequirement)
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(model => model.ExpRequirement)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EduRequirement)
+            </span><span class="field">
+                @Html.TextAreaFor(model => model.EduRequirement)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.AdditionalRequirement)
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(model => model.AdditionalRequirement)
+            </span>
+        </div>
+        <div class="row" align="center">
+            <div style="width: 95%">
+                <div class="clear"></div>
+                <div class="button-crude fixedAddButton" style="text-align: right;">
+                    <input id="btnAdd" type="button" value="Add" />
+                    <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+                </div>
+
+                <div class="clear">
+                </div>
+                <table id="grid" class="contenttable">
+                    <thead>
+                        <tr>
+
+                            <th>
+                                Require Date
+                            </th>
+                            <th>
+                                Department
+                            </th>
+                            <th>
+                                Section
+                            </th>
+                            <th>
+                                Job Post Name
+                            </th>
+                            <th>
+                                Required Post
+                            </th>
+                            <th>
+                                Salary Scale
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.JobRequisitionInfoDetail.Count; i++)
+                        {
+                            var item2 = Model.JobRequisitionInfoDetail.ToList()[i];
+                        <tr >
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @*@Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].RequireDate)*@
+                                @Html.TextBoxFor(m => m.JobRequisitionInfoDetail[i].RequireDate, "{0:yyyy-MM-dd}")
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].DepartmentId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].SectionId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].DesignationId)
+                            </td>
+
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].NumOfRequiredPost)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].SalaryScaleId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].EmploymentTypeId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].JobDescription)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].EduRequirement)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].ExpRequirement)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobRequisitionInfoDetail[i].AdditionalRequirement)
+                            </td>
+                            <td>
+                                <label> @item2.RequireDate.Value.ToString("yyyy-MM-dd")</label>
+                            </td>
+                            <td>
+                                <label> @item2.DepartmentName</label>
+                            </td>
+                            <td>
+                                <label> @item2.SectionName</label>
+                            </td>
+                            <td>
+                                <label> @item2.DesignationName</label>
+                            </td>
+                            <td>
+                                <label> @item2.NumOfRequiredPost</label>
+                            </td>
+                            <td>
+                                <label> @item2.SalaryScaleName</label>
+                            </td>
+                            <td>
+                                <a id="@item2.Id" class="deleteEmpClearanceFrmRow fixeddeleteRow" title="delete">
+                                    <img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" />
+                                </a>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="clear" style="height:10px">
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="GroupBox">
+        <div class="clear"></div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Comments)
+            </span>
+            <span class="field" style="width: 60%">
+                @Html.TextAreaFor(model => model.Comments)
+            </span>
+            <div class="clear"></div>
+        </div>
+        <div class="row">
+            <div id="divFileAttach">
+                <span id="spAttachment" class="label">
+                    @Html.LabelFor(model => model.Attachment)
+                </span>
+                <span class="field">
+                    @Html.HiddenFor(model => model.Attachment)
+                    @Html.HiddenFor(model => model.FileName)
+                    <input type="file" name="Attachment" id="Attachment" />
+                    <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+                </span>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    @*Organogram*@
+
+    <div id="divOrganogramList">
+        <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+            <p>
+                Your browser does not support iframes.
+            </p>
+        </iframe>
+    </div>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $("#divOrganogramList").dialog({
+                autoOpen: false,
+                modal: true,
+                height: 380,
+                width: 800,
+                title: 'Organogram Level',
+                buttons:
+                {
+                    Ok: function () { $(this).dialog("close"); }
+                },
+                beforeclose: function (event, ui) { Closing(); }
+            });
+        });
+
+        function openOrganogram() {
+            var url = '@Url.Action("TreeViewSearchList", "OrganogramLevel")' + '?OrgIdentityName=1';
+            $.ajax(
+            {
+                url: url,
+                type: 'GET',
+                dataType: 'text',
+                timeout: 5000,
+                success: function (result) {
+                    $('#divOrganogramList').html(result);
+                },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                }
+            });
+
+            $("#divOrganogramList").dialog('open');
+            return false;
+        }
+
+        // This function is call from client view
+        function SetOrganogramId(organogramId, organogramName, OrgIdentityName) {
+            if (OrgIdentityName = '1') {
+                $('#OrganogramLevelId').val(organogramId)
+                $('#OrganogramLevelName').val(organogramName);
+                SetOrganogramInfo(organogramId, "label[for*='OrganogramLevelDetail']");
+
+                GetEmpOrganogramInfo(organogramId);
+                FillDesignaitonCombo(organogramId);
+                if ($('#IsEmpEditDesignation').val()) {
+
+                }
+                else {
+                    FillDesignaitonCombo(organogramId);
+                    $("#JobGradeId").val('');
+                    $("#JobGradeName").val('');
+
+                    $("#SalaryScaleId").val('');
+                    $("#SalaryScaleName").val('');
+                }
+
+            }
+        }
+
+        function SetOrganogramInfo(OrganogramLevelId, orgDetail) {
+
+            var url = '@Url.Action("GetOrganogramHierarchyInfo", "EmployeeTransferInfo", "PRM")';
+            if (OrganogramLevelId > 0) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $(orgDetail).html(data.OrgLabel);
+                    },
+
+                    failure: function (response) {
+                        $(orgDetail).html("");
+                    }
+                });
+            }
+        }
+
+        function GetEmpOrganogramInfo(OrganogramLevelId) {
+            var url = '@Url.Action("GetOrganogramInfo", "JobRequisitionInfo", "PRM")';
+            if (OrganogramLevelId > 0) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    success: function (obj) {
+                        $("#DepartmentId").val(obj.DepId);
+                        $('#OfficeId').val(obj.OfficeId);
+                        $('#SectionId').val(obj.SecId);
+                    },
+                    failure: function (response) {
+                        //alert(response.d);
+                    }
+                });
+            }
+        }
+
+        function Closing() {
+
+        }
+    </script>
+
+    @*End Organogram*@
+
+
+    <script type="text/javascript">
+    $('#btnAdd').live('click', function () {
+        $('#message').empty();
+
+        $("#OrganogramLevelId").removeClass("border-red");
+        $("#DesignationId").removeClass("border-red");
+        $("#EmploymentTypeId").removeClass("border-red");
+        $("#NumOfRequiredPost").removeClass("border-red");
+
+        var organogramId = $('#OrganogramLevelId').val();
+        var jobRequiDtlId = $('#Id').val();
+        var requireDate = $('#RequireDate').val();
+
+        var departmentId = $('#DepartmentId').val();
+        var departmentName = $("#DepartmentId option:selected").text();
+
+        var sectionId = $('#SectionId').val();
+        if (sectionId == null || sectionId == 0) {
+            var sectionName = '';
+        }
+        else {
+            var sectionName = $("#SectionId option:selected").text();
+        }
+
+        var designationId = $('#DesignationId').val();
+        var designationName = $("#DesignationId option:selected").text();
+
+        var numOfReqPost = $('#NumOfRequiredPost').val();
+
+        var salaryScaleId = $('#SalaryScaleId').val();
+        //var salaryScaleName = $("#SalaryScaleId option:selected").text();
+        var salaryScaleName = $("#FirstAndLastStep").val();
+
+        var employmentTypeId = $('#EmploymentTypeId').val();
+        var jobDescription = $('#JobDescription').val();
+        var eduRequirement = $('#EduRequirement').val();
+        var expRequirement = $('#ExpRequirement').val();
+        var additionalRequirement = $('#AdditionalRequirement').val();
+
+        if (organogramId == null || organogramId == "" || organogramId < 1) {
+            $("#OrganogramLevelId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (numOfReqPost == null || numOfReqPost == "" || numOfReqPost < 1) {
+            $("#NumOfRequiredPost").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (departmentId == null || departmentId ==0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (designationId == null || designationId == 0) {
+            $("#DesignationId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (employmentTypeId == null || employmentTypeId == 0) {
+            $("#EmploymentTypeId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        else {
+
+            var trClone = '<tr>' +
+                '<td style="display: none;">' + '<input type="text" value="0" name="JobRequisitionInfoDetail[0].Id"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].RequireDate" value="' + requireDate + '"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].DepartmentId" value="' + departmentId + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].SectionId" value="' + sectionId + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].DesignationId" value="' + designationId + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].NumOfRequiredPost" value="' + numOfReqPost + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].SalaryScaleId" value="' + salaryScaleId + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].EmploymentTypeId" value="' + employmentTypeId + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].JobDescription" value="' + jobDescription + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].EduRequirement" value="' + eduRequirement + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].ExpRequirement" value="' + expRequirement + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].AdditionalRequirement" value="' + additionalRequirement + '" ></td>' +
+
+                '<td>' + '<label for="RequireDate">' + requireDate + '</td>' +
+                '<td>' + '<label for="DepartmentName" >' + departmentName + '</td>' +
+                 '<td>' + '<label for="SectionName">' + sectionName + '</td>' +
+                '<td>' + '<label for="DesignationName" >' + designationName + '</td>' +
+                '<td>' + '<label for="NumOfRequiredPost" >' + numOfReqPost + '</td>' +
+                '<td>' + '<label for="SalaryScaleName" >' + salaryScaleName + '</td>' +
+                '<td>' + '<a class="deleteEmpClearanceFrmRow fixeddeleteRow" title="delete"><img src="../../Content/Images/Delete.png" style="border: none;" alt="delete"></a></td>' +
+                '</tr>';
+            $('#grid tbody').append(trClone);
+            RearrengeControlName2();
+        }
+    })
+
+
+    $('.row a.deleteEmpClearanceFrmRow').live('click', function () {
+        var recordId = $(this).attr('id');
+        if (recordId > 0) {
+            $.ajax({
+                url: '@Url.Action("DeleteJobRequisitionDetail", "JobRequisitionInfo")',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: recordId }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+            });
+            if ($('#grid tbody tr').length > 0)
+                $(this).parent().parent().remove();
+        }
+        else {
+            if ($('#grid tbody tr').length > 0)
+                $(this).parent().parent().remove();
+        }
+
+        RearrengeControlName2();
+    })
+
+    function RearrengeControlName2() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+    </script>
+
+    <script type="text/javascript">
+
+    $('#DesignationId').live('change', function () {
+
+        //refress fields
+
+        $("#TotalSanctionedPost").val(null);
+
+        $("#DiRecFillPost").val(null);
+        $('#PromFillPost').val(null);
+        $('#TotalFilledUpPost').val(null);
+
+        $('#TotalVacantPost').val(null);
+
+        //end refress fields
+
+
+        var empId = $('#DesignationId').val();
+        var departmentId = $('#DepartmentId').val();
+
+        var url = '@Url.Action("GetRequsionInfo", "JobRequisitionInfo")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $("#TotalSanctionedPost").val(obj.SancTotal);
+
+                $("#DiRecFillPost").val(obj.FillDirect);
+                $('#PromFillPost').val(obj.FillPro);
+                $('#TotalFilledUpPost').val(obj.FillTotal);
+
+                $('#TotalVacantPost').val(obj.VacantTotal);
+            }, "json");
+        }
+        return false;
+        })
+
+
+    function LoadSalaryScale() {
+        var designationId = $('#DesignationId').val();
+        var salaryScale = $('#SalaryScaleId');
+
+        LoadFirstAndLastStep(designationId);
+
+        salaryScale.empty();
+        if (designationId != null && designationId != '') {
+            $.getJSON('@Url.Action("SalaryScale")', { designationId: designationId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    salaryScale.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+        function LoadFirstAndLastStep(designationId) {
+            $('#FirstAndLastStep').val('');
+            if (designationId != null && designationId != '') {
+                $.ajax({
+                    url: '@Url.Action("GetFirstAndLastStep", "JobRequisitionInfo")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ designationId: designationId }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (r) {
+                        $('#FirstAndLastStep').val(r.amount);
+                    },
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                });     
+            }
+        }
+
+    </script>
+
+    <script type="text/javascript">
+    @*function LoadDesignation() {
+        var departmentId = $('#DepartmentId').val();
+        var sectionId = $('#SectionId').val();
+        var officeId=$('#OfficeId').val();
+        var designation = $('#DesignationId');
+        designation.empty();
+        designation.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (departmentId != null && departmentId != '') {
+            $.getJSON('@Url.Action("LoadDesignation")', { departmentId: departmentId, sectionId: sectionId, officeId: officeId }, function (desigs) {
+                $.each(desigs, function (index, desig) {
+                    designation.append($('<option/>', {
+                        value: desig.Id,
+                        text: desig.Name
+                    }));
+                });
+            });
+        }
+    }*@
+        function FillDesignaitonCombo(OrgId) {
+            if (OrgId != '') {
+                var url = '@Url.Action("GetDesignationByOrganogramLevelId", "Employee")' + '?Id=' + OrgId;
+                $.get(url, function (response) {
+                    var heads = $.parseJSON(response);
+                    var ddlDesignations = $("select#DesignationId");
+                    // clear all previous options
+                    $("select#DesignationId>option").remove();
+                    // populate the products
+                    for (i = 0; i < heads.length; i++) {
+                        ddlDesignations.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                    }
+                });
+            }
+            else {
+
+                $("select#DesignationId>option").remove();
+                $("select#DesignationId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            var requisitionNo = $('#RequisitionNo').val();
+            var finalYear= $('#FinancialYearId').val();
+
+            if (requisitionNo == null || requisitionNo == 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            if (finalYear == null || finalYear == 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+
+            var rows = $('#grid').find('tr').length
+            if (rows == 1 || rows < 1) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Sorry! Row is not available.</span> </div> ");
+                return false;
+            }
+        });
+    });
+    </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+

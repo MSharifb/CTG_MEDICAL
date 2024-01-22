@@ -1,0 +1,166 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.AnnualProcurementPlan.AnnualProcurementPlanDetailViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr>
+    @using (Html.BeginCollectionItem("AnnualProcurementPlanDetailList"))
+    {
+
+        <td class="APPlotNo">
+            <span class="head-id">
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.BudgetDetailsId)
+            </span>
+            @Html.HiddenFor(m => m.TempHeadId, new { @class = "form-control tempAccHeahId" })
+            @Html.EditorFor(m => m.LotNo)
+        </td>
+        <td class="packageNo">
+            @Html.EditorFor(m => m.PackageNo)
+        </td>
+        <td class="construction">
+            @if (Model.strMode == "NewAddClick")
+            {
+                @Html.DropDownListFor(m => m.ConstructionTypeId, Model.ConstructionTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.ConstructionTypeId)
+                @Html.DropDownListFor(m => m.ConstructionTypeId, Model.ConstructionTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @disabled = "disabled" })
+            }
+        </td>
+        <td class="description">
+            @if (Model.strMode == "NewAddClick")
+            {
+                @Html.TextAreaFor(m => m.DescritionOfAPP, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextAreaFor(m => m.DescritionOfAPP, new { @class = "form-control", @readonly = "readonly" })
+
+            }
+        </td>
+        <td class="unit">
+            @Html.EditorFor(m => m.Unit)
+        </td>
+        <td class="quantity">
+            @Html.EditorFor(m => m.Quantity)
+        </td>
+        <td class="procurement">
+            @Html.DropDownListFor(m => m.ProcurementTypeId, Model.ProcurementTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+        </td>
+        <td class="source">
+            @if (Model.strMode == "NewAddClick")
+            {
+                @Html.DropDownListFor(m => m.SourceOfFundId, Model.SourceOfFundList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.SourceOfFundId)
+                @Html.DropDownListFor(m => m.SourceOfFundId, Model.SourceOfFundList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @disabled = "disabled" })
+            }
+        </td>
+        <td class="contract">
+            @Html.DropDownListFor(m => m.ApprovingAuthorityId, Model.ApprovingAuthorityList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+        </td>
+        <td class="estd">
+            @if (Model.strMode == "NewAddClick")
+            {
+                @Html.TextBoxFor(m => m.EstdCost, new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.EstdCost, new { @class = "form-control", @readonly = "readonly" })
+            }
+        </td>
+        <td>
+            <label>Planed Dates</label><br />
+            <label>Planed Days</label><br />
+            <label>Actual Dates</label>
+        </td>
+        <td class="invitation">
+            @Html.EditorFor(m => m.InvitationforTender)<br />
+            @Html.EditorFor(m => m.InvitationforTenderDays, new { onchange = "OnChangeInvitationfor()" })<br />
+            <span class="actual-date">@Html.EditorFor(m => m.InvitationforTenderActualDates)</span>
+        </td>
+        <td class="tenderOpening">
+            @Html.EditorFor(m => m.TenderOpening)<br />
+            @Html.EditorFor(m => m.TenderOpeningDays)<br />
+            @Html.EditorFor(m => m.TenderOpeningActualDates)
+        </td>
+        <td class="tenderElavuation">
+            @Html.EditorFor(m => m.TenderElavuation)<br />
+            @Html.EditorFor(m => m.TenderElavuationDays)<br />
+            @Html.EditorFor(m => m.TenderElavuationActualDates)
+        </td>
+        <td class="approvalToAward">
+            @Html.EditorFor(m => m.ApprovalToAward)<br />
+            @Html.EditorFor(m => m.ApprovalToAwardDays)<br />
+            @Html.EditorFor(m => m.ApprovalToAwardActualDates)
+        </td>
+        <td class="notificationOfAward">
+            @Html.EditorFor(m => m.NotificationOfAward)<br />
+            @Html.EditorFor(m => m.NotificationOfAwardDays)<br />
+            @Html.EditorFor(m => m.NotificationOfAwardActualDates)
+        </td>
+        <td class="signing">
+            @Html.EditorFor(m => m.SigningofContract)<br />
+            @Html.EditorFor(m => m.SigningofContractDays)<br />
+            @Html.EditorFor(m => m.SigningofContractActualDates)
+        </td>
+        <td class="timeToContract">
+            @Html.EditorFor(m => m.TimeToContract)<br />
+            @Html.EditorFor(m => m.TimeToContractDays)<br />
+            @Html.EditorFor(m => m.TimeToContractActualDates)
+        </td>
+        <td class="completion">
+            @Html.EditorFor(m => m.CompletionofContract)<br />
+            @Html.EditorFor(m => m.CompletionofContractDays)<br />
+            @Html.EditorFor(m => m.CompletionofContractActualDates)
+        </td>
+        <td class="remarks">
+            @Html.TextAreaFor(m => m.Remarks, new { @style = "height:80px" })
+        </td>
+        <td class="control-option">
+            <span class="add-button">
+                <button type="button" class="btn btn-sm btn-primary btnAddNewProject" id="btnAddNewProject" style="padding:3px;">
+                    <i class="fa fa-plus fa-lg"></i>
+                </button>
+            </span>
+            <span class="delete-button">
+                <button type="button" class="btn btn-sm btn-primary btnDleteProject" id="btnDleteProject" style="padding:3px;">
+                    <i class="fa fa-trash fa-lg"></i>
+                </button>
+            </span>
+        </td>
+    }
+</tr>
+@*<script type="text/javascript">
+
+        $('.btnDleteProject').click(function () {
+            $(this).closest('tr').remove();
+            return false;
+        });
+
+        $('.btnAddNewProject').click(function (e) {
+            e.preventDefault();
+            var budgetHeadId = $(this).closest('table').find('.app-head select').val();
+            var eTbody = $(this).closest('table').find('tbody');
+            var url = '@Url.Action("AddNewProject", "AnnualProcurementPlan")';
+
+            $.ajax({
+                url: url,
+                data: { budgetHeadId: budgetHeadId, noOfFinancialYear: 0 },
+                type: 'POST',
+                cache: false,
+                success: function (result) {
+                    eTbody.append("<tr>" + result + "</tr>");
+                    //$('.budget-sub-head select').unbind().change(BudgetSubHeadChange);
+
+                    //$('.yearly-cost-head .budget-status select').unbind().change(budgetStatusChange);
+                    //$('.yearly-cost-head .financial-year select').unbind().change(financialYearChange);
+                    //$('.yearly-cost-head .budget-status select').trigger('change');
+                    //$('.yearly-cost-head .financial-year select').trigger('change');
+                }
+            })
+        });
+
+    </script>*@

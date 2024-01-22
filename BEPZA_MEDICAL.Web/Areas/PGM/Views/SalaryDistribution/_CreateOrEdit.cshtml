@@ -1,0 +1,82 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.MonthlySalaryDistribution.SalaryDistributionViewModel
+@using ERP_BEPZA.Web.Helpers
+
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("SalaryDistributionProcess", "MonthlySalary", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+    
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+            @Html.HiddenFor(model=>model.EmployeeId)
+                @Html.LabelFor(model => model.SalaryYear)
+                <label class="required-field">
+                    *</label>
+            </span><span class="field">
+                @Html.DropDownListFor(y => y.SalaryYear, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.SalaryMonth)
+                <label class="required-field">
+                    *</label>
+            </span><span class="field">
+                @Html.DropDownListFor(m => m.SalaryMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="button-crude">
+        @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="button" value="Process" id="btnAdd" name="btnSubmit" style="margin-right: 8px;" />           
+        }
+    </div>
+     
+}
+
+<script type="text/javascript">
+
+    $('#btnAdd').live('click', function () {
+
+        var year = $('#SalaryYear').val();
+        var month = $('#SalaryMonth').val();
+        var empId =parseInt($('#EmployeeId').val());
+
+        var url = '@Url.Action("SalaryDistributionProcess", "SalaryDistribution")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (year != '' && month != '') {
+
+            $.post(url, { year: year, month: month, EmployeeId: empId }, function (obj) {
+
+                alert(obj.Message);
+
+                if (obj.Success == true) {
+                    $("#divEmpList").dialog('close');
+                    $('#jqGrid').trigger('click');
+                }
+
+            }, "json");
+
+
+        }
+        else {
+            if (year == '') {
+                alert('Please select year.');
+            }
+            if (month == '') {
+                alert('Please select month.');
+            }
+        }
+
+        //        var url = '@Url.Action("Index", "SalaryDistribution")';
+        //         window.location.href = url;
+
+    });
+
+</script>

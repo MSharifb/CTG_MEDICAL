@@ -1,0 +1,51 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobRequisitionInfoSummaryViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("JobRequisitionInfoSummary"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ReferenceNo)
+        @Html.HiddenFor(x => x.RequisitionInfoDetailId)
+        @Html.HiddenFor(x => x.RequisionId)
+        @Html.HiddenFor(x => x.DesignationId)
+
+        <td style="width: 30px; text-align: center ">
+            <a onclick="SancPost(@Model.DesignationId,@Model.RequisitionInfoDetailId)">
+                @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+            </a>
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Label(Model.RequisitionNo)
+        </td>
+        <td width="10%" style="text-align: center">
+           @Html.Encode(Model.Designation)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.NumberOfRequiredPost)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.PayScale)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Label(Model.DepartmentName)
+        </td>
+         <td width="10%" style="text-align: center">
+            @Html.Encode(Model.SectionName)
+        </td>
+        <td width="10%" align="center">
+            @Html.TextBoxFor(x => x.RecommendPost)
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>
+<script type="text/javascript">
+
+    
+    FormatTextBox();
+</script>

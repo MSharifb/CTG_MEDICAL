@@ -1,0 +1,506 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRforStaff.StaffAssessmentInfoViewModel
+
+@{
+    Layout = null;
+}
+@using (Html.BeginForm(Model.ActionType, "ACRforStaff"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.StaffInfoId)
+                    @Html.HiddenFor(model => model.EmployeeId)
+                    @Html.LabelFor(model => model.EmpId)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRDate)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRDate, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRPeriodFrom)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRPeriodFrom, new { @class = "read-only", @readonly = true })
+                </span>
+
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeDesignation)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeDesignation, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRPeriodTo)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRPeriodTo, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeDepartment)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeDepartment, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.SeniorityNumber)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.SeniorityNumber, new { @class = "read-only", @readonly = true })
+                </span>
+
+            </div>
+        </div>
+    </fieldset>
+    <div class="assesment-info">
+        <fieldset>
+            <legend>Assessment Info</legend>
+            <div class="row" align="center">
+                <div style="width: 80%">
+                    <div class="clear"></div>
+                    <table id="grid" class="contenttable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Attributes
+                                </th>
+                                <th>
+                                    Ka1
+                                </th>
+                                <th>
+                                    Ka
+                                </th>
+                                <th>
+                                    Kha
+                                </th>
+                                <th>
+                                    Ga
+                                </th>
+                                <th>
+                                    Gha
+                                </th>
+                                <th>
+                                    Remarks
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (int i = 0; i < Model.AttributeDetailList.Count; i++)
+                            {
+                                var item1 = Model.AttributeDetailList.ToList()[i];
+                                <tr>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AttributeDetailList[i].Id)
+                                    </td>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AttributeDetailList[i].StaffInfoId)
+                                    </td>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AttributeDetailList[i].AttributeDetailId)
+                                    </td>
+                                    <td>
+                                        <label> @item1.SerialNumber</label>
+                                    </td>
+                                    <td style="text-align:left">
+                                        <label> @item1.AttributeName</label>
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.AttributeDetailList[i].ChkFive)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.AttributeDetailList[i].ChkFour)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.AttributeDetailList[i].ChkThree)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.AttributeDetailList[i].CkhTwo)
+                                    </td>
+                                    <td>
+                                        @Html.CheckBoxFor(m => m.AttributeDetailList[i].ChkOne)
+                                    </td>
+                                    <td>
+                                        @Html.TextBoxFor(m => m.AttributeDetailList[i].Remarks)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear" style="height:10px">
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Recommendation</legend>
+            <div class="row">
+                <span class="label">
+                    <label>1. Overall Assesment: </label>
+                </span>
+            </div>
+            <div class="row" style="padding-left:30px">
+                <span class="field display-field">
+                    @Html.CheckBoxFor(model => model.Excellent, new { @class = "chkBox" })
+                    <label> Excellent</label>
+                    &nbsp&nbsp
+                    @Html.CheckBoxFor(model => model.Good, new { @class = "chkBox" })
+                    <label> Good</label>
+                    &nbsp&nbsp
+                    @Html.CheckBoxFor(model => model.Standard, new { @class = "chkBox" })
+                    <label> Standard</label>
+                    &nbsp&nbsp
+                    @Html.CheckBoxFor(model => model.BelowStnd, new { @class = "chkBox" })
+                    <label> Below Standard</label>
+                    &nbsp&nbsp
+                    @Html.CheckBoxFor(model => model.NotExpt, new { @class = "chkBox" })
+                    <label> Not Expactation</label>
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label" style="width: 50%">
+                    <label>2. Qualification for Promotion: (Please select any one)</label>
+                </span>
+            </div>
+            <div style="padding-left:30px">
+                <div class="row">
+                    <span class="field">
+                        @Html.CheckBoxFor(model => model.A, new { @class = "rchk" })
+                        <label> A. Eligible for Promotion</label>
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="field">
+                        @Html.CheckBoxFor(model => model.B, new { @class = "rchk" })
+                        <label> B. Not Eligible for Promotion Yet</label>
+
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="field">
+                        @Html.CheckBoxFor(model => model.C, new { @class = "rchk" })
+                        <label> C. Highly Recommend for Promotion</label>
+
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="field">
+                        @Html.CheckBoxFor(model => model.D, new { @class = "rchk" })
+                        <label> D. Recently Promoted, So next promotion will not be considerable presently.</label>
+                    </span>
+                </div>
+            </div>
+            <div class="GroupBox">
+                <div class="row">
+                    <span class="label">
+                        @Html.HiddenFor(model => model.ReportingOfficerId)
+
+                        @Html.LabelFor(model => model.NameOfReportingOfficer, new { @class = "label-required" })
+                    </span>
+                    <span class="field">
+                        @*@Html.DropDownListFor(model => model.ReportingOfficerId, @Model.ApproverList)*@
+                        @Html.TextBoxFor(model => model.NameOfReportingOfficer, new { @class = "read-only required", @readonly = true })
+                        @*<img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />*@
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.Designation)
+                    </span><span class="field">
+                        @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.Department)
+                    </span><span class="field">
+                        @Html.TextBoxFor(model => model.Department, new { @class = "read-only", @readonly = true })
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.ReportingDate)
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ReportingDate)
+                    </span>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            @if (@Model.ApprovalActionName.Contains("Recommend"))
+            {
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.NextApproverId, new { @class = "label-required" })
+                    </span><span class="field">
+                        @Html.DropDownListFor(model => model.NextApproverId, @Model.ApproverList)
+                    </span>
+                </div>
+            }
+        </fieldset>
+    </div>
+    <div class="counter-officer-area">
+        <fieldset>
+            <legend>Reviewing Officer's Comments</legend>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.GeneralRemarks)
+                </span><span class="field" style="width:80%">
+                    @Html.TextAreaFor(model => model.GeneralRemarks)
+                </span>
+            </div>
+            <div class="clear"></div>
+            <div class="GroupBox">
+                <div class="row">
+                    <span class="label">
+                        @Html.HiddenFor(model => model.ReviewingOfficerId)
+                        @Html.LabelFor(model => model.NameOfReviewingOfficer)
+                    </span>
+                    <span class="field">
+                        @Html.TextBoxFor(model => model.NameOfReviewingOfficer, new { @class = "read-only", @readonly = true })
+                        @*<img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openRevOfficer();" />*@
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.ReDesignation)
+                    </span><span class="field">
+                        @Html.TextBoxFor(model => model.ReDesignation, new { @class = "read-only", @readonly = true })
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.ReDepartment)
+                    </span><span class="field">
+                        @Html.TextBoxFor(model => model.ReDepartment, new { @class = "read-only", @readonly = true })
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.ReviewingDate)
+                    </span><span class="field">
+                        @Html.EditorFor(model => model.ReviewingDate)
+                    </span>
+                </div>
+            </div>
+            @*<div class="row">
+                    <span class="label">
+                        @Html.LabelFor(model => model.NextApproverId, new { @class = "label-required" })
+                    </span><span class="field">
+                        @Html.DropDownListFor(model => model.NextApproverId, @Model.ApproverList)
+                    </span>
+                </div>*@
+        </fieldset>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="@Model.ButtonText" name="btnCreate" id="btnCreate" style="margin: 0 10px 0 0;" />
+        }
+        @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+        {
+            @Html.ActionLink("Delete", "DeleteAssessmentInfo", new { id = Model.StaffInfoId }, new { @class = "delete-confirm", @style = "margin: 0 10px 0 0;" })
+        }
+        <div class="clear">
+        </div>
+    </div>
+
+}
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<div class="button-crude button-left" style="float: left;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+
+    $(document).ready(function () {
+        var actionType = '@Model.ApprovalActionName';
+        if (actionType == "Recommendation") {
+            $('.counter-officer-area').hide();
+            $('.assesment-info').show();
+        }
+        else {
+            $('.assesment-info').hide();
+            $('.counter-officer-area').show();
+            $('.assesment-info').css("z-index", "-1");
+        }
+    });
+    //Reporting Officer
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=1';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+    //Reviewing Officer
+    function openRevOfficer() {
+
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=2';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setEmpData(id, useTypeEmpId) {
+        //Reporting Officer
+        if (useTypeEmpId == 1) {
+            $('#ReportingOfficerId').val(id);
+            GetEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+        //Reviewing Officer
+        if (useTypeEmpId == 2) {
+            $('#ReviewingOfficerId').val(id);
+            GetReviewingOfficerInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+
+    }
+    // Reporting Officer
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "EmployeeClearanceInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#NameOfReportingOfficer').val(obj.EmployeeName);
+                    $("#Designation").val(obj.Designation);
+                    $("#Department").val(obj.Department);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+    //Reviewing Officer
+    function GetReviewingOfficerInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "EmployeeClearanceInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#NameOfReviewingOfficer').val(obj.EmployeeName);
+                    $("#ReDesignation").val(obj.Designation);
+                    $("#ReDepartment").val(obj.Department);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(".rchk").live('click', function () {
+        if ($(this).attr('checked')) {
+            // uncheck other chekbox
+            $('input.rchk').not(this).attr('checked', false);
+        }
+
+    });
+
+    $(".chkBox").click(function () {
+        $(this).attr('checked', false)
+        //if ($(this).attr('checked')) {
+        //    // uncheck other chekbox
+        //    $('input.chkBox').not(this).attr('checked', false);
+        //}
+
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    $('input[type="checkbox"]').live('click', function () {
+        $(this).closest('tr').find('input').not(this).attr('checked', false);
+    });
+
+</script>

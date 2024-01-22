@@ -1,0 +1,108 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRClosingViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/FMS/Views/Shared/_Layout.cshtml";
+}
+@using (Ajax.BeginForm("", "FDRClosing", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+    <div class="form-group">
+        @Html.HiddenFor(model => model.Id)
+    </div>
+    <div class="clear" style="height:10px">
+    </div>
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+    <div id="divList">
+        @Html.Partial("_VoucherGrid", Model)
+    </div>
+    <div class="clear" style="height:10px">
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ApproverId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ApproverId, Model.ApproverList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+            </div>
+            @Html.LabelFor(model => model.VoucherDate, new { @class = "col-sm-2 control-label " })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.VoucherDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SubLedgerId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.SubLedgerId, Model.SubLedgerList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+            </div>
+            @Html.LabelFor(model => model.Narration, new { @class = "col-sm-2 control-label " })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.Narration, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("Initial Deposite", new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.InitialDeposit, new { @readonly = true, @class = "form-control read-only" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.Label("FDR Amount", new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.FDRAmount, new { @readonly = true, @class = "form-control read-only" })
+            </div>
+            @Html.LabelFor(model => model.ProfitAmount, new { @class = "col-sm-2 control-label " })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.ProfitAmount, new { @readonly = true, @class = "form-control read-only" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankCharge, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.BankCharge, new { @readonly = true, @class = "form-control read-only" })
+            </div>
+            @Html.LabelFor(model => model.TaxAmount, new { @class = "col-sm-2 control-label " })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.TaxAmount, new { @readonly = true, @class = "form-control read-only" })
+            </div>
+        </div>
+        <div class="form-group" id="voucherMessage">
+
+        </div>
+        <button type="submit" class="btn btn-success" id="btnVoucherPosting" onclick="VoucherPosting()"><i class="fa fa-file-powerpoint-o"></i> Prepare Receipt Voucher</button>
+    </div>
+}
+<script>
+
+    function VoucherPosting(){
+        var fdrClsId = $("#Id").val();
+        var voucherDate = $("#VoucherDate").val();
+        var ApproverId = $("#ApproverId").val();
+        var subLedgerId = $("#SubLedgerId").val();
+        var narration = $("#Narration").val();
+        var fdrAmount = $("#InitialDeposit").val();
+        var profit = $("#ProfitAmount").val();
+        var bankCharge = $("#BankCharge").val();
+        var tax = $("#TaxAmount").val();
+
+        var url = '@Url.Action("VoucherPosting", "FDRClosing")?FDRAmount=' + fdrAmount + '&ProfitAmount=' + profit + '&TaxAmount=' + tax + '&BankCharge=' + bankCharge + '&voucherDate=' + voucherDate + '&ApproverId=' + ApproverId + '&subLedgerId=' + subLedgerId + '&narration=' + narration;
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (result) {
+                console.log(result.result);
+                $("#voucherMessage").append('<h4 style="background-color: #c5dac5;">' + result.result + '</h4>')
+                alert("Voucher has been created successfully!");
+            },
+            error: function () {
+                alert('System is unable to load data please try again.');
+            }
+        });
+
+        return false;
+    }
+</script>

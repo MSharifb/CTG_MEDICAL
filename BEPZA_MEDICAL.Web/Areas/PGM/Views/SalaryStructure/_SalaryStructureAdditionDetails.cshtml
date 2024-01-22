@@ -1,0 +1,70 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryStructure.SalaryStructureDetailsModel
+@using ERP_BEPZA.Web.Helpers
+@using (Html.BeginCollectionItem("SalaryStructureDetail"))
+{
+    <tr>
+        <td class='@Model.cssSalaryHeadClass'>
+            @Html.HiddenFor(model => model.HeadId)
+            @Html.DisplayFor(model => model.DisplayHeadName)
+            @Html.HiddenFor(model=> model.DisplayHeadName)
+            @Html.HiddenFor(model => model.AmountType)
+        </td>
+        
+        <td  style="display:none;">
+            <span  class="selected-val">@Model.AmountType</span>
+        </td>
+        <td > 
+        @if (Model.DisplayHeadName.Contains("Basic"))
+        {
+            @*@Html.HiddenFor(m => m.AmountType, new { @class = "hdn-disable" })*@
+            @Html.DropDownListFor(model => model.AmountType, Model.HeadAmountTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl-addition basic", @style = "width:125px;" })
+        }
+        else
+        {            
+            
+            @Html.DropDownListFor(model => model.AmountType, Model.HeadAmountTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl-addition",@style = "width:125px;" })
+        }
+        </td>
+        <td class="td-right">
+             @if (Model.DisplayHeadName.Contains("Basic"))
+             {
+                <span  class="basic-amount"> @Html.EditorFor(model => model.Amount) </span>
+             }
+             else
+             {
+                @Html.EditorFor(model => model.Amount)
+             }
+        </td>
+        <td>
+            @Html.CheckBoxFor(model => model.IsTaxable)
+        </td>       
+        
+        <td style="display:none">
+           @* @Html.CheckBoxFor(model => model.IsGrossPayHead, new { @class = "grossPayHead" })*@
+             @Html.HiddenFor(model => model.IsGrossPayHead, new { @class = "grossPayHead" })
+        </td>
+        <td style= "display:none" >
+            @Html.HiddenFor(model => model.HeadType)
+        </td>
+    </tr>
+}
+
+<style>
+
+#Addition .td-right input[type="text"], input[type="password"] 
+{
+	text-align: right;
+}
+
+</style>
+
+<script type="text/javascript">
+    $('.ddl-addition').change(function () {
+        $('input#' + $(this).attr('id')).val($(this).val());
+    });
+    $(function () {
+       // $('.basic').attr('disabled', false);
+
+        $('.cssSalaryHeadClass').css('color', 'Red');
+    });
+</script>

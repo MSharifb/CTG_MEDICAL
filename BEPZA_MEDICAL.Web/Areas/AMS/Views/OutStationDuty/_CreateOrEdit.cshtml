@@ -1,0 +1,241 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.OutStationDuty.OutStationDuty
+
+@{
+    Layout = null;
+}
+       <div class="GroupBox">
+           <div class="row">
+               <span class="label">
+                   @Html.HiddenFor(model => model.EmployeeId)
+                   @Html.LabelFor(model => model.EmpId)
+                   <label class="required-field">
+                       *
+                   </label>
+               </span>
+               <span class="field">
+                   @Html.TextBoxFor(model => model.EmpId, null, new { @style = "width:150px" , @class="required"})
+                   <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+               </span>
+           </div>
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.EmployeeName)
+               </span>
+               <span class="field">
+                   @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+               </span>
+           </div>
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.Designation)
+               </span>
+               <span class="field">
+                   @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+               </span>
+           </div>
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.DepartmentName)
+               </span>
+               <span class="field">
+                   @Html.TextBoxFor(model => model.DepartmentName, new { @class = "read-only", @readonly = true })
+               </span>
+           </div>
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.FromDate)
+                   <label class="required-field">
+                       *
+                   </label>
+               </span>            
+               <span class="field">
+                   @Html.EditorFor(model => model.FromDate)
+               </span>
+           </div>  
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.ToDate)
+                   <label class="required-field">
+                       *
+                   </label>
+               </span>
+               <span class="field">
+                   @Html.EditorFor(model => model.ToDate)
+               </span>
+           </div>  
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.TotalDays)
+               </span>
+               <span class="field">
+                   @Html.TextBoxFor(model => model.TotalDays, new { @class = "read-only", @readonly = true })
+               </span>
+           </div>
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.Purpose)
+                   <label class="required-field">
+                       *
+                   </label>
+               </span>
+               <span class="field">
+                   @Html.TextAreaFor(model => model.Purpose)
+               </span>
+           </div>  
+           <div class="row">
+               <span class="label">
+                   @Html.LabelFor(model => model.Destination)
+               </span>
+               <span class="field">
+                   @Html.TextAreaFor(model => model.Destination)
+               </span>
+           </div>  
+           <div class="clear">
+           </div>
+       </div>
+    <div id="divEmpList">
+        <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+            <p>
+                Your browser does not support iframes.
+            </p>
+        </iframe>
+    </div>
+    <br />
+    <div class="clear">
+    </div>
+
+    <div class="clear">
+    </div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        url = url.replace('AMS', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id);
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "OutStationDuty")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#EmpId").val(obj.EmpId);
+                    $('#EmployeeName').val(obj.EmployeeName);
+                    $("#Designation").val(obj.Designation);
+                    $("#DepartmentName").val(obj.Department);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#ToDate').live('change', function () {
+        $('#message').empty();
+
+        var totalDays = 0;
+        var start = 0;
+        var end = 0;
+        if ($("#ToDate").val() != null && $("#FromDate").val() != null) {
+            var start = new Date($("#FromDate").val()).getTime()
+            var end = new Date($("#ToDate").val()).getTime()
+            totalDays = Math.floor((end - start) / (24 * 60 * 60 * 1000)) + 1
+
+            if(totalDays<1)
+            {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'To Date' must be greater than or equal to 'From Date'.</span> </div> ");
+                $('#ToDate').val('');
+                return;
+            }
+        }
+        $("#TotalDays").val(totalDays)
+    })
+
+    $('#FromDate').live('change', function () {
+        $('#message').empty();
+
+        var totalDays = 0;
+        var start = 0;
+        var end = 0;
+        if ($("#ToDate").val() != null && $("#FromDate").val() != null) {
+            var start = new Date($("#FromDate").val()).getTime()
+            var end = new Date($("#ToDate").val()).getTime()
+            totalDays = Math.floor((end - start) / (24 * 60 * 60 * 1000)) + 1
+
+            if (totalDays < 1) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'To Date' must be greater than or equal to 'From Date'.</span> </div> ");
+                $('#FromDate').val('');
+                return;
+            }
+        }
+        $("#TotalDays").val(totalDays)
+    })
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            $("#message").empty();
+            //$('#EffectiveToDate').removeClass('border-red');
+
+            if ($('#EmpId').val() == '' || $('#EmpId').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+        });
+    });
+</script>
+

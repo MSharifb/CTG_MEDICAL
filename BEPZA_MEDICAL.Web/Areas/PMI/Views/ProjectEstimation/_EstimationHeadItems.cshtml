@@ -1,0 +1,140 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.EstimationHeadDesciptionViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("EstimationHeadDescriptions"))
+{
+    <tr>
+        <td colspan="2" style="border-right:none; border-bottom:none; padding:2px;">
+            <div class="form-group">
+                <span class="desc-id-area">@Html.HiddenFor(m => m.Id)</span>
+                @Html.LabelFor(m => m.EstimationHeadId, new { @class = "col-sm-12 default-label", @style = @"font-weight:bold;" })
+            </div>
+        </td>
+        <td colspan="6" style="border-left: none; border-bottom: none; padding: 2px;">
+            <div class="form-group">
+                <div class="col-sm-11 estimationHead">
+                    @Html.DropDownListFor(m => m.EstimationHeadId, @Model.HeadList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="border-right: none; border-top: none; padding: 2px;">
+            <div class="form-group">
+                <div class="estimationHead">
+                    @Html.LabelFor(m => m.HeadDescription, new { @class = "col-sm-12 default-label" })
+                </div>
+            </div>
+        </td>
+        <td colspan="6" style="border-left: none; border-top: none; padding: 2px;">
+            <div class="form-group">
+                <div class="col-sm-11 estimationHead">
+                    @Html.TextAreaFor(m => m.HeadDescription, new { @style = @"width:100%; min-height:150px; font-size:13px;" })
+                </div>
+                <div class="col-sm-1 delete-head-area">
+                    <button type="button" id="btnDeleteHead" class="btn btn-sm btn-default" style="padding:3px; vertical-align:top;">
+                        <i class="fa fa-2x fa-trash "></i>
+                    </button>
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+
+
+<script type="text/javascript">
+    var EstimationHeadChange = function () {
+        //debugger;
+        var itemId = $(this).find('option:selected').val();
+        var selectedItemName = $(this).find('option:selected').text();
+        var masterId = $('#Id').val();
+        if (isNaN(masterId)) {
+            masterId = 0;
+        }
+
+        if (isNaN(itemId) || itemId == "undefined") {
+            itemId = 0;
+        };
+        var table = $(this).closest('table');
+
+        var descriptionArea = $(this).closest('tr').next().find('textarea ');
+
+        if (itemId == '' || itemId == 0) {
+            descriptionArea.val('');
+            $(table).find('tbody tr .item select').each(function () {
+                var itemDdl = $(this);
+                itemDdl.empty();
+                itemDdl.append($("<option></option>").val(0).html("[Select One]"));
+            });
+        }
+        else {
+
+
+            var itemCounter = 0;
+            $('table tbody tr .estimationHead').find('option:selected').each(function () {
+                var currentItemId = $(this).val();
+
+                if (currentItemId == itemId) {
+                    itemCounter++;
+                }
+            });
+            if (itemCounter > 1) {
+                $(this).val("");
+                var currentTable = $(this).closest('table');
+                $(currentTable).find('tbody tr').each(function () {
+                    var itemDdl = $(this).find('.item select');
+                    var unitDdl = $(this).closest('tr').find('.unit select');
+                    var txtUnitPrice = $(this).closest('tr').find('.unitPrice :input');
+
+                    itemDdl.empty();
+                    itemDdl.append($("<option></option>").val(0).html("[Select One]"));
+                    ResetValue(unitDdl, txtUnitPrice);
+                })
+                alert(selectedItemName + " already added");
+                return false;
+            }
+
+            $.ajax({
+                url: '@Url.Action("GetHeadDescription", "ProjectEstimation")',
+                type: 'POST',
+                data: { EstimationHead: itemId, estimationMasterId: masterId },
+                cache: false,
+                success: function (result) {
+                    descriptionArea.val(result.Description);
+                }
+            });
+
+            $.ajax({
+                url: '@Url.Action("GetEstimationItemByHeadId", "ProjectEstimation")',
+                type: 'POST',
+                data: { estimationHeadId: itemId },
+                cache: false,
+                success: function (result) {
+                    $(table).find('tbody tr .item select').each(function () {
+                        var itemDdl = $(this);
+                        var unitDdl = $(this).closest('tr').find('.unit select');
+                        var txtUnitPrice = $(this).closest('tr').find('.unitPrice :input');
+
+                        itemDdl.empty();
+                        itemDdl.append($("<option></option>").val(0).html("[Select One]"));
+                        $.each(result, function () {
+                            itemDdl.val(0);
+                            ResetValue(unitDdl, txtUnitPrice);
+                            itemDdl.append($("<option></option>").val(this['EstimationItemId']).html(this['ItemName']));
+
+                        });
+                    });
+
+                    $(table).find('tbody tr .estimationHeadId input').each(function () {
+                        $(this).val(itemId);
+                    });
+                }
+            });
+
+
+        }
+    };
+
+
+    $('table tbody tr .estimationHead select').change(EstimationHeadChange);
+</script>

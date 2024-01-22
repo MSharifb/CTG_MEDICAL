@@ -1,0 +1,147 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicationFormModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Admit Card</title>
+    <link href="@Url.Content("~/assets/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/style.css?1.0.0")" rel="stylesheet" type="text/css" />
+
+    <link href="~/Content/AdmitCardCSS.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-fluid" style="position: relative;">
+
+        <div class="text-center" style="position: relative;">
+            <div class="admit-print-head">
+                <img src="~/Content/Images/bepza-logo.png" alt="" class="logo">
+
+                <h2>Bangladesh Export Processing Zones Authority</h2>
+                <p>
+                    Bepza Complex, House: 19/D, Road: 6  <br />
+                    Dhanmondi R/A, Dhaka, Bangladesh
+                </p>
+                <h3>Bangladesh Export Processing Zones Authority Examination, @DateTime.Now.Year</h3>
+            </div>
+
+            <div>
+                <h2 style="margin: 0 auto; border: 1px solid;  display: inline-block">Admit Card for the post of (@Model.Designation)</h2>
+            </div>
+
+            <br />
+            <div class="admit-border">
+                <div class="row">
+                    <div class="col-xs-8">
+
+                        <table class="table table-noborder table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th>Roll No.:</th>
+                                    <td class="text-left">@Model.GeneralInfo.RollNo</td>
+                                </tr>
+                                <tr>
+                                    <th>Name of the Applicant:</th>
+                                    <td class="text-left">@Model.GeneralInfo.Name</td>
+                                </tr>
+                                <tr>
+                                    <th>Father Name</th>
+                                    <td class="text-left">@Model.GeneralInfo.FathersName</td>
+                                </tr>
+                                <tr>
+                                    <th>Mother Name</th>
+                                    <td class="text-left">@Model.GeneralInfo.MothersName</td>
+                                </tr>
+                                @*<tr>
+                                    <th>Address:</th>
+                                    <td class="text-left">@Model.AddressInfo.PermanentAddress</td>
+                                </tr>*@
+                                @*<tr>
+                                    <th>Thana/Upazila:</th>
+                                    <td class="text-left">@ViewBag.Upazila</td>
+                                </tr>*@
+                                <tr>
+                                    <th>Home District:</th>
+                                    <td class="text-left">@ViewBag.Distict</td>
+                                </tr>
+                                @*<tr>
+                                    <th>Apply Date:</th>
+                                    <td class="text-left">@Model.GeneralInfo.EDate.ToString("dd-MM-yyyy")</td>
+                                </tr>*@
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        @if (Model.GeneralInfo.Photo != null)
+                        {
+                            string imageBase64 = Convert.ToBase64String(Model.GeneralInfo.Photo);
+                            string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
+                            <img src="@imageSrc" class="" alt="Responsive image" id="imgUp" style="width: 100px; height: 130px;" />
+                        }
+                        <br />
+                        @if (Model.MaritalInfo.Signature != null)
+                        {
+                            string imageBase64 = Convert.ToBase64String(Model.MaritalInfo.Signature);
+                            string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
+                            <img src="@imageSrc" class="" alt="Responsive image" id="imgUp" style="width: 100px; height: 40px;" />
+                        }
+                        <br />
+                        Candidate's Signature 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+        
+        <div class="pull-right text-center">
+            Electronically generated,<br />signature not required
+        </div>
+        <hr />
+        <br />
+        <br />
+        <div class="row">
+            <b style="font-size:12pt;">Instructions</b>
+            <ol style="font-size:10pt; text-align:justify;">
+                <li>This Admit Card is valid for preliminary, written and oral (viva voce) examination and must be carried with the examinee during every examination.</li>
+                <li><b>It is strictly prohibited to bring bag, book, calculator, electronic clock, wristwatch, mobile phone, any other type of data transmitting device in the examination hall.</b></li>
+                <li>Examinee must sit in the examination hall at least 30 minutes prior to preliminary examination and 15 minutes prior to written examination.</li>
+                <li>Only the black ink ball point pen can be used for filling up the OMR sheet of the preliminary examination.</li>
+                <li>Examinee must not be allowed to enter the examination hall after the distribution of question paper of preliminary examination and 30 minutes after the start of written examination.</li>
+                <li>Examinee must not leave the hall before the preliminary examination ends and prior to lapse of 1(one) hour since the start of written examination, excepting unavoidable reasons.</li>
+                <li>The signature of the examinee must be same on all the examination related documents e.g. application, attendance sheet, answer script etc.</li>
+                <li>Examinee is required to report 30 minutes prior to the scheduled time of viva voce and to produce the original copies of all of her/his necessary documents.</li>
+                @*<li>Examinee, found guilty of adopting unfair means, copying, misconduct, misbehaviour and anything tantamount to the infringement of instruction, must be expelled by the principal invigilator, on the basis of the report submitted by the invigilator concerned of the examination hall.</li>*@
+            </ol>
+
+        </div>
+
+        <div class="row" style="margin-top:5px;">
+            <div class="col-xs-12">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th class="pull-right text-center" style="font-weight: normal !important; border-top: 0;">
+                                Controller of Examinations<br />
+                                Bangladesh Export Processing Zones Authority,<br />
+                                Dhaka.
+                            </th>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="watermark">
+            BEPZA
+        </div>
+
+    </div>
+</body>
+</html>

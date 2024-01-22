@@ -1,0 +1,583 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfoViewModel
+@*@using (Ajax.BeginForm("CreateOrEditPersonaInfo", "PersonalInfo", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))*@
+@using (Html.BeginForm("CreateOrEditPersonaInfo", "PersonalInfo"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.strMode)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.FatherName)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.FatherName)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.MaritalStatusId)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.MaritalStatusId, Model.MaritalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.FatherProfessionId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.FatherProfessionId, Model.FatherProfessionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.SpouseName)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.SpouseName)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.MotherName)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.MotherName)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.MarriageDate)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.MarriageDate)
+                </span>
+
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.MotherProfessionId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.MotherProfessionId, Model.MotherProfessionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+
+                <span class="label-right">
+                    @Html.LabelFor(model => model.NationalID)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.NationalID, new { @maxlength = "20" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateofBirth)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.DateofBirth)
+                </span>
+
+                <span class="label-right">
+                    @Html.LabelFor(model => model.NationalityId)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.NationalityId, Model.NationalityList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PlaceofBirth)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PlaceofBirth)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.TIN)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.TIN, new { @maxlength = 20 })
+                </span>
+
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.CountryofBirthId)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.CountryofBirthId, Model.CountryofBirthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Hieght)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.Hieght)
+                </span>
+
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.BloodGroupId)
+
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.BloodGroupId, Model.BloodGroupList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Weight)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.Weight)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.IdentificationMark)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.IdentificationMark)
+                </span>           
+            </div>
+        </div>
+        <fieldset>
+            <legend style="margin: 3px 3px 3px 3px;">@Html.Label("Present Address")</legend>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PresentAddress1)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PresentAddress1, new { @maxlength = 500 })
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.PresentAddress2)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PresentAddress2, new { @maxlength = 500 })
+                </span>
+                <div class="clear"></div>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PresentPostName)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PresentPostName)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.PresentCountryId)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.PresentCountryId, Model.PresentCountryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadDistrict();", @class="required" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PresentPostCode)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PresentPostCode)
+                </span>
+
+                <span class="label-right">
+                    @Html.LabelFor(model => model.PresentDistictId)<label class="required-field">
+                        *
+                    </label>
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.PresentDistictId, Model.PresentDistictList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PresentPhone)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PresentPhone) Ext.
+                    @Html.EditorFor(model => model.PresentPhoneExtention)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.PresentThanaId)
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.PresentThanaId, Model.PresentThanaList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PresentMobNo)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PresentMobNo)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Email)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.Email)
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend style="margin: 3px;">
+                @Html.Label("Permanent Address")&nbsp; @Html.CheckBox("SameasPresent", new { onclick = "return CopyPresentAddress();" })<label style="font-weight: normal; padding-left: 3px;">Same as Present</label>
+            </legend>
+            <div class="spacer">
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PermanentAddress1)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PermanentAddress1, new { @maxlength = 500 })
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.PermanentAddress2)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PermanentAddress2, new { @maxlength = 500 })
+                </span>
+                <div class="clear"></div>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PermanentPostName)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.PermanentPostName)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.PermanentCountryId)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.PermanentCountryId, Model.PermanentCountryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadDistrictPermanent();", @class = "required"})
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PermanentPostCode)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PermanentPostCode)
+                </span>
+
+                <span class="label-right">
+                    @Html.LabelFor(model => model.PermanentDistictId)<label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.PermanentDistictId, Model.PermanentDistictList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadThanaPermanent();" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PermanentPhone)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PermanentPhone) Ext.
+                    @Html.EditorFor(model => model.PermanentPhoneExtention)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.PermanentThanaId)
+
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.PermanentThanaId, Model.PermanentThanaList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PermanentMobNo)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.PermanentMobNo)
+                </span>
+            </div>
+        </fieldset>
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Specialization)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.Specialization, new { @maxlength = 200 })
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.Extracurricular)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.Extracurricular, new { @maxlength = 200 })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PhysicalFitness)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PhysicalFitness, new { @maxlength = 200 })
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.Habits)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.Habits, new { @maxlength = 200 })
+                </span>
+            </div>
+            <div class="row" style="display:none">
+                <span class="label">
+                    @Html.LabelFor(model => model.EOBINo)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.EOBINo)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.EOBIRegDate)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.EOBIRegDate)
+                </span>
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsFreedomFighter)&nbsp;
+                    Is Freedom Fighter?
+                </span>
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsPoliceVerified)&nbsp;
+                    Is Police Verified?  
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsGrandChildOfFreedomFighter)&nbsp;
+                    Child/Grand Child of Freedom Fighter?            
+                </span>
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @*@Html.CheckBoxFor(model => model.isSmoke)&nbsp;
+                    Is Smoker?*@                   
+                </span>
+            </div>
+         
+            <div class="clear">
+            </div>
+        </div>
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ElectricMeterNo)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.ElectricMeterNo)
+                </span>
+            </div>
+        </div>
+
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" />
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = Model.EmployeeId }, new { @class = "delete-confirm", @style = "margin:0 5px;" })
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "PersonaInfoIndex/" + @Model.EmployeeId.ToString())
+            }
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    $(function () {
+        if( @Model.NationalityId == 0){
+            $("#NationalityId option:contains(Bangladeshi)").attr('selected', 'selected');
+        }
+        if( @Model.CountryofBirthId == 0){
+            $("#CountryofBirthId option:contains(Bangladesh)").attr('selected', 'selected');
+        }
+        @*if( @Model.PresentCountryId == 0){
+            $("#PresentCountryId option:contains(Bangladesh)").attr('selected', 'selected');
+        }
+        if( @Model.PermanentCountryId == 0){
+            $("#PermanentCountryId option:contains(Bangladesh)").attr('selected', 'selected');
+        }*@
+
+        $("#MaritalStatusId").change(function () {
+            changeMarriedStatus($('#MaritalStatusId option:selected').text().toLowerCase());
+        });
+
+        changeMarriedStatus($('#MaritalStatusId option:selected').text().toLowerCase());
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("Delete", "ProjectType")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success) {
+                            var indexUrl = '@Url.Action("Index", "ProjectType")' + '?message=' + obj.Message + '&isSuccess=' + obj.Success;
+                            indexUrl = indexUrl.replace(/_msg_/, obj.Message);
+                            indexUrl = indexUrl.replace(/_isSuccess_/, obj.Success);
+                            window.document.location = indexUrl;
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    });
+
+    function CopyPresentAddress() {
+
+        if ($("#SameasPresent").is(':checked')) {
+            $("#PermanentAddress1").val($("#PresentAddress1").val());
+            $("#PermanentAddress2").val($("#PresentAddress2").val());
+            $("#PermanentCountryId").val($("#PresentCountryId").val());
+
+            // LoadDistrict
+            $("#PermanentDistictId").empty();
+            $("#PermanentDistictId").append($('#PresentDistictId').html());
+            $("#PermanentDistictId").val($("#PresentDistictId").val());
+            // LoadThana
+            $("#PermanentThanaId").empty();
+            $("#PermanentThanaId").append($('#PresentThanaId').html());
+            $("#PermanentThanaId").val($("#PresentThanaId").val());
+
+            $("#PermanentPostName").val($("#PresentPostName").val());
+            $("#PermanentPostCode").val($("#PresentPostCode").val());
+            $("#PermanentPhone").val($("#PresentPhone").val());
+            $("#PermanentPhoneExtention").val($("#PresentPhoneExtention").val());
+            $("#PermanentMobNo").val($("#PresentMobNo").val());
+
+        }
+    }
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+    function LoadDistrict() {
+        var presentCountryId = $('#PresentCountryId').val();
+        var presentDistict = $('#PresentDistictId');
+
+        presentDistict.empty();
+        presentDistict.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        var presentThana = $('#PresentThanaId');
+        presentThana.empty();
+        presentThana.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (presentCountryId != null && presentCountryId != '') {
+            $.getJSON('@Url.Action("LoadDistrict")', { countryID: presentCountryId }, function (districts) {
+                $.each(districts, function (index, district) {
+                    presentDistict.append($('<option/>', {
+                        value: district.Id,
+                        text: district.DistrictName
+                    }));
+                });
+            });
+        }
+    }
+
+    function LoadThana() {
+        var presentDistictId = $('#PresentDistictId').val();
+        var presentThana = $('#PresentThanaId');
+        presentThana.empty();
+        presentThana.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (presentDistictId != null && presentDistictId != '') {
+            $.getJSON('@Url.Action("LoadThana")', { districtId: presentDistictId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    presentThana.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+    function LoadDistrictPermanent() {
+        var presentCountryId = $('#PermanentCountryId').val();
+        var presentDistict = $('#PermanentDistictId');
+
+        presentDistict.empty();
+        presentDistict.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        var presentThana = $('#PermanentThanaId');
+        presentThana.empty();
+        presentThana.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (presentCountryId != null && presentCountryId != '') {
+            $.getJSON('@Url.Action("LoadDistrict")', { countryID: presentCountryId }, function (districts) {
+                $.each(districts, function (index, district) {
+                    presentDistict.append($('<option/>', {
+                        value: district.Id,
+                        text: district.DistrictName
+                    }));
+                });
+            });
+        }
+    }
+
+    function LoadThanaPermanent() {
+        var presentDistictId = $('#PermanentDistictId').val();
+        var presentThana = $('#PermanentThanaId');
+        presentThana.empty();
+        presentThana.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (presentDistictId != null && presentDistictId != '') {
+            $.getJSON('@Url.Action("LoadThana")', { districtId: presentDistictId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    presentThana.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+    function changeMarriedStatus(status) {
+        if (status == 'married') {
+            fnRemoveDisableMode('SpouseName');
+            fnRemoveDisableMode('MarriageDate');
+            $('#MarriageDate').next().show();
+        }
+        else {
+            $('#MarriageDate').next().hide();
+            $('#SpouseName,#MarriageDate').val('');
+            fnEnableDisableMode('SpouseName');
+            fnEnableDisableMode('MarriageDate');
+        }
+    }
+</script>

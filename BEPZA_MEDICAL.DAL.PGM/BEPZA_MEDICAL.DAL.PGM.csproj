@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AFD8DEEB-3F26-41D0-BAAB-6CC6467F2807}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.DAL.PGM</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.DAL.PGM</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomEntities\AmountInWords.cs" />
+    <Compile Include="CustomEntities\BankAdviceLetterDetailCustomModel.cs" />
+    <Compile Include="CustomEntities\BankAdviceLetterSearchModel.cs" />
+    <Compile Include="CustomEntities\BonusDetailsSearchModel.cs" />
+    <Compile Include="CustomEntities\BonusProcessSearchModel.cs" />
+    <Compile Include="CustomEntities\BonusTypeCustomModel.cs" />
+    <Compile Include="CustomEntities\ClosingBalanceSearchModel.cs" />
+    <Compile Include="CustomEntities\EmployeeBasicSalary.cs" />
+    <Compile Include="CustomEntities\EmployeeInfoDDLModel.cs" />
+    <Compile Include="CustomEntities\FinalSettlementSearchModel.cs" />
+    <Compile Include="CustomEntities\GratuitySettlementSearchModel.cs" />
+    <Compile Include="CustomEntities\IncentiveBonusDetailProcessSearchModel.cs" />
+    <Compile Include="CustomEntities\IncentiveBonusProcessSearchModel.cs" />
+    <Compile Include="CustomEntities\IncomeTaxComputationCustomModel.cs" />
+    <Compile Include="CustomEntities\LeaveEncashmentSearchModel.cs" />
+    <Compile Include="CustomEntities\MonthlySalaryDetail.cs" />
+    <Compile Include="CustomEntities\MonthlySalaryDistributionDetaiCustomModell.cs" />
+    <Compile Include="CustomEntities\OtherAdjustDeductSearchModel.cs" />
+    <Compile Include="CustomEntities\OverTimeSearch.cs" />
+    <Compile Include="CustomEntities\SalaryMonth.cs" />
+    <Compile Include="CustomEntities\SalaryRateCalculation.cs" />
+    <Compile Include="CustomEntities\TaxOpeningDetail.cs" />
+    <Compile Include="CustomEntities\VehicleDeductionBillList.cs" />
+    <Compile Include="CustomEntities\WithheldSalaryPaymentSearchModel.cs" />
+    <Compile Include="ERP_BEPZA.PGM.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.PGM.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PGM_ExecuteFunctions.cs" />
+    <Compile Include="PGM_GenericRepository.cs" />
+    <Compile Include="PGM_UnitOfWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="ERP_BEPZA.PGM.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ERP_BEPZA.PGM.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,691 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NoteOrderInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="GroupBox">
+
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.OrderByEmployeeId)
+            @Html.HiddenFor(model => model.ComplaintEmployeeId)
+            @Html.HiddenFor(model => model.IsOrder)
+            @Html.LabelFor(model => model.ComplaintNoteSheetId)
+
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @if (Model.strMode == "Edit")
+            {   @Html.HiddenFor(model => model.ComplaintNoteSheetId)
+                @Html.TextBoxFor(model => model.ComplaintNoteSheetName, new { @class = "read-only", @readonly = true })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.ComplaintNoteSheetId, Model.ComplaintNoteSheetList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            }
+        </span>
+    </div>
+</div>
+
+<fieldset>
+    <legend>Complaint History</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RefNo)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.RefNo, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplaintDate)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ComplaintDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmpId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmpId, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantEmpId)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ComplainantEmpId)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmployeeName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantEmployeeName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDepartmentName, new { @class = "read-only", @readonly = true })
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDepartmentName, new { @class = "read-only", @readonly = true })
+
+        </span>
+    </div>
+    <div style="width:50%; float:right">
+        @*@Html.Partial("_TypeList")*@
+        <table id="gridTypeList" class="contenttable fixedcontenttable custom-grid">
+            <thead>
+                <tr>
+                    <th>SL</th>
+                    <th>Type</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Previous Record of Accused Person </legend>
+    @Html.Partial("_PreviousRecordList")
+</fieldset>
+
+<fieldset>
+    <legend>Order Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderDate)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.OrderDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderNo)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.OrderNo)
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderTypeInfoId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.OrderTypeInfoId, Model.OrderTypeInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required", @onclick = "return getOrderTypeInfo();" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderDetails)
+        </span>
+        <span class="field" style="width:70%">
+            @Html.TextAreaFor(model => model.OrderDetails, new { Style = "width:95%", @rows = 10, @maxlength = "500" })
+        </span>
+        <div class="clear"></div>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderByEmpId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderByEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderByEmployeeName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderByEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderByDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderByDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</fieldset>
+
+
+<fieldset id="orderTypeInfo">
+    <legend>If Order Type is "Final Order" or "Appeal Review"</legend>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DisciplinaryActionTypeId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.DisciplinaryActionTypeId, Model.DisciplinaryActionTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PunishmentTypeInfoId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.PunishmentTypeInfoId, Model.PunishmentTypeInfoList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EffectiveDateFrom)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EffectiveDateFrom)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EffectiveDateTo)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EffectiveDateTo)
+        </span>
+
+    </div>
+
+</fieldset>
+
+
+<div class="clear"></div>
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnIsOrder').live('click', function () {
+        $('#IsOrder').val(true);
+    })
+
+    $("#OrderDate").live('change', function () {
+        $("#message").empty();
+        var cDate = new Date();
+        var giveDate = new Date($('#OrderDate').val());
+
+        if (cDate < giveDate) {
+            // Do something
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Order Date can not be greater than current date. </span>  </div> ");
+            $('#OrderDate').val('');
+            return;
+        }
+    });
+
+    function MonthRestriction() {
+
+        $('#EffectiveDateFrom').attr('readonly', 'true');
+        $('#EffectiveDateTo').attr('readonly', 'true');
+
+        $('#EffectiveDateFrom').change(function () {
+            var valDate = $('#EffectiveDateFrom').val();
+            var valNew = valDate.split('-');
+
+            $('#EffectiveDateFrom').val(valNew[0] + '-' + valNew[1] + '-' + '01');
+        });
+
+        $('#EffectiveDateTo').change(function () {
+            var valDate = $('#EffectiveDateTo').val();
+            var valNew = valDate.split('-');
+
+            var date = new Date(valNew[0] + '/' + valNew[1] + '/' + valNew[2]);
+            var lastDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+            $('#EffectiveDateTo').val(valNew[0] + '-' + valNew[1] + '-' + lastDate.getDate());
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        MonthRestriction();
+        //load previous recored
+        var employeeId = $("#ComplaintEmployeeId").val();
+        if (employeeId != null) {
+            GetComplaintListByEmployeeId(employeeId)
+        }
+
+        var complaintNoteSheetId = $("#ComplaintNoteSheetId").val();
+        if (employeeId != null) {
+            GetTypeListByCompalintNoteSheetId(complaintNoteSheetId);
+        }
+    });
+
+
+    $('#ComplaintNoteSheetId').live('change', function () {
+
+        $("#RefNo").val('');
+        $('#ComplaintDate').val('');
+        $("#ComplaintEmpId").val('');
+        $("#ComplaintEmployeeName").val('');
+        $("#ComplaintDesignationName").val('');
+        $("#ComplaintDepartmentName").val('');
+        $("#ComplainantEmpId").val('');
+        $("#ComplainantEmployeeName").val('');
+        $("#ComplainantDesignationName").val('');
+        $("#ComplainantDepartmentName").val('');
+        $("#ComplaintEmployeeId").val('');
+
+        $('#gridTypeList tbody tr').empty();
+        $('#previousComplaintRecord tbody tr').empty();
+
+
+        var complaintNoteSheetId = $(this).val();
+        GetComplaintNoteInfo(complaintNoteSheetId);
+        GetTypeListByCompalintNoteSheetId(complaintNoteSheetId);
+    });
+
+    function GetComplaintNoteInfo(complaintNoteSheetId) {
+        var url = '@Url.Action("GetComplaintNoteInfo", "NoteOrderInfo")';
+        if (complaintNoteSheetId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ complaintNoteSheetId: complaintNoteSheetId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#RefNo").val(obj.RefNo);
+                    $('#ComplaintDate').val(obj.ComplaintDate);
+                    $("#ComplaintEmpId").val(obj.ComplaintEmpId);
+                    $("#ComplaintEmployeeName").val(obj.ComplaintEmployeeName);
+                    $("#ComplaintDesignationName").val(obj.ComplaintDesignationName);
+                    $("#ComplaintDepartmentName").val(obj.ComplaintDepartmentName);
+                    $("#ComplainantEmpId").val(obj.ComplainantEmpId);
+                    $("#ComplainantEmployeeName").val(obj.ComplainantEmployeeName);
+                    $("#ComplainantDesignationName").val(obj.ComplainantDesignationName);
+                    $("#ComplainantDepartmentName").val(obj.ComplainantDepartmentName);
+
+                    //load previous recored
+                    $("#ComplaintEmployeeId").val(obj.ComplaintEmployeeId);
+                    var employeeId = obj.ComplaintEmployeeId;
+                    if (employeeId != null) {
+                        GetComplaintListByEmployeeId(employeeId)
+                    }
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function GetTypeListByCompalintNoteSheetId(complaintNoteSheetId) {
+        var url = '@Url.Action("GetTypeListByCompalintNoteSheetId", "NoteOrderInfo")';
+        if (complaintNoteSheetId > 0) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { compalintNoteSheetId: complaintNoteSheetId },
+                success: (function (result) {
+                    $("#gridTypeList tbody").html(result);
+                })
+            });
+        }
+    }
+
+    function GetComplaintListByEmployeeId(employeeId) {
+        var url = '@Url.Action("GetComplaintListByEmployeeId", "NoteOrderInfo")';
+        if (employeeId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ employeeId: employeeId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.length > 1) {
+                        var tr;
+                        //Append each row to html table
+                        for (var i = 0; i < data.length; i++) {
+                            tr = $('<tr/>');
+                            tr.append("<td>" + parseInt(i + 1) + "</td>");
+                            //tr.append("<td>" + data[i].Id + "</td>");
+                            tr.append("<td>" + data[i].DeptProceedingNo + "</td>");
+                            tr.append("<td>" + data[i].ComplaintDate + "</td>");
+                            tr.append("<td>" + data[i].ComplainantEmployeeName + "</td>");
+                            tr.append("<td>" + data[i].ComplainantDesignationName + "</td>");
+                            tr.append("<td>" + '<a href="#" title="delete" onclick="ViewComplaintDetails(this,' + data[i].Id + ')"><img src="../../Content/Images/view.png" style="border: none;" alt="view"></a>' + "</td>");
+                            $('#previousComplaintRecord tbody').append(tr);
+                        }
+                    }
+
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+
+</script>
+
+
+
+@*View Type Details*@
+
+<div id="divTypeInfo">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divTypeInfo").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Type Information', beforeclose: function (event, ui) { ClosingType(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    function ViewTypeDetails(el, id, url) {
+        //var urlSplit = url.split("/");
+        //var controllerName = urlSplit[2];
+        //var actionName = urlSplit[3];
+        var urlTemp = '@Url.Action("ViewChargeSheetDetails", "ChargeSheetInfo")';
+
+        if (id > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: id },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                },
+                success: function (result) {
+                    $('#divTypeInfo').html(result);
+                }
+            });
+
+            $("#divTypeInfo").dialog('open');
+            return false;
+        }
+    }
+
+
+    function ClosingType() {
+
+    }
+
+</script>
+
+@*End Type Details*@
+
+@*View Compalint Details*@
+
+<div id="divComplaintInfo">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divComplaintInfo").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Complaint Information', beforeclose: function (event, ui) { ClosingComplaint(); } });
+        //showErrMsg();
+    });
+
+    function ViewComplaintDetails(el, complaintId) {
+        var url = '@Url.Action("ViewComplaintDetails", "ComplaintNoteSheet")';
+        if (complaintId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { id: complaintId },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                },
+                success: function (result) {
+                    $('#divComplaintInfo').html(result);
+                }
+            });
+
+            $("#divComplaintInfo").dialog('open');
+            return false;
+        }
+    }
+
+    function ClosingComplaint() {
+
+    }
+
+</script>
+
+
+@*End Compalint Details*@
+
+@*Employee Info*@
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<br />
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#OrderByEmployeeId').val(id);
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "NoteOrderInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#OrderByEmpId").val(obj.EmpId);
+                    $('#OrderByEmployeeName').val(obj.EmployeeName);
+                    $("#OrderByDesignationName").val(obj.DesignationName);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+
+    function Closing() {
+
+    }
+
+</script>
+@*End Employee Info*@
+
+
+<script type="text/javascript">
+    $(function () {
+        //cascading dropdown
+        $("select#DisciplinaryActionTypeId").change(function () {
+            LoadPunishmentType();
+        })
+
+    });
+
+    function LoadPunishmentType() {
+        var selectedDisciplinaryActionType = $('select#DisciplinaryActionTypeId').val();
+        var PunishmentTypeSelect = $('select#PunishmentTypeInfoId');
+        PunishmentTypeSelect.empty();
+        PunishmentTypeSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        if (selectedDisciplinaryActionType != null && selectedDisciplinaryActionType != '') {
+            $.getJSON('@Url.Action("GetPunishmentType", "NoteOrderInfo")', { disciplinaryActionTypeId: selectedDisciplinaryActionType }, function (data) {
+                $.each(data.punishments, function (index, punishment) {
+                    PunishmentTypeSelect.append($('<option/>', {
+                        value: punishment.Id,
+                        text: punishment.PunishmentName
+                    }));
+                    $('select#PunishmentTypeInfoId').val($('input#PunishmentTypeInfoId').val());
+                });
+            });
+        }
+        else {
+            $("#PunishmentTypeInfoId>option").remove();
+            $("#PunishmentTypeInfoId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    function getOrderTypeInfo() {
+
+        var strOrderTxt = $("#OrderTypeInfoId option:selected").text().toLowerCase();
+        if (strOrderTxt == "finalorder" || strOrderTxt == "appealreview") {
+            $('#orderTypeInfo').show();
+
+        } else {
+            $('#orderTypeInfo').hide();
+            $('#orderTypeInfo').find('input, select').val('');
+        }
+    }
+
+    $(document).ready(function () {
+        getOrderTypeInfo();
+    });
+       
+    
+
+    $("#EffectiveDateFrom").live('change', function () {
+        $("#message").empty();
+        var fromDate = new Date($('#EffectiveDateFrom').val());
+        var toDate = new Date($('#EffectiveDateTo').val());
+
+        if ($('#EffectiveDateTo').val() != '' && toDate < fromDate) {
+            // Do something
+            //$("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> 'Effective Date From'  is lower than to 'Effective Date To' </span>  </div> ");
+            alert('Effective Date From  is lower than to Effective Date To');
+            $('#EffectiveDateFrom').val('');
+            $('#EffectiveDateFrom').addClass('border-red');
+            return;
+        }
+        $('#EffectiveDateFrom').removeClass('border-red');
+    });
+
+    $("#EffectiveDateTo").live('change', function () {
+        $("#message").empty();
+        var fromDate = new Date($('#EffectiveDateFrom').val());
+        var toDate = new Date($('#EffectiveDateTo').val());
+
+
+        if ($('#EffectiveDateFrom').val() != '' && fromDate > toDate) {
+            // Do something
+            //  $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> 'Effective Date To' is greater than to 'Effective Date From'  </span>  </div> ");
+            alert('Effective Date To is greater than to Effective Date From');
+            $('#EffectiveDateTo').val('');
+            $('#EffectiveDateTo').addClass('border-red');
+            return;
+        }
+        $('#EffectiveDateTo').removeClass('border-red');
+    });
+
+</script>

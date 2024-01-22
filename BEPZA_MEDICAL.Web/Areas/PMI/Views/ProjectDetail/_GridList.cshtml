@@ -1,0 +1,133 @@
+﻿
+
+<script type="text/javascript">
+
+</script>
+<style>
+    .ui-datepicker-trigger {
+        z-index: 1000;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['APPDetailsId', 'Id', ' ', 'Name of Works/Goods/Service', 'Project Code', 'Financial Year', 'Tender Pub Date', 'Total Cost', 'Ministry', 'Project Status'
+                //'Authority', 'Fund Source', 'No.of Package', 'Name of Package',
+            ],
+            colModel: [
+
+                            { name: 'APPDetailsId', index: 'APPDetailsId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'Id', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'PD', index: 'PD', align: 'left', search: false, edittype: 'text', width: '20px', formatter: fontFormatter },
+                            { name: 'NameOfWorks', index: 'NameOfWorks', align: 'left', search: true, edittype: 'select', width: '250px', surl: '@Url.Action("GetNameOfWorks")', formatter: viewformatEdiorLink },
+                            { name: 'ProjectCode', index: 'ProjectCode', align: 'left', search: false, edittype: 'text', width: '120px', },
+                            { name: 'FinancialYearName', index: 'FinancialYearName', width: '110px', align: 'center', search: true, edittype: 'select', surl: '@Url.Action("GetFinancialYear")' },
+                            { name: 'TenderPubDate', index: 'TenderPubDate', width: '100px', align: 'left', search: false, edittype: 'text' },
+                            { name: 'TotalCostOfProject', index: 'TotalCostOfProject', width: '80px', align: 'right', search: false, edittype: 'text' },
+                            { name: 'MinistryName', index: 'MinistryName', width: '170px', align: 'left', search: false, edittype: 'text' },
+                            { name: 'ProjectStatusName', index: 'ProjectStatusName', width: '170px', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetProjectStatus")' },
+                            //{ name: 'ProjectImplementationAuthority', index: 'ProjectImplementationAuthority', width: '170px', align: 'center', search: false, edittype: 'text' },
+                            //{ name: 'SourceOfFundName', index: 'SourceOfFundName', width: '120px', align: 'center', search: false, edittype: 'text' },
+                            //{ name: 'NoOfPackage', index: 'NoOfPackage', width: '100px', align: 'center', search: false, edittype: 'text' },
+                            //{ name: 'PackageName', index: 'PackageName', width: '100px', align: 'center', search: false, edittype: 'text' },
+                            //{ name: 'Delete', index: 'Delete', align: 'right', search: false, hidden: IsDeleteAssigned, sortable: false, width: '50px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Project",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            loadComplete: function () {
+                $("a.deleteItem").on('click', function (e) {
+                    e.preventDefault();
+                    deleteLinkObj = $(this);  //for future use
+                    $('#delete-dialog').dialog('open');
+                    return false; // prevents the default behaviour
+                });
+
+
+            },
+
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_", APPDetailsId = "_APPDetailsId_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[1]);
+        url = url.replace(/_APPDetailsId_/, rowObject[0]);
+        return url;
+    }
+
+    function fontFormatter(cellValue, opts, rowObject) {
+        //debugger;
+        var pdVal = rowObject[1];
+
+        switch (pdVal) {
+            case 0:
+                return '<span style="color:red; font-weight:bold;">' + cellValue + '</span>';
+                break;
+            default:
+                return '<span style="color:green; font-weight:bold;">' + cellValue + '</span>';
+                break;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(function () {
+
+        $("a.deleteItem").on("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#sg_PurchaseDateFrom, #sg_PurchaseDateTo,#sg_PODateFrom, #sg_PODateTo,#sg_ChallanDateFrom, #sg_ChallanDateTo').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+        $('#sg_ComplaintDate').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $(".message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $(".message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+
+<div class="clear">
+</div>
+
+
+

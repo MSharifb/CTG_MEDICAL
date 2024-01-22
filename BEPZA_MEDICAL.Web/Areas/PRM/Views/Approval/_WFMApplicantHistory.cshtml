@@ -1,0 +1,54 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+<div class="row">
+    <table id="grid" class="contenttable">
+        <thead>
+            <tr>
+                <th>
+                    Category Name
+                </th>
+                <th>
+                    Reason
+                </th>
+                <th>
+                    Application Date
+                </th>
+                <th>
+                    Applied Amount
+                </th>
+                <th>
+                    Application Status
+                </th>
+                <th>
+                    Approved Amount
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (int i = 0; i < Model.WRMApplicantHistoryList.Count; i++)
+            {
+                var item = Model.WRMApplicantHistoryList.ToList()[i];
+                <tr>
+                    <td>
+                        <label> @item.WelfareFundCategoryName</label>
+                    </td>
+                    <td>
+                        <label> @item.WelfareFundReason</label>
+                    </td>
+                    <td>
+                        <label> @item.WelfareFundApplicationDate</label>
+                    </td>
+                    <td>
+                        <label> @item.WelfareFundAppliedAmount</label>
+                    </td>
+                    <td>
+                        <label> @item.ApplicationStatus</label>
+                    </td>
+                    <td>
+                        <label> @item.WelfareFundApprovedAmount</label>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

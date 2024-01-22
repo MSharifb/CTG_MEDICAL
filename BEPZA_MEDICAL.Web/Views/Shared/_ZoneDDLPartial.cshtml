@@ -1,0 +1,37 @@
+﻿@using BEPZA_MEDICAL.Web.Utility
+<div class="user-dropdown dropdown pull-right zone">
+    @if (Request.IsAuthenticated)
+    {
+        if (MyAppSession.ZoneInfoId == 0)
+        {
+            Response.Redirect("~/Account/LogOn");
+        }
+        if (MyAppSession.IsMultiZone)
+        {
+
+            <button type="button" class="btn btn-default btn-circle" id="zone-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Switch Zone
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right zone-dropdown-menu" aria-labelledby="zone-menu">
+                @foreach (var item in MyAppSession.SelectedZoneList)
+                {
+                    <li>
+                        <a href="@Url.Action("SwitchZone", "Home", new { id = item.Id, zoneSwitchURL = ViewBag.ZoneSwitchURL })">
+                            @item.ZoneName
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    }
+</div>
+
+<style>
+    .btn-default.btn-circle {
+        border-radius: 60%;
+    }
+    .dropdown.pull-right.zone{
+        padding-top:.5%;
+        padding-right:2%;
+    }
+</style>

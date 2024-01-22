@@ -1,0 +1,185 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.OvertimeRequisition.OvertimeRequisitionViewModel
+    @Html.HiddenFor(m => m.Mode)
+<div id="pageData"></div>
+    <div class="GroupBox" id="shiftInfo">
+        @Html.HiddenFor(m => m.Id)
+
+            <div class="row roster-ctr">
+                <div class="label">
+                    @Html.LabelFor(model => model.DepartmentId) 
+                    <label class="required-field">*</label>
+                </div>
+                <div class="field">
+                    @Html.DropDownListFor(m => m.DepartmentId, Model.Department, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    @Html.LabelFor(model => model.RequisitionDate)
+                    <label class="required-field">*</label>
+                </div>
+                <div class="field">
+                    @Html.EditorFor(m => m.RequisitionDate)
+                </div>
+            </div>
+            <div class="row roster-ctr">
+                <span class="label">
+                  @Html.LabelFor(model => model.OvertimeDate)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.EditorFor(m => m.OvertimeDate) 
+                </span>
+            </div>
+
+
+
+        <div class="clear">
+        </div>
+    </div>
+
+    <div class="GroupBox" id="ShiftDetailInfo">
+      
+            <div class="row">
+                <span class="label">
+                    <label for="PeriodFrom"> I.C. No.  </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="EmpID" type="text" name="EmpID" class="cmrequired">
+                           <input type="hidden" id="EmployeeId" name="EmployeeId" value="" />
+                           <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+                </span><span class="label-right">
+                    <label for="InTime"> From Time </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="FromTime" type="text" name="FromTime" class="time-picker readonly cmrequired">
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    <label for="PeriodFrom"> Name </label>
+                </span><span class="field">
+                           <input id="EmployeeName" type="text" name="EmployeeName" class="readonly">
+                </span><span class="label-right">
+                    <label for="OutTime"> To Time </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="ToTime" type="text" name="ToTime" class="time-picker readonly cmrequired">
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    <label for="InGraceTime"> Designation </label>
+                </span><span class="field">
+                           <input id="Designation" type="text" name="Designation" class="readonly">
+                </span><span class="label-right">
+                    <label for="AbsentTime"> Total Hours </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="TotalHours" type="text" name="TotalHours" class="integer readonly cmrequired">
+                </span>
+            </div>
+        
+            <div class="clear">
+            </div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+
+        <div class="clear">
+        </div>
+
+        <table id="shiftGrid" class="contenttable fixedcontenttable custom-grid">
+            <thead>
+                <tr>
+                    <th>
+                        I.C. No.
+                    </th>
+                    <th>
+                        Employee Name
+                    </th>
+                    <th>
+                        Designation 
+                    </th>
+                    <th>
+                        From
+                    </th>
+                    <th>
+                        To
+                    </th>
+                    <th>
+                        Total Hours
+                    </th>
+                    <th>
+                        Remove
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in  Model.OvertimeRequisitionDetail)
+                {
+                    <tr class="row">
+                        <td> <label> @item.EmpID </label> </td>
+                        <td> <label> @item.EmployeeName </label> </td>
+                        <td> <label> @item.Designation </label> </td>
+                        <td> <label> @item.FromTime </label> </td>
+                        <td> <label> @item.ToTime </label> </td>
+                        <td> <label> @item.TotalHours </label> </td>
+                        <td>
+                            <a onclick="RemoveDb(this,@item.Id,'@Url.Action("DeleteDetail")')" title="delete" href="#">
+                                <img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+<div class="GroupBox">
+    <div class="row roster-ctr">
+        <span class="label">
+            @Html.LabelFor(model => model.Description)
+        </span><span class="field">
+            @Html.TextAreaFor(m => m.Description)
+        </span>
+    </div>
+    <br />
+    <div class="clear">
+    </div>
+
+    <div class="clear">
+    </div>
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+    <br />
+    <div class="clear">
+    </div>
+
+    <div class="clear">
+    </div>
+<script>
+    var indexUrl = 'http://' + '@Request.Url.Authority' + '@Url.Action("Index", "OvertimeRequisition")';
+    $("#pageData").data("URL", { redirectUrl:indexUrl, initEmp: '@Url.Action("EmployeeSearch", "Employee", new { area="PRM"})?searchEmpType=active', addEmp: '@Url.Action("GetEmployeeInfo", "EmployeeSeperation", new { area = "PRM" })', hourUrl: '@Url.Action("GetEmployeeHour")' });
+
+</script>
+    <script src="@Url.Content("~/Scripts/AMS/OvertimeRequisition.js")" type="text/javascript"></script>
+
+<script>
+    //new add
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+

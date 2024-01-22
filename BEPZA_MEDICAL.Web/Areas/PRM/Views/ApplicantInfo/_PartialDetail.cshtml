@@ -1,0 +1,46 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantInfoQualificationViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ApplicantInfoQualification"))
+    {
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ApplicantInfoId)
+        @Html.HiddenFor(m => m.DegreeLevelId)
+        @Html.HiddenFor(m => m.AcademicInstName)
+        @Html.HiddenFor(m => m.PassingYear)
+        @Html.HiddenFor(m => m.AcademicGradeId)
+        @Html.HiddenFor(m => m.UniversityAndBoardId)
+        @Html.HiddenFor(m => m.SubjectGroupId)
+        @Html.HiddenFor(m => m.CGPA)
+
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.DegreeLevelName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.AcademicInstName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.PassingYear)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.AcademicGradeName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.UniversityAndBoardName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.SubjectGroupName)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.CGPA)
+        </td>
+
+        <td width="5%">
+            <a href="#" class="deleteRow" title="remove" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteAttachmentDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

@@ -1,0 +1,155 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginForm(@Model.ActionType, "Approval", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+    @Html.Partial("_Application", @Model.Application)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ApprovalProcessId)
+    @Html.HiddenFor(m => m.RequestedAmount)
+    @Html.HiddenFor(m => m.Application.ApplicantEmployeeId)
+    @Html.HiddenFor(m=>m.ApplicationId)
+
+    <div class="col-sm-12" style=" margin:50px 0 20px 0;">
+        <div class="col-sm-2">@Html.LabelFor(m => m.ApproverComments)</div>
+        <div class="col-sm-9">
+            @Html.TextAreaFor(m => m.ApproverComments, new { @class = @"form-control" })
+        </div>
+    </div>
+    <div id="dvForward" class="col-sm-12" style="margin-bottom:20px;">
+        <div class="col-sm-2">
+            Forward To
+        </div>
+        <div class="col-sm-4">
+            @Html.DropDownListFor(m => m.ApprovalStepId, @Model.ApprovalStepList, new { @class = @"form-control" })
+        </div>
+        <div class="col-sm-4">
+            @Html.DropDownListFor(m => m.ApproverId, @Model.NextApproverList, new { @class = @"form-control" })
+        </div>
+    </div>
+    <div class="col-sm-12 approval-action-area" style="text-align:center;">
+        <button id="btnRecommend" type="button" class="btn btn-sm btn-primary">Recommend</button>
+        <button id="btnApprove" type="button" class="btn btn-sm btn-primary">Approve</button>
+        <button id="btnReject" type="button" class="btn btn-sm btn-primary">Reject</button>
+    </div>
+
+    <fieldset>
+        <legend>Approval History</legend>
+        @if (Model.ApprovalHistory != null && @Model.ApprovalHistory.Count > 0)
+        {
+            @Html.Partial("_ApprovalHistory", @Model.ApprovalHistory)
+        }
+    </fieldset>
+
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //debugger;
+        BindNextApprover();
+        @*var stepName = '@Model.NextStepName';
+        if (stepName == "Recommendation") {
+            $('#btnApprove').hide();
+        }
+        else {
+            $('#btnRecommend').hide();
+            $('#dvForward').hide();
+        }*@
+    });
+
+    $('#ApprovalStepId').on('change', function () {
+        $('#ApproverId').empty();
+
+
+        BindNextApprover();
+    })
+
+    function BindNextApprover() {
+        //debugger;
+        var selectedStepId = $('#ApprovalStepId option:selected').val();
+        var applicationId = $('#ApplicationId').val();
+
+        var url = '@Url.Action("GetNextApprover", "AlternateApproval")';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { approvalStepId: selectedStepId, applicationId: applicationId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (data) {
+                $.each(data, function () {
+                    $('#ApproverId').append($("<option></option>").val(this['Id']).html(this['FullName']));
+                });
+            }
+        });
+
+        var approvalStepId = $('#ApprovalStepId option:last').val();
+        if (selectedStepId == approvalStepId) {
+            $('#ApproverId').hide();
+            $('#btnRecommend').hide();
+            $('#btnApprove').show();
+        }
+        else {
+            $('#ApproverId').show();
+            $('#btnApprove').hide();
+            $('#btnRecommend').show();
+        }
+
+    }
+
+    function ProceedToNextStep(actionName) {
+        //debugger;
+        var applicationId = $('#Id').val();
+        var comments = $('#ApproverComments').val();
+        var forwardToId = $('#ApproverId option:selected').val();
+        var nextStepId = $('#ApprovalStepId option:selected').val();
+        var url = '@Url.Action("ExecuteApprovalAction", "AlternateApproval")';
+
+        var forwardToIdInt = parseFloat(forwardToId);
+        if (isNaN(forwardToIdInt)) {
+            forwardToIdInt = 0;
+        }
+
+        nextStepId = parseFloat(nextStepId);
+        if (isNaN(nextStepId)) {
+            nextStepId = 0;
+        };
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { applicationId: applicationId, actionName: actionName, approverComment: comments, nextStepId: nextStepId, nextApproverId: forwardToIdInt },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+
+                $('#btnSearch').trigger('click');
+            }
+        });
+
+    }
+
+    $('#btnApprove').on('click', function () {
+        var action = "Approved";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+
+    $('#btnReject').on('click', function () {
+        var action = "Reject";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+
+    $('#btnRecommend').on('click', function () {
+        var action = "Recommend";
+        ProceedToNextStep(action);
+        $("#divApplicationViewer").dialog('close');
+    })
+</script>

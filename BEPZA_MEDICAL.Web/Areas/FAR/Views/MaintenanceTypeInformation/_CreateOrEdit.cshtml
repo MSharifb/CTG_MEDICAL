@@ -1,0 +1,75 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.MaintenanceTypeInformationViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaintenanceType, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.MaintenanceType, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsPeriodicallyRepeating, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-1">
+                @Html.CheckBoxFor(model => model.IsPeriodicallyRepeating, new { @class = "form-control" })
+            </div>
+        </div>
+        <div id="Status">
+            <div class="form-group">
+                @Html.LabelFor(model => model.RedoAfter, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.RedoAfter, new { @class = "form-control" })
+                </div>
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(model => model.RedoType, Model.RedoTypeList, new { @class = "form-control required", onchange = "LoadReason();" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-6">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        @*EnableDisable('@Model.IsPeriodicallyRepeating.ToString()');*@
+
+        $('#IsPeriodicallyRepeating').on('click', function (e) {
+            EnableDisable($(this).is(':checked'));
+        });
+    })
+
+    function EnableDisable(val) {
+        if (val == true || val == 'True') {
+            $('#Status').removeAttr('hidden');
+        }
+        else {
+            $('#Status').attr('hidden', true);
+        }
+    }
+
+    EnableDisable('@Model.IsPeriodicallyRepeating.ToString()');
+
+</script>

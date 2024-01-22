@@ -1,0 +1,11 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxExemptionRule.TaxExemptionRuleViewModel
+@using ERP_BEPZA.Web.Helpers
+
+@if (Model != null && Model.DetailList!= null)
+{
+    foreach (var x in Model.DetailList)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

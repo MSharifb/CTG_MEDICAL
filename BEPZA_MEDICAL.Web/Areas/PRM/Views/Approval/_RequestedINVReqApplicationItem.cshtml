@@ -1,0 +1,335 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginForm("InvRequisitionExecuteApproval", "Approval", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ApprovalProcessId)
+    @Html.HiddenFor(m => m.RequestedAmount)
+    @Html.HiddenFor(m => m.NextStepName)
+    @Html.HiddenFor(m => m.ApprovalStatusId)
+    @Html.HiddenFor(m => m.Application.ApplicationDate, new { id = "INVApplicationDate" })
+
+    <div class="form-group">
+        @Html.Label("Employee ID :", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-4">
+            @Html.Label(@Model.Application.ApplicantEmployeeId)
+        </div>
+
+        @Html.Label("Name :", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-4">
+            @Html.Label(@Model.Application.ApplicantName)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Department :", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-4">
+            @Html.Label(@Model.Application.ApplicantDepartment)
+        </div>
+
+        @Html.Label("Designation :", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-4">
+            @Html.Label(@Model.Application.ApplicantDesignation)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Indent Date :", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-4">
+            @Html.Label(@Model.Application.ApplicationDate.ToString("dd-MM-yyyy"))
+        </div>
+
+        @Html.Label(" Indent #", new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-4">
+            @Html.Label(@Model.Application.ApplicationNo)
+        </div>
+    </div>
+    <fieldset>
+        <legend>Item Info</legend>
+        <div class="row" align="center">
+            <div style="width: 90%">
+                <div class="clear"></div>
+                <table id="grid" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Item Name
+                            </th>
+                            <th>
+                                Comment
+                            </th>
+                            <th>
+                                Requested Quantity
+                            </th>
+                            <th>
+                                Recommend/Approve Quantity
+                            </th>
+                            <th>
+                                Unit
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.INVRequisitionDtlList.Count; i++)
+                        {
+                            var item1 = Model.INVRequisitionDtlList.ToList()[i];
+                            <tr>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.INVRequisitionDtlList[i].Id)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.INVRequisitionDtlList[i].ItemId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.INVRequisitionDtlList[i].RequisitionId)
+                                </td>
+                                <td>
+                                    <label> @item1.ItemName</label>
+                                </td>
+                                <td>
+                                    <label> @item1.Comment</label>
+                                </td>
+                                <td style="width:20%">
+                                    <label> @item1.Quantity</label>
+                                </td>
+                                <td style="width:30%">
+                                    @Html.TextBoxFor(m => m.INVRequisitionDtlList[i].RecommendQuantity)
+                                </td>
+                                <td style="text-align:left">
+                                    <label> @item1.Unit</label>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            &nbsp;
+            <div class="balance-action">
+                <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> Item Balance</button>
+            </div>
+            <div class="clear" style="height:10px">
+            </div>
+        </div>
+    </fieldset>
+
+
+    <div class="col-sm-12" style=" margin:50px 0 20px 0;">
+        <div class="col-sm-2">@Html.LabelFor(m => m.ApproverComments)</div>
+        <div class="col-sm-9">
+            @Html.TextAreaFor(m => m.ApproverComments, new { @class = @"form-control" })
+        </div>
+    </div>
+    if (Model.IsConfigurableApprovalFlow)
+    {
+        <div id="dvForward" class="col-sm-12" style="margin-bottom:20px;">
+            <div class="col-sm-2">
+                Forward To
+            </div>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ApproverId, @Model.NextApproverList, new { @class = @"form-control" })
+            </div>
+        </div>
+    }
+    else
+    {
+        <div id="dvForward" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.HiddenFor(model => model.ApproverId)
+            @Html.LabelFor(model => model.SignatoryEmpId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.SignatoryEmpId, new { @style = "width:130px", @class = "form-control read-only required", @readonly = true })
+            </div>
+            <div class="col-sm-2">
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+            </div>
+        </div>
+        <div id="dvSuggest" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.LabelFor(model => model.SignatoryEmpName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SignatoryEmpName, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+        <div id="dvSuggest" class="col-sm-12" style="margin-bottom:20px;">
+            @Html.LabelFor(model => model.SignatoryEmpDesignation, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SignatoryEmpDesignation, new { @class = "form-control read-only", @readonly = true })
+            </div>
+        </div>
+    }
+    <div class="col-sm-12 approval-action-area" style="text-align:center;">
+        @*<button id="btnRecommend" type="button" class="btn btn-sm btn-primary">Recommend</button>
+            <button id="btnApprove" type="button" class="btn btn-sm btn-primary">Approve</button>
+            <button id="btnReject" type="button" class="btn btn-sm btn-primary">Reject</button>*@
+        @*<input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />*@
+        <button class="btn btn-success" id="btnRecommend"><i class="fa fa-save"></i> Recommend</button>
+        <button class="btn btn-success" id="btnApprove"><i class="fa fa-save"></i> Approve</button>
+        <button class="btn btn-success" id="btnReject"><i class="fa fa-save"></i> Reject</button>
+
+    </div>
+
+    <fieldset>
+        <legend>Approval History</legend>
+        @if (Model.ApprovalHistory != null && @Model.ApprovalHistory.Count > 0)
+        {
+            @Html.Partial("_ApprovalHistory", @Model.ApprovalHistory)
+        }
+    </fieldset>
+
+}
+
+<div id="divItemBalanceViewer">
+    <iframe id="styleAdvance" src="" width="50%" height="50%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "OnlineWelfareFundApplicationInformation")?UseTypeEmpId=1';
+        url = url.replace('PRM', 'WFM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+       function setEmpData(id) {
+        $('#ApproverId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+        }
+
+    function GetEmployeeInfo() {
+        var empId = $('#ApproverId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "OnlineWelfareFundApplicationInformation")';
+        url = url.replace('PRM', 'WFM');
+
+        if (empId > 0) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            data: { employeeId: empId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $("#SignatoryEmpId").val(result.EmpID);
+                $('#SignatoryEmpName').val(result.EmployeeName);
+                $("#SignatoryEmpDesignation").val(result.Designation);
+            }
+        });
+        }
+        return false;
+    }
+    function Closing() {
+
+    }
+
+    function GetLoggedInZoneId() {
+        var url = '@Url.Action("GetLoggedZoneId", "ApprovalFlow")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                return data;
+            }
+        });
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var stepName = '@Model.NextStepName';
+        if ('@Model.IsConfigurableApprovalFlow' == 'True') {
+
+            if (stepName == "Recommendation") {
+                $('#btnApprove').hide();
+            }
+            else {
+                $('#btnRecommend').hide();
+                $('#dvForward').hide();
+            }
+        }
+        $("#divItemBalanceViewer").dialog({ autoOpen: false, modal: true, height: 350, width: 600, title: 'Balance', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    $('.balance-action button').click(function () {
+        //debugger;
+        var url = '@Url.Action("ViewINVItemBalance", "Approval")';
+        var applicationId = $('#Id').val();
+
+        var approvalProcessId = $('#ApprovalProcessId option:selected').val();
+        var applicationDate = $('#INVApplicationDate').val();
+        var statusId = $('#ApprovalStatusId').val();
+        var approvalStatusId = parseInt(statusId);
+        if (isNaN(approvalStatusId)) {
+            approvalStatusId = 5;
+        }
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'text',
+            data: { approvalProcessId: approvalProcessId, requestedApplicationId: applicationId, applicationDate: applicationDate, statusId: approvalStatusId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                //alert(result);
+                $('#divItemBalanceViewer').html(result);
+                console.log("success");
+            }
+        });
+
+        $("#divItemBalanceViewer").dialog('open');
+    });
+
+    $('#btnApprove').on('click', function () {
+        var action = "Approved";
+        $("#NextStepName").val(action);
+    })
+
+    $('#btnReject').on('click', function () {
+        var action = "Reject";
+        $("#NextStepName").val(action);
+    })
+
+    $('#btnRecommend').on('click', function () {
+        var action = "Recommend";
+        $("#NextStepName").val(action);
+    })
+
+</script>

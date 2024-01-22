@@ -1,0 +1,31 @@
+﻿@model ERP_BEPZA.Web.Areas.CPF.Models.LoanApplication.ApplicationStatusViewModel
+@using ERP_BEPZA.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ApplicationStatusList"))
+    {
+        
+        <td width="10%" style="text-align: center">
+           @Html.LabelFor(model => model.ApprovedLevel)
+        </td>           
+       
+        <td width="15%" style="text-align: center">
+            @Html.LabelFor(model => model.ApprovedValue)
+        </td>
+         <td width="20%" style="text-align: center">
+            @Html.LabelFor(model => model.SubmissionDateLevel)
+
+        </td>
+         <td width="20%" style="text-align: center">
+             @Html.LabelFor(model => model.SubmissionDateValue)
+        </td>
+         <td width="20%" style="text-align: center">
+             @Html.LabelFor(model => model.CommentsLevel)
+        </td>
+
+         <td width="20%" style="text-align: center">
+             @Html.LabelFor(model => model.CommentsValue)
+        </td>        
+                  
+    }
+</tr>

@@ -1,0 +1,32 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantShortListViewModel
+@Html.HiddenFor(m => m.strMode)
+@foreach (var item in Model.ApplicantShortListDetail)
+{
+    <tr>
+        <td style="width: 30px; text-align: center">
+            @Html.CheckBox("chkDesignation", item.IsChecked, new { @class = "rchk", @value = item.DesignationId })
+        </td>
+        <td style="width: 30px; text-align: center;display:none" >
+            @Html.Encode(item.DesignationId)
+        </td>
+        <td style="text-align: center">
+            @Html.Encode(item.DesignationName)
+        </td>
+        <td width="10%" align="center" style="display:none">
+            @Html.Encode(item.DepartmentId)
+        </td>
+        <td style="text-align: center;">
+            @Html.Encode(item.DepartmentName)
+        </td>
+        <td style="text-align: center; display: none">
+            @Html.Encode(item.SectionId)
+        </td>
+        <td style="text-align: center;">
+            @Html.Encode(item.SectionName)
+        </td>
+        <td style="text-align: center;">
+            @Html.Encode(item.NoOfPost)
+        </td>
+    </tr>
+}
+

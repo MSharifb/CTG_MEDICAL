@@ -1,0 +1,208 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.CentralBudgetInformation
+@model CentralBudgetInformationModel
+
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    
+    @Html.HiddenFor(m=>m.Id)
+    
+    <div class="GroupBox">
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FinancialYearId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                @Html.HiddenFor(m=>m.FinancialYearId)
+            </span>
+        </div>
+
+        <div id="CentralBudgetList">
+        <table cellspacing='0' cellpadding='0' style=" margin-left:50px;">
+            <thead >
+                <tr>
+                    
+                    <th style="border:1px solid #CCCCCC; width:320px;">
+                        Account Head
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:100px;">
+                        Amount
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:100px;">
+                        Account Type
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:200px;">
+                        Remarks
+                    </th>
+                </tr>
+            </thead>
+
+            @if (Model != null && Model.CentralBudgetList != null)
+                {
+
+                    foreach (var x in Model.CentralBudgetList)
+                    {
+                        @Html.Partial("CentralBudgetList", x);
+                    }
+                }
+
+        </table>
+        </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ApprovalPathId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.ApprovalPathId, Model.ApprovalPathList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                @Html.HiddenFor(m=>m.ApprovalPathId)
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.CurrentApprovalNodeId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.CurrentApprovalNodeId, Model.NextApprovalNodeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                @Html.HiddenFor(m=>m.CurrentApprovalNodeId)
+            </span>
+        </div>
+        </div>
+        
+    
+    
+    <div class="clear"></div>
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+        <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+        }
+        else
+        {
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+        }     
+
+        <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        <div class="clear"></div>
+    </div>
+    
+}
+<div class="button-crude button-left">
+    @Ajax.ActionLink("Back to List", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })
+</div>   
+<div class="clear"></div>
+<script type="text/javascript">
+
+$(function () {
+    var mode = '@Model.Mode';
+    $.validator.unobtrusive.parse('#frm');
+
+    if (mode == 'Create') {
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+    }
+    else {
+        
+        $('#FinancialYearId').attr('disabled',true)
+        $('#btnUpdate').show();
+        $('#btnSave').hide();
+        
+    }
+
+
+})
+
+function OnCompleteBacktoList(content) {
+    if (content.statusText == 'OK') {
+        $('.search-content').hide();
+        $('.frm-content').html(content.responseText);
+    } else {
+        $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+    }
+}
+
+function OnComplete(content) {
+    var data = content.responseText;
+    if (data.toLowerCase().indexOf("updated") >= 0) {
+                    
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else if (data.toLowerCase().indexOf("inserted") >= 0) {
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'green' });
+        $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else {
+        //$('.search-content').hide();
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'red' });
+        $("#message").delay(3000).hide('slow');
+    }
+}
+
+
+</script>
+
+<style>
+    .label {width:185px;}
+    .label-right {width:185px;}
+</style>
+

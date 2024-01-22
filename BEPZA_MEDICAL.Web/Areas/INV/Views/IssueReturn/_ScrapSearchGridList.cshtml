@@ -1,0 +1,60 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.IssueReturn.IssueReturnSearchViewModel
+<script type="text/javascript">
+    $(function () {
+        $("a.processItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#process-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid1').jqGrid({
+            url: '@Url.Action("GetScrapList", "IssueReturn")',
+            datatype: 'json',
+            mtype: 'POST',
+            postData: {
+                st: status
+            },
+            colNames: ['ID', 'Scrap #', 'Scrap Date', 'Name', 'Processed'],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'ScrapNo', index: 'ScrapNo', width: '60', align: 'left', search: true, edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'ScrapDate', index: 'ScrapDate', width: '80', align: 'center', search: false, edittype: 'text' },
+                            { name: 'FullName', index: 'FullName', width: '120', align: 'left', search: false, edittype: 'text' },
+                            { name: 'Process', index: 'Process', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '20px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Pending Return Request",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager1'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch1").jqGrid('filterGrid', '#jqGrid1', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+        //$('#jqGrid1').jqGrid('setGridParam', { onSelectRow: function (id) { return setData(id); } }); //this code send employee id to parent
+    });
+
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink("_name_", "PopulateCreate", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Process", new { id = "_id_" }, new { @class = "processItem fa fa-check-square-o", style = "color: #65a0c6; text-decoration: none !important;" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+</script>
+

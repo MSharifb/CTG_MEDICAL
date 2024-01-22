@@ -1,0 +1,45 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.BudgetDetailYearlyCostViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (@Html.BeginHtmlFieldPrefix(Model.PreviousFieldId))
+{
+    using (Html.BeginCollectionItem("YearlyCostList"))
+    {
+        <span class="yearly-cost-amount">
+            @Html.TextBoxFor(m => m.EstematedCost,"{0:0.00}", new { @required = @"required" })
+        </span>
+        <span class="financial-year">
+            @Html.HiddenFor(m => m.FinancialYearId)
+        </span>
+        <span class="budget-status">
+            @Html.HiddenFor(m => m.BudgetStatusId)
+        </span>
+        <span class="sub-head-info">
+            @Html.HiddenFor(m => m.BudgetSubHeadId)
+        </span>
+        <span class="other-field">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.BudgetDetailsId)
+        </span>
+    }
+}
+<script type="text/javascript">
+
+    //function SetValue() {
+    //    var totalAmount = $(this).closest('tr').find('.budget-amount :input').val();
+    //    var currentYerCost = $(this).val();
+    //    $(this).closest('td').nextAll('.yearly-cost :input[type=text]').val(0);
+    //    var sum = 0;
+    //    $('.yearly-cost :input[type=text]').each(function () {
+    //        var val = $(this).val();
+    //        sum = parseFloat(sum) + parseFloat(val);
+    //    });
+    //    return sum;
+    //}
+
+    //$('.yearly-cost :input[type=text]').focusout(function () {
+    //    var sValue = SetValue();
+    //    $(this).closest('td').nextAll('td.yearly-cost :input[type=text]').val(sValue);
+
+    //});
+</script>

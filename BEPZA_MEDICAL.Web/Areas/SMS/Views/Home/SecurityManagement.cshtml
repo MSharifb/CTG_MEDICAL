@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Security Management";
+}
+
+
+    <div class="row">
+        <label class="btn btn-blue-1 btn-block">SELECT</label>
+    </div>
+
+    <div class="clear" style="height:7px"></div>
+
+    <div class="row" style="text-align:center">
+
+    <a href="#" class="btn btn-primary btn-success" id="Security" onclick="return goSecurity()">
+        Security
+    </a>
+    <a href="#" class="btn btn-primary btn-success" id="Security" onclick="return goAnsar()">
+        Ansar
+    </a>
+
+        <div class="clear"></div>
+    </div>
+
+
+
+<script type="text/javascript">
+
+    var url = '@Url.Action("Index", "Home")';
+
+    function goSecurity() {
+        window.location.href = url;
+    }
+    function goAnsar() {
+        url = url.replace('SMS', 'AMS');
+        window.location.href = url;
+    }
+</script>

@@ -1,0 +1,448 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.AssignApprovalFlowViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.ActionType' == 'Update') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            setTimeout(SetDesignationData, 1000);
+        }
+        else {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        return false;
+    });
+</script>
+
+@using (Html.BeginForm(Model.ActionType, "AssignApprovalFlow", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="form-horizontal">
+        <div id="message" class="form-group messageBox clearfix">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        <fieldset>
+            <legend>Approval Flow</legend>
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.ActionType)
+            @Html.HiddenFor(m => m.OrganogramLevelId)
+            @Html.HiddenFor(m => m.SelectedDesignationId)
+            @Html.HiddenFor(m => m.InitialStepId)
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ZoneId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ZoneId, Model.ZoneList, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalProcessId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ApprovalProcessId, Model.ApprovalProcessList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalMasterId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ApprovalMasterId, Model.ApprovalFlowList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="form-group">
+                <div class="col-sm-12 group-area-selector" style="text-align:center;">
+                    <label style="margin-right:20px;"> @Html.RadioButtonFor(m => m.IsApplicableForGroup, false)Individual</label>
+                    <label> @Html.RadioButtonFor(m => m.IsApplicableForGroup, true)Group</label>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <div id="dvEmp">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.EmpId, new { @class = "col-sm-4 control-label labelRequired" })
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.EmpId, new { @class = "form-control read-only", @readonly = true })
+                                    @Html.HiddenFor(m => m.EmployeeId)
+                                </div>
+                                <div class="col-sm-1" style="text-align:left;">
+                                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.EmployeeName, new { @class = "col-sm-4 control-label labelRequired" })
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control read-only", @readonly = true })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Designation, new { @class = "col-sm-4 control-label labelRequired" })
+                                <div class="col-sm-7">
+                                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control read-only", @readonly = true })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-10" id="dvTreeView">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.LevelDetail, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(m => m.LevelDetail, new { @class = "form-control read-only", @readonly = true })
+                        </div>
+                    </div>
+                    <div style="background: #FFFFFF" id="treeViewSearch">
+                    </div>
+
+                    <script type="text/javascript">
+
+                        $(document).ready(function () {
+                            PopulateTreeView();
+                        })
+
+                        function ClearTree() {
+                            $('#treeViewSearch').empty();
+                        }
+
+                        $('#ZoneId').change(function () {
+                            $("#treeViewSearch").jstree("destroy");
+                            PopulateTreeView();
+                        });
+
+                        function PopulateTreeView() {
+
+                            var zoneId = $("#ZoneId option:selected").val();
+                            if (zoneId == '') { zoneId = '0' }
+                            var url = '@Url.Action("GetTreeData", "ApprovalFlow")?zoneId=' + zoneId;
+                            $('#treeViewSearch').jstree({
+                                "plugins": [
+                                            "search",
+
+                                ],
+                                'core': {
+                                    'check_callback': true,
+                                    'data': {
+                                        'url': url,
+                                        'data': function (node) {
+                                            return { "id": node.title };
+                                        }
+                                    }
+                                }
+                            });
+
+                            $(document).on('click', '.jstree-anchor', function (e) {
+                                var anchorId = $(this).parent().attr('id');
+                                var nodeName = '';
+                                $('#OrganogramLevelId').val(anchorId);
+                                GetDesignationInfo(anchorId);
+                            });
+
+                            $(".jstree").on("loaded.jstree", function () {
+
+                                var selectedNodeId = $('#OrganogramLevelId').val();
+                                $(".jstree").jstree("open_all");
+                                //$(".jstree").jstree("open_all", selectedNodeId);
+                                $('.jstree').jstree(true).select_node(selectedNodeId);
+                                ToggleGroup();
+                            });
+                        };
+                    </script>
+                    <div style="margin-top:30px;">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.DesignationId, new { @class = "col-sm-4 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.DesignationId, Model.DesignationList, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.EmployeeCategory, new { @class = "col-sm-4 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.EmployeeCategory, Model.EmployeeCategoryList, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Gender, new { @class = "col-sm-4 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.Gender, Model.GenderList, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.StaffCategoryId, new { @class = "col-sm-4 control-label" })
+                            <div class="col-sm-8">
+                                @Html.DropDownListFor(m => m.StaffCategoryId, Model.StaffCategoryList, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="col-sm-12">
+            <div class=" form-group">
+                <fieldset id="fldSteps">
+                    <legend>Steps</legend>
+                    @Html.Partial("_ApprovalFlowDrawing", Model.ApprovalFlowInitializationList)
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                <button class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                <button class="btn btn-primary" id="btnUpdate"><i class="fa fa-edit"></i> Update</button>
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    // ******** functions for open popup *************
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 940, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    $(document).ready(function () {
+        $('#ApprovalProcessId').trigger('change');
+        $('#ApprovalMasterId').trigger('change');
+    });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "AssignApprovalFlow")';
+        var selectedZoneId = $('#ZoneId option:selected').val();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            data: { UseTypeEmpId: "Active", zoneId: selectedZoneId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function GetDesignationInfo(nodeId) {
+        var url = '@Url.Action("GetDesignationInfoByLevelId", "AssignApprovalFlow")';
+        var dsgId = $('#SelectedDesignationId').val();
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { levelId: nodeId },
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                $("#DesignationId").empty();
+                $("#DesignationId").append($("<option></option>").val('0').html('ALL'));
+                $.each(data, function () {
+                    $("#DesignationId").append($("<option></option>").val(this['Id']).html(this['Name']));
+                    if (dsgId == (this['Id'])) {
+                        $("#DesignationId").val(dsgId);
+                    }
+                });
+            }
+        });
+    }
+
+    $('#ApprovalMasterId').change(function () {
+        $('#fldSteps').empty();
+        DrawApprovalStep();
+    });
+
+    function DrawApprovalStep() {
+        var approvalFlowId = $('#ApprovalMasterId option:selected').val();
+        var masterId = parseInt(approvalFlowId);
+        if (isNaN(masterId)) {
+            masterId = 0;
+        };
+        var empWiseStepId = $('#Id').val();
+        var idVal = parseInt(empWiseStepId);
+        if (isNaN(idVal)) {
+            idVal = 0;
+        };
+        var url = '@Url.Action("DrawApprovalSteps", "AssignApprovalFlow")';
+        if (masterId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { approvalFlowId: masterId, assignedApprovalFlowId: idVal },
+                dataType: "text",
+                cache: false,
+                success: function (result) {
+                    console.log(result)
+                    $('#fldSteps').append("<legend>Steps</legend>" + result);
+                }
+            });
+        }
+    }
+
+
+
+    function setData(id) {
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function Closing() {
+
+    }
+    // ---------------------------------
+
+    $(document).ready(function () {
+        setTimeout(GetLoggedInZoneId, 500);
+        ToggleGroup();
+        return false;
+    });
+
+    function SetOrganogramLevel() {
+
+        var levelId = $('#OrganogramLevelId').val();
+        //$("#treeViewSearch").jstree("open_all", node);
+        $(".jstree").jstree('open_all');
+    };
+
+    function SetDesignationData() {
+        var levelId = $('#OrganogramLevelId').val();
+        GetDesignationInfo(levelId);
+    };
+
+    function GetLoggedInZoneId() {
+        var url = '@Url.Action("GetLoggedZoneId", "AssignApprovalFlow")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                $('#ZoneId').val(data);
+            }
+        });
+    }
+
+    $('#ApprovalProcessId').on('change', function () {
+        BindApprovalFlowName();
+
+    })
+
+    function BindApprovalFlowName() {
+        var approvalFlowMasterId = '@Model.ApprovalMasterId';
+        var processId = $('#ApprovalProcessId option:selected').val();
+        if (processId == '' || processId == 0 || processId == null) {
+            return;
+        }
+        $('#ApprovalMasterId').empty();
+        var url = '@Url.Action("GetApprovalFlowListByProcessId", "AssignApprovalFlow")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            data: { processId: processId },
+            cache: false,
+            success: function (data) {
+                $('#ApprovalMasterId').append($('<option></option>').val('').html('[Select One]'));
+                $.each(data, function () {
+                    $('#ApprovalMasterId').append($('<option></option>').val(this.Id).html(this.ApprovalFlowName));
+                    if ((this.Id) == approvalFlowMasterId) {
+                        $('#ApprovalMasterId').val(approvalFlowMasterId);
+                        $('#ApprovalMasterId').trigger('change');
+
+                    }
+                });
+            }
+        });
+
+    }
+
+    function ToggleGroup() {
+        var isApplicableForGroup = $('.group-area-selector input[type=radio]:checked').val();
+
+        if (isApplicableForGroup == "False") {
+            $('#dvTreeView').hide();
+            $('#dvEmp').show();
+            //$('#treeViewSearch').find('.jstree li').each(function () {
+            //    $(".jstree").jstree().disable_node(this.id);
+            //});
+            //$('#DesignationId').prop("disabled", true);
+            //$('#EmployeeCategory').prop("disabled", true);
+            //$('#Gender').prop("disabled", true);
+        }
+        else {
+            //$('#treeViewSearch').find('.jstree li').each(function () {
+            //    $(".jstree").jstree().enable_node(this.id);
+            //});
+            //$('#DesignationId').prop("disabled", false);
+            //$('#EmployeeCategory').prop("disabled", false);
+            //$('#Gender').prop("disabled", false);
+            $('#dvTreeView').show();
+            $('#dvEmp').hide();
+        }
+    }
+
+    $('.group-area-selector input[type=radio]').on('click', function () {
+        ToggleGroup();
+    });
+
+</script>
+
+<style type="text/css">
+    #treeViewSearch {
+        overflow: auto;
+        max-height: 250px;
+        height: 250px;
+    }
+
+    #fldSteps {
+        font-size: 13px;
+        text-align: center;
+        min-height: 200px;
+    }
+
+    .step-name {
+        font-weight: bold;
+        color: green;
+    }
+
+    .approver-name {
+        font-weight: bold;
+        font-style: italic;
+    }
+
+    #dvEmp, #dvTreeView {
+        min-height: 375px;
+    }
+</style>

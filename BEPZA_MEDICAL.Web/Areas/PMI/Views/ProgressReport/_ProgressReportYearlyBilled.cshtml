@@ -1,0 +1,9 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.ProgressReport.ProgressReportDetailYearlyBilledViewModel>
+@using BEPZA_MEDICAL.Web.Helpers
+
+@foreach (var item in Model.AsEnumerable())
+{
+    @Html.Raw("<td class='yearly-billed'>")
+    @Html.Partial("_ProgressReportYearlyBilledItem", @item)
+    @Html.Raw("</td>")
+}

@@ -1,0 +1,11 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.BankInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@if (Model != null && Model.BankInfoBranchList != null)
+{
+    foreach (var x in Model.BankInfoBranchList)
+    {
+        @Html.Partial("_DetailsView", x);
+    }
+
+}

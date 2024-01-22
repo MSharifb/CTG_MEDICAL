@@ -1,0 +1,55 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobExperienceInfoViewModel
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetJobExperienceList", null, new { Id = Model.EmployeeId })',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Organization/Company', 'Designation', 'Employment Type', 'Organization Type', 'From', 'To','Duration'],
+            colModel: [
+                        {name: 'ID', index: 'ID', align: 'left', search: false, edittype: 'text', hidden: true },
+                        { name: 'Organization1', index: 'Organization1',width: '240px', align: 'left', edittype: 'text', formatter: viewformatEdiorLink },
+                        { name: 'Designation', index: 'Designation', align: 'left', edittype: 'text' },
+                        { name: 'EmploymentType', index: 'EmploymentType', align: 'left', width: '180px' },
+                        { name: 'OrganizationType', index: 'OrganizationType', align: 'left', width: '180px' },
+                        { name: 'From', index: 'FromDate', align: 'center' },
+                        { name: 'To', index: 'EndDate', align: 'center' },
+                        { name: 'Duration', index: 'Duration', align: 'right' }
+                      ],
+            autowidth: true,
+            caption: "Job Experience List",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+//            ,
+//            footerrow: true,
+//            loadComplete: function () {
+//                var $self = $(this),
+//                duration = $self.jqGrid("getCol", "Duration", false, "sum");
+//                $self.jqGrid("footerData", "set", { To: "Total Experience:", Duration: duration });
+//            }
+
+        });
+
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "JobExperienceInfoIndex", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>

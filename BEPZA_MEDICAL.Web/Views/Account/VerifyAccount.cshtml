@@ -1,0 +1,54 @@
+﻿@model BEPZA_MEDICAL.Web.Models.LogOnModel
+@{
+    Layout = "~/Views/Shared/_LayoutZoneLogOn.cshtml";
+    ViewBag.Title = "Authenticator Code";
+}
+@using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+
+<div class="form-horizontal">
+    <div class="row">
+        <div class="divCenter">
+            <div class="form-group">
+                   <div class="col-sm-12">
+                       @Html.ValidationSummary(true, "Login Fail.")
+                    </div>
+                </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @Html.LabelFor(m => m.TwoFactorCode)
+                    @Html.HiddenFor(m=>m.UserName)
+                    @Html.HiddenFor(m=>m.Password)
+                    @{Model.IsVerified = true;}
+                    @Html.HiddenFor(m=>m.IsVerified)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(m => m.TwoFactorCode, new { @Class = "form-control required" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-6 checkbox">
+                    <label>
+                        @Html.CheckBoxFor(m => m.RememberMeforVerification) Remember me
+                    </label>
+                </div>
+                <div class="col-sm-6 text-right">
+                    @*<a href="@Url.Action("LogOn", "Account")" class="btn btn-warning"> <i class="fa fa-save"></i> Submit</a>*@
+                    <button type="submit" class="btn btn-warning"><i class="fa fa-save"></i> Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+<style>
+    .divCenter {
+        margin: auto;
+        width: 25%;
+        border: 2px solid #2ab67c; /*2px solid #747dbf;*/
+        padding: 10px;
+        background-color: #a1a099;
+    }
+</style>

@@ -1,0 +1,31 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.BudgetMasterViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@*@foreach (var item in @Model.BudgetDetailHeadList)
+{
+    <tr>
+        @Html.Partial("_BudgetDetailHead", item)
+    </tr>
+    <tr>
+        @Html.Partial("_BudgetDetail", Model.BudgetDetailList.Where(q => q.BudgetHeadId == item.BudgetHeadId).ToList())
+    </tr>
+}*@
+@*<div style="width: 100%; overflow-x: scroll;">*@
+    @foreach (var item in @Model.BudgetDetailHeadList)
+    {
+
+        <table class="table table-bordered budget">
+            <tbody>
+                @Html.Partial("_BudgetDetailHead", item)
+                @Html.Partial("_BudgetDetail", Model.BudgetDetailList.Where(q => q.BudgetHeadId == item.BudgetHeadId).ToList())
+            </tbody>
+        </table>
+        @*<div class="dvBudgetDetails">
+            <table class="table table-bordered">
+                <tbody>
+                    @Html.Partial("_BudgetDetailHeads", @Model)
+                </tbody>
+            </table>
+        </div>*@
+    }
+@*</div>*@

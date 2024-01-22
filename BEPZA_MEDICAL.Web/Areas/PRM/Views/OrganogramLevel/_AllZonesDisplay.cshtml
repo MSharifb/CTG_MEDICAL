@@ -1,0 +1,111 @@
+﻿@{
+    Layout = null;
+}
+<div class="button-crude">
+    <input type="button" id="expandAndCloseNode" value="Expand" />
+</div>
+<div class="clear"></div>
+<div style="background: #FFFFFF" class="demo jstree jstree-5" id="treeViewAllZones">
+</div>
+
+<script type="text/javascript">
+    //$(function () {
+    //    $("#search").click(function () {
+    //        $("#treeViewAllZones").jstree("search", document.getElementById("LevelName").value);
+    //    })
+    //});
+    $(function () {
+        $("#treeViewAllZones")
+
+        .jstree({
+            "plugins": [
+                "themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys"
+            ],
+
+            "json_data": {
+                "ajax": {
+                    "url": "@Url.Action("GetTreeAllZonesData", "OrganogramLevel")",
+                    "data": function (n) {
+                        return {
+                            "operation": "get_children",
+                            "id": n.attr ? n.attr("id").replace("node_", "") : 1
+                        };
+                    }
+                }
+            },
+            "search": {
+                "ajax": {
+                    "url": "@Url.Action("GetTreeAllZonesData", "OrganogramLevel")",
+                    "data": function (str) {
+
+                        return {
+                            "operation": "search",
+                            "search_str": str
+                        };
+                    }
+                }
+            },
+            "types": {
+                "max_depth": -2,
+                "max_children": -2,
+                "valid_children": ["drive"],
+                "types": {
+                    "default": {
+                        "valid_children": "none",
+                        "icon": {
+                        }
+                    },
+                    "folder": {
+                        "valid_children": ["default", "folder"],
+                        "icon": {
+                            "image": "d.png"
+                        }
+                    },
+                    "drive": {
+                        "valid_children": ["default", "folder"],
+                        "icon": {
+                            "image": "file.png"
+                        },
+                        "start_drag": false,
+                        "move_node": false,
+                        "delete_node": false,
+                        "remove": false
+                    }
+                }
+            },    
+
+        })
+
+    });
+
+</script>
+
+<script>
+
+    $('#expandAndCloseNode').click(function () {
+        var strText = $(this).val();
+        $('#treeViewAllZones').jstree('deselect_all');
+        if (strText == "Expand") {
+            $("#treeViewAllZones").jstree("open_all");
+            $('#expandAndCloseNode').val('Collapse');
+        } else {
+            $("#treeViewAllZones").jstree("close_all");
+            $('#expandAndCloseNode').val('Expand');
+        }
+
+    });
+
+    $("#treeViewAllZones").bind("select_node.jstree", function (e, data) {
+        $("#treeViewAllZones").jstree("open_all");
+    });
+
+    $('a.jstree-clicked').live('click', function () {
+      //  debugger;
+        var organogramId = $(this).parent().attr("id");      
+        var organogramName = $(this).text();      
+        SetOrganogramId(organogramId, organogramName);
+    });
+   
+
+</script>
+

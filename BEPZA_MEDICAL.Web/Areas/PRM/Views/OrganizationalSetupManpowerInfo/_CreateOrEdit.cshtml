@@ -1,0 +1,198 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.OrganizationalSetupManpowerInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+
+<fieldset>
+    <legend>Organogram Tree</legend>
+    <span>
+        @Html.HiddenFor(model => model.OrganogramLevelId)
+    </span>
+    <div class="row">
+        <span class="label" style="width:25%">
+            Level Name&nbsp;<span style='color: red'>*</span>
+        </span>
+        <span class="field" style="width:70%">
+            @Html.TextBoxFor(model => model.OrganogramLevelName, new { @class = "read-only", @readonly = true, @style = "width:95%" })
+        </span>
+    </div>
+    <div class="clear"></div>
+    <div style="height:300px;overflow-x:hidden;overflow-y:auto">
+        @Html.Partial("~/Areas/PRM/Views/OrganogramLevel/_TreeViewDisplay.cshtml")
+    </div>
+
+</fieldset>
+
+
+<fieldset>
+    <legend>Designation wise Sanctioned Post Information</legend>
+    <div class="row">
+        <span class="label" style="width:25%">
+            @Html.LabelFor(model => model.DesignationId)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field" style="width:70%">
+            @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label" style="width:25%">
+            @Html.LabelFor(model => model.SanctionedPost)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field" style="width:70%">
+            @Html.TextBoxFor(model => model.SanctionedPost)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label" style="width:25%">
+            @Html.LabelFor(model => model.ActiveStatus)
+        </span>
+        <span class="field" style="width:70%">
+            @Html.CheckBoxFor(model => model.ActiveStatus)
+        </span>
+    </div>
+
+    @*Not working*@
+    @if (Model.strMode == "Edit")
+    {
+        <script type="text/javascript">FocusTreeNode(@Model.Id)</script>
+    }
+
+</fieldset>
+
+<div class="clear"></div>
+<div class="GroupBox">
+    <table id="gridManPwrInfoList" class="contenttable fixedcontenttable custom-grid">
+        <thead>
+            <tr>
+                <th>SL No.</th>
+                <th>Status Designation</th>
+                <th>Organogram Level</th>
+                <th>Sanctioned Post</th>
+                <th>Active Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+@*Organogram tree*@
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(function () {
+            var Url = window.location.href;
+            $("#btnClear").live("click", function (event) {
+                event.preventDefault();
+                window.location.href = Url;
+            });
+        });
+
+        var url = '@Url.Action("GetTreeData", "OrganogramLevel")';
+        $.ajax(
+        {
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            success: function (result) {
+                $('#divOrganogramList').html(result);
+            },
+            error: function () {
+                alert('System is unable to load data please try again.');
+            }
+        });
+
+        if ($('#OrganogramLevelId').val() != "") {
+            getManPwrInfoByOrganogramId($('#OrganogramLevelId').val());
+        }
+
+        //$('#treeViewSearch').jstree(true).deselect_all();
+    });
+
+
+
+    // This function is call from client view
+    function SetOrganogramId(organogramId, organogramName) {
+        $('#OrganogramLevelId').val(organogramId);
+        $('#OrganogramLevelName').val(organogramName);
+        getManPwrInfoByOrganogramId(organogramId);
+    }
+
+    function getManPwrInfoByOrganogramId(organogramId) {
+        $("#message").empty();
+        var url = '@Url.Action("GetListByOrganogramId", "OrganizationalSetupManpowerInfo")';
+        if (organogramId > 0) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { organogramId: organogramId },
+                success: (function (result) {
+                    $("#gridManPwrInfoList tbody").html(result);
+                })
+            });
+        }
+    }
+
+
+
+    $(window).load(function () {
+        setTimeout(function () {   //calls fuction after a certain time
+            selectedNode();
+        }, 2000);
+    });
+
+    function selectedNode() {
+        //   $("#treeViewSearch").jstree("open_all");
+        $('#treeViewSearch').jstree('deselect_all');
+        var nodeId = $('#OrganogramLevelId').val();
+        if (nodeId != '') {
+            var node = '#' + nodeId;
+            $("#treeViewSearch").jstree("open_all");
+            $('#treeViewSearch').jstree('deselect_all');
+            //$('#treeViewSearch').jstree('close_all');
+            //$("#treeViewSearch").jstree("refresh");
+            $("#treeViewSearch").jstree("select_node", node);
+
+            //var nodInfo = $('#treeViewSearch').find('[id=' + nodeId + ']');
+            ////var node_name = nodInfo.children("a").text();
+            //nodInfo.children("a").addClass('jstree-clicked');
+        }
+    }
+
+    function RemoveDb(el, id, url) {
+        $("#message").empty();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify({ Id: id }),
+            contentType: "application/json; charset=utf-8",
+            error: function () {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+            },
+            success: function (result) {
+                var errMsg = result.Message;
+                var errg = result.Success;
+                if (errg) {
+                    $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                    $(el).parent().parent().remove();
+                }
+                else {
+                    $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                }
+            }
+        });
+    }
+</script>
+@*End Organogram*@
+
+

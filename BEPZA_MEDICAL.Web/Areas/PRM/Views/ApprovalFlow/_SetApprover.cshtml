@@ -1,0 +1,389 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApproverInformationViewModel
+@{
+    ViewBag.Title = "Set Approver";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.ActionType' == 'SaveApprover') {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        else {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+        }
+        return false;
+    });
+</script>
+
+
+@using (Html.BeginForm(Model.ActionType, "ApprovalFlow", FormMethod.Post, new { id = "frm" }))
+{
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.ActionType)
+    @Html.TextBoxFor(m => m.SelectedLevelId, new { @style = @"display:none;" })
+    <div class="form-horizontal">
+        <fieldset>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalFlowName, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(m => m.ApprovalFlowName, new { @class = "form-control read-only", @readonly = true })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalProcessName, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(m => m.ApprovalProcessName, new { @class = "form-control read-only", @readonly = true })
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Set Approver</legend>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalFlowDetailId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-9">
+                    <span class="approval-step-area">
+                        @Html.DropDownListFor(m => m.ApprovalFlowDetailId, Model.ApprovalStepList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApproverTypeId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-9">
+                    @Html.DropDownListFor(m => m.ApproverTypeId, Model.ApproverTypeList, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.AuthorTypeId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-9">
+                    @Html.DropDownListFor(m => m.AuthorTypeId, Model.AuthorTypeList, new { @class = "form-control" })
+                </div>
+            </div>
+
+        </fieldset>
+        <fieldset id="dvApprover"></fieldset>
+        <div class="form-group" style="margin-top:15px;">
+            <div class="col-sm-12" style="text-align:right;">
+                <button class="btn btn-sm btn-primary" type="button" id="btnAddNewApprover">
+                    <i class="fa fa-plus-circle"></i>
+                    Add New
+                </button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-12" style="text-align:right;">
+                <div class="approver-area">
+                    <table id="tblApprover" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="emp-info">Employee Id. & Name</th>
+                                <th class="head-of-level">Head of the Level</th>
+                                <th class="org-level-post">Organogram Level & Post Name</th>
+                                <th class="approver-type">Rcommender/Approver Type</th>
+                                <th class="control-option">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.DetailList != null && Model.DetailList.Count > 0)
+                            {
+                                @Html.Partial("_ApproverDetails", Model.DetailList)
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                <button class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                <button class="btn btn-primary" id="btnUpdate"><i class="fa fa-edit"></i> Update</button>
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        SetAuthorType();
+
+        InitializeState();
+    });
+
+    function SetAuthorType() {
+        //debugger;
+        $('#dvApprover').empty();
+        var legendText = '';
+        var typeName = $("#AuthorTypeId option:selected").text();
+        if (typeName == "[Select One]") {
+            return;
+        }
+
+        if (typeName == "Head of Level") {
+            legendText = "Head of Level";
+            $('#dvApprover').append("<legend>" + legendText + "</legend>");
+        };
+
+        var url = '@Url.Action("ShowApproverSelector", "ApprovalFlow")';
+
+        switch (typeName) {
+            case "Specific Employee":
+                legendText = "Employee";
+                break;
+            case "Organogram Post":
+                legendText = "Organogram Post";
+                openOrganogram();
+                break;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { authorType: typeName },
+            cache: false,
+            success: function (html) {
+                $('#dvApprover').append("<legend>" + legendText + "</legend>" + html);
+            }
+        })
+
+
+    }
+
+    $('#AuthorTypeId').change(function () {
+        SetAuthorType();
+    });
+
+    function openOrganogram() {
+        var url = '@Url.Action("TreeViewSearchList", "ApprovalFlow")';// + '?OrgIdentityName=1';
+        $.ajax(
+        {
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            success: function (result) {
+                $('#dvApprover').html("<fieldset><legend>" + legendText + "</legend>" + result + "</fieldset>");
+
+            },
+            error: function () {
+                alert('System is unable to load data please try again.');
+            }
+        });
+
+        //$("#divOrganogramList").dialog('open');
+        return false;
+    }
+
+    function SetOrganogramId(organogramId, organogramName, OrgIdentityName) {
+        if (OrgIdentityName = '1') {
+            $('#sg_OrganogramLevelId').val(organogramId);
+            $('#OrganogramLevelName').val(organogramName);
+        }
+    }
+
+    $('#btnAddNewApprover').click(function () {
+        var approvalStepName = $('#ApprovalFlowDetailId option:selected').text();
+        var appFlowId = $('#ApprovalFlowDetailId option:selected').val();
+        var approverTypeId = $('#ApproverTypeId option:selected').val();
+        var authorTypeName = $('#AuthorTypeId option:selected').text();
+        var levelId = $('#SelectedLevelId').val();
+        var approverId = '';
+        var minAmount = $('#MinAmount').val();
+        var maxAmount = $('#MaxAmount').val();
+        switch (authorTypeName) {
+            case "Specific Employee":
+                approverId = $('#EmployeeId').val();
+                break;
+            case "Head of Level":
+                approverId = $('#EmployeeId option:selected').val();
+                break;
+            case "Organogram Post":
+                approverId = $('#EmployeeId option:selected').val();
+                break;
+        }
+
+        if (approverId == '') {
+            return;
+        };
+
+        var url = '@Url.Action("AddNewApprover", "ApprovalFlow")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { appFlowId: appFlowId, approverTypeId: approverTypeId, authorTypeName: authorTypeName, approverId: approverId, levelId: levelId, minAmount: minAmount, maxAmount: maxAmount },
+            cache: false,
+            success: function (html) {
+                $('#tblApprover tbody').append("<tr>" + html + "</tr>");
+                ToggleApproverType();
+            }
+        });
+
+
+        setTimeout(ResetEmployeeInfo, 500);
+    });
+
+    function ResetEmployeeInfo() {
+        $('#EmpId').val('');
+        $('#EmployeeName').val('');
+        $('#Designation').val('');
+        $('#EmployeeId').val('');
+    }
+
+    function InitializeState() {
+        //debugger;
+        $('#tblApprover tbody tr').remove();
+        //var approvalStepName = $('#ApprovalFlowDetailId option:selected').text();
+        //if (approvalStepName != "" && approvalStepName != "[Select One]") {
+        //    $('#tblApprover tbody').append("<tr><td colspan='5' style='background:#EEEEEE; font-weight:bold;'>" + approvalStepName + "</td></tr>");
+        //}
+
+
+        GetSaveApproverInfoByStepId();
+        setTimeout(ToggleApproverType, 1000);
+    }
+
+    $('.approval-step-area #ApprovalFlowDetailId').change(function () {
+        InitializeState();
+
+    });
+
+    function GetRowCount() {
+        var rowCount = $('#tblApprover >tbody >tr .approver-type').length;
+        if (rowCount > 0) {
+            confirm("Do you want to save ?");
+        }
+        InitializeState();
+    }
+
+    function ToggleApproverType() {
+        var approverType = new Array();
+        $('#tblApprover tbody .approver-type').each(function () {
+            var item = $(this).html();
+            var item = $.trim(item);
+            if (item == 'Main') {
+                approverType.push(item);
+            }
+        });
+        if (approverType.length > 0) {
+            //$('#ApproverTypeId').empty();
+            $('#ApproverTypeId option:contains("Main")').prop("disabled", true);
+            $('#ApproverTypeId option:contains("Alternate")').prop("selected", "selected");
+            $('#ApproverTypeId option:contains("Alternate")').prop("disabled", false);
+        }
+        else {
+            $('#ApproverTypeId option:contains("Main")').prop("selected", "selected");
+            $('#ApproverTypeId option:contains("Alternate")').prop("disabled", true);
+            $('#ApproverTypeId option:contains("Main")').prop("disabled", false);
+        }
+    };
+
+    function GetSaveApproverInfoByStepId() {
+        var stepId = $('.approval-step-area #ApprovalFlowDetailId option:selected').val();
+        if (stepId == '') {
+            return;
+        };
+        var url = '@Url.Action("GetApproverInfoByStepId", "ApprovalFlow")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { stepId: stepId },
+            cache: false,
+            success: function (result) {
+                console.log(result);
+                $('.approver-area table tbody').append("<tr>" + result + "</tr>");
+                ToggleApproverType();
+            }
+        });
+    };
+
+    function GetApproverAuthorTypeByStepId() {
+        //debugger;
+        var stepId = $('.approval-step-area #ApprovalFlowDetailId option:selected').val();
+        if (stepId == '') {
+            //$('#AuthorTypeId option:contains("[Select One]")').prop("selected", "selected");
+            setTimeout(SetAuthorType, 500);
+            return;
+        };
+        var url = '@Url.Action("GetAuthorTypeByStepId", "ApprovalFlow")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { stepId: stepId },
+            cache: false,
+            success: function (result) {
+                //if (result == "" || result == "0") {
+                //    $('#AuthorTypeId option:contains("[Select One]")').prop("selected", "selected");
+                //}
+                //else {
+                $('#AuthorTypeId').val(result);
+                //}
+            }
+        });
+        setTimeout(SetAuthorType, 500);
+    };
+
+
+
+</script>
+
+<style type="text/css">
+    input[readonly] {
+        cursor: not-allowed !important;
+    }
+
+    table thead {
+        /*background: #2980b9;*/
+        background: #34495e;
+        color: #FFFFFF;
+        font-family: Tahoma;
+        font-weight: bold;
+        font-size: 12px;
+        cursor: default;
+    }
+
+        table thead th {
+            text-align: center;
+            padding: 6px 2px !important;
+        }
+
+    .emp-info, .org-level-post {
+        min-width: 200px;
+        width: 200px;
+        border-left: none;
+    }
+
+    .head-of-level, .approver-type {
+        min-width: 100px;
+        width: 100px;
+    }
+
+    .control-option {
+        min-width: 50px;
+        width: 50px;
+    }
+
+    table tbody tr td {
+        text-align: left;
+        padding: 5px !important;
+        vertical-align: middle;
+        font-family: Tahoma !important;
+        font-size: 12px !important;
+        word-wrap: break-word;
+    }
+
+    .delete-button {
+        padding: 1px 5px !important;
+    }
+
+    #dvApprover {
+        min-height: 135px;
+    }
+</style>

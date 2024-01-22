@@ -1,0 +1,145 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApprovalFlowViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.ActionType' == 'Update') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            $("#StepSequence option:last").attr("selected", "selected");
+            $('#StepSequence option:not(:last)').attr('disabled', true);
+            var lastAppliedStep = $('#tblStepInfo tbody tr:last').find('.step-type').html();
+            $("#ApprovalStepTypeId option:contains(" + lastAppliedStep + ")").attr('selected', 'selected');
+            $('#ApprovalProcesssId').trigger('change');
+        }
+        else {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        return false;
+    });
+</script>
+
+@using (Html.BeginForm(Model.ActionType, "ApprovalFlow", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="form-horizontal">
+        <div id="message" class="form-group messageBox clearfix">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        <fieldset>
+            <legend>Approval Flow</legend>
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.ActionType)
+            <div class="form-group">
+                @Html.LabelFor(m => m.ZoneId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ZoneId, Model.ZoneList, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalGroupId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ApprovalGroupId, Model.ApprovalGroupList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalFlowName, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(m => m.ApprovalFlowName)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalProcesssId, new { @class = "col-sm-3 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.ApprovalProcesssId, Model.ApprovalProcessList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <legend>Steps</legend>
+            @Html.Partial("_ApprovalFlowDetail", Model.ApprovalFlowDetail)
+        </fieldset>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                <button class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                <button class="btn btn-primary" id="btnUpdate"><i class="fa fa-edit"></i> Update</button>
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+<style type="text/css">
+    .msg-var-area {
+        position: absolute;
+        right: 80px;
+        top: 0;
+        border: 1px solid #BBD0E5;
+        width: 150px;
+        height: 100%;
+        padding: 5px;
+        overflow: auto;
+        border-radius: 2px;
+    }
+
+        .msg-var-area li {
+            padding: 3px 2px;
+            margin: 2px;
+            list-style-type: none;
+        }
+
+            .msg-var-area li:hover {
+                background: #3C78B5;
+                color: #FFFFFF;
+                cursor: default;
+                border-radius: 2px;
+            }
+</style>
+
+<script type="text/javascript">
+
+    var SetMessageVariable = function () {
+        var varName = $(this).text();
+        $('#NotificationMessage').val($('#NotificationMessage').val() + " " + varName);
+    }
+
+    $('.msg-var-area div').dblclick(SetMessageVariable);
+
+    var GetNotificationMessageVariable = function () {
+        $(".msg-var-area").empty();
+        var processId = $('#ApprovalProcesssId option:selected').val();
+        var url = '@Url.Action("GetNotificationMessageVariable", "ApprovalFlow")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { approvalProcessId: processId },
+            cache: false,
+            success: function (data) {
+                $.each(data.Variables, function (index, value) {
+                    $(".msg-var-area").append("<li>" + value + "</li>");
+                    $(".msg-var-area li").unbind().dblclick(SetMessageVariable);
+                });
+
+            }
+        })
+    }
+
+    $('#ApprovalProcesssId').change(GetNotificationMessageVariable);
+
+</script>

@@ -1,0 +1,602 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.TransferOutViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <legend>Transfer(Out) Info</legend>
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.strMode)
+    @Html.HiddenFor(model => model.TransferredByEmpId)
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TransferDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.TransferDate, new { @class = "required" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.TransferNo)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.TransferNo, new { @class = "read-only", @readonly = true })
+
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ChallanDate)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ChallanDate)
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.ChallanNo)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ChallanNo)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TransferredToZoneId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.TransferredToZoneId, Model.TransferredToZoneList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.TransferredByEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @*@Html.HiddenFor(model => model.TransferredByEmpId)*@
+            @Html.EditorFor(model => model.EmpId)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" alt="Find" title="Find" />
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Comment)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Comment, new { @style = "width: 682px" })
+            @Html.HiddenFor(model => model.strMode)
+        </span>
+        &nbsp;
+        <span class="label-right">
+            &nbsp;
+        </span>
+        <span class="field">
+        </span>
+    </div>
+    <div class="attachment-area">
+        <div class="row">
+            <span class="label">@Html.LabelFor(m => m.Attachment)</span>
+            <span class="field">
+                @Html.HiddenFor(model => model.Attachment)
+                @Html.HiddenFor(model => model.FileName)
+                @Html.TextBoxFor(model => model.File, new { type = "file" })
+            </span>
+            <span>
+                <div style="text-align:right; padding-right:50px">
+                    @if (Model.FileName != null)
+                    {
+                        @Html.ActionLink(Model.FileName.ToString(), "DownloadFile", new { @transferOutId = Model.Id, @class = @"file-download" })
+                    }
+                </div>
+            </span>
+        </div>
+    </div>
+
+</div>
+
+<fieldset>
+    <legend>Item Searching</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TypeId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.TypeId, Model.ItemTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.CategoryId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.CategoryId, Model.CategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ModelId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ModelId, Model.ModelList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ColorId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ColorId, Model.ColorList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.UnitId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.PurchaseId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.PurchaseId, Model.MRRList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Transfer Item Info</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ItemId, Model.ItemList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Quantity)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Quantity)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CommentDetail)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.CommentDetail)
+        </span>
+        <div class="label-right">
+            <label id="stockLabel"></label>
+        </div>
+    </div>
+</fieldset>
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 70%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>
+                            Item Name
+                        </th>
+                        <th>
+                            unit
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Comment
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.TransferOutDetail.Count() > 0) { Html.RenderPartial("_Details", Model); }}
+
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+        @*if ($('#strMode').val() == "create") {
+            $.ajax({
+                url: '@Url.Action("GenerateTransferNo", "TransferOutInfo")',
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (result) {
+                    $('#TransferNo').val(result);
+                }
+            });
+        }*@
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    @*$(function () {
+        //var Url = window.location.href;
+        $("#btnSave").live("click", function (event) {
+            window.location.href = '@Url.Action("Create", "TransferIninfo")';
+        });
+    });*@
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        url = url.replace('INV', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setEmpData(id) {
+        $('#TransferredByEmpId').val(id);
+        console.log($('#TransferredByEmpId').val());
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+    }
+
+    function Closing() {
+
+    }
+
+    function GetEmployeeInfo() {
+        var empId = $('#TransferredByEmpId').val();
+        //console.log(empId);
+        var url = '@Url.Action("GetEmployeeInfo", "TransferOutInfo")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        $('#EmpId').val('');
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (StringHasValue(obj.Result) == true) {
+                    alert(obj.Result);
+                }
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+                else {
+                    $('#EmpId').val(obj.EmpId);
+                    $("#TransferredByEmpId").val(obj.TransferredByEmpId);
+                }
+
+            }, "json");
+        }
+
+        return false;
+    }
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+
+</script>
+
+<script type="text/javascript">
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnAdd").click(function () {
+        $("#message").empty();
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+            $("#ItemId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select Item.' + "</b>");
+            return false;
+
+        }
+
+        if ($('#Quantity').val() == null || $('#Quantity').val() == '' || $('#Quantity').val() == '0') {
+            $("#Quantity").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please provide valid Quantity.' + "</b>");
+            return false;
+        }
+        if ($('#TransferredToZoneId').val() == null || $('#TransferredToZoneId').val() == '' || $('#TransferredToZoneId').val() == '0' || $('#TransferredToZoneId').val() == isNaN) {
+            $("#TransferredToZoneId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please provide destination zone.' + "</b>");
+            return false;
+        }
+        var StrMode = $('#strMode').val();
+        var id = $('#Id').val();
+        var ItemId = $('#ItemId').val();
+        var Item = $('#ItemId option:selected').text();
+        var Quantity = $('#Quantity').val();
+        var Comment = $('#CommentDetail').val();
+        var ColorId = $('#Color').val();
+        var Unit = "";
+        var purchaseId = $('#PurchaseId').val();
+        //var SlNo = $("#SlNo").val() += 1;
+        if ($('#UnitId').val() != null && $('#UnitId').val() != '' && $('#UnitId').val() != '0') {
+            Unit = $('#UnitId option:selected').text();
+        }
+        var TransferredToZoneId = $('#TransferredToZoneId option:selected').val();
+        var totalTransferred = GetTotalTransferredQt(ItemId);
+        console.log(ItemId);
+        var url = '@Url.Action("AddDetail", "TransferOutInfo")';
+        var data = {
+            TransferOutId: id,
+            ItemId: ItemId,
+            Item: Item,
+            Comment: Comment,
+            Quantity: Quantity,
+            Unit: Unit,
+            PurchaseId: purchaseId,
+            SumQty: totalTransferred,
+            TransferredToZoneId: TransferredToZoneId,
+            StrMode: StrMode
+        };
+
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                if (html.Success) {
+                    $('#message').html("<b style='color:Red'>" + html.Message + "</b>");
+                    return false;
+                }
+                if ($(html).val() != 'Invalid') {
+
+                    $('#grid tbody').append(html);
+                    $('#ItemId').val('')
+                    $('#CommentDetail').val('')
+                    $('#Quantity').val('')
+                    $('#UnitId').val('')
+                    //$('#SlNo').val('')
+                    $('#message').html('');
+                    $('#PurchaseId').val('')
+                    $('#TypeId').val('')
+                    $('#CategoryId').val('')
+                    $('#ModelId').val('')
+                    $('#ColorId').val('')
+
+                    $("#ItemId").removeClass("border-red");
+                    $("#Quantity").removeClass("border-red");
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + 'Invalid.' + "</b>");
+                }
+            }
+        });
+
+        return false;
+
+    });
+
+
+    //function RemoveDb(el, id, url) {
+
+    //    if (id == 0 || id == undefined) {
+    //        $(el).parent().parent().remove();
+    //    }
+    //    else {
+    //        $.ajax({
+    //            url: url,
+    //            type: 'POST',
+    //            dataType: 'json',
+    //            data: JSON.stringify({ Id: id }),
+    //            contentType: "application/json; charset=utf-8",
+    //            error: function () {
+    //                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+    //            },
+    //            success: function (result) {
+    //                var errMsg = result.Message;
+    //                var errg = result.Success;
+    //                if (errg) {
+    //                    $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+    //                    $(el).parent().parent().remove();
+    //                }
+    //                else {
+    //                    $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+    //                }
+    //            }
+    //        });
+    //    }
+
+    //}
+
+</script>
+
+<script type="text/javascript">
+
+    $("select#ItemId").change(function () {
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+
+            $("#TypeId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#CategoryId").val("0");
+            $('.select-single').trigger('chosen:updated');
+            $("#ModelId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#UnitId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ColorId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $('#stockLabel').html('');
+        }
+        else {
+            $.get('@Url.Action("GetItemDetails", "ItemPurchase")', { itemId: $('#ItemId').val() }, function (data) {
+                $("#TypeId").val(data.typeId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#CategoryId").val(data.categoryId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ModelId").val(data.modelId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#UnitId").val(data.unitId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ColorId").val(data.colorId);
+                $('.select-single').trigger('chosen:updated');
+
+                $('#stockLabel').html('<b style=\"color:red\">Stock balance for this item: ' + data.stockBalance + '</b>');
+            });
+        }
+
+    })
+
+    //cascading dropdown
+    $("select#TypeId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#CategoryId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ModelId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#UnitId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ColorId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#PurchaseId").change(function () {
+        LoadItemDDL();
+    })
+
+    function LoadItemDDL() {
+
+        var TypeId = $("#TypeId").val();
+        var CategoryId = $("#CategoryId").val();
+        var ModelId = $("#ModelId").val();
+        var UnitId = $("#UnitId").val();
+        var ColorId = $("#ColorId").val();
+        var PurchaseId = $("#PurchaseId").val();
+
+        var ItemSelect = $('select#ItemId');
+        ItemSelect.empty();
+
+        ItemSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        var url = '@Url.Action("GetItemList", "TransferOutInfo")' + '?TypeId=' + TypeId + '&CategoryId=' + CategoryId + '&ModelId=' + ModelId + '&UnitId=' + UnitId + '&ColorId=' + ColorId + '&PurchaseId=' + PurchaseId;
+        $.get(url, function (response) {
+            var heads = $.parseJSON(response);
+
+            var ddl = $("#ItemId");
+            // clear all previous options
+            $("#ItemId>option").remove();
+
+            // populate the products
+            for (i = 0; i < heads.length; i++) {
+
+                ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+            }
+            $('.select-single').trigger('chosen:updated');
+        });
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    function GetTotalTransferredQt(itemId) {
+        var sum = 0;
+        $("#grid tbody tr .quantity :input").each(function () {
+            var currentItemId = $(this).closest('tr').find('.itemIdInfo :input[type=hidden]').val();
+            var value = $(this).val();
+            if (itemId == currentItemId) {
+                sum += parseFloat(value);
+            }
+        });
+        return sum;
+    }
+</script>
+
+<style type="text/css">
+    .attachment-area .row a {
+        padding: 7px 20px;
+        border: 1px solid #2980b9;
+        background: #2980b9;
+        border-radius: 4px;
+        color: #FFFFFF;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+        .attachment-area .row a:hover {
+            background: #3498db;
+        }
+</style>
+

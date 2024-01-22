@@ -1,0 +1,246 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Employee.EmploymentContractPeriodViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<script type="text/javascript">
+    $(function () {
+        $(".addAttachment").click(function () {
+            var table = $(this).parent().parent().find('table:first');
+            $.ajax({
+                url: this.href,
+                type: 'POST',
+                cache: false,
+                success: function (html) {
+                    $(table).append(html);
+                }
+            });
+            return false;
+        });
+
+    });
+
+</script>
+
+@using (Html.BeginForm(Model.ActionType, "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.EmpoyeeId)
+    @Html.HiddenFor(m => m.DateofInactive)
+    @Html.HiddenFor(m => m.IsContractual)
+    @Html.HiddenFor(m => m.isExtension)
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmpCode)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span> <span class="field">@Html.EditorFor(model => model.EmpCode)</span>
+                @*<span class="label-right">@Html.LabelFor(model => model.EmployeeInitial)
+                    <label class="required-field">
+                        *</label></span> <span class="field">@Html.EditorFor(model => model.EmployeeInitial)</span>*@
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.FullName)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span> <span class="field">@Html.EditorFor(m => m.FullName)</span>
+                <span class="label-right"></span><span class="field"></span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.OrderNo)
+                </span> <span class="field">@Html.EditorFor(model => model.OrderNo)</span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.OrderDate)
+                </span>
+                <span class="field">@Html.EditorFor(model => model.OrderDate)</span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ContractStartDate)
+                    <label class="required-field">*</label>
+                </span> <span class="field">@Html.EditorFor(model => model.ContractStartDate)</span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ContractEndDate)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">@Html.EditorFor(model => model.ContractEndDate)</span>
+            </div>
+
+            <div class="row">
+                <span class="label">&nbsp;</span> <span class="field">
+                    @Html.EditorFor(model => model.isExtension)&nbsp;@Html.LabelFor(model => model.isExtension)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.Remarks)</span> <span class="field">@Html.TextAreaFor(model => model.Remarks, new { @style = "width:570px;" })</span>
+            </div>
+
+            <div class="clear">
+            </div>
+        </div>
+        @if (Model.IsContractual)
+        {
+            <div class="GroupBox">               
+                <div class="row" align="center">
+                    <div style="width: 60%">
+                        <div class="button-crude" style="margin-bottom: 5px; text-align:right; ">
+                            @if (Model.ButtonText != null && ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned))
+                            {
+                                @Html.ActionLink("Add Attachment", "AddDetail", null, new { @class = "addAttachment" })
+                            }
+                        </div>
+                        <div class="clear"></div>
+                        <table id="grid" class="contenttable">
+                            <tr>
+                                <th width="35%" align="center">
+                                    User File Name
+                                </th>
+                                <th width="25%" align="center">
+                                    Original File Name
+                                </th>
+                                <th width="20%" align="center">
+                                    Attachment
+                                </th>
+                                <th width="8%" align="center">
+                                    Download
+                                </th>
+
+                                <th width="5%">
+                                    Remove
+                                </th>
+
+                            </tr>
+                            @if (Model != null && Model.AttachmentFilesList != null && Model.AttachmentFilesList.Count > 0)
+                            {
+                                foreach (var x in Model.AttachmentFilesList)
+                                {
+                                    @Html.Partial("_AttachmentDetails", x);
+                                }
+                            }
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="button-crude">
+            @if (Model.ButtonText != null && ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned))
+            {
+                <input type="submit" value="@Model.ButtonText" name="btnCreate" id="btnCreate" style="margin: 0 10px 0 0;" />
+            }
+            @if (Model.ButtonText == "Update" && Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteEmploymentContractPeriod", new { id = Model.Id }, new { @class = "delete-confirm", @style = "margin: 0 10px 0 0;" })
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "EmploymentContractPeriodIndex/" + @Model.EmpoyeeId /*, new { controlType=Model.Type }, null*/)
+            }
+            <div class="clear">
+            </div>
+        </div>
+    </fieldset>
+    <div class="grid">
+        <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_EmploymentContractInfoList", Model)
+    </div>
+    <div class="clear">
+    </div>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    $(function () {
+
+        $('#Attachment').live('change', function () {
+
+            if ($(this).val() != '') {
+                //                var dd = $(this).closest('#UserFileName');
+                //                $(this).closest("tr").find("input[id*=UserFileName]").val();
+
+                var found = $(this).val().lastIndexOf('.');
+
+                if (found > 0) {
+                    $(this).closest("tr").find("input[id*=UserFileName]").val($(this).val().substr(0, $(this).val().lastIndexOf('.')));
+                    $(this).closest("tr").find("input[id*=OriginalName]").val($(this).val());
+
+                    //$('#OriginalName').val($(this).val());
+                    //$('#UserFileName').val($(this).val().substr(0, $(this).val().lastIndexOf('.')));
+                }
+                else {
+                    $('#UserFileName').val('');
+                    $('#OriginalName').val('');
+                }
+            }
+
+        });
+
+    });
+
+
+    $(function () {
+        $(":checkbox").attr('disabled', 'disabled');
+
+        /*If employee is inactive then disable all control*/
+        if ('@Model.DateofInactive' != '' || '@Model.IsContractual' == 'False') {
+            fnDisableEditMode();
+            $(".delete-confirm").hide();
+        }
+    });
+
+    function CheckValidPeriod() {
+        var start = $('#ContractStartDate').val();
+        var end = $('#ContractEndDate').val();
+        var retVal = true;
+        var Id;
+        Id = '@(Model.Id)';
+        Id = parseInt(Id);
+        start = new Date(start.split('-')[2], start.split('-')[1], start.split('-')[0]);
+        end = new Date(end.split('-')[2], end.split('-')[1], +end.split('-')[0]);
+        if (start > end) {
+            alert('Contract end date must be greater than the date of contract start date.');
+            retVal = false;
+        }
+
+        $("td[aria-describedby='jqGrid_StartDate']").each(function (i) {
+            var std = $(this).text();
+            var endd = $(this).next().text();
+            var gid = $(this).prev().text();
+            gid = parseInt(gid);
+            std = new Date(std.split('-')[2], std.split('-')[0], std.split('-')[1]);
+            endd = new Date(endd.split('-')[2], endd.split('-')[0], endd.split('-')[1]);
+
+            if ((end < std) || (start > endd)) {
+            }
+            else {
+                if (Id != gid) {
+                    $("div .message").html('Invalid contact period.').css('color', 'red');
+                    retVal = false;
+                }
+            }
+        });
+
+        return retVal;
+    }
+
+</script>

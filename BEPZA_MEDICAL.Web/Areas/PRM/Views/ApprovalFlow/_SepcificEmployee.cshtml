@@ -1,0 +1,107 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApproverInformationViewModel
+
+<div class="form-horizontal">
+    <div class="form-group">
+        @Html.LabelFor(m => m.EmployeeId, new { @class = "col-sm-3 control-label labelRequired" })
+        <div class="col-sm-8">
+            @Html.TextBoxFor(m => m.EmpId, new { @class = "form-control read-only", @readonly = true })
+            @Html.HiddenFor(m => m.EmployeeId)
+        </div>
+        <div class="col-sm-1" style="text-align:left;">
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.EmployeeName, new { @class = "col-sm-3 control-label labelRequired" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(m => m.EmployeeName, new { @class = "form-control read-only", @readonly = true })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Designation, new { @class = "col-sm-3 control-label labelRequired" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(m => m.Designation, new { @class = "form-control read-only", @readonly = true })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.MinAmount, new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.MinAmount, new { @class = "form-control"})
+        </div>
+        @Html.LabelFor(m => m.MaxAmount, new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-3">
+            @Html.TextBoxFor(m => m.MaxAmount, new { @class = "form-control"})
+        </div>
+    </div>
+
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    // ******** functions for open popup *************
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 650, width: 940, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function openEmployee() {
+        //debugger;
+        @*var url = '@Url.Action("EmployeeSearch", "ApprovalFlow")?searchEmpType=active';*@
+        var url = '@Url.Action("EmployeeSearch", "ApprovalFlow")';
+        var loggedZoneId = GetLoggedInZoneId();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            data: { UseTypeEmpId: "Active", zoneId: loggedZoneId },
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+
+
+    function setData(id) {
+        //debugger;
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function Closing() {
+
+    }
+    // ---------------------------------
+
+
+    function GetLoggedInZoneId() {
+        var url = '@Url.Action("GetLoggedZoneId", "ApprovalFlow")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                return data;
+            }
+        });
+    }
+
+</script>

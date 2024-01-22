@@ -1,0 +1,39 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ManualInOut.ManualInOutViewModel
+
+@using ERP_BEPZA.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ManualInOut"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.EmployeeId)
+        @Html.HiddenFor(x => x.EmpId)
+        @Html.HiddenFor(x => x.DepartmentId)
+        <td width="10%" style="text-align: center">
+            @Html.Encode(Model.EmpId)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.EmployeeName)
+        </td>
+        <td width="10%" align="center">
+            @Html.Encode(Model.DesignationName)
+        </td>
+        <td width="10%" align="center">
+            @Html.TextBoxFor(x => x.InTime, new { @class = "time-picker readonly " })
+        </td>
+        <td width="10%" align="center">
+            @Html.TextBoxFor(x => x.OutTime, new { @class = "time-picker readonly " })
+        </td>
+        <td width="10%" align="center">
+            @Html.TextBoxFor(x => x.Reason)
+        </td>
+        <td width="5%">
+                <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Model.EmployeeId','@Url.Action("DeleteDetail")')">
+                    <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+                </a>
+        </td>
+    }
+</tr>
+<script type="text/javascript">
+    FormatTextBox();
+</script>

@@ -1,0 +1,403 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RecruitmentQualificationInfoViewModel
+@{
+    Layout = null;
+}
+<div class=" form-horizontal">
+    <div class="form-group">
+        <span style="margin-left:40%">
+            @Html.RadioButtonFor(model => model.Recruitment,"True", new { @checked = true })
+            @Html.Label("New Recruitment")
+            @Html.RadioButtonFor(model => model.Recruitment, "False")
+            @Html.Label("Promotion")
+        </span>
+    </div>
+
+    @*Organogram Start*@
+    <div class="form-group">
+            @Html.HiddenFor(model => model.DepartmentId)
+            @Html.HiddenFor(model => model.SectionId)
+            @Html.HiddenFor(model => model.OrganogramLevelId)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.OrganogramLevelName, new { @class = "col-sm-2 control-label labelRequired" })
+        <div class="col-sm-4">
+            @Html.EditorFor(model => model.OrganogramLevelName, new { @class = "form-control read-only",@readonly = true, @style = "width:95%" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="clearfix"></div>
+        <div style="height:200px;overflow-x:hidden;overflow-y:auto; padding-left:5%; width:95%">
+            <div style="background: #FFFFFF" id="treeViewSearch">
+            </div>
+
+            <script type="text/javascript">
+
+            $(document).ready(function () {
+                PopulateTreeView();
+            })
+
+            function ClearTree() {
+                $('#treeViewSearch').empty();
+            }
+
+            $('#ZoneId').change(function () {
+                $("#treeViewSearch").jstree("destroy");
+                PopulateTreeView();
+            });
+
+            function PopulateTreeView() {
+
+                var zoneId = $("#ZoneId option:selected").val();
+                if (zoneId == '') { zoneId = '0' }
+                var url = '@Url.Action("GetTreeData", "ApprovalFlow")?zoneId=' + zoneId;
+                $('#treeViewSearch').jstree({
+                    "plugins": [
+                                "search",
+                                "wholerow",
+                    ],
+                    'core': {
+                        'check_callback': true,
+                        'data': {
+                            'url': url,
+                            'data': function (node) {
+                                return { "id": node.title };
+                            }
+                        }
+                    }
+                });
+
+                $(document).on('click', '.jstree-anchor', function (e) {
+                    var anchorId = $(this).parent().prop('id');
+                    var nodeName = $(this).text();
+                    $('#OrganogramLevelId').val(anchorId);
+                    $('#OrganogramLevelName').val(nodeName);
+                    FillDesignaitonCombo(anchorId);
+                    GetEmpOrganogramInfo(anchorId);
+                });
+
+                $('#treeViewSearch').on('changed.jstree', function (e, data) {
+                    var nodeId = $('#treeViewSearch').jstree('get_selected').prop('id');
+                }).jstree();
+
+            };
+            </script>
+        </div>
+    </div>
+        @*Organogram End*@
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.DesignationId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+        <fieldset>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Percentage, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(model => model.Percentage, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MinAge, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.MinAge, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaxAge, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.MaxAge, new { @class = "form-control" })
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Condition, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.Condition, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+<div class="GroupBox">
+    <div class="form-group">
+        <div style="max-height: 700px; overflow-y: auto;">
+            @*<div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+            <div class="clear">
+            </div>*@
+            <div class="text-right" style="margin-bottom:5px">
+                <button class="btn btn-success" id="btnAdd"><i class="fa fa-plus"></i> Add</button>
+            </div>
+            <div class="clearfix"></div>
+            <table id="grid" class="contenttable fixedcontenttable custom-grid">
+                <thead>
+                    <tr>
+                        <th>
+                            Organogram Level
+                        </th>
+                        <th>
+                            Post Name
+                        </th>
+                        <th>
+                            Condition
+                        </th>
+                        <th>
+                            Add Recruitment Qualification Condition
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.RecruitmentQualificationListDetails.Count; i++)
+                    {
+                        var item = Model.RecruitmentQualificationListDetails.ToList()[i];
+                        <tr>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.RecruitmentQualificationListDetails[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.RecruitmentQualificationListDetails[i].Condition)
+                            </td>
+                            <td style="text-align:left">
+                                @item.OrganogramLevelName
+                            </td>
+                            <td style="text-align:left">
+                                @item.DesignationName
+                            </td>
+                            <td style="text-align:left">
+                                @item.Condition
+                            </td>
+                            <td>
+                                @if (@item.Id > 0)
+                                {
+                                    <a href="#" class="" title="Add Step" onclick="AddStep(this,@item.Id,'@Url.Action("AddRecruitmentQualificationInfo")')">
+                                        <img src='@Url.Content("~/Content/Images/addItem.png")' alt="add Comment" style="border: none; " />
+                                    </a>
+                                }
+                            </td>
+                            <td>
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,'@Url.Action("DeleteRecruitmentDetail")')">
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="clear">
+</div>
+<script type="text/javascript">
+
+    $('#btnAdd').on('click', function (e) {
+        e.preventDefault();
+        $('#message').empty();
+        var organogramLevel = $('#OrganogramLevelName').val();
+        var postName = $("#DesignationId option:selected").text();
+        var Condition = $('#Condition').val();
+
+        if (organogramLevel == null || organogramLevel == '') {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (postName == null || postName == '') {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (Condition == null || Condition == '') {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        var trClone = '<tr>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationListDetails[0].Id"  value="0"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationListDetails[0].Condition"  value="' + Condition + '"></td>' +
+                   '<td>' + '<label for="organogramLevel">' + organogramLevel + '</td>' +
+                   '<td>' + '<label for="postName" >' + postName + '</td>' +
+                   '<td>' + '<label for="Condition">' + Condition + '</td>' +
+                   '<td></td>' +
+                   '<td><a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;/PRM/JobGrade/DeleteJobGrade&quot;)"></a></td>' +
+                   '</tr>';
+        $('#grid tbody').append(trClone);
+        RearrengeControlName();
+
+    })
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+
+                }
+            });
+        }
+        RearrengeControlName();
+    }
+
+    function RearrengeControlName() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').prop('name', $(this).find('input').prop('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+    $(window).load(function () {
+        setTimeout(function () {   //calls fuction after a certain time
+            selectedNode();
+        }, 2000);
+    });
+
+    function selectedNode() {
+        // $('#treeViewSearch').jstree('deselect_all');
+        var nodeId = $('#OrganogramLevelId').val();
+        if (nodeId != '') {
+            var node = '#' + nodeId;
+            $("#treeViewSearch").jstree("open_all");
+           // $('#treeViewSearch').jstree('deselect_all');
+            $("#treeViewSearch").jstree("select_node", node);
+        }
+    }
+</script>
+@*Add Recruitment Qualification Condition*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#StepList").dialog({ autoOpen: false, modal: true, height: 600, width: 1000, title: 'Recruitment Qualification Condition', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function AddStep(el, id, href) {
+        var url = href + '/' + id;
+        //  var url = $(this).attr('href');
+        $("#StepList").dialog({
+            title: 'Recruitment Qualification Condition',
+            autoOpen: false,
+            resizable: false,
+            height: 550,
+            width: 800,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(this).load(url);
+
+            },
+            close: function () {
+                //  $(this).dialog('close');
+                // $("#ChkListDetailGrid > tbody> tr").remove();
+            }
+        });
+
+        $("#StepList").dialog('open');
+        return false;
+    }
+
+    function Closing() {
+
+    }
+</script>
+
+<div id='StepList' style="height: 20px">
+
+</div>
+
+@*End Add Recruitment Qualification Condition*@
+<script>
+    $(document).ready(function () {
+        var pro = $('#Promotion').val();
+        var newRe = $('#NewRecruitment').val();
+        showErrMsg();
+    });
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").on("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').on('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+</script>
+
+<script type="text/javascript">
+
+    function FillDesignaitonCombo(OrgId) {
+        if (OrgId != '') {
+            var url = '@Url.Action("GetDesignationByOrganogramLevelId", "Employee")' + '?Id=' + OrgId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var ddlDesignations = $("select#DesignationId");
+                // clear all previous options
+                $("select#DesignationId>option").remove();
+                // populate the products
+                for (i = 0; i < heads.length; i++) {
+                    ddlDesignations.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+            });
+        }
+        else {
+
+            $("select#DesignationId>option").remove();
+            $("select#DesignationId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+
+    function GetEmpOrganogramInfo(OrganogramLevelId) {
+        var url = '@Url.Action("GetOrganogramInfo", "JobRequisitionInfo", "PRM")';
+        if (OrganogramLevelId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#DepartmentId").val(obj.DepId);
+                    $('#SectionId').val(obj.SecId);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+</script>

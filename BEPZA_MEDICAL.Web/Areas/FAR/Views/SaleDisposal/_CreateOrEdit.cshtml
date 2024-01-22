@@ -1,0 +1,291 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.SaleDisposalViewModel
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend>Asset Info</legend>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.FixedAssetId)
+            @Html.HiddenFor(m => m.CategoryId)
+            @Html.HiddenFor(m => m.SubCategoryId)           
+            @Html.HiddenFor(model => model.AssetStatusId)
+            @Html.HiddenFor(model => model.strAssetStatusName)
+            @Html.HiddenFor(model => model.PreviousStatusId)
+            @Html.HiddenFor(model => model.PreviousConditionId)
+            @Html.HiddenFor(model => model.strMode)
+            @Html.HiddenFor(model => model.AssetConditionId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.strType, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-10">
+                @Html.RadioButtonFor(x => x.strType, "Disposed", new { @checked = true, @onclick = "return EnableOrDisableAssetID();" })&nbsp;Disposed                
+                @Html.RadioButtonFor(x => x.strType, "Sold", new { @onclick = "return EnableOrDisableAssetID();" })&nbsp;Sold               
+            </div>            
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssetCode, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.AssetCode, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.AssetName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.AssetName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.CategoryName, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.SubCategoryName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.SubCategoryName, new { @class = "form-control" })
+            </div>
+        </div>
+       
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.strAssetStatusName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.strAssetStatusName, new { @class = "form-control" })
+            </div>*@
+            @Html.LabelFor(model => model.EffectiveDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.EffectiveDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.AssetConditionId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.AssetConditionId, Model.AssetConditionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>*@
+            @Html.LabelFor(model => model.AssetCost, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.AssetCost, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrentBookValue, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.CurrentBookValue, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.AccumulatedDepreciation, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.AccumulatedDepreciation, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SalValue, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.SalValue, new { @class = "form-control" })
+                @Html.EditorFor(model => model.DisposedValue, new { @class = "form-control" })
+              
+            </div>
+            @Html.LabelFor(model => model.CapitalGain, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.CapitalGain, new { @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+@*<script type="text/javascript">
+
+    $(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+        else {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "green");
+        }
+    }
+
+</script>*@
+<script type="text/javascript">
+
+    function GetFixedAssetInformation(fixedAssetId) {
+
+        if (fixedAssetId > 0) {            
+            $.getJSON('@Url.Action("GetDefaultValue", "SaleDisposal")', { fixedAssetId: fixedAssetId }, function (data) {
+
+                if (data != null) {
+                    $('#FixedAssetId').val(data.FixedAssetId);
+                    $('#AssetCode').val(data.AssetCode);
+                    $('#AssetName').val(data.AssetName);
+                    $('#CategoryId').val(data.CategoryId);                 
+                    $('#CategoryName').val(data.CategoryName);
+                    $('#SubCategoryId').val(data.SubCategoryId);                 
+                    $('#SubCategoryName').val(data.SubCategoryName);                 
+                    $('#AssetConditionId').val(data.AssetConditionId);
+                    $('#CurrentBookValue').val(data.CurrentBookValue);
+                    $('#AssetCost').val(data.AssetCost);
+                    $('#AssetStatusId').val(data.AssetStatusId);
+                    $('#AccumulatedDepreciation').val(data.AccumulatedDepreciation);
+                    $('#PreviousStatusId').val(data.PreviousStatusId);
+                    $('#PreviousConditionId').val(data.PreviousConditionId);
+                }
+                else {
+                    alert('no data');
+                    alert('Asset category does not exist.Please setup first.');
+                }
+            });
+        }
+        else {
+            $('#FixedAssetId').val('0');
+            $('#AssetName').val('');
+            $('#CategoryId').val('0');          
+            $('#CategoryName').val('');
+            $('#SubCategoryId').val('0');          
+            $('#SubCategoryName').val('');        
+            $('#AssetConditionId').val('0');
+            $('#CurrentBookValue').val('0');
+            $('#AssetCost').val('0');
+            $('#AccumulatedDepreciation').val('0');
+            $('#PreviousStatusId').val('0');
+            $('#PreviousConditionId').val('0');
+        }
+        return false;
+    }
+
+    $(function () {
+
+        ///-----Start for Fixed Asset------------
+        $("#AssetCode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("AutoCompleteFixedAssetList", "SaleDisposal")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.AssetCode + ' - ' + item.AssetName, value: item.Id };
+                        }))
+                    }
+                })
+            },
+            select: function (event, ui) {
+                GetFixedAssetInformation(ui.item ? ui.item.value : 0);
+            }
+        });
+        $("#AssetCode").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8) {
+                $('#FixedAssetId').val('0');
+                $('#AssetName').val('');
+                $('#CategoryId').val('0');             
+                $('#CategoryName').val('');
+                $('#SubCategoryId').val('0');            
+                $('#SubCategoryName').val('');
+                $('#AssetStatusId').val('0');
+                $('#AssetConditionId').val('0');
+                $('#CurrentBookValue').val('0');
+                $('#AssetCost').val('0');
+                $('#AccumulatedDepreciation').val('0');
+                $('#PreviousStatusId').val('0');
+                $('#PreviousConditionId').val('0');
+            }
+        });
+        ///------End for Fixed Asset-------------
+
+        // Capital Gain  calculation
+        $('#SalValue,#CurrentBookValue').on("change keyup blur", function () {
+            var SaleValue = $("#SalValue").val();
+            var SValue = 0;
+            if (SaleValue != '') {
+                SValue += parseFloat(SaleValue);
+            }
+            var CurrentBookValue = $("#CurrentBookValue").val();
+            var CBookValue = 0;
+            if (CurrentBookValue != '') {
+                CBookValue += parseFloat(CurrentBookValue);
+            }
+            var Total = SValue - CBookValue;
+            $('#CapitalGain').val(Total.toFixed(2));
+
+        });
+    });
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.strType' == 'Disposed') {
+            $('#DisposedValue').show('0');
+            $('#SalValue').hide();
+        }
+        else {
+            $('#DisposedValue').hide('0');
+            $('#SalValue').show();
+        }
+
+    });
+
+    function GetAssetCondition(strType) {       
+        if (strType != '') {
+
+            $.ajax({
+                url: '@Url.Action("GetAssetConditionList", "SaleDisposal")',
+                data: { strType: strType },
+                dataType: "json",
+                type: "POST",
+                success: function (data) {
+                    $("#AssetConditionId").empty();
+
+                    var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                    $.each(data, function (i, item) {
+                        items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                    });
+
+                    $("#AssetConditionId").html(items);
+                }
+            });
+
+            $.getJSON('@Url.Action("GetAssetStatusInformation", "SaleDisposal")', { strType: strType }, function (data) {
+                if (data != null) {
+                    $('#AssetStatusId').val(data.AssetStatusId);
+                    $('#strAssetStatusName').val(data.strAssetStatusName);
+                }
+                else {
+                    $('#AssetStatusId').val('0');
+                    $('#strAssetStatusName').val('');
+                }
+            });
+
+        }
+        else {
+            var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+            $("#AssetConditionId").html(items);
+        }
+    }
+
+    function EnableOrDisableAssetID() {
+        var type = $("input[name='strType']:checked").val();      
+        if (type == 'Disposed') {
+            $('#DisposedValue').show('0');
+            $('#SalValue').hide();
+            GetAssetCondition(type);
+        }
+        else {
+            $('#DisposedValue').hide('0');
+            $('#SalValue').show();
+            GetAssetCondition(type);
+        }
+    }
+</script>

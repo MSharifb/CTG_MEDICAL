@@ -1,0 +1,247 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalLanguageEfficiencyViewModel
+
+
+@using (Ajax.BeginForm(Model.ActionType, "PersonalInfo", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess"}, new { id = "frm" }))
+{
+    <fieldset>
+        <div class="GroupBox" id="message">          
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.strMode)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                 @Html.HiddenFor(model => model.Id)
+                <span class="label">@Html.LabelFor(model => model.LanguageId)
+                 <label class="required-field">*</label>
+                </span> <span class="field">
+                    @Html.DropDownListFor(model => model.LanguageId, Model.LanguageList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.SpeakingEfficiencyId)
+                 <label class="required-field"> *</label>
+                
+                </span>
+                 <span class="field">
+                    @Html.DropDownListFor(model => model.SpeakingEfficiencyId, Model.SpeakingEfficiencyList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">@Html.LabelFor(model => model.WrittingEfficiencyId)
+                 <label class="required-field">
+                        *</label>
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.WrittingEfficiencyId, Model.WrittingEfficiencyList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.ListeningEfficiencyId)
+                 <label class="required-field">
+                        *</label>
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.ListeningEfficiencyId, Model.ListeningEfficiencyList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">@Html.LabelFor(model => model.ReadingEfficiencyId)
+                 <label class="required-field">
+                        *</label>
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.ReadingEfficiencyId, Model.ReadingEfficiencyList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">&nbsp; </span><span class="field">
+                    @Html.CheckBoxFor(model => model.IsNative)
+                    <label style="color: #3C78B5;">
+                        @Html.LabelFor(model => model.IsNative)</label>
+                </span>
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+            }
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                <input type="submit" value="Delete" id="btnDelete" name="btnSubmit" />
+            }
+             @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+             {
+                <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+             }
+            </div>
+        </div>
+        <div class="GroupBox">
+            <table id="jqGrid" cellpadding="0" cellspacing="0" class="ui-jqgrid-view">
+            </table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+        </div>
+          <div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+    </div>
+    </fieldset>         
+ 
+}
+<script type="text/javascript">
+
+    $(function () {
+
+        $("#btnDelete").live("click", function () {
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("DeleteConfirmforLanguageProficiency", "PersonalInfo")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success) {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "green");
+                            ResetForm();
+                            jQuery("#jqGrid").trigger("reloadGrid");
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    });
+
+    function ResetForm() {
+        $("#Id").val("");
+        $("#LanguageId").val("");
+        $("#SpeakingEfficiencyId").val("");
+        $("#ReadingEfficiencyId").val("");
+        $("#ListeningEfficiencyId").val("");
+        $("#WrittingEfficiencyId").val("");
+        $('input:checkbox').removeAttr('checked');
+        $('#btnUpdate').hide();
+        $('#btnDelete').hide();
+        $('#btnSave').show();
+    }
+    function OnSuccess(obj) {
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "green");
+            ResetForm();
+            jQuery("#jqGrid").trigger("reloadGrid");
+            $(".validation-summary-errors ").html('');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+    $(function () {
+
+        $('#btnUpdate').hide();
+        $('#btnDelete').hide();
+
+        $("a.editItem").live("click", function () {
+            editLinkObj = $(this);
+            $.get(editLinkObj[0].href, function (obj) {
+                $("#Id").val(obj.Id);
+                $("#LanguageId").val(obj.LanguageId);
+                $("#SpeakingEfficiencyId").val(obj.SpeakingEfficiencyId);
+                $("#ReadingEfficiencyId").val(obj.ReadingEfficiencyId);
+                $("#ListeningEfficiencyId").val(obj.ListeningEfficiencyId);
+                $("#WrittingEfficiencyId").val(obj.WrittingEfficiencyId);
+                if (obj.IsNative) {
+                    $("#IsNative").attr("checked", true);
+                }
+                else {
+                    $("#IsNative").attr("checked", false);
+                }
+            });
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            $('#btnDelete').show();
+            return false;
+        });
+
+        $('#btnUpdate').click(function (event) {
+            event.preventDefault();
+            var url = '@Url.Action("EditPersonalLanguageEfficiency", "PersonalInfo")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+            $.post(url, serializedForm, function (obj) {  //Post to action
+                if (obj.Success) {
+                    $("#message").html("<b>" + obj.Message + "</b>").css("color", "green");
+                    ResetForm();
+                    jQuery("#jqGrid").trigger("reloadGrid");
+                }
+                else {
+                    $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                }
+            });
+        })
+        $('#btnClear').click(function () {
+            ResetForm();
+            $('#message').html("");
+            $(".validation-summary-errors ").empty();
+        })
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetPersonalLanguageEfficiencyList", null, new { id = Model.EmployeeId })',
+            datatype: 'json',
+            mtype: 'POST',
+            autowidth: true,
+            colNames: ['ID', 'Language', 'Speaking', 'Listening', 'Writing', 'Reading', 'Native?', 'Edit'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: true, hidden: true, edittype: 'text' },
+                        { name: 'Language', index: 'Language', align: 'left', width: '150px', search: true, edittype: 'text' },
+                        { name: 'Speaking', index: 'SpeakingEfficiencyId', align: 'left', width: '120px', search: false, edittype: 'text' },
+                        { name: 'Listening', index: 'ListeningEfficiencyId', align: 'left', width: '120px', search: false, sortable: false },
+                        { name: 'Writing', index: 'WrittingEfficiencyId', align: 'left', width: '120px', search: true, edittype: 'text' },
+                        { name: 'Reading', index: 'ReadingEfficiencyId', align: 'left', width: '120px', search: true, edittype: 'text' },
+                        { name: 'Native?', index: 'Native', align: 'center', width: '100px', search: true, edittype: 'text' },
+                        { name: 'Edit', index: 'Edit', align: 'center', search: false, sortable: false, width: '40px', edittype: 'image', formatter: editorLink }
+            ],
+            caption: "Language Efficiency",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '100%'
+        });
+    })
+
+    @*function editorLink(cellvalue, options, rowObject) {
+        var url = '@Ajax.ActionLink(" ", "EditPersonalLanguageEfficiency", new { id = "_ID_" }, new AjaxOptions { }, new { @class = "editItem,, @style = "text-decoration: none;" })';
+        url = url.replace(/ /, cellvalue)
+        url = url.replace(/_ID_/, rowObject[0])
+        return url;
+    }*@
+    function editorLink(cellvalue, options, rowObject) {
+        var url = '@Ajax.ActionLink(" ", "EditPersonalLanguageEfficiency", new { id = "_ID_" }, new AjaxOptions { }, new { @class = "editItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_CellValue_/, cellvalue)
+        url = url.replace(/_ID_/, rowObject[0])
+        return url;
+    }
+</script>
+

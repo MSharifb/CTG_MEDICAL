@@ -1,0 +1,464 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobRequisitionInfoSummaryViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@Html.HiddenFor(m => m.strMode)
+
+@{
+    Layout = null;
+}
+
+<fieldset>
+    <legend>Summary of Job Requisition Information </legend>
+ 
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.PreparedById)
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.IsSubmit)
+
+                @Html.LabelFor(model => model.ReferenceNo)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.ReferenceNo, new { @class = "required" })
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.ReferenceDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.ReferenceDate)
+            </span>
+
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PreparedBy)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.PreparedBy, new { @class = "read-only", @readonly = true })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.Designation)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FinancialYearId)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+</fieldset>
+<fieldset>
+    <legend>Available Job Requisition Information </legend>
+
+    <fieldset style=" margin-left: 10px">
+        <legend>Job Requisition Information </legend>
+        <div class="row" align="center">
+            <div style="width: 90%">
+                <table id="grid" class="contenttable" width="50%">
+                    <thead>
+                        <tr>
+                            <th width="5%" align="center">
+                                   Select
+                            </th>
+                            <th width="10%" align="center">
+                                Requisition No.
+                            </th>
+                            <th width="20%" align="center">
+                                Requisition Prepared By
+                            </th>
+                            <th width="10%" align="center">
+                                Status Designation
+                            </th>
+                            <th width="10%" align="center">
+                                Submission Date
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.strMode == "Edit") { Html.RenderPartial("_ReqList", Model); }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+
+    @*<div class="button-crude button-left" style="margin: 5px">
+        @Html.ActionLink("Add", "AddDetail", new { masterID = Model.Id }, new { @class = "addItem", @id = "addDetails" })
+    </div>*@
+
+    <div class="button-crude fixedAddButton" style="text-align: right;">
+        <input id="addItem" type="button" value="Add" />
+    </div>
+       
+    <div class="clear">
+    </div>
+        <fieldset style=" margin-left: 10px">
+            <legend>Details Requisition</legend>
+
+            <div class="row" align="left">
+                <div style="width: 95%">
+                    <table  class="tblOrderList contenttable custom-grid" width="50%">
+                        <thead>
+                            <tr>
+                                <th width="5%" align="center">
+                                    Select
+                                </th>
+                                <th width="5%" align="center">
+                                    Requisition No.
+                                </th>
+                                <th width="20%" align="center">
+                                    Job Post Name
+                                </th>
+                                <th width="15%" align="center">
+                                    Number of Required Post
+                                </th>
+
+                                <th width="20%" align="center">
+                                    Pay Scale
+                                </th>
+                                <th width="10%" align="center">
+                                    Department
+                                </th>
+                                <th width="10%" align="center">
+                                    Section
+                                </th>
+                                <th width="15%" align="center">
+                                    Number of Recommended Post
+                                </th>
+                                <th width="5%" align="center">
+                                    Remove
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ if (Model.strMode == "Edit") { Html.RenderPartial("_Details", Model); }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </fieldset>
+        <div class="=row">
+            <div style="width:33%; float:left;margin-right:10px;">
+                <fieldset>
+                    <legend>Number of Sanctioned post</legend>
+                    <div class="row" style="display:none">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.DiRecSancPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.DiRecSancPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row" style="display:none">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.PromSancPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.PromSancPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.TotalSanctionedPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.TotalSanctionedPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+                </fieldset>
+            </div>
+            <div style="width: 32%; float: left; margin-right:10px; ">
+                <fieldset>
+                    <legend>Number of Filled Up post</legend>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.DiRecFillPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.DiRecFillPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.PromFillPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.PromFillPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.TotalFilledUpPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.TotalFilledUpPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                </fieldset>
+            </div>
+            <div style="width: 32%; float: left">
+                <fieldset>
+                    <legend>Number of Vacant post</legend>
+                    <div class="row" style="display:none">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.DiRecVacPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.DiRecVacPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row" style="display:none">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.PromVacPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.PromVacPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:50%">
+                            @Html.LabelFor(model => model.TotalVacantPost)
+                        </span>
+                        <span class="field" style="width:45%">
+                            @Html.TextBoxFor(model => model.TotalVacantPost, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                    <div class="row">
+                    </div>
+                    <div class="row">
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+</fieldset>
+<div class="GroupBox">
+    <div class="clear"></div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Comments)
+        </span>
+        <span class="field" style="width: 60%">
+            @Html.TextAreaFor(model => model.Comments)
+        </span>
+    </div>
+    <div class="clear"></div>
+        <div class="row">
+            <div id="divFileAttach">
+                <span id="spAttachment" class="label">
+                    @Html.LabelFor(model => model.Attachment)
+                </span>
+                <span class="field">
+                    @Html.HiddenFor(model => model.Attachment)
+                    @Html.HiddenFor(model => model.FileName)
+                    <input type="file" name="Attachment" id="Attachment" />
+                    <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+                </span>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+<script type="text/javascript">
+
+    $("#FinancialYearId").live('change', function () {
+        $('#grid tbody').empty()
+        RequisitionInfo($("#FinancialYearId").val());
+    });
+
+    var loadEmpUrl = "@Url.Action("GetRequisitionInfo")";
+
+    function RequisitionInfo(financialId) {
+        if (financialId != "" && financialId != undefined) {
+            $("#ErrorMessage").html("");
+            $.ajax({
+                type: "GET",
+                url: loadEmpUrl,
+                data: { financialId: financialId},
+                success: (function (result) {
+                    $("#grid tbody").html(result);
+                })
+            });
+        }
+        else
+            $("#ErrorMessage").show().html("<b> Required Requisition Information</b>").css("color", "red");
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        var mode = $("#strMode").val();
+
+        if (mode == 'Edit') {
+            $("#btnSave").attr('value', 'Update');
+                $("#btnClear").hide();
+        }
+
+        $('#btnSubmit').live('click', function () {
+            $('#IsSubmit').attr('value',true);
+        })
+
+        var RequisitionInfo = new Array();
+        var addRequisitionInfo = "@Url.Action("AddedRequisitionInfo")";
+
+        $(".rchk").live('click', function () {
+            if ($(this).attr('checked')) {
+                RequisitionInfo.push($(this).val());
+            }
+            else {
+                var index = RequisitionInfo.indexOf($(this).val());
+                RequisitionInfo.splice(index, 1);
+            }
+
+            console.log(RequisitionInfo);
+        });
+
+
+        $('#addItem').live('click', function (e) {
+            e.preventDefault();
+            var PostingEmp = new Array();
+            var mode = $("#strMode").val();
+            function logArrayElements(element, index, array) {
+                PostingEmp.push({ 'RequisionId': element });
+            }
+
+            RequisitionInfo.forEach(logArrayElements);
+            if (PostingEmp.length > 0) {
+                $.ajax({
+                    type: "POST",
+                    url: addRequisitionInfo,
+                    cache: false,
+                    data: {
+                        'RequisitionCodes': PostingEmp,
+                        'ModeIs': mode
+                    },
+                    success: (function (result) {
+                        $(".tblOrderList tbody").html(result);
+                    })
+                });
+            }
+        });
+
+    });
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url:url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                }
+            });
+        }
+    }
+
+    function SancPost(designationId,requisitionId) {
+        var url = '@Url.Action("GetRequsionInfo", "JobRequisitionInfoSummary")' + '?designationId=' + designationId + '&requisitionId=' + requisitionId;
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (designationId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $("#TotalSanctionedPost").val(obj.SancTotal);
+
+                $("#DiRecFillPost").val(obj.FillDirect);
+                $('#PromFillPost').val(obj.FillPro);
+                $('#TotalFilledUpPost').val(obj.FillTotal);
+
+                $('#TotalVacantPost').val(obj.VacantTotal);
+            }, "json");
+        }
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            var requisitionNo = $('#ReferenceNo').val();
+            var finalYear = $('#FinancialYearId').val();
+
+            if (requisitionNo == null || requisitionNo == 0 || requisitionNo == "") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            if (finalYear == null || finalYear == 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+
+            var rows = $('.tblOrderList').find('tr').length
+            if (rows == 1 || rows < 1) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Sorry! Row is not available.</span>  </div> ");
+                return false;
+            }
+
+            var selectedAppCount = $('.tblOrderList').find('input[type="checkbox"]:checked').length;
+            if (selectedAppCount == 0 || selectedAppCount < 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, select at least one Row.</span> </div> ");
+                return false;
+            }
+
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+            $('#btnSubmit').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+        $('#btnSubmit').show();
+    })
+
+</script>

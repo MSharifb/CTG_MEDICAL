@@ -1,0 +1,172 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.EstimationSetupViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@{
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "EstimationSetup", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div id="ErrMsg" class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+        @*@Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)*@
+    </div>
+    <fieldset>
+        <legend>Estimation Details</legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.HiddenFor(model => model.Id)
+                @Html.LabelFor(model => model.EstimationHeadId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(model => model.EstimationHeadId, Model.EstimationHeadList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextAreaFor(model => model.Description, new { @readonly = "readonly", @style = @"width:100%; background:#F2F5F8; border:1px solid #CCCCCC; height:150px; font-size:13px;" })
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Item Details</legend>
+        <div class="form-horizontal">
+            @foreach (var item in Model.EstimationSetupViewModelList)
+            {
+                @Html.Partial("_EditItem", item)
+            }
+        </div>
+    </fieldset>
+    <fieldset>
+        <div class="button-crude" style="text-align:center;">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <button type="submit" class="btn btn-sm btn-primary" id="btnSave" name="btnSubmit" style="margin-right: 8px;"><i class="fa fa-edit">Update</i></button>
+            }
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    <a href="@Url.Action("Index")" class="btn btn-sm btn-primary"> <i class="fa fa-backward"></i> Back to List</a>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        buttonHide();
+        $("#EstimationHeadId").select2();
+        $('#UnitId').select2();
+    });
+    @*var count = $("#ItemCount").val();
+    $("#btnAddNewItemDetails").click(function () {
+        //if (count > 0 && i == 0) {
+        //    var c = +count;
+        //    i = i + c;
+        //}
+        count++;
+        var headSlNo = $("#SerialNo").val();
+        var slNo = headSlNo + "." + count;
+        var url = '@Url.Action("AddItemFields", "EstimationSetup")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { slNo: slNo },
+            cache: false,
+            success: function (html) {
+                console.log(html);
+                $('#grid tbody').append("<tr>" + html + "</tr>");
+                //$('#grid tbody').append(html);
+            }
+        });
+    });*@
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").on("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function buttonHide() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+    var loadedHead = '@Html.Raw(Json.Encode(Model.EstimationHeadId))';
+    var loadedDescription = '@Html.Raw(Json.Encode(Model.Description))';
+    $("#EstimationHeadId").change(function () {
+        //debugger;
+        var EstimationHead = $(this).val();
+        if (EstimationHead != loadedHead) {
+            $.ajax({
+                url: '@Url.Action("LoadHeadDescription", "EstimationSetup")',
+                data: JSON.stringify({ EstimationHead: EstimationHead }),
+                type: 'POST',
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (result) {
+                    $('#Description').val(result);
+                },
+                error: function (result) {
+                    $('#Description').val('');
+                }
+            });
+
+            //LoadEditHeadDetails();
+        }
+        else {
+            //$('#SLNo').val(loadedSlNo);
+            $('#Description').val(loadedDescription);
+        }
+    });
+
+    function LoadEditHeadDetails() {
+        //var slNo = $('#SerialNo').val();
+        var setupId = $('#Id').val();
+        $.ajax({
+            url: '@Url.Action("LoadEditHeadDetails", "EstimationSetup")',
+            data: JSON.stringify({
+                setupId: setupId
+
+            }),
+            type: 'POST',
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            success: function (result) {
+                $('#SerialNo').val(result.slNo);
+                $('#SLNo').val(result.itemSlNo);
+            }
+        });
+
+    }
+
+
+</script>
+
+<style type="text/css">
+    .widthField {
+        width: 800px;
+    }
+
+    .readonlyField {
+        background: #F2F5F8;
+        width: 800px;
+    }
+
+    .amount-type {
+        text-align: right;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 1px;
+    }
+</style>

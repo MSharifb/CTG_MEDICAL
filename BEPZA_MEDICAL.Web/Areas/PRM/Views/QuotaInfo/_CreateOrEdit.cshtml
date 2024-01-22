@@ -1,0 +1,188 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.QuotaInfoViewModel
+
+@{
+    Layout = null;
+}
+<div class="GroupBox" id="QuotaInfo">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.QuotaNameId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.QuotaNameId, Model.QuotaNameList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FirstAndSecondClsOfficer)
+        </span><span class="field">
+            @Html.EditorFor(model => model.FirstAndSecondClsOfficer)
+            <label>Percentage (%)</label>
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ThirdAndForthClsStaff)
+        </span><span class="field">
+            @Html.EditorFor(model => model.ThirdAndForthClsStaff)
+            <label>Percentage (%)</label>
+        </span>
+    </div>
+
+    @*<div class="row" align="center">
+        <div style="width: 80%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+                <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+
+                        <th style="width:30%">
+                            Quota Name
+                        </th>
+                        <th>
+                            % of First and Second Class Officer's Post
+                        </th>
+                        <th>
+                            % of Third and Forth Class Staff's Post
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i< Model.QuotaInfoList.Count; i++)
+                    {
+                        var item = Model.QuotaInfoList.ToList()[i];
+
+                        <tr class="row">
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.QuotaInfoList[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.QuotaInfoList[i].QuotaNameId)
+                            </td>
+                            <td> <label> @item.QuotaName </label> </td>
+                            <td> <label> @item.FirstAndSecondClsOfficer </label> </td>
+                            <td> <label> @item.ThirdAndForthClsStaff </label> </td>
+                            <td>
+                                <a class="deleteRow fixeddeleteRow" title="delete" onclick="deleteRecord(@item.Id)" href="JavaScript:void(0)">
+                                    <img alt="delete" id="@item.Id" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>*@
+</div>
+<div class="clear">
+</div>
+
+@*<script type="text/javascript">
+
+    $('#btnAdd').live('click', function () {
+
+        $('#message').empty();
+        var QuotaNameId=$('#QuotaNameId').val();;
+        var QuotaName = $("#QuotaNameId option:selected").text();
+        var firstAndSecond=$("#FirstAndSecondClsOfficer").val();
+        var thirdAndFourth = $("#ThirdAndForthClsStaff").val();
+
+        var trClone = '<tr>' +
+             '<td style="display: none;">' + '<input type="text" value="0" name="QuotaInfoList[i].Id"></td>' +
+             '<td style="display: none;">' + '<input type="text" name="QuotaInfoList[i].QuotaNameId" value="' + QuotaNameId + '"></td>' +
+
+             '<td>' + '<label for="QuotaNameId">' + QuotaName + '</td>' +
+              '<td>' + '<label for="FirstAndSecondClsOfficer">' + firstAndSecond + '</td>' +
+             '<td>' + '<label for="ThirdAndForthClsStaff" >' + thirdAndFourth + '</td>' +
+             '<td>' + '<a class="deleteRow fixeddeleteRow" title="delete"><img src="/Content/Images/Delete.png" style="border: none;" alt="delete"></a></td>' +
+             '</tr>';
+        $('#grid tbody').append(trClone);
+
+        RearrengeControlName();
+    })
+
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+    function RearrengeControlName() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+    function deleteRecord(recordId) {
+        if (recordId > 0) {
+            $.ajax({
+                type: "post",
+                url: "@Url.Action("DeleteClearanceChecklistDetail", "ClearanceChecklist")",
+                data: { id: recordId },
+                ajaxasync: true,
+                success: function () {
+                    //alert("success");
+                },
+                error: function (data) {
+                    //alert(data.x);
+                }
+            });
+        }
+        else {
+            $('.row a.deleteRow').live('click', function () {
+                if ($('#grid tbody tr').length > 0)
+                    $(this).parent().parent().remove();
+
+                RearrengeControlName();
+            })
+        }
+        RearrengeControlName();
+    }
+
+</script>*@
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+

@@ -1,0 +1,41 @@
+﻿@model BEPZA_MEDICAL.Web.Models.MenuModels
+<link href="@Url.Content("~/MenuControl/CSS/superfish.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/MenuControl/JS/hoverIntent.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/MenuControl/JS/superfish.js")" type="text/javascript"></script>
+@{     
+    List<BEPZA_MEDICAL.Web.Models.Menu> list = Model.MenuList.Where(m => string.IsNullOrEmpty(m.ParentMenuName)).ToList<BEPZA_MEDICAL.Web.Models.Menu>();
+    <ul class="menu">
+        @ShowSubItems(list)
+    </ul>
+}
+@helper ShowSubItems(List<BEPZA_MEDICAL.Web.Models.Menu> list)
+{
+    foreach (var item in list)
+    {
+        List<BEPZA_MEDICAL.Web.Models.Menu> subItem = Model.MenuList.Where(m => m.ParentMenuId == item.MenuId).ToList<BEPZA_MEDICAL.Web.Models.Menu>();
+
+        string classVal = subItem.Count > 0 ? "has-submenu" : "";
+
+        <li class="@classVal">
+
+            @{
+        if (string.IsNullOrWhiteSpace(item.ActionName) && string.IsNullOrWhiteSpace(item.ControllerName))
+        {
+            <a href="#">@item.MenuName</a>
+        }
+        else
+        {
+            @Html.ActionLink(@item.MenuName, @item.ActionName, @item.ModuleName + "/" + @item.ControllerName)
+        }
+
+
+        if (subItem.Count > 0)
+        {
+            <ul class="submenu">
+                @ShowSubItems(subItem)
+            </ul>
+        }
+            }
+        </li>
+    }
+}

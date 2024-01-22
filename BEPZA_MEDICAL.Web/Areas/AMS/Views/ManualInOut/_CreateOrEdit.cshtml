@@ -1,0 +1,318 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ManualInOut.ManualInOutViewModel
+@using ERP_BEPZA.Web.Helpers
+@Html.HiddenFor(m => m.Mode)
+@Html.HiddenFor(m => m.IsOSD)
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.AttendanceDate)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.AttendanceDate, new { @class = "required" })
+        </span>
+    </div>  
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ShiftId)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ShiftId, Model.ShiftNameList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ShiftInTime)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ShiftInTime, new { @class = "read-only", @readonly = true, @style = "width:150px" })
+        </span>
+    </div>  
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DepartmentId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ShiftOutTime)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ShiftOutTime, new { @class = "read-only", @readonly = true, @style = "width:150px" })
+        </span>
+
+    </div>  
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmpId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.EmpId)
+        </span>
+    </div>  
+    <div class="button-crude fixedAddButton" style="text-align: center;">
+        <input id="btSearch" type="button" value="Search" />
+    </div>
+</div>
+
+@using (Html.BeginForm("Create", "ManualInOut", FormMethod.Post, new { id = "frm" }))
+{
+<div class="GroupBox">
+ 
+    <div class="row" align="center">
+        <div style="width: 90%">
+            <table id="grid" class="contenttable" width="50%">
+                <thead>
+                    <tr>
+                        <th width="10%" align="center">
+                            <input type="checkbox" class="chkAll" name="chk" /> Check All
+                        </th>
+                        <th width="10%" align="center">
+                            I.C. No.
+                        </th>
+                        <th width="20%" align="center">
+                            Employee Name
+                        </th>
+                        <th width="10%" align="center">
+                            Card No.
+                        </th>
+                        <th width="10%" align="center">
+                            Designation
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<br />
+<div class="GroupBox" id="EmpSelectedGridList">
+    <div class="row" align="center">
+        <div class="button-crude fixedAddButton" style="margin-left: 1220px;">
+            @Html.ActionLink("Add", "AddDetail", new { masterID = Model.Id, DepartmentId = Model.DepartmentId }, new { @class = "addItem", @id = "addDetails" })
+        </div>
+
+        <div style="width: 90%">
+            <table class="tblOrderList contenttable custom-grid" width="50%">
+                <thead>
+                    <tr>
+                        <th width="10%" align="center">
+                            I.C. No.
+                        </th>
+                        <th width="20%" align="center">
+                            Employee Name
+                        </th>
+
+                        <th width="10%" align="center">
+                            Designation
+                        </th>
+                        <th width="10%" align="center">
+                            In Time
+                        </th>
+                        <th width="10%" align="center">
+                            Out Time
+                        </th>
+                        <th width="15%" align="center">
+                            Reason
+                        </th>
+                        <th width="5%">
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.Mode == "Edit") { Html.RenderPartial("_Details", Model); }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+}
+
+<script type="text/javascript">
+    $(function () {
+
+        var mode = $("#Mode").val();
+        var Osd = $('#IsOSD').val();
+
+        if (mode == 'Edit' && Osd!='True') {
+            $("#btnSave").attr('value', 'Update');
+        }
+        else if(mode == 'Edit' && Osd=='True')
+        {
+            $(".OSDEmp").attr('hidden', true);
+        }
+
+        $(".chkAll").live('click', function () {
+            $(".rchk").attr('checked', $(this).attr('checked'));
+
+            $('.rchk').each(function () {
+                if ($(this).attr('checked')) {
+                    Employees.push($(this).val());
+                }
+                else {
+                    var index = Employees.indexOf($(this).val());
+                    Employees.splice(index, 1);
+                }
+                console.log(Employees);
+            });
+
+        });
+
+        $(".rchk").live('click', function () {
+
+            if ($(this).attr('checked')) {
+                Employees.push($(this).val());
+            }
+            else {
+                var index = Employees.indexOf($(this).val());
+                Employees.splice(index, 1);
+            }
+
+            console.log(Employees);
+        });
+
+        $('#ShiftId').live('change', function () {
+            var Id = $(this).val();
+
+            $.get("@Url.Action("GetShiftTime")",
+                     { 'Id': Id },
+                     function (r) {
+                         if (r != '') {
+                             $("#ShiftInTime").val(r.InTime);
+                             $("#ShiftOutTime").val(r.OutTime);
+                         }
+                     }
+                    );
+
+        })
+
+        $("#btSearch").live('click', function () {
+            //alert('SDD');
+            LoadEmployee($("#ShiftId").val(), $("#DepartmentId").val(), $("#EmpId").val());
+        });
+
+        var loadEmpUrl = "@Url.Action("GetEmployeeList")";
+        var addEmpUrl="@Url.Action("AddedEmployee")";
+
+            function LoadEmployee(shiftId, departmentId, employeeId) {
+
+                if (shiftId != "" && shiftId != undefined) {
+                    $("#ErrorMessage").html("");
+                    $.ajax({
+                        type: "GET",
+                        url: loadEmpUrl,
+                        data: { shiftId: shiftId, departmentId: departmentId, employeeId: employeeId },
+                        success: (function (result) {
+                            $("#grid tbody").html(result);
+                        })
+                    });
+
+                }
+                else
+                    $("#ErrorMessage").show().html("<b> Required Shift Information</b>").css("color", "red");
+            }
+
+            $('.addItem').live('click', function (e) {
+                e.preventDefault();
+
+                var PostingEmp = new Array();
+                var attenDate = $("#AttendanceDate").val();
+
+                if (attenDate == null || attenDate == "" || attenDate == 0) {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Attendance Date can not be null. </span>  </div> ");
+                    return;
+                }
+
+                function logArrayElements(element, index, array) {
+                    PostingEmp.push({ 'EmployeeId': element });
+                }
+
+                Employees.forEach(logArrayElements);
+                if (PostingEmp.length > 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: addEmpUrl,
+                        cache: false,
+                        data: {
+                            'EmployeeCodes': PostingEmp,
+                            'attenDate': attenDate
+                        },
+                        success: (function (result) {
+                            // $(".tblOrderList tbody").empty();
+                            $(".tblOrderList tbody").html(result);
+                        })
+                    });
+                }
+            });
+
+            //FormatTextBox();
+
+    });
+
+    function RemoveDb(el, id, empId, url) {
+        var isOsd = $('#IsOSD').val();
+        if (isOsd == 'True') {
+            $("#message").empty();
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Sorry! This Employee is on OSD.</span>  </div> ");
+            return;
+        }
+        else {
+            if (id == 0 || id == undefined) {
+                var index = Employees.indexOf(empId);
+                Employees.splice(index, 1);
+                $(el).parent().parent().remove();
+                $("input[name=empId]").each(function () {
+                    if ($(this).val() == empId) {
+                        $(this).attr('checked', false);
+                    }
+                });
+
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ Id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                    success: function (result) {
+                        $(el).parent().parent().remove();
+                    }
+                });
+            }
+        }
+    }
+
+</script>
+
+@*<script type="text/javascript">
+
+    $(function () {
+        var mode = $("#Mode").val();
+        var isOsd = $('#IsOSD').val();
+
+        if (mode == 'Edit' && isOsd == 'True')
+        {
+            $(".OSDEmp").attr('hidden', true);
+        }
+    })
+
+ </script>*@
+<script>
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>

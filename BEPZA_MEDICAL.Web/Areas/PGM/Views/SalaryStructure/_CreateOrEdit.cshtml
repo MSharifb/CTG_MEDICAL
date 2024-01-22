@@ -1,0 +1,245 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryStructure.SalaryStructureModel
+@using ERP_BEPZA.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+
+<div class="GroupBox">
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SalaryScaleId)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.SalaryScaleId, new SelectList(ViewBag.salaryscale, "Id", "SalaryScaleName"), @String.Format("{0}", Content.DDLOptionalLabel()), new {@class = "required"})
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.GradeId)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.GradeId, new SelectList(ViewBag.grade, "Id", "GradeName"), @String.Format("{0}", Content.DDLOptionalLabel()), new {@class = "required"})
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.StepId)
+            <label style='color: red'>*</label>
+        </span>
+
+        <span class="field">
+            @Html.DropDownListFor(model => model.StepId, new SelectList(ViewBag.gradestep, "Id", "StepName"), @String.Format("{0}", Content.DDLOptionalLabel()), new {@class = "required", onchange = "LoadBasicAmount();"})
+        </span>
+
+        <span class="label-right">
+            &nbsp;
+        </span>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="spacer"></div>
+<div class="row">
+    <div class="leftColumn" title="Addition" style="width:48%">
+        <table id="Addition" class="contenttable">
+            <tr>
+                <td align="center" colspan="4" bgcolor="#BBD0E5">Addition</td>
+            </tr>
+            <tr>
+                <td align="center">
+                    Salary Head
+                </td>
+                <td align="center">
+                    Amount Type
+                </td>
+                <td align="center">
+                    Amount
+                </td>
+                <td align="center">
+                    Taxable
+                </td>
+            </tr>
+            @foreach (var item in Model.SalaryStructureDetail.Where(d => d.HeadType == "Addition"))
+            {
+                @Html.Partial("_SalaryStructureAdditionDetails", item);
+            }
+        </table>
+        <br />
+        <p style="float:left; color:Red; font-size:14px;">
+            Note: Red color indicates the new head
+        </p>
+    </div>
+    <div class="rightColumn" style="width:48%">
+        <table id="Deduction" class="contenttable" title="Deduction">
+            <tr>
+                <td align="center" colspan="3" bgcolor="#FFE5E5">Deduction</td>
+            </tr>
+            <tr>
+                <td align="center">
+                    Salary Head
+                </td>
+                <td align="center">
+                    Amount Type
+                </td>
+                <td align="center">
+                    Amount
+                </td>
+            </tr>
+            @foreach (var item in Model.SalaryStructureDetail.Where(d => d.HeadType == "Deduction"))
+            {
+                @Html.Partial("_SalaryStructureDeductionDetails", item);
+            }
+        </table>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        var additionSelectedValues = $("#Addition .selected-val");
+        var aditionDdls = $('#Addition .ddl-addition');
+
+        var deductionSelectedValues = $("#Deduction .selected-val");
+        var deductionDdls = $('#Deduction .ddl-deduction');
+
+        //addition
+        for (var i = 0; i < additionSelectedValues.length; i++) {
+            var selectedVal = $(additionSelectedValues[i]).text();
+            $(aditionDdls[i]).val(selectedVal);
+            //console.log(selectedVal);
+        }
+
+        //deduction
+        for (var i = 0; i < deductionSelectedValues.length; i++) {
+            var selectedVal = $(deductionSelectedValues[i]).text();
+            $(deductionDdls[i]).val(selectedVal); //.attr('disabled', true);
+            //console.log(selectedVal);
+        }
+
+        $('.hdn-disable').remove();
+    })
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#GradeId").focus();
+    });
+
+    $('#SalaryScaleId').live('change', function () {
+        var selectedSalScale = $(this).val();
+        var stepSelect = $('#GradeId');
+        stepSelect.empty();
+        stepSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (selectedSalScale != '' && selectedSalScale != '0' && selectedSalScale != 0) {
+
+            $.getJSON('@Url.Action("GetJobGradeBySalaryScaleId","SalaryStructure")', { salaryScaleId: selectedSalScale }, function (data) {
+                $.each(data.JobGrades, function (index, grade) {
+                    stepSelect.append($('<option/>', {
+                        value: grade.Id,
+                        text: grade.GradeName
+                    }));
+                });
+            });
+        }
+    });
+
+    $('#GradeId').live('change', function () {
+        var selectedGrade = $(this).val();
+        var stepSelect = $('#StepId');
+        stepSelect.empty();
+        stepSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (selectedGrade != '' && selectedGrade != '0' && selectedGrade != 0) {
+
+            $.getJSON('@Url.Action("GetStep")', { gradeId: selectedGrade }, function (data) {
+                $.each(data.steps, function (index, step) {
+                    stepSelect.append($('<option/>', {
+                        value: step.Id,
+                        text: step.StepName
+                    }));
+                });
+
+                if (data.ic == true) {
+                    $('input[id=IsConsolidated]').attr('checked', true);
+                    disableGrossPayHead(true);
+                }
+                else {
+                    $('input[id=IsConsolidated]').attr('checked', false);
+                    disableGrossPayHead(false);
+                }
+
+                $('#InitialBasic').val(data.initialBasic);
+                $('#YearlyIncrement').val(data.yearlyIncrement);
+            });
+        }
+    });
+
+    function disableGrossPayHead(status) {
+        $('.grossPayHead').each(function (index, value) {
+            typeID = $(this).attr('id').replace('IsGrossPayHead', 'AmountType');
+            if (status) {
+                if ($(this).val() == 'True') {
+                    $('#' + typeID).val('Percent');
+                    $('select#' + typeID).val('Percent');
+                    $('select#' + typeID).attr('disabled', true);
+                }
+                else {
+                    $('select#' + typeID).removeAttr('disabled');
+                }
+            }
+            else {
+                if ($('input#' + typeID.replace('AmountType', 'DisplayHeadName')).val() == 'Basic') {
+                    $('select#' + typeID).val('Fixed');
+                }
+                else {
+                    $('select#' + typeID).removeAttr('disabled');
+                }
+            }
+        });
+    }
+
+    function LoadBasicAmount() {
+        //var ib = Number($('#InitialBasic').val());
+        //var yi = Number($('#YearlyIncrement').val());
+        //var sn = Number($('#StepId option:selected').text());
+
+        var selStepId = Number($('#StepId option:selected').val());
+
+        GetSetStepAmountByStepId(selStepId);
+
+        //$('.basic-amount').find('input').val(ib + (yi * (sn - 1)));
+        //$('.basic-amount').find('input').val(stepAmount);
+    }
+
+    function GetSetStepAmountByStepId(Id)
+    {
+        $.get('@Url.Action("GetStepAmountByStepId", "SalaryStructure")', { stepId: Id },
+            function (data) {
+                $('.basic-amount').find('input').val(data.stepamount);
+            }
+        );
+    }
+
+    $(function () {
+        $("#IsConsolidated").attr('disabled', true);
+        if ('@Model.IsConsolidated' == 'True') {
+            disableGrossPayHead(true);
+            $('input[id=IsConsolidated]').attr('checked', true);
+        }
+
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+
+    });
+</script>

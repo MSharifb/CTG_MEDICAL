@@ -1,0 +1,97 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.FinancialYearViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("FinancialYearList"))
+{
+    <div class="GroupBox">
+        <table class="table table-bordered table-hovered financialYarInfo">
+            <thead>
+                <tr>
+                    <th>&nbsp;</th>
+                    <th>Financial Year</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+
+            </thead>
+            <tbody class="financialYarInfo-body">
+                @foreach (var item in @Model.FinancialYearList)
+                {
+                    <tr>
+                        <td><input type="checkbox" id="@item.Id" checked="@item.IsSelected" /></td>
+                        <td>@item.FinancialYearName</td>
+                        <td>@item.FinancialYearStartDate.ToString("dd-MMM-yyyy")</td>
+                        <td>@item.FinancialYearEndDate.ToString("dd-MMM-yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="button-center" style="text-align:center;">
+            <button value="Add" id="btnGenerateHead" name="btnGenerateHead" style="margin-right: 8px;" class="btn btn-sm btn-primary">
+                <i class="fa fa-plus-circle"></i> Update
+            </button>
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+
+    $('#dvFinancialYear #btnGenerateHead').click(function () {
+        var idArray = [];
+        $("table tbody tr").find('input[type="checkbox"]:checked').each(function (i, k) {
+            var item = $(this);
+            idArray.push(item.attr("id"));
+        });
+
+        var projectId = $('.budget-sub-head-id :input').val();
+        if (projectId == undefined || projectId == '') {
+            projectId = "0";
+        }
+        GenerateHead(idArray, projectId);
+        $("#SelectedFinancialYears").val(idArray);
+        //setTimeout(DeleteEmptyCells, 1000);
+    });
+
+    function GenerateHead(idList, projectId) {
+        var url = '@Url.Action("AddNewFinancialYearCost", "Budget")';
+        var headUrl = '@Url.Action("AddNewFinancialYearHead", "Budget")';
+        RemoveExistingCost();
+        $.ajax({
+            url: headUrl,
+            data: { financialYearId: idList, projectId: projectId },
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                var startTag = '<th class=yearly-cost-head>';
+                var endTag = '</th>';
+                var fullHtml = startTag + html + endTag;
+                $('table thead').find('th').eq(3).after(fullHtml);
+            }
+        })
+
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { financialYearId: idList, projectId: projectId },
+            cache: false,
+            success: function (html) {
+                $('.dvBudgetDetails table tbody').find('tr').each(function () {
+                    $(this).find('td').eq(3).after("<td class='yearly-cost'>" + html + "</td>");
+                    //$(this).find('td').eq(2).after(html);
+                });
+            }
+        })
+
+        $("#dvFinancialYear").dialog('close');
+    };
+
+
+
+    function RemoveExistingCost() {
+        $("table tbody tr .yearly-cost").remove();
+        $("table thead tr .yearly-cost-head").remove();
+    }
+
+</script>

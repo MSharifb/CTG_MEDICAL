@@ -1,0 +1,162 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.QueryAnalyzerViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        InitilizeLogic();
+        $(".accountHead").on("change", function () {
+            var selectedId = $(this).val();
+            var currentItem = $(this).attr('id');
+
+            if (selectedId != "") {
+                $('.accountHead').each(function (index) {
+
+                    if ($(this).val() == selectedId && $(this).val() != "" && ($(this).attr('id') != currentItem)) {
+                        $("#" + currentItem).val('');
+                        //alert("Selected Account Head is already in use");
+                    }
+                });
+            }
+            return false;
+        });
+
+
+    });
+
+    $(".accountHead").on("change", function () {
+        var selectedId = $(this).val();
+        var currentItem = $(this).attr('id');
+
+        if (selectedId != "") {
+            $('.accountHead').each(function (index) {
+
+                if ($(this).val() == selectedId && $(this).val() != "" && ($(this).attr('id') != currentItem)) {
+                    $("#" + currentItem).val('');
+                    //alert("Selected Account Head is already in use");
+                }
+            });
+        }
+        return false;
+    });
+
+    function InitilizeLogic() {
+
+        $(".hide").hide();
+
+        $(".datePicker").datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeYear: true,
+            yearRange: '-100:+100'
+            , showOn: 'button'
+            , buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")'
+            , buttonImageOnly: true
+        });
+
+        var count = $("#Count").val();
+        for (var i = 0; i < count; i++) {         
+            var logic = $("#QueryAnalyzerLogicList_" + i + "__ScopeLogic").val();
+            if (logic == "Between" || logic == "Or") {
+            } else {
+                var obj = $("#QueryAnalyzerLogicList_" + i + "__ScopeEnd");
+                var dateObj = $(".QueryAnalyzerLogicList_" + i + "__dvDate");
+                obj.hide();
+                dateObj.hide();
+            }
+
+        }
+    }
+    function checkScopeEnd(obj) {
+
+        var ScopeEndId = obj.id.replace("ScopeLogic", "ScopeEnd");
+        var dvDate = obj.id.replace("ScopeLogic", "dvDate");
+
+        if (obj.value == "Between" || obj.value == "Or") {
+            $("#" + ScopeEndId).show();
+            $("." + dvDate).show();
+            $("#" + ScopeEndId).addClass("required");
+        } else {
+            $("#" + ScopeEndId).hide();
+            $("." + dvDate).hide();
+            $("#" + ScopeEndId).removeClass("required");
+        }
+    }
+</script>
+
+
+<table class="contenttable fixedcontenttable custom-grid">
+    <thead>
+        <tr>
+            <th>
+                Item
+            </th>
+            <th>
+                Scope Start
+            </th>
+            <th>
+                Scope Logic
+            </th>
+            <th>
+                Scope End
+            </th>
+            <th>
+                Sort Type
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.QueryAnalyzerLogicList != null)
+        {
+            @Html.Hidden("Count", Model.QueryAnalyzerLogicList.Count)
+        }
+        @for (int i = 0; i < Model.QueryAnalyzerLogicList.Count; i++)
+        {
+            string type = Model.GetColumnType(Model.QueryAnalyzerLogicList[i].TableName, Model.QueryAnalyzerLogicList[i].Item);
+
+            <tr>
+                <td>
+                    @Html.Encode(Model.QueryAnalyzerLogicList[i].ItemName)
+                    @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].ItemName)
+                    @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].Item)
+                    @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].TableName)
+                </td>
+                <td>
+                    @if (type == "date")
+                    {
+                        @Html.TextBoxFor(m => m.QueryAnalyzerLogicList[i].ScodeStart, new { @class = "datePicker", @style = "width:85%" })
+                    }
+                    else if (type == "txtbox")
+                    {
+                        @Html.TextBoxFor(m => m.QueryAnalyzerLogicList[i].ScodeStart)                 }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.QueryAnalyzerLogicList[i].ScodeStart, Model.GetColumnData(Model.QueryAnalyzerLogicList[i].TableName, Model.QueryAnalyzerLogicList[i].Item, Model.QueryAnalyzerLogicList[i].ScodeStart), @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required accountHead", @SelectedValue = Model.QueryAnalyzerLogicList[i].ScodeStart })
+
+                    }
+                </td>
+                <td style="max-width:200px;">
+                    @Html.DropDownListFor(m => m.QueryAnalyzerLogicList[i].ScopeLogic, new SelectList(Model.ScopeLogicList, "Text", "Value", Model.QueryAnalyzerLogicList[i].ScopeLogic), @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required scopelogicvalue", @style="width:100%", @required=true, @onchange = "checkScopeEnd(this)" })
+                </td>
+                <td>
+                    @if (type == "date")
+                    {                       
+                        <div class="QueryAnalyzerLogicList_@i.ToString()__dvDate">
+                            @Html.TextBoxFor(m => m.QueryAnalyzerLogicList[i].ScopeEnd, new { @class = "datePicker", @style = "width:85%" })
+                        </div>
+                    }
+                    else if (type == "txtbox")
+                    {
+                        @Html.TextBoxFor(m => m.QueryAnalyzerLogicList[i].ScopeEnd)
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.QueryAnalyzerLogicList[i].ScopeEnd, Model.GetColumnData(Model.QueryAnalyzerLogicList[i].TableName, Model.QueryAnalyzerLogicList[i].Item, Model.QueryAnalyzerLogicList[i].ScopeEnd), @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "hide accountHead" })
+                    }
+                </td>
+                <td>
+                    @Html.DropDownListFor(m => m.QueryAnalyzerLogicList[i].SortType, new SelectList(Model.SortTypeList, "Text", "Value", Model.QueryAnalyzerLogicList[i].SortType), @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = " " })
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

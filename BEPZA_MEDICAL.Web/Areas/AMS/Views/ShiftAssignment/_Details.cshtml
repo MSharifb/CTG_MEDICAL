@@ -1,0 +1,10 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftAssigment.ShiftAssignmentViewModel
+@using ERP_BEPZA.Web.Helpers
+@if (Model != null && Model.ShiftAssignment != null)
+{
+    foreach (var x in Model.ShiftAssignment)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

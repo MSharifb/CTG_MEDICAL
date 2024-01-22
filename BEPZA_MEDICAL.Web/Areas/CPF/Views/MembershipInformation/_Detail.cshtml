@@ -1,0 +1,52 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MemberNominee
+@using BEPZA_MEDICAL.Web.Helpers
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("MemberNomineeList"))
+    {
+        if (Model != null)
+        {
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.MembershipId)
+        }
+        <td style="text-align: left;">
+            @Html.TextBoxFor(model => model.NomineeName, new { @class = "required" })
+        </td>
+
+        <td style="text-align: left">
+            @Html.TextBoxFor(model => model.NomineeAddress, new { @class = "required" })
+        </td>
+        <td style="text-align: left;">
+            @Html.TextBoxFor(model => model.Relationship, new { @class = "required" })
+        </td>
+
+        <td style="text-align: center;">
+            @Html.EditorFor(model => model.DateOfBirth)
+        </td>
+
+        <td style="text-align: right;">
+            @Html.EditorFor(model => model.PercentOfShare)
+        </td>
+
+        <td style="text-align: left">
+            @Html.EditorFor(model => model.GuardianName)
+        </td>
+        <td style="text-align: left;">
+            @Html.EditorFor(model => model.GuardianAddress)
+        </td>
+
+        <td>
+            @if (Model.Id > 0)
+            {
+
+                <img id="imgThumb-@Model.Id" height="50" width="50" class="imgThumb"
+                     src="@Url.Action("GetImage", "MembershipInformation", new { id = Model.Id })"
+                     onclick="OpenPhotoViewer(this)" alt="Photo" style="cursor:pointer;" />
+            }
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

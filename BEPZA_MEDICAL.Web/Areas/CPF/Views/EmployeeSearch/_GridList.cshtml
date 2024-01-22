@@ -1,0 +1,58 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.EmployeeSearchViewModel.EmployeeSearchViewModel
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Employee Id','Employee Name', 'Division', 'Designation', 'Membership ID', 'SelectedEmployeeStatus'],
+            colModel: [
+                        { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                        { name: 'EmpID', index: 'EmpID', width: '70px', align: 'center', search: true, hidden: false, edittype: 'text' },
+                        { name: 'EmployeeName', index: 'EmployeeName', width: '70px', align: 'left', search: true, edittype: 'text' },
+                        { name: 'DivisionId', index: 'DivisionId', align: 'left', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetDivision")' },
+                        { name: 'Designation', index: 'Designation', align: 'left', search: false, hidden: false, width: '100px', edittype: 'text' },
+                        { name: 'MembershipID', index: 'MembershipID', width: '70px', align: 'left', search: true, edittype: 'text' },
+                        { name: 'SelectedEmployeeStatus', index: 'SelectedEmployeeStatus', align: 'left', hidden: true, search: true, edittype: 'text' }
+                        ],
+            autowidth: true,
+            caption: "Search Employee",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+        $('#jqGrid').jqGrid('setGridParam', { onSelectRow: function (id) { return setData(id); } }); //this code send employee id to parent
+
+    });
+
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink("_name_", Model.ActionName, new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[1]);
+        return url;
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sg_SelectedEmployeeStatus').parent().prev().hide(); $('#sg_SelectedEmployeeStatus').parent().hide();
+        $('.empStatus').live('click', function () {
+            $('#sg_SelectedEmployeeStatus').parent().prev().hide(); $('#sg_SelectedEmployeeStatus').parent().hide();
+            $('#sg_SelectedEmployeeStatus').val($(this).val());
+        });
+
+    });  
+   
+</script>

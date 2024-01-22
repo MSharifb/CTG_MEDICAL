@@ -1,0 +1,80 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Employee.EmployeeViewModel
+@{
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" id="Id" value="@Model.Id" />
+@{
+    string Id = "#";
+    string empId = "#";
+    if (Model.Id != 0)
+    { Id = "/" + Model.Id.ToString(); }
+    if (!string.IsNullOrWhiteSpace(Model.EmpId))
+    { empId = "/" + Model.EmpId; }
+
+    var selectedSignatureClass = string.Empty;
+    if (Model.EmployeePhotograph.EmployeeId != 0 && !Model.EmployeePhotograph.IsPhoto)
+    //{ selectedSignatureClass = "selected"; }
+    { selectedSignatureClass = "active"; }
+
+
+}
+
+<div class="panel with-nav-tabs panel-default">
+    <div class="panel-heading" style="border-bottom:0;padding-bottom:0">
+        <ul class="nav nav-tabs">
+            <li class="@Model.EmploymentInfo.SelectedClass">@Html.ActionLink("Employment Information", "EmploymentInfoIndex" + Id, null, new { @class = "emp-info" })</li>
+            <li class="@Model.EmploymentContractInfo.SelectedClass">@Html.ActionLink("Contract Extension", "EmploymentContractPeriodIndex" + Id, null, new { @class = "emp-contract" })</li>
+            @*<li class="@Model.EmployeeSalary.SelectedClass">@Html.ActionLink("Salary Structure", "SalaryStructureIndex" + Id, null, new { @class = "emp-salary" })</li>*@
+            <li class="@Model.EmployeePhotograph.SelectedClass">@Html.ActionLink("Photograph", "EmployeePhotographIndex" + Id, new { isPhoto = true }, new { @class = "emp-photo" })</li>
+            <li class="@selectedSignatureClass">@Html.ActionLink("Signature", "EmployeePhotographIndex" + Id, new { isPhoto = false }, new { @class = "emp-sign" })</li>
+        </ul>
+    </div>
+
+
+    <!-- Tab panes -->
+    <div class="panel-body">
+        <div class="tab-content">
+            @switch (Model.ViewType)
+            {
+                case "EmploymentInfo":
+                    @Html.Partial("_EmploymentInfo", Model.EmploymentInfo)
+                    break;
+                case "EmploymentContractInfo":
+                @Html.Partial("_CreateEmploymentContractPeriod", Model.EmploymentContractInfo)
+                    break;
+                @*case "EmployeeSalaryStructure":
+                @Html.Partial("_CreateSalaryStructure", Model.EmployeeSalary)
+                    break;*@
+                case "EmployeePhotograph":
+                @Html.Partial("EmployeePhotoGraph", Model.EmployeePhotograph)
+                    break;
+                case "EmployeeSignature":
+                @Html.Partial("EmployeePhotoGraph", Model.EmployeePhotograph)
+                    break;
+                default:
+                    break;
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var editMode = false;
+    var empId = '@Model.EmpId';
+    var id = '@Model.Id';
+
+    if (id != 0) {
+        editMode = true;
+    }
+
+    if (!editMode) {
+        $('.emp-info, .emp-contract, .emp-salary, .emp-photo, .emp-sign').attr('href', '#');
+    }
+
+    function DeleteConfirm() {
+        return confirm('Pressing OK will delete this record. Do you want to continue?');
+    }
+
+</script>

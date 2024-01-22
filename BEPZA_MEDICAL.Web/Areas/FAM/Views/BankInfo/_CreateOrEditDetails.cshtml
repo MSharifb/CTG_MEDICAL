@@ -1,0 +1,26 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAM.Models.BankInfo.BankInfoChild
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BankBranchMapId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BankBranchMapId)
+            @Html.ValidationMessageFor(model => model.BankBranchMapId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.AccountHeadId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.AccountHeadId)
+            @Html.ValidationMessageFor(model => model.AccountHeadId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.BankAccountNo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.BankAccountNo)
+            @Html.ValidationMessageFor(model => model.BankAccountNo)
+        </div>
+         

@@ -1,0 +1,179 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.GratuityRule.GratuityRuleModel
+@using ERP_BEPZA.Web.Helpers
+@{
+    ViewBag.Title = "CreateOrEdit";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm(Model.Mode, "GratuityRule", FormMethod.Post,
+        new { id = "frm", @encType = "multipart/form-data" }))
+{     
+    
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+             
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.HasData)                             
+    @Html.HiddenFor(model => model.Mode)        
+    
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EligibleServiceLength)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.EligibleServiceLength, new { @class = "doubleNZ", @style = "text-align:right;", @maxlength = "5" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ExtraOrdinaryLeaveTypeId)
+                <label style='color: red'>
+                    *</label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.ExtraOrdinaryLeaveTypeId, Model.ExtraOrdinaryLeaveTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+
+    
+    <div class="GroupBox">
+        <div class="button-crude">
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+            }
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                <input type="submit" value="Delete" id="btnDelete" name="btnSubmit" />
+            }
+            <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+        </div>
+    </div>      
+}
+<script type="text/javascript">
+
+    $(function () {
+
+        if ('@Model.Message' != "") {
+            if ('@Model.IsSuccessful' == 'True') {
+                $('#message').html("<b style='color:Green'>" + '@Model.Message' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + '@Model.Message' + "</b>");
+            }
+        }
+
+        $("#btnDelete").live("click", function () {
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("Delete", "GratuityRule", new { id = Model.Id })';
+                    $.post(url, function (obj) {
+                        //Post to action     
+                        if (obj.Success) {
+                            var indexUrl = '@Url.Action("Index", "GratuityRule")' + '?message=' + obj.Message + '&IsSuccessful=' + obj.Success;
+                            indexUrl = indexUrl.replace(/_msg_/, obj.Message);
+                            indexUrl = indexUrl.replace(/_isSuccess_/, obj.Success);
+                            window.document.location = indexUrl;
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $('#ApplicableRule').live('click', function () {
+            var rules = $(this).val();
+            
+            if (rules == 'Rule-1') {
+                $('#PercentageForRuleTwo').val(0);
+            }
+
+        });
+
+        $('#btnSave').live('click', function () {
+
+            //if ($("#ApplicableRule").val() == 'Rule-2') {
+
+            var PercentageForrule2 = $('#PercentageForRuleTwo').val();
+            if (PercentageForrule2 == 0 || PercentageForrule2 == 0.00) {
+                $('#PercentageForRuleTwo').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+            }
+            //}
+
+            var EligibleServiceLength = $('#EligibleServiceLength').val();
+            if (EligibleServiceLength == 0 || EligibleServiceLength == 0.00) {
+                $('#EligibleServiceLength').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+            }
+        });
+
+        $("#btnClear").live("click", function () {
+            var url = '@Url.Action("Index")';
+            window.location.href = url;
+        });
+
+        if ('@Model.HasData' == 'True') {
+            $('#btnSave').hide();
+            $('#btnClear').hide();
+            $('#btnUpdate').show();
+            $('#btnDelete').show();
+        }
+        else {
+            $('#btnUpdate').hide();
+            $('#btnDelete').hide();
+            $('#btnSave').show();
+            $('#btnClear').show();
+        }
+
+    });  
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#PercentageForRuleTwo, #EligibleServiceLength").keydown(function (event) {
+
+            //alert(advance);
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    });
+
+</script>

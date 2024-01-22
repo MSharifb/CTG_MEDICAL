@@ -1,0 +1,684 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.ItemIssueViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@*<link href="~/Content/Multiselect-Dropdown.css" rel="stylesheet" />
+    <script src="~/Scripts/choosen.js"></script>*@
+
+<div class="GroupBox">
+    <legend>Item Issue Info</legend>
+
+    @*@Html.Hidden("TMPID", Model.Id)*@
+    @*@Html.Hidden("Id", Model.Id)*@
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.ZoneInfoId)
+    @Html.HiddenFor(model => model.IssuedToId)
+    @Html.HiddenFor(model => model.CheckStatus)
+    @Html.HiddenFor(model => model.IssuedById)
+    @Html.HiddenFor(model => model.DemandQuantity)
+    @Html.HiddenFor(model => model.ActionType)
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IssueDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.IssueDate, new { @class = "required" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.IssueNo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.IssueNo, new { @class = "required" })
+
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IndentDate)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.IndentDate)
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.IndentId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @*@Html.HiddenFor(model => model.IndentId)*@
+            @Html.DropDownListFor(m => m.IndentId, Model.IndentList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IssuedTo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+
+            @Html.EditorFor(model => model.IssuedTo)
+            @*<img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openIssueToEmployee();" alt="Find" title="Find" />*@
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.Comment)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Comment)
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IssuedBy)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+
+            @Html.EditorFor(model => model.IssuedBy)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openIssueByEmployee();" alt="Find" title="Find" />
+        </span>
+
+        <span class="label-right">
+            &nbsp;
+        </span>
+        <span class="field">
+            &nbsp;
+        </span>
+    </div>
+
+</div>
+
+<fieldset>
+    <legend>Item Searching</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TypeId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.TypeId, Model.ItemTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.CategoryId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.CategoryId, Model.CategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ModelId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ModelId, Model.ModelList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ColorId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ColorId, Model.ColorList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.UnitId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.PurchaseId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.PurchaseId, Model.MRRList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Issue Item Info</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ItemId, Model.ItemList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.IssueQuantity)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.IssueQuantity)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CommentDetail)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.CommentDetail)
+        </span>
+        <div class="label-right">
+            <label id="stockLabel"></label>
+        </div>
+    </div>
+</fieldset>
+
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 70%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>
+                            Item
+                        </th>
+                        <th>
+                            unit
+                        </th>
+                        <th>
+                            Demand Quantity
+                        </th>
+                        <th>
+                            Issue Quantity
+                        </th>
+                        <th>
+                            Comment
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.IssueItemDetail.Count() > 0) { Html.RenderPartial("_Details", Model); }}
+                </tbody>
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</div>
+
+<div class="clear"></div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function openIssueToEmployee() {
+        $('#CheckStatus').val("To");
+        openEmployee();
+    }
+    function openIssueByEmployee() {
+        $('#CheckStatus').val("By");
+        openEmployee();
+    }
+
+
+    function openEmployee() {
+        @*var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';*@
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=1';
+        url = url.replace('INV', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    //function setData(id) {
+    //    if ($('#CheckStatus').val() == 'To') {
+    //        $('#IssuedToId').val(id);
+    //        //console.log($('#IssuedToId').val());
+    //    }
+    //    else {
+    //        $('#IssuedById').val(id);
+    //    }
+
+    //    GetEmployeeInfo();
+    //    $("#divEmpList").dialog('close');
+    //}
+
+    function setEmpData(id, useTypeEmpId) {
+        if (useTypeEmpId == 1) {
+            if ($('#CheckStatus').val() == 'To') {
+                $('#IssuedToId').val(id);
+            }
+            else {
+                $('#IssuedById').val(id);
+            }
+            GetEmployeeInfo();
+            $("#divEmpList").dialog('close');
+        }
+    }
+
+    function Closing() {
+
+    }
+
+    function GetEmployeeInfo() {
+        if ($('#CheckStatus').val() == 'To') {
+            var empId = $('#IssuedToId').val();
+            $('#IssuedTo').val('');
+        }
+        else {
+            var empId = $('#IssuedById').val();
+            $('#IssuedBy').val('');
+        }
+        //console.log(empId);
+        var url = '@Url.Action("GetEmployeeInfo", "ItemIssue")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (StringHasValue(obj.Result) == true) {
+                    alert(obj.Result);
+                }
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+                else {
+                    if (obj.IssuedTo != $('#IssuedTo').val()) {
+                        LoadIndentDDL();
+                    }
+                    $('#IssuedTo').val(obj.IssuedTo);
+                    $("#IssuedToId").val(obj.IssuedToId);
+                    $('#IssuedBy').val(obj.IssuedBy);
+                    $("#IssuedById").val(obj.IssuedById);
+
+                }
+
+            }, "json");
+        }
+
+        return false;
+    }
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+
+</script>
+
+<script type="text/javascript">
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+
+<script type="text/javascript">
+
+    $("#btnAdd").click(function () {
+        $("#message").empty();
+
+        if ($('#IndentId').val() == null || $('#IndentId').val() == '' || $('#IndentId').val() == '0') {
+            $("#IndentId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select Indent#.' + "</b>");
+            return false;
+
+        }
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+            $("#ItemId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select Item.' + "</b>");
+            return false;
+
+        }
+
+        if ($('#IssueQuantity').val() == null || $('#IssueQuantity').val() == '' || $('#IssueQuantity').val() == '0') {
+            $("#IssueQuantity").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please provide valid Quantity.' + "</b>");
+            return false;
+        }
+
+        var Id = $('#Id').val();
+        var ItemId = $('#ItemId').val();
+        var Item = $('#ItemId option:selected').text();
+        var IssueQuantity = $('#IssueQuantity').val();
+        var Comment = $('#CommentDetail').val();
+        var Unit = "";
+        if ($('#UnitId').val() != null && $('#UnitId').val() != '' && $('#UnitId').val() != '0') {
+            Unit = $('#UnitId option:selected').text();
+        }
+        var DemandQuantity = $('#DemandQuantity').val();
+        //if($('#PurchaseId').val() != '0')
+        var PurchaseId = $('#PurchaseId').val();
+        var requisitionId = $('#IndentId').val();
+
+        //console.log(ItemId);
+        var totalIssued = GetTotalIssuedQt(ItemId);
+        //console.log("Total Issued : " + totalIssued);
+        var url = '@Url.Action("AddDetail", "ItemIssue")';
+        var data = {
+            IssueId: Id,
+            ItemId: ItemId,
+            Item: Item,
+            IssueQuantity: IssueQuantity,
+            Comment: Comment,
+            DemandQuantity: DemandQuantity,
+            Unit: Unit,
+            PurchaseId: PurchaseId,
+            SumQty: totalIssued,
+            RequisitionId: requisitionId
+
+        };
+
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                //debugger;
+                if (html.Success) {
+                    $('#message').html("<b style='color:Red'>" + html.Message + "</b>");
+                    return false;
+                }
+
+                if ($(html).val() != 'Invalid') {
+
+                    $('#grid tbody').append(html);
+
+                    $('#ItemId').val('')
+                    $('#IssueQuantity').val('')
+                    $('#CommentDetail').val('')
+                    $('#TypeId').val('')
+                    $('#CategoryId').val('')
+                    $('#ModelId').val('')
+                    $('#ColorId').val('')
+                    $('#UnitId').val('')
+                    $('#PurchaseId').val('')
+
+                    $('#message').html('');
+
+                    $("#ItemId").removeClass("border-red");
+                    $("#IssueQuantity").removeClass("border-red");
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + 'Invalid.' + "</b>");
+                }
+            }
+        });
+
+        return false;
+
+    });
+
+
+    //function RemoveDb(el, id, url) {
+
+    //    if (id == 0 || id == undefined) {
+    //        $(el).parent().parent().remove();
+    //    }
+    //    else {
+    //        $.ajax({
+    //            url: url,
+    //            type: 'POST',
+    //            dataType: 'json',
+    //            data: JSON.stringify({ Id: id }),
+    //            contentType: "application/json; charset=utf-8",
+    //            error: function () {
+    //                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+    //            },
+    //            success: function (result) {
+    //                var errMsg = result.Message;
+    //                var errg = result.Success;
+    //                if (errg) {
+    //                    $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+    //                    $(el).parent().parent().remove();
+    //                }
+    //                else {
+    //                    $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+    //                }
+    //            }
+    //        });
+    //    }
+
+    //}
+
+</script>
+
+<script type="text/javascript">
+
+    $('#IndentId').live("change", function (e) {
+
+        $.get('@Url.Action("GetIndentDetails", "ItemIssue")', { IndentId: $('#IndentId').val() }, function (data) {
+            if (data.indentDate != null) {
+                $("#IndentDate").val(data.indentDate);
+            }
+            $("#IssuedToId").val(data.issuedToEmpId);
+            $("#IssuedTo").val(data.issuedTo);
+
+        });
+
+        LoadItemDDL();
+
+    });
+
+    $('#ItemId').live("change", function (e) {
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+
+            $("#TypeId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#CategoryId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ModelId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#UnitId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ColorId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $('#stockLabel').html('');
+        }
+        else {
+            $.get('@Url.Action("GetItemDetails", "ItemPurchase")', { itemId: $('#ItemId').val() }, function (data) {
+                $("#TypeId").val(data.typeId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#CategoryId").val(data.categoryId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ModelId").val(data.modelId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#UnitId").val(data.unitId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ColorId").val(data.colorId);
+                $('.select-single').trigger('chosen:updated');
+
+                $('#stockLabel').html('<b style=\"color:green\">Stock balance for this item: ' + data.stockBalance + '</b>');
+            });
+        }
+
+
+        $.get('@Url.Action("GetDemandQuantity", "ItemIssue")', { itemId: $('#ItemId').val(), indentId: $('#IndentId').val() }, function (data) {
+            if (data.DemandQuantity != null && data.DemandQuantity != "") {
+                $("#DemandQuantity").val(data.DemandQuantity);
+            }
+
+        });
+
+    });
+
+    //cascading dropdown Indent
+
+    $('#IndentDate').live("change", function (e) {
+        LoadIndentDDL();
+    });
+
+    //cascading dropdown Item
+    $("select#TypeId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#CategoryId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ModelId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#UnitId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ColorId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#PurchaseId").change(function () {
+        LoadItemDDL();
+    })
+
+    function LoadItemDDL() {
+
+        var IndentId = $("#IndentId").val();
+        var TypeId = $("#TypeId").val();
+        var CategoryId = $("#CategoryId").val();
+        var ModelId = $("#ModelId").val();
+        var UnitId = $("#UnitId").val();
+        var ColorId = $("#ColorId").val();
+        var PurchaseId = $("#PurchaseId").val();
+
+        var ItemSelect = $('select#ItemId');
+        ItemSelect.empty();
+
+        ItemSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        var url = '@Url.Action("GetItemList", "ItemIssue")' + '?TypeId=' + TypeId + '&CategoryId=' + CategoryId + '&ModelId=' + ModelId + '&UnitId=' + UnitId + '&ColorId=' + ColorId + '&IndentId=' + IndentId + '&PurchaseId=' + PurchaseId;
+        $.get(url, function (response) {
+            var heads = $.parseJSON(response);
+
+            var ddl = $("#ItemId");
+            // clear all previous options
+            $("#ItemId>option").remove();
+
+            // populate the products
+            for (i = 0; i < heads.length; i++) {
+
+                ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+            }
+            $('.select-single').trigger('chosen:updated');
+        });
+
+    }
+
+    function LoadIndentDDL() {
+
+        var IssuedToId = $("#IssuedToId").val();
+        var IndentDate = $("#IndentDate").val().toString("yyyy-MM-dd");
+
+        var IndentSelect = $('select#IndentId');
+        IndentSelect.empty();
+
+        IndentSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        var url = '@Url.Action("GetIndentList", "ItemIssue")';
+
+        $.get(url, { IssuedToId: IssuedToId, IndentDate: IndentDate }, function (response) {
+            var heads = $.parseJSON(response);
+
+            var ddl = $("#IndentId");
+            // clear all previous options
+            $("#IndentId>option").remove();
+
+            // populate the products
+            for (i = 0; i < heads.length; i++) {
+
+                ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+            }
+            $('.select-single').trigger('chosen:updated');
+        });
+
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    function GetTotalIssuedQt(itemId) {
+        var sum = 0;
+        $("#grid tbody tr .issueQt :input").each(function () {
+            var currentItemId = $(this).closest('tr').find('.itemIdInfo :input[type=hidden]').val();
+            var value = $(this).val();
+            if (itemId == currentItemId) {
+                sum += parseFloat(value);
+            }
+        });
+        return sum;
+    }
+</script>

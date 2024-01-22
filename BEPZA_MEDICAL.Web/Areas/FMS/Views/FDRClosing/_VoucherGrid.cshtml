@@ -1,0 +1,42 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRClosingViewModel
+
+@Html.HiddenFor(model => model.Id, new { id = "VIFDRId" })
+@Html.HiddenFor(model => model.FDRNo, new { id = "VIFDRNo" })
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var fdrNo = $('#VIFDRNo').val();
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetListforVoucher")?fdrNo=' + fdrNo,
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'FDR No.', 'FDR Amount', 'FDR Date', 'Maturity Date', 'Total Profit', 'Total Excise Duty Others', 'Tax Amount', 'Closing Amount', 'Interest Rate', 'Bank Name', 'Branch Name'],
+            colModel: [
+            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+            { name: 'FDRNumber', index: 'FDRNumber', align: 'left', width: '120px', search: false, edittype: 'text' },
+            { name: 'FDRAmount', index: 'FDRAmount', align: 'right', width: '100px', search: false, edittype: 'text' },
+            { name: 'FDRDate', index: 'FDRDate', align: 'center', width: '80px', search: false, edittype: 'text' },
+            { name: 'MaturityDate', index: 'MaturityDate', align: 'center', width: '80px', search: false, edittype: 'text' },
+            { name: 'ProfitAmount', index: 'ProfitAmount', align: 'right', width: '100px', search: false, edittype: 'text' },
+            { name: 'BankCharge', index: 'BankCharge', align: 'right', width: '100px', search: false, edittype: 'text' },
+            { name: 'TaxAmount', index: 'TaxAmount', align: 'right', width: '100px', search: false, edittype: 'text' },
+            { name: 'ClosingAmount', index: 'ClosingAmount', align: 'right', width: '100px', search: false, edittype: 'text' },
+            { name: 'InterestRate', index: 'InterestRate', align: 'center', width: '80px', search: false, edittype: 'text' },
+            { name: 'BankName', index: 'BankName', align: 'left', width: '100px', search: false, edittype: 'text' },
+            { name: 'BranchName', index: 'BranchName', align: 'left', width: '100px', search: false, edittype: 'text' },
+            ],
+            autowidth: true,
+            caption: "FDR Closing",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+    });
+</script>
+
+

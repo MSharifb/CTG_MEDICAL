@@ -1,0 +1,509 @@
+﻿@{
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+    ViewBag.Title = "Project Management Information";
+}
+
+<script src="~/Content/chartjs/Chart.js"></script>
+
+@*<div class="panel-group" id="accordion">
+    <div class="panel panel-default" id="accordion1">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion1" data-target="#collapseOne"><b>Budget Information</b></div>
+        <div class="panel-body panel-collapse collapse in" id="collapseOne">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-md-offset-1">
+                    <label>Financial Year: </label>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <select class="form-control" id="financialYearBV"></select>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-md-offset-1">
+                    <label>Approval Type: </label>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-4">
+                    <select class="form-control" id="approvalTypeBV"></select>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px">
+                <div class="col-md-7 col-md-offset-1">
+                    <div id="barChartDiv" class="chart">
+                        <canvas id="barChart" style="height:230px"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-4" style="margin-top: 5%;">
+                    <div id="pieChartDiv" class="chart">
+                        <canvas id="pieChart" style="height:230px"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" id="accordion2">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion2" data-target="#collapseTwo"><b>Zone Wise Project Status</b></div>
+        <div class="panel-body panel-collapse collapse in" id="collapseTwo">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-1">
+                    <label>Financial Year: </label>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control" id="financialYearPS"></select>
+                </div>
+                <div class="col-md-10 col-md-offset-1" style=" margin-top:1%">
+                    <table id="tableProjectStatus" class="table table-bordered table-hover">
+                        <thead style=" Background: #bdc3c7">
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Project Type</th>
+                                <th>Cost in Lakh</th>
+                                <th>Status</th>
+                                <th>Handover Date</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default" id="accordion3">
+        <div class="panel-heading" data-toggle="collapse" data-parent="#accordion3" data-target="#collapseThree"><b>Zone Wise Budget Status</b></div>
+        <div class="panel-body panel-collapse collapse in" id="collapseThree">
+            <div class="row">
+                <div class="col-md-2 col-md-offset-1">
+                    <label>Financial Year: </label>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control" id="financialYearBS"></select>
+                </div>
+                <div class="col-md-2 col-md-offset-2">
+                    <label>Approval Type: </label>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control" id="approvalTypeBS"></select>
+                </div>
+                <div class="col-md-10 col-md-offset-1" style=" margin-top:1%">
+                    <table id="tableBudgetStatus" class="table table-bordered table-hover">
+                        <thead style=" Background: #bdc3c7">
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Budget Amount</th>
+                                <th>Status</th>
+                                <th>Approval Date</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //LoadApprovalTypeDDL();
+        //LoadFinancialYearDDL();
+        //PopulateBarchart();
+        //PopulatePieChart();
+        //GetProjectStatus();
+        //GetBudgetStatus();
+
+    });
+
+    $("select#financialYearPS").change(function () {
+        GetProjectStatus();
+    })
+
+    $("select#financialYearBS").change(function () {
+        GetBudgetStatus();
+    })
+
+    $("select#approvalTypeBS").change(function () {
+        GetBudgetStatus();
+    })
+
+    $("select#financialYearBV").change(function () {
+        PopulateBarchart();
+        PopulatePieChart();
+    })
+
+    $("select#approvalTypeBV").change(function () {
+        PopulateBarchart();
+        PopulatePieChart();
+    })
+
+</script>
+
+<script>
+    function LoadApprovalTypeDDL() {
+
+        $.getJSON("@Url.Action("LoadApprovalTypeDDL")", null,
+            function (data) {
+
+                var currentAt = 0;
+                $("#approvalTypeBV").empty();
+                $("#approvalTypeBS").empty();
+
+                $.each(data, function () {
+                    $("#approvalTypeBV").append($("<option />").val(this.Id).text(this.Name));
+                    $("#approvalTypeBS").append($("<option />").val(this.Id).text(this.Name));
+
+                    if (this.Name == 'Approved') {
+                        currentAt = this.Id;
+                    }
+
+                    $("#approvalTypeBV").val(currentAt).attr("selected", "selected");
+                    $("#approvalTypeBS").val(currentAt).attr("selected", "selected");
+
+                });
+
+            });
+    }
+
+    function LoadFinancialYearDDL() {
+        $.getJSON("@Url.Action("LoadFinancialYearDDL")", null,
+        function (data) {
+
+            var currentFy = 0;
+            $("#financialYearBV").empty();
+            $("#financialYearBS").empty();
+            $("#financialYearPS").empty();
+
+            $.each(data, function () {
+
+                $("#financialYearBV").append($("<option />").val(this.Id).text(this.FinancialYearName));
+                $("#financialYearBS").append($("<option />").val(this.Id).text(this.FinancialYearName));
+                $("#financialYearPS").append($("<option />").val(this.Id).text(this.FinancialYearName));
+
+                if (this.IsActive == true) {
+                    currentFy = this.Id;
+                }
+
+                $("#financialYearBV").val(currentFy).attr("selected", "selected");
+                $("#financialYearBS").val(currentFy).attr("selected", "selected");
+                $("#financialYearPS").val(currentFy).attr("selected", "selected");
+
+
+            });
+
+        });
+    }
+</script>
+
+<script type="text/javascript">
+
+    function GetProjectStatus() {
+
+        var fyId = $("#financialYearPS").val();
+
+        var url = '@Url.Action("ProjectStatus", "Home")';
+
+        $.get(url, { fyId: fyId }, function (results) {
+
+            var previousZone = "";
+
+            $('#tableProjectStatus tbody').empty();
+            $('#nav').empty();
+
+            for (i = 0; i < results.length; i++) {
+
+                var d = new Date(parseInt(results[i].SiteHandoverDate.replace('/Date(', '')));
+                var handoverDate = (d.getFullYear() + '-' + ("0" + (d.getMonth() + 1)).slice(-2) + '-' + ("0" + d.getDate()).slice(-2));
+
+                if (results[i].ZoneName != previousZone) {
+                    $('#tableProjectStatus tbody').append("<tr><td colspan='5'><b>" + results[i].ZoneName + "</b></td></tr>");
+                }
+
+                $('#tableProjectStatus tbody').append("<tr><td>" + results[i].NameOfWorks + "</td><td>" + results[i].ProjectType + "</td><td>" + results[i].Cost + "</td><td>" + results[i].Status + "</td><td>" + handoverDate + "</td></tr>");
+
+                var previousZone = results[i].ZoneName;
+            }
+
+            $('#tableProjectStatus').after('<div id="nav" style="text-align: center;"></div>');
+            var rowsShown = 10;
+            var rowsTotal = $('#tableProjectStatus tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#nav').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+            }
+            $('#tableProjectStatus tbody tr').hide();
+            $('#tableProjectStatus tbody tr').slice(0, rowsShown).show();
+            $('#nav a:first').addClass('active');
+            $('#nav a').bind('click', function () {
+
+                $('#nav a').removeClass('active');
+                $(this).addClass('active');
+                var currPage = $(this).attr('rel');
+                var startItem = currPage * rowsShown;
+                var endItem = startItem + rowsShown;
+                $('#tableProjectStatus tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).
+                        css('display', 'table-row').animate({ opacity: 1 }, 300);
+                return false;
+            });
+
+        });
+    }
+</script>
+
+<script type="text/javascript">
+
+    function GetBudgetStatus() {
+
+        var fyId = $("#financialYearBS").val();
+        var atId = $("#approvalTypeBS").val();
+        var url = '@Url.Action("BudgetStatus", "Home")';
+
+        $.get(url, { fyId: fyId, atId: atId }, function (results) {
+
+            $('#tableBudgetStatus tbody').empty();
+            $('#navB').empty();
+
+            var previousZone = "";
+
+            for (i = 0; i < results.length; i++) {
+
+                var d = new Date(parseInt(results[i].ApprovalDate.replace('/Date(', '')));
+                var ApprovalDate = (d.getFullYear() + '-' + ("0" + (d.getMonth() + 1)).slice(-2) + '-' + ("0" + d.getDate()).slice(-2));
+
+                if (results[i].ZoneName != previousZone) {
+                    $('#tableBudgetStatus tbody').append("<tr><td colspan='4'><b>" + results[i].ZoneName + "</b></td></tr>");
+                }
+
+                $('#tableBudgetStatus tbody').append("<tr><td>" + results[i].NameOfWorks + "</td><td>" + results[i].BudgetAmount + "</td><td>" + results[i].Status + "</td><td>" + ApprovalDate + "</td></tr>");
+
+                var previousZone = results[i].ZoneName;
+            }
+
+            $('#tableBudgetStatus').after('<div id="navB" style="text-align: center;"></div>');
+            var rowsShown = 10;
+            var rowsTotal = $('#tableBudgetStatus tbody tr').length;
+            var numPages = rowsTotal / rowsShown;
+            for (i = 0; i < numPages; i++) {
+                var pageNum = i + 1;
+                $('#navB').append('<a href="#" rel="' + i + '">' + pageNum + '</a> ');
+            }
+            $('#tableBudgetStatus tbody tr').hide();
+            $('#tableBudgetStatus tbody tr').slice(0, rowsShown).show();
+            $('#navB a:first').addClass('active');
+            $('#navB a').bind('click', function () {
+
+                $('#navB a').removeClass('active');
+                $(this).addClass('active');
+                var currPage = $(this).attr('rel');
+                var startItem = currPage * rowsShown;
+                var endItem = startItem + rowsShown;
+                $('#tableBudgetStatus tbody tr').css('opacity', '0.0').hide().slice(startItem, endItem).
+                        css('display', 'table-row').animate({ opacity: 1 }, 300);
+                return false;
+            });
+
+        });
+    }
+</script>
+
+<script type="text/javascript">
+
+    function PopulateBarchart() {
+
+        $('#barChart').remove();
+        $('#barChartDiv').append('<canvas id="barChart"></canvas>');
+
+        var labelData = new Array();
+        var valueData = new Array();
+
+        var fyId = $("#financialYearBV").val();
+        var atId = $("#approvalTypeBV").val();
+
+        var jsonData = $.ajax({
+            url: '@Url.Action("BudgetBarChart", "Home")',
+            data: { fyId: fyId, atId: atId },
+            dataType: 'json',
+        }).done(function (results) {
+            for (i = 0; i < results.length; i++) {
+                labelData.push(results[i].ZoneName);
+                valueData.push(results[i].BudgetAmount);
+            }
+
+            var barChartData = {
+                labels: labelData,
+                datasets: [
+                    {
+                        label: "Budget",
+                        fillColor: " #85c1e9 ",
+                        strokeColor: " #85c1e9 ",
+                        pointColor: " #85c1e9 ",
+                        pointStrokeColor: "#c1c7d1",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: valueData
+                    }
+                ]
+            };
+
+            //-------------
+            //- BAR CHART -
+            //-------------
+            var barChartCanvas = $("#barChart").get(0).getContext("2d");
+            var barChart = new Chart(barChartCanvas);
+
+            var barChartOptions = {
+                //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+                scaleBeginAtZero: true,
+                //Boolean - Whether grid lines are shown across the chart
+                scaleShowGridLines: true,
+                //String - Colour of the grid lines
+                scaleGridLineColor: "rgba(0,0,0,.05)",
+                //Number - Width of the grid lines
+                scaleGridLineWidth: 1,
+                //Boolean - Whether to show horizontal lines (except X axis)
+                scaleShowHorizontalLines: true,
+                //Boolean - Whether to show vertical lines (except Y axis)
+                scaleShowVerticalLines: true,
+                //Boolean - If there is a stroke on each bar
+                barShowStroke: true,
+                //Number - Pixel width of the bar stroke
+                barStrokeWidth: 2,
+                //Number - Spacing between each of the X value sets
+                barValueSpacing: 1,
+                //Number - Spacing between data sets within X values
+                barDatasetSpacing: 1,
+                //String - A legend template
+                legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
+                //Boolean - whether to make the chart responsive
+                responsive: true
+            };
+
+            barChartOptions.datasetFill = false;
+            barChart.Bar(barChartData, barChartOptions);
+
+        });
+
+    };
+</script>
+
+<script type="text/javascript">
+    function PopulatePieChart() {
+
+        $('#pieChart').remove();
+        $('#pieChartDiv').append('<canvas id="pieChart"></canvas>');
+
+        var fyId = $("#financialYearBV").val();
+        var atId = $("#approvalTypeBV").val();
+
+        var PieData = [];
+        var jsonData = $.ajax({
+            url: '@Url.Action("BudgetPieChart", "Home")',
+            data: { fyId: fyId, atId: atId },
+            dataType: 'json',
+        }).done(function (results) {
+
+            PieData = results.PieData;
+
+            //-------------
+            //- PIE CHART -
+            //-------------
+            // Get context with jQuery - using jQuery's .get() method.
+            var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+            var pieChart = new Chart(pieChartCanvas);
+
+            var pieOptions = {
+                //Boolean - Whether we should show a stroke on each segment
+                segmentShowStroke: true,
+                //String - The colour of each segment stroke
+                segmentStrokeColor: "#fff",
+                //Number - The width of each segment stroke
+                segmentStrokeWidth: 2,
+                //Number - The percentage of the chart that we cut out of the middle
+                percentageInnerCutout: 0, // This is 0 for Pie charts
+                //Number - Amount of animation steps
+                animationSteps: 100,
+                //String - Animation easing effect
+                animationEasing: "easeOutBounce",
+                //Boolean - Whether we animate the rotation of the Doughnut
+                animateRotate: true,
+                //Boolean - Whether we animate scaling the Doughnut from the centre
+                animateScale: false,
+                //Boolean - whether to make the chart responsive to window resizing
+                responsive: true,
+                // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+                maintainAspectRatio: true,
+                //String - A legend template
+                legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
+                //Newly added
+                tooltipTemplate: "<%=label%>: <%= Math.round(circumference / 6.283 * 100) %>%"
+
+            };
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+
+            pieChart.Doughnut(PieData, pieOptions);
+        });
+
+    }
+</script>
+
+<style type="text/css">
+    #nav a {
+        border: 1px solid #CCC;
+        padding: 2px 4px;
+        border-radius: 3px;
+    }
+
+    #navB a {
+        border: 1px solid #CCC;
+        padding: 2px 4px;
+        border-radius: 3px;
+    }
+
+    .panel-heading {
+        cursor: pointer;
+    }
+
+    @@media only screen and (max-width: 1400px) {
+        #barChart {
+            width: 550px !Important;
+            width: 100%;
+            height: 340px !Important;
+            height: 100%;
+        }
+
+        #pieChart {
+            /*width: 360px !Important;
+            width: 100%;
+            height: 180px !Important;
+            height: 100%;*/
+        }
+    }
+
+    @@media only screen and (max-width: 1100px) {
+        #barChart {
+            width: 440px !Important;
+            width: 100%;
+            height: 300px !Important;
+            height: 100%;
+        }
+    }
+
+    @@media only screen and (max-width: 800px) {
+        #barChart {
+            width: 450px !Important;
+            width: 100%;
+            height: 350px !Important;
+            height: 100%;
+        }
+    }
+
+    @@media only screen and (max-width: 400px) {
+        #barChart {
+            width: 350px !Important;
+            width: 100%;
+            height: 250px !Important;
+            height: 100%;
+        }
+    }
+</style>

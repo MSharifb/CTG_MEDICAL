@@ -1,0 +1,42 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Employee.EmployeeContractAttachmentFiles
+@using BEPZA_MEDICAL.Web.Helpers
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("AttachmentFilesList"))
+    {
+        if (Model != null)
+        {
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.EmpContactInfoId)
+            @Html.HiddenFor(model => model.ContentType)
+            @Html.HiddenFor(model => model.Size)
+
+        }
+
+        <td width="35%" style="text-align: center">
+            @Html.TextBoxFor(model => model.UserFileName)
+        </td>
+        <td width="25%" style="text-align: center">
+            @Html.TextBoxFor(model => model.OriginalName, new { @style = "padding:0px;text-align:left;cursor:default;background-color: #f2f5f8;", @readonly = true })
+        </td>
+        <td width="20%" style="text-align: center">
+            @Html.TextBoxFor(model => model.Attachment, new { @type = "file", @id = "Attachment" })
+        </td>
+
+        <td width="8%" style="text-align: center">
+            @if (Model.Id != 0)
+            {
+                 @*@Html.ActionLink("Download", "GetEmpAttachedFile", new { id = Model.Id }, new { id = "hlDowload", target = "_blank"})*@
+                @Html.ActionLink(" ", "GetEmpAttachedFile", new { id = Model.Id }, new { id = "hlDowload", target = "_blank", @class = "downloadItem" })
+            }
+        </td>
+
+        <td width="5%">
+            @if (Model.Id != 0)
+            {
+                @Html.ActionLink(" ", "DeleteAttachmentFile", new { id = Model.Id }, new { @class = "deleteRow deleteItem" })
+                @*@Html.ActionLink("Remove", "DeleteAttachmentFile", new { id = Model.Id }, new { @class = "deleteRow" })*@
+            }
+        </td>
+
+    }
+</tr>

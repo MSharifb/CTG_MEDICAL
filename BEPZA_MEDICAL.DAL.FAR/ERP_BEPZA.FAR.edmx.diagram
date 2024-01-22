@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="fd44048385c04bdaaabbac47404caad3" Name="Diagram1" ZoomLevel="61" >
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AccidentInformation" Width="1.5" PointX="13.5" PointY="14.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicle" Width="1.5" PointX="13.5" PointY="30" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AdditionalInfoofVehicleDetail" Width="1.5" PointX="15.75" PointY="30.625" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetCondition" Width="1.5" PointX="3" PointY="16.625" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformation" Width="1.5" PointX="13.5" PointY="35.375" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetMaintenanceInformationDetail" Width="1.5" PointX="15.75" PointY="25.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetStatus" Width="1.5" PointX="0.75" PointY="16.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationMethod" Width="1.5" PointX="6.75" PointY="23.125" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Location" Width="1.5" PointX="9" PointY="6.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_MaintenanceTypeInformation" Width="1.5" PointX="11.25" PointY="35.5" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_SparePartInformation" Width="1.5" PointX="13.5" PointY="25.625" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Supplier" Width="1.5" PointX="9" PointY="10.75" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_AdditionalInfoofVehicle" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicleDetail_FAR_SparePartInformation" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetCondition_FAR_AssetStatus" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformation_FAR_MaintenanceTypeInformation" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_AssetMaintenanceInformation" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetMaintenanceInformationDetail_FAR_SparePartInformation" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Catagory" Width="1.5" PointX="9" PointY="1.625" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_SubCategory" Width="1.5" PointX="9" PointY="22.25" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Catagory_FAR_DepreciationMethod" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SubCategory_FAR_Catagory" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_AssetTransfer" Width="1.5" PointX="13.5" PointY="7.625" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Repair" Width="1.5" PointX="16.5" PointY="13.25" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_SaleDisposal" Width="1.5" PointX="16.5" PointY="7.125" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetCondition" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetCondition" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_AssetStatus" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_AssetStatus" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_AssetStatus" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_Location1" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_FixedAsset" Width="1.5" PointX="11.25" PointY="9" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AccidentInformation_FAR_FixedAsset" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AdditionalInfoofVehicle_FAR_FixedAsset" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetCondition" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_AssetStatus" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_AssetTransfer_FAR_FixedAsset" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Catagory" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_Location" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_FixedAsset_FAR_SubCategory" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Repair_FAR_FixedAsset" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_SaleDisposal_FAR_FixedAsset" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.acc_Accounting_Period_Information" Width="1.5" PointX="15.375" PointY="19.25" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_Depreciation" Width="1.5" PointX="17.25" PointY="1.875" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FAR.FAR_DepreciationDetail" Width="1.5" PointX="19.5" PointY="13.25" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_Depreciation_acc_Accounting_Period_Information" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetCondition" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_AssetStatus" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_Depreciation" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FAR.FK_FAR_DepreciationDetail_FAR_FixedAsset" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

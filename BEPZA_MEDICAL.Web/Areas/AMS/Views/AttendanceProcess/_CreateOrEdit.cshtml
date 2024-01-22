@@ -1,0 +1,17 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.AttendanceProcess.AttendanceProcessViewModel
+
+<div class="row">
+    <span class="label">
+        @Html.LabelFor(model => model.ProcessDate)
+        <label class="required-field">*</label>
+    </span><span class="field">
+               @Html.EditorFor(model => model.ProcessDate, new { @class = "required" })
+    </span>
+</div>
+
+<div class="clear">
+</div>
+
+
+
+

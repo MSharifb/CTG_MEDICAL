@@ -1,0 +1,130 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftChange.ShiftChangeViewModel
+@using ERP_BEPZA.Web.Helpers
+@Html.HiddenFor(m => m.Mode)
+<div class="GroupBox">
+    <div id="pageData"></div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DepartmentId)
+        <label class="required-field">
+            *
+        </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.DepartmentId, Model.Department, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.GradeId)
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.GradeId, Model.Grade, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        @*<span class="label-right">
+            @Html.LabelFor(model => model.EffectiveDate)
+        <label class="required-field">
+            *
+        </label>
+        </span><span class="field">
+                   @Html.EditorFor(model => model.EffectiveDate, new { @class = "required" }) 
+        </span>*@
+    </div>
+<div class="row">
+    <span class="label">
+        @Html.LabelFor(model => model.ShiftId)
+    </span><span class="field">
+        @Html.DropDownListFor(model => model.ShiftId, Model.Shift, @String.Format("{0}", Content.DDLOptionalLabel()))
+    </span>
+    <span class="label-right">
+        @Html.LabelFor(model => model.RosterId) 
+    </span><span class="field">
+               @Html.DropDownListFor(model => model.RosterId, Model.ShiftGroup, @String.Format("{0}", Content.DDLOptionalLabel()))
+    </span>
+    
+</div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ApplyType)
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.ApplyType, Model.ApplyTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+
+    </div>
+
+<div class="clear">
+</div>
+
+</div>
+
+<br />
+@using (Html.BeginForm("Create", "ShiftChange", FormMethod.Post, new { id = "frm" }))
+{
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 90%">
+            <table id="grid" class="contenttable" width="50%">
+                <thead>
+                    <tr>
+                        <th width="5%" align="center">
+                            <input type="checkbox" class="chkAll" name="chk" /> All
+                        </th>
+                        <th width="10%" align="center">
+                            I.C. No.
+                        </th>
+                        <th width="15%" align="center">
+                            Employee Name
+                        </th>
+                        <th width="10%" align="center">
+                            Designation 
+                        </th>
+                        <th width="10%" align="center">
+                            Date of Joining 
+                        </th>
+                        <th width="10%" align="center">
+                            Rester Day
+                        </th>
+                        <th width="10%" align="center">
+                            Shift Group
+                        </th>
+                        <th width="10%" align="center">
+                           Shift Name
+                        </th>
+                        <th width="15%" align="center">
+                            Effective Date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.Mode == "Edit") { var list = new List<ERP_BEPZA.Web.Areas.AMS.Models.ShiftChange.ShiftChangeViewModel>(); list.Add(Model); Html.RenderPartial("_Details", list); }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="button-crude">
+    @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+    {
+        <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+    }
+    <input type="button" value="Clear" id="btnClear" name="btnClear" />
+</div>
+
+}
+
+<script>
+    $("#pageData").data("URL", { initEmp: '@Url.Action("GetEmployeeList", "ShiftChange")', addEmp: '@Url.Action("AddedEmployee", "ShiftChange")' });
+</script>
+<script src="@Url.Content("~/Scripts/AMS/ShiftChange.js")"></script>
+
+<script>
+    // new Add
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+

@@ -1,0 +1,7 @@
+﻿@model IList<SelectListItem>
+<select id="EmpId" name="EmpId"> 
+    <option selected="selected" value=''>[All]</option>
+    @foreach (var value in Model) {
+        <option value='@value.Value'>@value.Text</option>
+    }
+</select>

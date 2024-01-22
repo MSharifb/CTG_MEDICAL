@@ -1,0 +1,20 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApprovalFlowDrawViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("ApprovalFlowInitializationList"))
+{
+    <i class="fa fl-3x fa-arrow-circle-down"></i>
+    <br />
+    @Html.HiddenFor(m => m.StepId)
+    <label>
+        @Html.RadioButton("rdoInitialization", Model.StepId, Model.InitialStepId)
+        <span class="step-name">@Model.StepName</span>
+    </label>
+    <br />
+    <span class="approver-name">
+        @Model.ApproverIdAndName
+    </span>
+    <br />
+}
+
+

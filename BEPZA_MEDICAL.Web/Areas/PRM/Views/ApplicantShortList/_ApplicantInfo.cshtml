@@ -1,0 +1,48 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantShortListViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ApplicantShortList"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ApplicantShortListId)
+        @Html.HiddenFor(x => x.ApplicantInfoId)
+       
+        <td style="width: 30px; text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>
+        <td width="10%" style="text-align: left">            
+            @Html.HiddenFor(x => x.DesignationId, new { @class = "appDesignationId" })
+            @Html.Encode(Model.DesignationName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.ApplicantName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.FatherName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.MotherName)
+        </td>
+        <td width="8%" style="text-align: center">
+            @Html.Encode(Model.DateOfBirth)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.NID)
+            @Html.HiddenFor(x => x.CGPA)
+            @Html.HiddenFor(x => x.YearOfExperience)
+        </td>
+        <td width="8%" style="text-align: center">
+            <a href="#" title="view" onclick="ViewApplicantInfo(this,@Model.ApplicantInfoId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>
+        @*<td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>*@
+    }
+</tr>
+
+

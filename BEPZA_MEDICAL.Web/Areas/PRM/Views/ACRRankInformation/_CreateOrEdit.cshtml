@@ -1,0 +1,42 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRRankInformationViewModel
+
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RankName)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.RankName)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromMark)
+        </span><span class="field">
+            @Html.EditorFor(model => model.FromMark)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ToMark)
+        </span><span class="field">
+            @Html.EditorFor(model => model.ToMark)
+        </span>
+    </div>
+</div>
+<script>
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+

@@ -1,0 +1,203 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.OrganogramLevelViewModel
+@{
+    Layout = null;
+}
+
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Model.Mode == "Create" ? "../Create" : "../Edit" }))
+{
+    <div class=".frm-content">
+        @Html.HiddenFor(m => m.Id)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.ParentId)
+                    @Html.LabelFor(model => model.OrganogramTypeId)
+                    <span class="required-field">*</span>
+                </span>
+                <span class="field">
+                   
+                    @if (Model.Mode == "Edit")
+                    {    @Html.HiddenFor(model => model.OrganogramTypeId)
+                        @Html.TextBoxFor(model => model.OrganogramTypeName, new { @class = "read-only", @readonly = true })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.OrganogramTypeId, Model.OrganogramTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                    } 
+                    @*@Html.DropDownListFor(m => m.OrganogramTypeId, Model.OrganogramTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))*@
+                   
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Code)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.Code)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.LevelName)
+                    <span class="required-field">*</span>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.LevelName)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Position)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.Position)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Prefix)
+                    <span class="required-field">*</span>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.Prefix)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.IsActive)
+                    <span class="required-field">*</span>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.IsActive)
+                </span>
+            </div>
+
+            <div class="clear"></div>
+        </div>
+
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+            }
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+            }
+
+            <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+
+        </div>
+
+        <div class="button-crude button-left" style="float: left;">
+            @Html.ActionLink("Back to List", "Index")
+            @*@Ajax.ActionLink("Back to List", "GetTreeView", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })*@
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+        // var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            // window.location.href = Url;
+            $('input[type="text"]').val('');
+            $('select').val('');
+        });
+
+        if ('@Model.Mode' == 'Edit') {
+            //$('#OrganogramTypeId').attr("disabled", true);
+            $('#btnClear').hide();
+
+        }
+    });  
+
+    function OnComplete(content) {
+        var data = content.responseText;
+        if (data.toLowerCase().indexOf("updated") >= 0) {
+
+            $("#message").show();
+            $('#message').text(data).css({ 'color': 'green' });
+            $("#message").delay(3000).hide('slow');
+
+            $.get(
+                    "@Url.Action("GetTreeView")",
+                    {},
+                    function (r) {
+                        if (r != '') {
+                            $('.search-content').show();
+                            $('.frm-content').html(r);
+                        }
+                        else {
+                            $('.search-content').hide();
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color': 'red' });
+                            $("#message").delay(3000).hide();
+                        }
+                    }
+                );
+    }
+    else if (data.toLowerCase().indexOf("saved") >= 0) {
+        $("#message").show();
+        $('#message').text(data).css({ 'color': 'green' });
+        $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("GetTreeView")",
+                {},
+                function (r) {
+                    if (r != '') {
+                        $('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else {
+                        $('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color': 'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else {
+        $('.search-content').hide();
+        $("#message").show();
+        $('#message').text(data).css({ 'color': 'red' });
+        $("#message").delay(3000).hide('slow');
+    }
+}
+
+function OnCompleteBacktoList(content) {
+
+    if (content.statusText == 'OK') {
+        $('.search-content').show();
+        $('.frm-content').html(content.responseText);
+    }
+}
+
+$(function () {
+    var mode = '@Model.Mode';
+    $.validator.unobtrusive.parse('#frm');
+
+    $('#AccountHeadType').change(function () {
+        var headType = $('#AccountHeadType option:selected').text();
+
+        $.getJSON("@Url.Action("GetParentHead")" + "?accountType=" + headType, function (result) {
+            var options = $("#ParentHeadCode");
+            options.empty();
+
+            //don't forget error handling!
+            options.append($("<option />").val("").text('[Select One]'));
+            $.each(result, function (i) {
+                // var element = "<option value='"+ result[i].value +"A'>" + result[i].text + "</option>";
+                // alert(element);
+                options.append($("<option />").val(result[i].value).text(result[i].text));
+            });
+        });
+    })
+
+    if (mode == 'Create') {
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+    }
+    else {
+        $('#btnUpdate').show();
+        $('#btnSave').hide();
+    }
+})
+</script>

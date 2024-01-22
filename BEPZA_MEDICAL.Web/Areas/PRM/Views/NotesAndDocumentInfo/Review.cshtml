@@ -1,0 +1,159 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NotesAndDocumentInfoViewModel
+
+@{
+    ViewBag.Title = "Review";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+
+<fieldset>
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmpId)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeName)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.DesignationName)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.DesignationName, new { @class = "read-only", @readonly = true })
+
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DivisionName)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.DivisionName, new { @class = "read-only", @readonly = true })
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.SectionName)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.SectionName, new { @class = "read-only", @readonly = true })
+
+            </span>
+        </div>
+    </div>
+
+    <div class="GroupBox">
+
+        <table id="grid" class="contenttable">
+            <thead>
+                <tr>
+                    <th>
+                        Ref. No.
+                    </th>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Subject
+                    </th>
+                    <th>
+                        Details
+                    </th>
+                    <th>
+                        View Comments
+                    </th>
+                    <th>
+                        Download
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @for (int i = 0; i < Model.NotesAndDocumentInfoAttachmentDetail.Count; i++)
+                {
+                    var item = Model.NotesAndDocumentInfoAttachmentDetail.ToList()[i];
+                    <tr>
+                        <td style="width:10%">
+                            <label> @item.RefNo</label>
+                        </td>
+                        <td style="width:10%">
+                            <label>@String.Format("{0:dd-MM-yyyy}", @item.Date)</label>
+                        </td>
+                        <td style="width: 20%;text-align:left">
+                            <label> @item.Subject</label>
+                        </td>
+                        <td style="width: 30%;text-align:left">
+                            <label> @item.Details</label>
+                        </td>
+                        <td style="width: 15%; text-align: center">
+                            @if (@item.Id > 0)
+                            {
+                                <a href="#" title="View Comment" onclick="ViewComment(this,@item.Id,'@Url.Action("ViewComment")')">
+                                    <img src='@Url.Content("~/Content/Images/view.png")' alt="view" style="border: none; " />
+                                </a>
+                            }
+                        </td>
+                        <td style="width: 15%;text-align:center">
+                            @if (@item.IsAddAttachment)
+                            {
+                                <a href="@item.FilePath" visible="true" runat="server" target="_blank">
+                                    <img src='@Url.Content("~/Content/Images/download.png")' alt="download" style="border: none; " />
+                                </a>
+                            }
+                            else
+                            {
+                                <a>No Attachment</a>
+                            }
+
+                        </td>
+                    </tr>
+                }
+
+        </table>
+    </div>
+</fieldset>
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+
+    function ViewComment(el, id, href) {
+        var url = href + '/' + id;
+        //  var url = $(this).attr('href');
+        $("#ViewCommentList").dialog({
+            title: 'Commetn Details',
+            autoOpen: false,
+            resizable: false,
+            height: 550,
+            width: 800,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function (event, ui) {
+                $(this).load(url);
+
+            },
+            close: function () {
+
+            }
+        });
+
+        $("#ViewCommentList").dialog('open');
+        return false;
+    }
+
+</script>
+
+<div id='ViewCommentList' style="height: 20px">
+
+</div>

@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9891EC49-02E9-4FB4-95BF-A75C88E1B70D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.DAL.INV</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.DAL.INV</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APV_GetINVRequisitionApplication_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonConfigType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.INV.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.INV.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="fn_INV_GetItemBalanceByMRR_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fn_INV_GetItemClosingBalance_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="fn_INV_GetItemOpeningBalance_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_AdjustmentInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_AdjustmentItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_AssetQuotaInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_Category.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_Color.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_DelegationApprovalInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_ExecuteFunctions.cs" />
+    <Compile Include="INV_GenericRepository.cs" />
+    <Compile Include="INV_IssueInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_IssueItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_IssueReturnInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_IssueReturnItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_ItemInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_ItemStatus.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_ItemType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_Manufacturer.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_Model.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_PeriodicAssetDuration.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_PurchaseInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_PurchaseItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_PurchaseType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_RequisitionInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_RequisitionItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_ScrapInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_ScrapItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_ScrapItemHistory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_SupplierInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_TransferInInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_TransferInItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_TransferOutInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_TransferOutItem.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_Unit.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_UnitOfWork.cs" />
+    <Compile Include="INV_uspAdjustmentVoucherPosting_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="INV_uspPurchaseVoucherPosting_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRM_EmploymentInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PRM_ZoneInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sp_INV_PendingRequisitionList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_PendingScrapList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_PendingTransferList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptEmployeeWiseItemLedger_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptIssueInfo_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptIssueReturn_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptItemLedger_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptPurchaseInfo_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptStockBalance_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptTransferInInfo_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_INV_RptTransferOutInfo_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwINVBudgetHead.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwINVItemHistory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="ERP_BEPZA.INV.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ERP_BEPZA.INV.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ERP_BEPZA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.INV.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ERP_BEPZA.INV.edmx.diagram">
+      <DependentUpon>ERP_BEPZA.INV.edmx</DependentUpon>
+    </None>
+    <None Include="ERP_BEPZA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.INV.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

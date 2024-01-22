@@ -1,0 +1,78 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="ReportMasterLayout.master.cs" Inherits="ERP_BEPZA.Web.Reports.Common.MasterPage.ReportMasterLayout" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Bangladesh Export Processing Zones Authority</title>
+    <link rel="icon" type="image/png" href="~/Content/Images/bepza_logo.jpg" />
+
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />   
+    <link href="~/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" />
+  
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+   
+    <script src="~/assets/plugins/jQuery/jquery-2.2.3.min.js" type="text/javascript"></script>
+    <script src="~/assets/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="~/assets/js/bootstrap-multiselect.js" type="text/javascript"></script>
+    <script src="~/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="../../../Scripts/validation.js" type="text/javascript"></script>
+    <script src="../../../Scripts/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="../../../Scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+    <script src="../../../Scripts/CommonJS.js" type="text/javascript"></script>
+    <script src="../../../Scripts/modernizr-1.7.min.js" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('[id*=ddlZone]').multiselect({
+                includeSelectAllOption: true
+            });
+        });
+    </script>
+    <script type='text/javascript'>
+        $(function () {
+            $("input:submit, input:button, button", ".jqUI").button();
+            $(".datePicker").datepicker({ buttonImage: '../../../Content/Images/calendar-blue.gif', dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+        });
+    </script>
+    <script type='text/javascript'>
+        function DateImageShow() {
+            $("input:submit, input:button, button", ".jqUI").button();
+            $(".datePicker").datepicker({ buttonImage: '../../../Content/Images/calendar-blue.gif', dateFormat: 'dd-mm-yy', changeMonth: true, changeYear: true, buttonImageOnly: true, showOn: "button", buttonText: 'Choose' });
+        }
+    </script>
+    <style type="text/css">
+        #ui-datepicker-div {
+            z-index: 1000 !important;
+        }
+
+        .form-horizontal .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .form-horizontal .form-group {
+            margin-bottom: 5px;
+        }    
+        .form-control {
+            border-radius: 0px;
+            padding: 5px 4px;
+            width: 80%;
+            height: 28px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server">
+        </asp:ScriptManager>
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+    </form>
+</body>
+</html>

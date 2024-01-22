@@ -1,0 +1,169 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.ReferenceInfoViewModel
+@using (Html.BeginForm(@Model.ActionType, "PersonalInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Type)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.TitleId)</span> <span class="field">@Html.DropDownListFor(model => model.TitleId, Model.TitleList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+                <span class="label-right">@Html.LabelFor(model => model.FirstName)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(model => model.FirstName)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.LastName)</span> <span class="field">@Html.EditorFor(model => model.LastName)</span>
+                <span class="label-right">@Html.LabelFor(model => model.FullName)</span> <span class="field">@Html.EditorFor(model => model.FullName)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.Organization)</span>
+                <span class="field">@Html.TextBoxFor(model => model.Organization)</span>
+                <span class="label-right">@Html.LabelFor(model => model.Email)</span>
+                <span class="field">@Html.EditorFor(model => model.Email)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.DesignationRG)</span> <span class="field">@Html.EditorFor(model => model.DesignationRG)</span>
+                <span class="label-right">@Html.LabelFor(model => model.Relation)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(model => model.Relation)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.MobileNo)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(model => model.MobileNo)</span>
+
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.HomePhone)</span> <span class="field">@Html.EditorFor(model => model.HomePhone)@Html.LabelFor(model => model.HomePhoneExt)@Html.EditorFor(model => model.HomePhoneExt)</span>
+                <span class="label-right">@Html.LabelFor(model => model.OfficePhone)</span>
+                <span class="field">@Html.EditorFor(model => model.OfficePhone)@Html.LabelFor(model => model.OfficePhoneExt)@Html.EditorFor(model => model.OfficePhoneExt)</span>
+            </div>
+
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.HomeAddress)<label class="required-field">*</label></span>
+                <span class="field">@Html.TextAreaFor(model => model.HomeAddress, new { @maxlength = 200 })</span>
+                <span class="label-right">@Html.LabelFor(model => model.OfficeAddress)</span>
+                <span class="field">@Html.TextAreaFor(model => model.OfficeAddress, new { @maxlength = 200 })</span>
+                <div class="clear"></div>
+            </div>
+
+
+            <div class="row ">
+                <span class="label">
+                    @Html.CheckBoxFor(model => model.IsAddPhoto) @Html.LabelFor(model => model.IsAddPhoto)
+                </span>
+                <span class="field">
+                    <span class="field add-photo">
+                        <input name="Photo" id="Photo" type="file" />
+                    </span>
+                </span>
+            </div>
+            <div class="row ref-add-photo">
+                <span class="label">&nbsp;</span>
+                <span class="field">
+                    <div style="border: 1px solid #D2DDE7; width: 150px; height: 150px; margin:3px 0">
+                        @if (Model != null)
+                        {
+                            if (String.IsNullOrEmpty(Model.ImageUrl) && Model.IsAddPhoto)
+                            {
+                                <img width="150" height="150" src="@Url.Action("GetReferenceGuarantorImage", "TempPersonalInfo", new { id = Model.Id })" />
+                            }
+                            @*else
+                        {
+                            <img height="150" width="150"
+                                 src="@(Model.ImageUrl)"
+                                 id="uploadedImage" alt="@Model.ImageAltText" />
+
+                        }*@
+                        }
+                    </div>
+                </span>
+            </div>          
+            <div class="clear">
+            </div>
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" />
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteReferenceInfo", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "ReferenceInfoIndex/" + @Model.EmployeeId.ToString(), new { controlType = Model.Type }, null)
+            }
+        </div>
+    </fieldset>
+
+    <div class="grid">
+        <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_ReferenceGuarantorList", Model)
+    </div>
+    <div class="clear">
+    </div>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    if (!$('#IsAddPhoto').is(':checked')) {
+        $('.add-photo').hide();
+        $('.ref-add-photo').hide();
+    }
+
+    $('#IsAddPhoto').click(function () {
+        if ($('#IsAddPhoto').is(':checked')) {
+            $('.add-photo').show();
+            $('.ref-add-photo').show();
+        }
+        else {
+            $('.add-photo').hide();
+            $('.ref-add-photo').hide();
+        }
+    })
+
+    $(function () {
+        $("#TitleId").change(function () {
+            AutoFullName();
+        });
+        $("#FirstName, #LastName").keyup(function () {
+            AutoFullName();
+        });
+    })
+
+    $(function () {
+        $("#Photo").change(function () {
+            var val = $("#Photo").val();
+            var aval = val.split('.');
+            val = aval[aval.length - 1].toUpperCase();
+            if (val == 'JPG' || val == 'GIF') {
+            }
+            else {
+                alert("Please select JPG or GIF image file only.");
+                $("#Photo").val("");
+            }
+
+        });
+    })
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+    function AutoFullName() {
+        $("#FullName").val(($('#TitleId').val() == '' ? '' : ($('#TitleId option:selected').text()) + ' ')
+            + $.trim($('#FirstName').val()) + ' ' + $.trim($('#LastName').val()));
+    }
+</script>

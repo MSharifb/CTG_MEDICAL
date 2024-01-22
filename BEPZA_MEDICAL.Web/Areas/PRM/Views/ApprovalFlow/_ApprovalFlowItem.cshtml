@@ -1,0 +1,34 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApprovalFlowDetailViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+
+@using (Html.BeginCollectionItem("ApprovalFlowDetailList"))
+{
+    <tr>
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.ApprovalStepTypeId)
+        @Html.HiddenFor(m => m.StepName)
+        @Html.HiddenFor(m => m.StepTypeName)
+        @Html.HiddenFor(m => m.StepSequence)
+        @Html.HiddenFor(m => m.NotificationMessage)
+
+        <td class="step-name">@Model.StepName</td>
+        <td class="step-type">@Model.StepTypeName</td>
+        <td class="step-sequence">@Model.StepSequence</td>
+        <td class="step-notificationMsg">@Model.NotificationMessage</td>
+        <td class="control-option">
+            <button type="button" class="btn btn-sm btn-primary delete-button">
+                <i class="fa fa-lg fa-trash"></i>
+            </button>
+        </td>
+    </tr>
+}
+
+<script type="text/javascript">
+    $('.control-option .delete-button').click(function () {
+        $(this).closest('tr').nextAll().remove();
+        $(this).closest('tr').remove();
+        SetSequenceDdlValue();
+        return false;
+    });
+</script>

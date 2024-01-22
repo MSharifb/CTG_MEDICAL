@@ -1,0 +1,157 @@
+﻿/************Home************/
+
+.dashboard
+{
+	margin: 15px;
+}
+
+.dashboard td
+{
+	padding:10px;
+}
+
+a.personnelinfo
+{
+	background-image: url(../Content/Images/Dashboard/Mdl_button_Personnel_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+a.personnelinfo:hover
+{
+	background-image: url(../Content/Images/Dashboard/Mdl_button_Personnel_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+
+
+a.projectinfo
+{
+	background-image: url(../Content/Images/Dashboard/mdl_ProjectInfo.Management_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+a.projectinfo:hover
+{
+	background-image: url(../Content/Images/Dashboard/mdl_ProjectInfo.Management_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+
+a.accmanagemnt
+{
+	background-image: url(../Content/Images/Dashboard/mdl_AccountingManagement_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+a.accmanagemnt:hover
+{
+	background-image: url(../Content/Images/Dashboard/mdl_AccountingManagement_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+
+a.astmanagmnt
+{
+	background-image: url(../Content/Images/Dashboard/mdl_AssetManagement_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+a.astmanagmnt:hover
+{
+	background-image: url(../Content/Images/Dashboard/mdl_AssetManagement_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+
+a.providentfndmanagmnt
+{
+	background-image: url(../Content/Images/Dashboard/mdl_ProvidentFund_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+a.providentfndmanagmnt:hover
+{
+	background-image: url(../Content/Images/Dashboard/mdl_ProvidentFund_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+a.payrollmanagmnt
+{
+	background-image: url(../Content/Images/Dashboard/mdl_PayrollManagement_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+a.payrollmanagmnt:hover
+{
+	background-image: url(../Content/Images/Dashboard/mdl_PayrollManagement_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+
+a.leavemanagemnt
+{
+	background-image: url(../Content/Images/Dashboard/mdl_LeaveManagement_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+a.leavemanagemnt:hover
+{
+	background-image: url(../Content/Images/Dashboard/mdl_LeaveManagement_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+
+a.usermanagemnt
+{
+	background-image: url(../Content/Images/Dashboard/mdl_UserManagement_n.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}
+
+a.usermanagemnt:hover
+{
+	background-image: url(../Content/Images/Dashboard/mdl_UserManagement_u.gif);
+	height: 109px;
+	width: 141px;
+	display: block;
+	overflow: hidden;
+}

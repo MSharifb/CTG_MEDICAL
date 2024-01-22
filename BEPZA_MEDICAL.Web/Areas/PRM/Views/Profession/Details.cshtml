@@ -1,0 +1,45 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.Data.PRM_Profession
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>PRM_Profession</legend>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">SortOrder</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SortOrder)
+    </div>
+
+    <div class="display-label">IUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IUser)
+    </div>
+
+    <div class="display-label">EUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EUser)
+    </div>
+
+    <div class="display-label">IDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IDate)
+    </div>
+
+    <div class="display-label">EDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EDate)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,108 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.ProjectEstimationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<style>
+    hr.style5 {
+        border-top: 3px double #8c8b8b;
+    }
+
+    .estimationHead {
+        text-align: left;
+    }
+
+        .estimationHead .default-label {
+            font-weight: bold !important;
+        }
+
+    .headLabel {
+        font-weight: bold !important;
+        color: black !important;
+    }
+
+    .descriptionText {
+        background: #F2F5F8;
+    }
+
+    .estimation-head-area {
+        font-weight: bold !important;
+        text-align: center !important;
+        color: black !important;
+    }
+
+    table th {
+        font-weight: bold;
+        background: #F2F5F8;
+        color: #000000;
+        text-align: center;
+    }
+
+    table .item select {
+        width: 180px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+        font-size: 13px;
+    }
+
+    .select2-results__option {
+        font-size: 13px;
+    }
+</style>
+
+@foreach (var item in @Model.ProjectEstimationDetails)
+{
+    <div class="form-horizontal">
+        <table class="table table-bordered">
+            <tbody>
+
+                @Html.Partial("_EstimationHeadItems", @Model.EstimationHeadDescriptions.Where(q => q.EstimationHeadId == item.EstimationHeadId).FirstOrDefault())
+
+                <tr>
+                    <th class="slNo">Sl. No.</th>
+                    <th>Estimation Item</th>
+                    <th>Unit</th>
+                    <th>Unit Price (Tk.)</th>
+                    <th>Quantity</th>
+                    <th>Total Amount (Tk.)</th>
+                    <th>Description</th>
+                </tr>
+
+                @if (@Model.EstimationItemList != null && @Model.EstimationItemList.Count > 0)
+                {
+                    @Html.Partial("_EstimationItems", @Model.EstimationItemList.Where(q => q.EstimationHeadId == item.EstimationHeadId).ToList())
+                }
+
+            </tbody>
+        </table>
+    </div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('table .estimationHead select').select2();
+    });
+
+
+
+
+</script>
+
+<style type="text/css">
+    .footerStyle {
+        text-align: right !important;
+        font-weight: bold;
+        padding: 3px;
+    }
+
+    .amountType {
+        text-align: right;
+    }
+
+    .footerStyle:hover {
+        cursor: default;
+    }
+
+    table {
+        border-bottom: 3px solid #286090 !important;
+    }
+</style>

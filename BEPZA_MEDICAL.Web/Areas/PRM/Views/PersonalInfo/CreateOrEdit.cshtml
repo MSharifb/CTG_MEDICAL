@@ -1,0 +1,58 @@
+﻿@model MFS_IWM.DAL.PRM.PRM_EmploymentInfo
+@{
+    ViewBag.Title = "CreateOrEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="employee">
+    <div class="emp-sidebar">
+        <ul>
+            <li>@Html.ActionLink("Employment Info", "EmploymentInfo", new { @class = "selected" })</li>
+            <li>@Html.ActionLink("Employment Contract Period", "EmploymentInfo")</li>
+            <li>@Html.ActionLink("Salary Structure", "EmploymentInfo")</li>
+            <li>@Html.ActionLink("Photograph", "EmploymentInfo")</li>
+            <li>@Html.ActionLink("Signature", "EmploymentInfo")</li>
+        </ul>
+    </div>
+    <div class="emp-form">
+        @Html.Partial("_PersonaInfo", Model)
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<style>
+    .emp-sidebar
+    {
+        width: 20%;
+        float: left;
+        border: 1px solid;
+    }
+    .emp-form
+    {
+        width: 79%;
+        float: right;
+    }
+    .emp-sidebar ul
+    {
+        list-style: none outside none;
+        margin: 0;
+        padding: 0;
+    }
+    .emp-sidebar ul li
+    {
+            border-bottom: 1px solid;
+    }
+    .emp-sidebar ul li a
+    {
+        text-decoration: none;
+        color: #000;
+        padding: 2px 0 2px 5px;
+    }
+    .emp-sidebar ul li a:hover
+    {
+        text-decoration: underline;
+    }
+    .selected
+    {
+        font-weight:bold;
+    }
+</style>

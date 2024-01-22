@@ -1,0 +1,44 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.OfflineWelfareFundApplicationInformationViewModel
+
+<div class="row">
+    <table id="grid" class="contenttable">
+        <thead>
+            <tr>
+                <th>
+                    Category Name
+                </th>
+                <th>
+                    Reason
+                </th>
+                <th>
+                    Application Date
+                </th>
+                <th>
+                    Applied Amount
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @for (int i = 0; i < Model.HistoryList.Count; i++)
+            {
+                var item = Model.HistoryList.ToList()[i];
+                <tr>
+                    <td>
+                        <label> @item.WelfareFundCategoryName</label>
+                    </td>
+                    <td>
+                        <label> @item.Reason</label>
+                    </td>
+                    <td>
+                        <label> @item.ApplicationDate.Value.ToString("yyyy-MM-dd")</label>
+                    </td>
+                    <td>
+                        <label> @item.AppliedAmount</label>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

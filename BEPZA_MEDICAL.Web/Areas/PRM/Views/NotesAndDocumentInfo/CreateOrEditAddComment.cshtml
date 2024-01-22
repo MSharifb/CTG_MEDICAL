@@ -1,0 +1,107 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NotesAndDocumentInfoCommentsDetailViewModel
+@*@using BEPZA_MEDICAL.Web.Helpers*@
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.NotesAndDocumentInfoAttachmentDetailId)
+            @Html.HiddenFor(model => model.CommentByEmployeeId)
+            @Html.LabelFor(model => model.Comments)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.Comments)
+        </span>
+        <div class="clear"></div>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CommentByEmployeeId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.CommentByEmpId, new { @class = "required", @style = "width:150px" })
+            <span style="display:none"> <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployeeCommentBy();" /></span>
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Employee)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Employee, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Designation)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="GroupBox">
+        <div class="row" align="center">
+            <div style="width: 70%">
+                <div class="clear"></div>
+                <div class="button-crude fixedAddButton" style="text-align: right;">
+                    <input id="btnAddComment" type="button" value="Add" />
+                </div>
+
+                <div class="clear">
+                </div>
+                <table id="CommnetGrid" class="contenttable fixedcontenttable custom-grid">
+                    <thead>
+                        <tr>
+                            <th>
+                                Comments
+                            </th>
+                            <th>
+                                Comment By
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.NotesAndDocumentInfoCommentsDetailList.Count; i++)
+                        {
+                            var item2 = Model.NotesAndDocumentInfoCommentsDetailList.ToList()[i];
+                            <tr>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.NotesAndDocumentInfoCommentsDetailList[i].Id)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.NotesAndDocumentInfoCommentsDetailList[i].NotesAndDocumentInfoAttachmentDetailId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.NotesAndDocumentInfoCommentsDetailList[i].Comments)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.NotesAndDocumentInfoCommentsDetailList[i].CommentByEmployeeId)
+                                </td>                         
+                                <td>
+                                    <label>@item2.Comments</label>
+                                </td>
+                                <td>
+                                    <label>  @item2.Employee</label>
+                                </td>
+                                <td>
+
+                                    <a href="#" class="deleteRow" title="delete" onclick="RemoveDb2(this,@item2.Id,'@Url.Action("DeleteCommentDetail")')">
+                                        <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+            <div class="clear" style="height:10px">
+            </div>
+        </div>
+    </div>
+</div>

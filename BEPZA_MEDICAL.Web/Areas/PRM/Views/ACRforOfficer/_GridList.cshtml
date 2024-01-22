@@ -1,0 +1,77 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRforOfficer.ACRforOfficerViewModel
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Name', 'Id', 'Employee ID', 'Designation', 'Designation', 'Department', 'Department'],
+            colModel: [
+                            { name: 'Name', index: 'Name', align: 'left', search: true, edittype: 'text', width: '200px', formatter: viewformatEdiorLink },
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'EmpId', index: 'EmpId', align: 'center', search: true, edittype: 'text', width: '80px' },
+                            { name: 'DesignationId', index: 'DesignationId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetDesignation")' },
+                            { name: 'Designation', index: 'Designation', align: 'left', search: false, edittype: 'select',  },
+                            { name: 'DepartmentId', index: 'DepartmentId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetDivision")' },
+                            { name: 'Department', index: 'Department', align: 'left', search: false, edittype: 'select' },
+            ],
+            autowidth: true,
+            caption: "ACR for Officer Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", Model.ActionName, new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[1]);
+        return url;
+    }
+</script>
+@*<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>*@
+

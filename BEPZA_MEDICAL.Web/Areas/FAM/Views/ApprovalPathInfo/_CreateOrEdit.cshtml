@@ -1,0 +1,199 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAM.Models.ApprovalPathInfo.ApprovalPathInfoModel
+
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    @Html.HiddenFor(m=>m.PathId)
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PathName)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.PathName)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Description)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.Description)
+            </span>
+        </div>
+    </div>
+    
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ApprovalTypeId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.ApprovalTypeId, Model.ApprovalTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.DesignationId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmpId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field ddl-emp-list">
+                @Html.DropDownListFor(m => m.EmpId, Model.EmpList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.NodeOrder)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.NodeOrder)
+            </span>
+        </div>
+
+        <div class="button-crude" style="float:left; text-align:right; width: 706px;">
+            @*@Ajax.ActionLink("Add", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })*@
+            
+            <input id="btnAdd" type="button" value="Add" />
+            <input id="btnChildUpdate" type="button" value="Update" style="display:none;" />
+        </div>
+        <div class="clear"></div>
+        <table id="grid" style="width:57.5%;" class="contenttable" >
+            <thead>
+                <tr>
+                    <th> Node Type </th>
+                    <th> Role/Designation </th>
+                    <th> Node </th>
+                    <th> Node Order </th>
+                    <th> Remove </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i=0; i<Model.ApprovalPathDetails.Count; i++)
+                {
+                    var item = Model.ApprovalPathDetails.ToList()[i];
+                    <tr class="row">
+                        <td style="display:none;"><input type="text" name="@("ApprovalPathDetails[" + i + "].NodeId")" value="@item.NodeId" /></td>
+                        <td style="display:none;"><input type="text" name="@("ApprovalPathDetails[" + i + "].PathId")" value="@item.PathId" /></td>
+                        <td><input style="display:none;" type="text" name="@("ApprovalPathDetails[" + i + "].ApprovalType")" value="@item.ApprovalType" /><a class='select-row' href='#'>@item.ApprovalType </a></td>
+                        <td><input style="display:none;" type="text" name="@("ApprovalPathDetails[" + i + "].RoleDesignationId")" value="@item.RoleDesignationId" /><span>@Model.DesignationList.Where(x => x.Value == Convert.ToString(item.RoleDesignationId)).FirstOrDefault().Text</span></td>
+                        <td><input style="display:none;" type="text" name="@("ApprovalPathDetails[" + i + "].NodeEmpId")" value="@item.NodeEmpId" /><span>@item.EmpName</span></td>
+                        <td><input style="display:none;" type="text" name="@("ApprovalPathDetails[" + i + "].NodeOrder")" value="@item.NodeOrder" /><span>@item.NodeOrder</span></td>
+                        <td><a class="deleteRow" title="delete" href="javascript:void(0)"><img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" /></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    <div class="clear"></div>
+    </div>
+    
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+        <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+        }
+        else
+        {
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+        }     
+
+        <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        <div class="clear"></div>
+    </div>
+}
+<div class="button-crude button-left">
+    @Ajax.ActionLink("Back to List", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })
+</div>   
+<div class="clear"></div>
+<script type="text/javascript">
+
+$(function () {
+    var mode = '@Model.Mode';
+    //alert(mode);
+    $.validator.unobtrusive.parse('#frm');
+
+    if (mode == 'Create') {
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+    }
+    else {
+        $('#btnUpdate').show();
+        $('#btnSave').hide();
+    }    
+})
+
+function OnCompleteBacktoList(content) {
+$('#message').empty();
+    if (content.statusText == 'OK') {
+        $('.search-content').hide();
+        $('.frm-content').html(content.responseText);
+    } else {
+        $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+        $("#message").delay(3000).hide();
+    }
+}
+
+function OnComplete(content) {
+    var data = content.responseText;
+    if (data.toLowerCase().indexOf("updated") >= 0) {
+                    
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else if (data.toLowerCase().indexOf("saved") >= 0) {
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'green' });
+        $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else {
+       
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'red' });
+        $("#message").delay(3000).hide('slow');
+    }
+}
+</script>

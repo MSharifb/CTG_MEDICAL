@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+     @*<nav>
+            @Html.Partial("_Menu")       
+    </nav>*@
+    @{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+        ViewBag.Area = "PRM";
+        ViewBag.ModuleName = "PRM";
+        ViewBag.Title = "Human Resource Management System";  
+    }
+    
+    
+
+</head>
+<body>
+   
+    <div> 
+        @RenderBody()
+    </div>
+</body>
+</html>
+
+@*@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Personnel & Resource Management System";
+    ViewBag.Area = "PRM";
+    ViewBag.ModuleName = "PRM";
+    ViewBag.Title = "Personnel & Resource Management System"; 
+}
+@RenderBody()*@
+

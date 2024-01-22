@@ -1,0 +1,24 @@
+﻿@model ERP_BEPZA.Web.Areas.PRM.ViewModel.SuspensionOfEmployeeViewModel
+@using ERP_BEPZA.Web.Helpers
+    <tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("SuspensionOfEmployeeDetailList"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.HeadId)
+        @Html.HiddenFor(x => x.HeadType)
+        @Html.HiddenFor(x => x.AmountType)
+        @Html.HiddenFor(x => x.ActualAmount)
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.SalaryHead)
+        </td>
+        <td width="15%" style="text-align: center" >
+            @Html.Encode(Model.ActualAmount)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.TextBoxFor(x => x.Amount, new {@class="additionSum"})
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.AmountType)
+        </td>
+    }
+   </tr>

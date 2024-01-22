@@ -1,0 +1,1377 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobAdvertisementInfo.JobAdvertisementInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.strMode)
+                @Html.LabelFor(model => model.AdCode)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.TextBoxFor(model => model.AdCode, new { @class = "required" })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.AdDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.AdDate, new { @class = "required" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AdDescription)
+            </span><span class="field">
+                @Html.TextAreaFor(model => model.AdDescription)
+            </span>
+        </div>
+
+        <div class="clear"></div>
+    </div>
+    
+    <fieldset>
+        <legend>Advertisement Information </legend>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.AdvertisementMediaId)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.AdvertisementMediaId, Model.AdvertisementMediaList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Notes)
+                </span>
+                <span class="field">
+                    @Html.TextAreaFor(model => model.Notes)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.AdvertisementDate)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.AdvertisementDate)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.AdvertisementExpDate)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.AdvertisementExpDate)
+                </span>
+            </div>
+            <div class="row" align="left">
+                <div style="width: 70%">
+                    <div class="clear"></div>
+                    <div class="button-crude fixedAddButton" style="text-align: right;">
+                        <input id="btnAdd" type="button" value="Add" />
+                        <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+                    </div>
+
+                    <div class="clear">
+                    </div>
+                    <table id="media" class="contenttable custom-grid" width="50%">
+                        <thead>
+                            <tr>
+                                <th width="20%" align="center">
+                                    Advertisement Media
+                                </th>
+                                <th width="20%" align="center">
+                                    Advertisement Date
+                                </th>
+                                <th width="5%" align="center">
+                                    Remove
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.JobAdvertisementInfoMedia.Count; i++)
+                        {
+                            var item2 = Model.JobAdvertisementInfoMedia.ToList()[i];
+                        <tr>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobAdvertisementInfoMedia[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobAdvertisementInfoMedia[i].AdvertisementMediaId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.TextBoxFor(m => m.JobAdvertisementInfoMedia[i].AdvertisementDate, "{0:yyyy-MM-dd}")
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.JobAdvertisementInfoMedia[i].Notes)
+                            </td>
+                            <td style="display: none;">
+                                @Html.TextBoxFor(m => m.JobAdvertisementInfoMedia[i].AdvertisementExpDate, "{0:yyyy-MM-dd}")
+                            </td>
+
+                            <td style="text-align:center">
+                                <label> @item2.AdvertisementMediaName</label>
+                            </td>
+                            <td style="text-align:center">
+                                <label>@String.Format("{0:yyyy-MM-dd}", @item2.AdvertisementDate)</label>
+                            </td>
+                            <td style="text-align:center">
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDbMedia(this,@item2.Id,@item2.AdvertisementMediaId,'@Url.Action("DeleteJobAdvertisementDetailMedia")')"></a>
+                            </td>
+                        </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <fieldset style=" margin-left: 10px">
+            <legend>Requisition Position/Specification Information </legend>
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.OrgLevelId)
+                    @Html.LabelFor(model => model.OrganogramLevelName)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.OrganogramLevelName, new { @class = "read-only", @readonly = true })
+                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openOrganogram();" />
+                </span>
+            </div>
+
+
+            <div class="row" style="display:none">
+                <span class="label">
+                    @Html.LabelFor(model => model.DepartmentId)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentList, @String.Format("{0}", Content.DDLOptionalLabel()), new { disabled = "disabled" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.SectionId)
+                    
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(model => model.SectionId, Model.SectionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { disabled = "disabled" })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DesignationId)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadSalaryScale();" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.NumOfRequiredPost)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.NumOfRequiredPost)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmploymentTypeId)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.EmploymentTypeId, Model.EmploymentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.FirstAndLastStep)
+                    
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.FirstAndLastStep, new { @class = "read-only", @readonly = true })
+                </span>
+                
+            </div>     
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ApplicationFee)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                           @*<input type="number" id="ApplicationFee" name="ApplicationFee" ng-model="JobAdvertisementPost.ApplicationFee">*@
+                           @Html.TextBoxFor(model => model.ApplicationFee)
+                </span>
+            </div>       
+
+            <div class="clear">
+            </div>
+            <fieldset style=" margin-left: 10px">
+                <legend>Excepted District Information</legend>
+
+                <div class="row" align="center">
+                    <span class="label">
+                        @Html.LabelFor(model => model.DistrictId)
+                        <label class="required-field">
+                            *
+                        </label>
+                    </span><span class="field">
+                        @Html.DropDownListFor(model => model.DistrictId, Model.DistrictList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                    </span>
+                </div>
+                <div class="row" align="left">
+                    <div style="width: 70%">
+                        <div class="clear"></div>
+                        <div class="button-crude fixedAddButton" style="text-align: right;">
+                            <input id="btnDistrictAdd" type="button" value="District Add" /> @*ng-click="PagesCommand.AddDetail()"*@
+                        </div>
+
+                        <div class="clear">
+                        </div>
+                        <table id="jobPostDistrict" class="contenttable custom-grid" width="50%">
+                            <thead>
+                                <tr>
+                                    <th width="20%" align="center">
+                                        Post Name
+                                    </th>
+                                    <th width="20%" align="center">
+                                       District Name
+                                    </th>
+                                   
+                                    <th width="5%" align="center">
+                                        Remove
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                            @for (int i = 0; i < Model.JobAdvertisementInfoDistricts.Count; i++)
+                            {
+                                var item2 = Model.JobAdvertisementInfoDistricts.ToList()[i];
+                                    <tr>
+                                        <td style="display: none;">
+                                            @Html.HiddenFor(m => m.JobAdvertisementInfoDistricts[i].Id)
+                                            @Html.HiddenFor(m => m.JobAdvertisementInfoDistricts[i].JobAdvertisementInfoId)
+                                            @Html.HiddenFor(m => m.JobAdvertisementInfoDistricts[i].DesignationId)
+                                            @Html.HiddenFor(m => m.JobAdvertisementInfoDistricts[i].DistrictId)
+                                        </td>
+                                        
+                                        <td style="text-align:center">
+                                            <label> @item2.DesignationName</label>
+                                        </td>
+                                        <td style="text-align:center">
+                                            <label> @item2.DistrictName</label>
+                                        </td>
+                                        
+                                        <td style="text-align:center">
+                                            <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDbDistrict(this,@item2.Id,@item2.JobAdvertisementInfoId,'@Url.Action("DeleteJobAdvertisementDistrict")')"></a>
+                                        </td>
+                                    </tr>
+                            }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </fieldset>
+
+            <div class="row" align="left">
+                <div style="width: 70%">
+                    <div class="clear"></div>
+                    <div class="button-crude fixedAddButton" style="text-align: right;">
+                        <input id="btnPostAdd" type="button" value="Add"  /> @*ng-click="PagesCommand.AddDetail()"*@
+                    </div>
+
+                    <div class="clear">
+                    </div>
+                    <table id="jobPost" class="contenttable custom-grid" width="50%">
+                        <thead>
+                            <tr>
+                                <th width="20%" align="center">
+                                    Post Name
+                                </th>
+                                <th width="20%" align="center">
+                                    No. of Post
+                                </th>
+                                <th width="20%" align="center">
+                                    Application Fee
+                                </th>
+                                <th width="5%" align="center">
+                                    Remove
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*<tr ng-repeat="inst in JobAdvertisementPostDetail">
+                                <td>{{inst.DesignationName}}</td>
+                                <td>{{inst.NumOfRequiredPost}}</td>
+                                <td>{{inst.ApplicationFee}}</td>
+                                <td ng-click="PagesCommand.detailRemove(inst)" style="cursor:pointer"><i class="fa fa-trash-o"></i></td>
+
+                            </tr>*@
+
+                            @for (int i = 0; i < Model.JobAdvertisementPostDetail.Count; i++)
+                            {
+                                var item2 = Model.JobAdvertisementPostDetail.ToList()[i];
+                                <tr>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].Id)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].JobAdvertisementInfoId)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].OrgLevelId)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].DepartmentId)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].SectionId)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].DesignationId)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].EmployeeTypeId)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].NumberOfPosition)
+                                        @Html.HiddenFor(m => m.JobAdvertisementPostDetail[i].ApplicationFee)
+
+                                    </td>
+
+                                    <td style="text-align:center">
+                                        <label> @item2.DesignationName</label>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <label> @item2.NumberOfPosition</label>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <label> @item2.ApplicationFee</label>
+                                    </td>
+                                    <td style="text-align:center">
+                                        <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDbPost(this,@item2.Id,@item2.JobAdvertisementInfoId,'@Url.Action("DeleteJobAdvertisementPostDetail")')">></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+                                                              
+        </fieldset>
+
+
+    </fieldset>
+
+    <fieldset>
+        <legend>Summary of Job Requisition Information </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AppStartDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.AppStartDate)
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.AgeCalDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.AgeCalDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AppEndDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.AppEndDate)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.RollGenerationDate)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.RollGenerationDate, new { @class = "required" })
+            </span>
+        </div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Attachment</legend>
+        <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Title)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.Title)
+                </span>
+            </div>
+        <div class="row">
+                <div id="divFileAttach">
+                    <span id="spAttachment" class="label">
+                        @Html.LabelFor(model => model.Attachment)
+                    </span>
+                    <span class="field">
+                        <input type="file" name="attachment" id="Attachment" />
+                    </span>
+                </div>
+         </div>
+        <div class="row" align="left">
+            <div style="width: 70%">
+                <div class="clear"></div>
+                <div class="button-crude fixedAddButton" style="text-align: right;">
+                    <input id="btnAddAttachment" type="button" value="Add" />
+                </div>
+                <div class="clear">
+                </div>
+                <table id="attachment" class="contenttable custom-grid" width="50%">
+                    <thead>
+                        <tr>
+                            <th width="20%" align="center">
+                                Title
+                            </th>
+                            <th width="8%" align="center">
+                                View
+                            </th>
+                            <th width="5%">
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.strMode == "Edit") { Html.RenderPartial("_DetailAtt", Model); }}
+                    </tbody>
+                  
+                </table>
+            </div>
+        </div>
+
+    </fieldset>
+    
+    @*<div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Comments)
+            </span><span class="field">
+                @Html.TextAreaFor(model => model.Comments)
+            </span>
+        </div>
+        <div class="clear"></div>
+    </div>*@
+
+<div id="divOrganogramList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+@*for media table*@
+<script type="text/javascript">
+    var arrList = [];
+    var PostArrList = [];
+    var DistrictArrList = [];
+    //pupulate existing data from database
+    var JobAdvertisementInfo = @Html.Raw(Json.Encode(Model.JobAdvertisementInfoMedia));
+    $.each( JobAdvertisementInfo, function( key, value ) {
+        arrList.push(String( value.AdvertisementMediaId ));
+    });
+
+    $('#btnAdd').live('click', function () {
+        $('#message').empty();
+        var jobAdvertisementInfoMediaId = $('#Id').val();
+        var advertisementMediaId = $('#AdvertisementMediaId').val();
+        var mediaName = $("#AdvertisementMediaId option:selected").text();
+        var adverDate = $('#AdvertisementDate').val();
+        var notes = $('#Notes').val();
+        var adverExpDate = $('#AdvertisementExpDate').val();
+
+        //checking duplicate entry
+        var index = $.inArray(advertisementMediaId, arrList);
+
+
+        if (advertisementMediaId == null || advertisementMediaId == "" || advertisementMediaId == 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (adverDate == null || adverDate == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            arrList.push(advertisementMediaId);
+
+            var trClone = '<tr>' +
+                '<td style="display: none;">' + '<input type="text" value="0" name="JobAdvertisementInfoMedia[0].Id"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobAdvertisementInfoMedia[0].AdvertisementMediaId" value="' + advertisementMediaId + '"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobAdvertisementInfoMedia[0].AdvertisementDate" value="' + adverDate + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobAdvertisementInfoMedia[0].Notes" value="' + notes + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="JobAdvertisementInfoMedia[0].AdvertisementExpDate" value="' + adverExpDate + '" ></td>' +
+
+                '<td style="text-align:center">' + '<label for="AdvertisementMediaName">' + mediaName + '</td>' +
+                '<td style="text-align:center">' + '<label for="AdvertisementDate" >' + adverDate + '</td>' +
+                '<td style="text-align:center">' + '<a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDbMedia(this,0,&quot;' + advertisementMediaId +'&quot;)"></a></td>' +
+                '</tr>';
+            $('#media tbody').append(trClone);
+            RearrengeControlName2();
+        }
+    });
+
+    function RemoveDbMedia(el,id, advertisementMediaId,url) {
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+            arrList = $.grep(arrList, function(value) {
+                return value != advertisementMediaId;
+            });
+            RearrengeControlName2();
+        }
+
+        function RearrengeControlName2() {
+            $('#media tbody tr').each(function (outIndex) {
+                $(this).find('td').each(function (innerIndex) {
+                    if ($(this).find('input').length > 0) {
+                        $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                    }
+                })
+            })
+        }
+
+        $('#btnPostAdd').live('click', function () {
+            $('#message').empty();
+            var Id = $('#Id').val();
+            var designationId = $('#DesignationId').val();
+            var postName = $("#DesignationId option:selected").text();
+            var NumOfRequiredPost = $("#NumOfRequiredPost").val();
+            var ApplicationFee = $("#ApplicationFee").val();
+
+            var EmploymentTypeId = $("#EmploymentTypeId").val();
+            var SectionId = $("#SectionId").val();
+            var DepartmentId = $("#DepartmentId").val();
+            var OrgLevelId = $("#OrgLevelId").val();
+            var JobAdvertisementInfoId = $("#Id").val();
+
+            //checking duplicate entry
+            var index = $.inArray(designationId, PostArrList);
+
+
+            if (designationId == null || designationId == "" || designationId == 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+
+            if (NumOfRequiredPost == null || NumOfRequiredPost == 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+            if (index >= 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+                return;
+            }
+            else {
+                PostArrList.push(designationId);
+
+                var trClone = '<tr>' +
+                    '<td style="display: none;">' + '<input type="hidden" value="0" name="JobAdvertisementPostDetail[0].Id">' +
+                    '<input type="hidden" value="'+JobAdvertisementInfoId+'" name="JobAdvertisementPostDetail[0].JobAdvertisementInfoId">' +
+                    '<input type="hidden" value="'+OrgLevelId+'" name="JobAdvertisementPostDetail[0].OrgLevelId">' +
+                    '<input type="hidden" value="'+DepartmentId+'" name="JobAdvertisementPostDetail[0].DepartmentId">' +
+                    '<input type="hidden" value="'+SectionId+'" name="JobAdvertisementPostDetail[0].SectionId">' +
+                    '<input type="hidden" value="'+designationId+'" name="JobAdvertisementPostDetail[0].DesignationId">' +
+                    '<input type="hidden" value="'+EmploymentTypeId+'" name="JobAdvertisementPostDetail[0].EmployeeTypeId">' +
+                    '<input type="hidden" value="'+NumOfRequiredPost+'" name="JobAdvertisementPostDetail[0].NumberOfPosition">' +
+                     '<input type="hidden" value="'+ApplicationFee+'" name="JobAdvertisementPostDetail[0].ApplicationFee">' +
+                    '</td>' +
+                   
+                    '<td style="text-align:center">' + '<label for="DesignationName">' + postName + '</td>' +
+                    '<td style="text-align:center">' + '<label for="NumberOfPosition" >' + NumOfRequiredPost + '</td>' +
+                    '<td style="text-align:center">' + '<label for="ApplicationFee">' + ApplicationFee + '</td>' +
+                    '<td style="text-align:center">' + '<a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDbPost(this,0,&quot;' + designationId +'&quot;)"></a></td>' +
+                    '</tr>';
+                $('#jobPost tbody').append(trClone);
+
+                $('#jobPost tbody tr').each(function (outIndex) {
+                    $(this).find('td').each(function (innerIndex) {
+                        if ($(this).find('input').length > 0) {
+                            $(this).find('input').each(function(){
+                                 $(this).attr('name', $(this).attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+                            });
+                        }
+                    })
+                });
+
+                $('#DesignationId').val(0);
+                $("#NumOfRequiredPost").val(0);
+                $("#ApplicationFee").val(0);
+                $("#EmploymentTypeId").val(0);
+            }
+        });
+
+        function RemoveDbPost(el,id, designationId,url) {
+            $(el).parent().parent().remove();
+            if (id == 0 || id == undefined) {
+                $(el).parent().parent().remove();
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                    success: function (result) {
+                        $(el).parent().parent().remove();
+                        $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                    }
+                });
+            }
+            PostArrList = $.grep(PostArrList, function(value) {
+                return value != designationId;
+            });
+           
+            $('#jobPost tbody tr').each(function (outIndex) {
+                $(this).find('td').each(function (innerIndex) {
+                    if ($(this).find('input').length > 0) {
+                        $(this).find('input').each(function(){
+                            $(this).attr('name', $(this).attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+                        });
+                    }
+                })
+            });
+
+        }
+
+        $('#btnDistrictAdd').live('click', function () {
+            $('#message').empty();
+            var Id = $('#Id').val();
+            var designationId = $('#DesignationId').val();
+            var Name = $("#DistrictId option:selected").text();
+            var PostName = $("#DesignationId option:selected").text();
+            var DistrictId = $("#DistrictId").val();
+            var JobAdvertisementInfoId = $("#Id").val();
+
+            //checking duplicate entry
+            var index = $.inArray(DistrictId, DistrictArrList);
+
+
+            if (designationId == null || designationId == "" || designationId == 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked Name of Post field(s)</span>  </div> ");
+                return;
+            }
+
+            if (DistrictId == null || DistrictId == "" || DistrictId == 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+            if (index >= 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+                return;
+            }
+            else {
+                DistrictArrList.push(DistrictId);
+
+                var trClone = '<tr>' +
+                    '<td style="display: none;">' + '<input type="hidden" value="0" name="JobAdvertisementInfoDistricts[0].Id">' +
+                    '<input type="hidden" value="'+JobAdvertisementInfoId+'" name="JobAdvertisementInfoDistricts[0].JobAdvertisementInfoId">' +
+                    '<input type="hidden" value="'+designationId+'" name="JobAdvertisementInfoDistricts[0].DesignationId">' +
+                    '<input type="hidden" value="'+DistrictId+'" name="JobAdvertisementInfoDistricts[0].DistrictId">' +
+                    '</td>' +
+                    '<td style="text-align:center">' + '<label for="DesignationName">' + PostName + '</td>' +
+                    '<td style="text-align:center">' + '<label for="DistrictName">' + Name + '</td>' +
+                    '<td style="text-align:center">' + '<a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDbDistrict(this,0,&quot;' + DistrictId +'&quot;)"></a></td>' +
+                    '</tr>';
+                $('#jobPostDistrict tbody').append(trClone);
+
+                $('#jobPostDistrict tbody tr').each(function (outIndex) {
+                    $(this).find('td').each(function (innerIndex) {
+                        if ($(this).find('input').length > 0) {
+                            $(this).find('input').each(function(){
+                                $(this).attr('name', $(this).attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+                            });
+                        }
+                    })
+                });
+
+                $('#DistrictId').val(0);
+            }
+        });
+
+        function RemoveDbDistrict(el,id, DistrictId,url) {
+            $(el).parent().parent().remove();
+            if (id == 0 || id == undefined) {
+                $(el).parent().parent().remove();
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                    success: function (result) {
+                        $(el).parent().parent().remove();
+                        $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                    }
+                });
+            }
+            DistrictArrList = $.grep(DistrictArrList, function(value) {
+                return value != DistrictId;
+            });
+           
+            $('#jobPostDistrict tbody tr').each(function (outIndex) {
+                $(this).find('td').each(function (innerIndex) {
+                    if ($(this).find('input').length > 0) {
+                        $(this).find('input').each(function(){
+                            $(this).attr('name', $(this).attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+                        });
+                    }
+                })
+            });
+
+        }
+    
+</script>
+
+@*for requisition table*@
+<script type="text/javascript">
+    function RequisitionDetail(clearanceDtlId, designationId, requisitionNo, designation, numOfPost, clrpost) {
+
+            var jobAdvertisementInfoRequisitionId = $('#Id').val();
+            var jobRequisitionSummaryId = $('#JobRequisitionInfoSummaryId').val();
+            var refNo = $("#JobRequisitionInfoSummaryId option:selected").text();
+
+            var isChk = ($(".rchkFinal2").val());
+
+            if (isChk) {
+                var trClone = '<tr>' +
+                    '<td style="display: none;">' + '<input type="text" value="0" name="JobRequisitionInfoDetailList[0].Id"></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetailList[0].JobRequisitionInfoSummaryId" value="' + jobRequisitionSummaryId + '"></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetailList[0].ClearanceFromMinistryDetailId" value="' + clearanceDtlId + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetailList[0].NumberOfRequiredPost" value="' + numOfPost + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetailList[0].ClearancePost" value="' + clrpost + '" ></td>' +
+
+                    '<td style="text-align:center">' + '<label for="ReferenceNo">' + refNo + '</td>' +
+                    '<td style="text-align:center">' + '<label for="RequisitionNo" >' + requisitionNo + '</td>' +
+                    '<td style="text-align:center">' + '<label for="Designation" >' + designation + '</td>' +
+                    '<td style="text-align:center">' + '<label for="NumberOfRequiredPost" >' + numOfPost + '</td>' +
+                    '<td style="text-align:center">' + '<label for="ClearancePost" >' + clrpost + '</td>' +
+                    '<td style="text-align:center">' + '<a class="deleteEmpClearanceFrmRow fixeddeleteRow" title="delete"><img src="../../Content/Images/Delete.png" style="border: none;" alt="delete"></a></td>' +
+                    '</tr>';
+                $('#requisition tbody').append(trClone);
+                RearrengeControlName3();
+            }
+        }
+
+
+        $('.row a.deleteEmpClearanceFrmRow').live('click', function () {
+            var recordId = $(this).attr('id');
+            if (recordId > 0) {
+                $.ajax({
+                    url: '@Url.Action("DeleteJobAdvertisementDetailMedia", "JobAdvertisementInfo")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ id: recordId }),
+                    contentType: "application/json; charset=utf-8",
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                });
+                if ($('#requisition tbody tr').length > 0)
+                    $(this).parent().parent().remove();
+            }
+            else {
+                if ($('#requisition tbody tr').length > 0)
+                    $(this).parent().parent().remove();
+            }
+
+            RearrengeControlName3();
+        })
+
+        function RearrengeControlName3() {
+            $('#requisition tbody tr').each(function (outIndex) {
+                $(this).find('td').each(function (innerIndex) {
+                    if ($(this).find('input').length > 0) {
+                        $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                    }
+                })
+            })
+        }
+</script>
+
+@*for attachment table*@
+<script type="text/javascript">
+    $('#btnAddAttachment').live('click', function (e) {
+        //e.preventDefault();
+        $("#message").empty();
+        var title=$('#Title').val();
+        $("#Title").removeClass("border-red");
+
+        if (title == null || title == "") {
+            $("#Title").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+
+        var url = '@Url.Action("AddAttachemnt", "JobAdvertisementInfo")';
+
+        //another way
+        var xhr = new XMLHttpRequest();
+        var fd = new FormData();
+        fd.append("Title", title);
+        fd.append("file", document.getElementById('Attachment').files[0]);
+
+        xhr.open("POST", url, true);
+        xhr.send(fd);
+        xhr.addEventListener("load", function (event) {
+            if (event.target.response != 'Invalid') {
+                $("#attachment tbody").append(event.target.response);
+            }
+
+        }, false);
+    });
+
+    function RemoveDb(el, id, url) {
+        $("#message").empty();
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $("#JobRequisitionInfoSummaryId").live('change', function () {
+        RequisitionInfo($("#JobRequisitionInfoSummaryId").val());
+    });
+
+    var loadEmpUrl = "@Url.Action("GetRequisitionInfo")";
+    function RequisitionInfo(referenceNoId) {
+
+        if (referenceNoId != "" && referenceNoId != undefined) {
+            $("#ErrorMessage").html("");
+            $.ajax({
+                type: "GET",
+                url: loadEmpUrl,
+                data: { referenceNoId: referenceNoId },
+                success: (function (result) {
+                    $("#grid tbody").html(result);
+                })
+            });
+        }
+        else
+            $("#ErrorMessage").show().html("<b> Required Requisition Information</b>").css("color", "red");
+    }
+</script>
+
+<script type="text/javascript">
+    function openOrganogram() {
+        var url = '@Url.Action("TreeViewSearchList", "OrganogramLevel")' + '?OrgIdentityName=1';
+        $.ajax(
+        {
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            success: function (result) {
+                $('#divOrganogramList').html(result);
+            },
+            error: function () {
+                alert('System is unable to load data please try again.');
+            }
+        });
+
+        $("#divOrganogramList").dialog('open');
+        return false;
+    }
+
+    
+    // This function is call from client view
+    function SetOrganogramId(organogramId, organogramName, OrgIdentityName) {
+        if (OrgIdentityName = '1') {
+            $('#OrganogramLevelId').val(organogramId)
+            $('#OrganogramLevelName').val(organogramName);
+            SetOrganogramInfo(organogramId, "label[for*='OrganogramLevelDetail']");
+
+            GetEmpOrganogramInfo(organogramId);
+            FillDesignaitonCombo(organogramId);
+            if ($('#IsEmpEditDesignation').val()) {
+
+            }
+            else {
+                FillDesignaitonCombo(organogramId);
+                $("#JobGradeId").val('');
+                $("#JobGradeName").val('');
+
+                $("#SalaryScaleId").val('');
+                $("#SalaryScaleName").val('');
+            }
+
+        }
+    }
+
+    function FillDesignaitonCombo(OrgId) {
+        if (OrgId != '') {
+            var url = '@Url.Action("GetDesignationByOrganogramLevelId", "Employee")' + '?Id=' + OrgId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var ddlDesignations = $("select#DesignationId");
+                // clear all previous options
+                $("select#DesignationId>option").remove();
+                // populate the products
+                for (i = 0; i < heads.length; i++) {
+                    ddlDesignations.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+            });
+        }
+        else {
+
+            $("select#DesignationId>option").remove();
+            $("select#DesignationId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+
+    function SetOrganogramInfo(OrganogramLevelId, orgDetail) {
+
+        var url = '@Url.Action("GetOrganogramHierarchyInfo", "EmployeeTransferInfo", "PRM")';
+        if (OrganogramLevelId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(orgDetail).html(data.OrgLabel);
+                },
+
+                failure: function (response) {
+                    $(orgDetail).html("");
+                }
+            });
+        }
+    }
+
+    function GetEmpOrganogramInfo(OrganogramLevelId) {
+        var url = '@Url.Action("GetOrganogramInfo", "JobRequisitionInfo", "PRM")';
+        if (OrganogramLevelId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#DepartmentId").val(obj.DepId);
+                    $('#OfficeId').val(obj.OfficeId);
+                    $('#SectionId').val(obj.SecId);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function Closing() {
+
+    }
+
+    function LoadSalaryScale() {
+        var designationId = $('#DesignationId').val();
+        var salaryScale = $('#SalaryScaleId');
+
+        LoadFirstAndLastStep(designationId);
+
+        salaryScale.empty();
+        if (designationId != null && designationId != '') {
+            $.getJSON('@Url.Action("SalaryScale")', { designationId: designationId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    salaryScale.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+    function LoadFirstAndLastStep(designationId) {
+        $('#FirstAndLastStep').val('');
+        if (designationId != null && designationId != '') {
+            $.ajax({
+                url: '@Url.Action("GetFirstAndLastStep", "JobRequisitionInfo")',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ designationId: designationId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (r) {
+                    $('#FirstAndLastStep').val(r.amount);
+                },
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+            });     
+        }
+    }
+
+    $(function () {
+        //************** Copy Start **********
+        $("#divOrganogramList").dialog({
+            autoOpen: false,
+            modal: true,
+            height: 380,
+            width: 800,
+            title: 'Organogram Level',
+            buttons:
+            {
+                Ok: function () { $(this).dialog("close"); }
+            },
+            beforeclose: function (event, ui) { Closing(); }
+        });
+
+
+
+        $('#btnAdd').live('click', function () {
+            $('#message').empty();
+
+            $("#OrganogramLevelId").removeClass("border-red");
+            $("#DesignationId").removeClass("border-red");
+            $("#EmploymentTypeId").removeClass("border-red");
+            $("#NumOfRequiredPost").removeClass("border-red");
+
+            var organogramId = $('#OrganogramLevelId').val();
+            var jobRequiDtlId = $('#Id').val();
+            var requireDate = $('#RequireDate').val();
+
+            var departmentId = $('#DepartmentId').val();
+            var departmentName = $("#DepartmentId option:selected").text();
+
+            var sectionId = $('#SectionId').val();
+            if (sectionId == null || sectionId == 0) {
+                var sectionName = '';
+            }
+            else {
+                var sectionName = $("#SectionId option:selected").text();
+            }
+
+            var designationId = $('#DesignationId').val();
+            var designationName = $("#DesignationId option:selected").text();
+
+            var numOfReqPost = $('#NumOfRequiredPost').val();
+
+            var salaryScaleId = $('#SalaryScaleId').val();
+            //var salaryScaleName = $("#SalaryScaleId option:selected").text();
+            var salaryScaleName = $("#FirstAndLastStep").val();
+
+            var employmentTypeId = $('#EmploymentTypeId').val();
+            var jobDescription = $('#JobDescription').val();
+            var eduRequirement = $('#EduRequirement').val();
+            var expRequirement = $('#ExpRequirement').val();
+            var additionalRequirement = $('#AdditionalRequirement').val();
+
+            if (organogramId == null || organogramId == "" || organogramId < 1) {
+                $("#OrganogramLevelId").addClass("border-red");
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+
+            if (numOfReqPost == null || numOfReqPost == "" || numOfReqPost < 1) {
+                $("#NumOfRequiredPost").addClass("border-red");
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+
+            if (departmentId == null || departmentId ==0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+            if (designationId == null || designationId == 0) {
+                $("#DesignationId").addClass("border-red");
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+            if (employmentTypeId == null || employmentTypeId == 0) {
+                $("#EmploymentTypeId").addClass("border-red");
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return;
+            }
+            else {
+
+                var trClone = '<tr>' +
+                    '<td style="display: none;">' + '<input type="text" value="0" name="JobRequisitionInfoDetail[0].Id"></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].RequireDate" value="' + requireDate + '"></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].DepartmentId" value="' + departmentId + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].SectionId" value="' + sectionId + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].DesignationId" value="' + designationId + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].NumOfRequiredPost" value="' + numOfReqPost + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].SalaryScaleId" value="' + salaryScaleId + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].EmploymentTypeId" value="' + employmentTypeId + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].JobDescription" value="' + jobDescription + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].EduRequirement" value="' + eduRequirement + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].ExpRequirement" value="' + expRequirement + '" ></td>' +
+                    '<td style="display: none;">' + '<input type="text" name="JobRequisitionInfoDetail[0].AdditionalRequirement" value="' + additionalRequirement + '" ></td>' +
+
+                    '<td>' + '<label for="RequireDate">' + requireDate + '</td>' +
+                    '<td>' + '<label for="DepartmentName" >' + departmentName + '</td>' +
+                     '<td>' + '<label for="SectionName">' + sectionName + '</td>' +
+                    '<td>' + '<label for="DesignationName" >' + designationName + '</td>' +
+                    '<td>' + '<label for="NumOfRequiredPost" >' + numOfReqPost + '</td>' +
+                    '<td>' + '<label for="SalaryScaleName" >' + salaryScaleName + '</td>' +
+                    '<td>' + '<a class="deleteEmpClearanceFrmRow fixeddeleteRow" title="delete"><img src="../../Content/Images/Delete.png" style="border: none;" alt="delete"></a></td>' +
+                    '</tr>';
+                $('#grid tbody').append(trClone);
+                RearrengeControlName2();
+            }
+        });
+
+        $('#DesignationId').live('change', function () {
+
+            //refress fields
+
+            $("#DiRecSancPost").val(null);
+            $("#PromSancPost").val(null);
+            $("#TotalSanctionedPost").val(null);
+
+            $("#DiRecFillPost").val(null);
+            $('#PromFillPost').val(null);
+            $('#TotalFilledUpPost').val(null);
+
+            $("#DiRecVacPost").val(null);
+            $('#PromVacPost').val(null);
+            $('#TotalVacantPost').val(null);
+
+            //end refress fields
+
+
+            var empId = $('#DesignationId').val();
+            var departmentId = $('#DepartmentId').val();
+
+            var url = '@Url.Action("GetRequsionInfo", "JobRequisitionInfo")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+
+            if (empId > 0) {
+                $.post(url, serializedForm, function (obj) {
+                    $("#DiRecSancPost").val(obj.SancDirect);
+                    $("#PromSancPost").val(obj.SancPro);
+                    $("#TotalSanctionedPost").val(obj.SancTotal);
+
+                    $("#DiRecFillPost").val(obj.FillDirect);
+                    $('#PromFillPost').val(obj.FillPro);
+                    $('#TotalFilledUpPost').val(obj.FillTotal);
+
+                    $("#DiRecVacPost").val(obj.VacantDirect);
+                    $('#PromVacPost').val(obj.vacantPro);
+                    $('#TotalVacantPost').val(obj.VacantTotal);
+                }, "json");
+            }
+            return false;
+        });
+
+
+ 
+
+
+        // Copy *********
+
+
+        var mode = $("#strMode").val();
+        if (mode == 'Edit') {
+            $("#btnSave").attr('value', 'Update');
+                $("#btnClear").hide();
+        }
+
+        var RequisitionInfo = new Array();
+        var addRequisitionInfo = "@Url.Action("AddedRequisitionInfo")";
+
+        $(".rchk").live('click', function () {
+            if ($(this).attr('checked')) {
+                RequisitionInfo.push($(this).val());
+                RequisitionInfo.push($("#strMode").val());
+            }
+            else {
+                var index = RequisitionInfo.indexOf($(this).val());
+                RequisitionInfo.splice(index, 1);
+            }
+
+            console.log(RequisitionInfo);
+        });
+
+
+        //$('#addItem').live('click', function (e) {
+        //    e.preventDefault();
+        //    var PostingEmp = new Array();
+        //    var mode = $("#strMode").val();
+        //    var jobReqSumId = $("#JobRequisitionInfoSummaryId").val();
+        //    function logArrayElements(element, index, array) {
+        //        PostingEmp.push({ 'RequisionId': element });
+        //    }
+
+        //    RequisitionInfo.forEach(logArrayElements);
+        //    if (PostingEmp.length > 0) {
+        //        $.ajax({
+        //            type: "POST",
+        //            url: addRequisitionInfo,
+        //            cache: false,
+        //            data: {
+        //                'RequisitionCodes': PostingEmp,
+        //                'ModeIs': mode,
+        //                'JobReqSumId': jobReqSumId
+        //            },
+        //            success: (function (result) {
+        //                $(".tblOrderList tbody").html(result);
+        //            })
+        //        });
+        //    }
+        //});
+
+    });
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                }
+            });
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var adCode = $('#AdCode').val();
+        if (adCode == null && adCode == 0 && adCode == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return false;
+        }
+
+
+        $("form").submit(function () {
+
+            var requisitionNo = $('#AdCode').val();
+
+            if (requisitionNo == null || requisitionNo =="") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+
+            //var rows = $('.tblOrderList').find('tr').length
+            //if (rows == 1 || rows < 1) {
+            //    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Sorry! Row is not available.</span>  </div> ");
+            //    return false;
+            //}
+
+            //var selectedAppCount = $('.tblOrderList').find('input[type="checkbox"]:checked').length;
+            //if (selectedAppCount == 0 || selectedAppCount < 0) {
+            //    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, select at least one Row.</span> </div> ");
+            //    return false;
+            //}
+
+            //console.log(JobAdvertisementPostDetailList);
+
+            //return false;
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+
+
+

@@ -1,0 +1,129 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.ReferenceInfoViewModel
+
+@{
+    ViewBag.Title = "CreateOrEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.ActionLink("Reference Info","CreateReferenceInfo/" + 20, "TempPersonalInfo", new { controlType = "ReferenceInfo"}, null)
+@Html.ActionLink("GuarantorInfo", "CreateReferenceInfo/" + 20, new { controlType = "GuarantorInfo" }, null)
+
+@using (Html.BeginForm(@Model.ActionType, "TempPersonalInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Type)
+        
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+
+        <div class="GroupBox">      
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.TitleId)</span>
+                <span class="field">@Html.DropDownListFor(model => model.TitleId, Model.TitleList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+                <span class="label-right">@Html.LabelFor(model => model.FirstName)</span>
+                <span class="field">@Html.EditorFor(model => model.FirstName)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.MiddleName)</span>
+                <span class="field">@Html.EditorFor(model => model.MiddleName)</span>
+                <span class="label-right">@Html.LabelFor(model => model.LastName)</span>
+                <span class="field">@Html.EditorFor(model => model.LastName)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.FullName)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(model => model.FullName)</span>
+                <span class="label-right">@Html.LabelFor(model => model.Relation)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(model => model.Relation)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.DesignationRG)</span>
+                <span class="field">@Html.EditorFor(model => model.DesignationRG)</span>
+                <span class="label-right">@Html.LabelFor(model => model.Email)</span>
+                <span class="field">@Html.EditorFor(model => model.Email)</span>
+            </div>
+            <div class="row">                
+                <span class="label">@Html.LabelFor(model => model.MobileNo)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(model => model.MobileNo)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.HomeAddress)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(model => model.HomeAddress)</span>
+                <span class="label-right">@Html.LabelFor(model => model.OfficeAddress)</span>
+                <span class="field">@Html.EditorFor(model => model.OfficeAddress)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.HomePhone)</span>
+                <span class="field">@Html.EditorFor(model => model.HomePhone)@Html.LabelFor(model => model.HomePhoneExt)@Html.EditorFor(model => model.HomePhoneExt)</span>
+                <span class="label-right">@Html.LabelFor(model => model.OfficePhone)</span>
+                <span class="field">@Html.EditorFor(model => model.OfficePhone)@Html.LabelFor(model => model.OfficePhoneExt)@Html.EditorFor(model => model.OfficePhoneExt)</span>
+            </div>
+            <div style="width: 340px; float:left;">
+            
+            <div class="row " >
+                <span class="label">&nbsp;</span>
+                <span class="field" style="color: #3C78B5;">@Html.EditorFor(model => model.IsAddPhoto)&nbsp;@Html.LabelFor(model => model.IsAddPhoto)</span>
+            </div>
+            <div class="row">
+                <span class="label">&nbsp;</span>
+                <span class="field add-photo"><input name="Photo" id="Photo" type="file" /></span>
+            </div>
+            </div>
+            <div style="float:left;margin:0 0 0 160px;"><img width="150px" height="150px" src="@Url.Action("GetReferenceGuarantorImage", "TempPersonalInfo", new { id=Model.Id })" /></div>
+            <div class="clear"></div>
+        </div>
+         
+         <div class="button-crude">
+            <input type="submit" value="@Model.ButtonText"  />
+            @if (Model.DeleteEnable)
+            {
+                @Html.ActionLink("Delete", "DeleteReferenceInfo", new { id = Model.Id }, new { onclick = "return DeleteConfirm();" })
+            }
+            
+            
+                @Html.ActionLink("Clear", "CreateReferenceInfo/" + @Model.EmployeeId.ToString(), new { controlType=Model.Type }, null)
+            
+        </div>
+    </fieldset>
+    
+    <div class="grid">
+        <table id="jqGrid" cellpadding="0" cellspacing="0">
+        </table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_ReferenceGuarantorList", Model)
+    </div>
+    <div class="clear"> 
+    </div>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "CreateReferenceInfo", new { id=Model.EmployeeId } )
+</div>
+
+<script type="text/javascript">
+    if (!$('#IsAddPhoto').is(':checked')) {
+        $('.add-photo').hide();
+    }
+
+    $('#IsAddPhoto').click(function () {
+        if ($('#IsAddPhoto').is(':checked')) {
+            $('.add-photo').show();
+        }
+        else {
+            $('.add-photo').hide();
+        }
+    })
+
+    $("#FirstName, #MiddleName, #LastName").focusout(function () {
+        $("#FullName").val($('#FirstName').val() + ' ' + $('#MiddleName').val() + ' ' + $('#LastName').val());
+    })
+</script>
+

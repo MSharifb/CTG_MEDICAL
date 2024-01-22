@@ -1,0 +1,89 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.DistrictQuotaViewModel
+
+@{
+    Layout = null;
+}
+<div class="GroupBox" >
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DivisionId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.DivisionId, Model.DivisionNameList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required", onchange = "LoadDistrict();" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DistrictId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.DistrictId, Model.DistrictNameList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Population)
+        </span><span class="field">
+            @Html.EditorFor(model => model.Population)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            <label>Percentage (%)</label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.Percentage)
+        </span>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function LoadDistrict() {
+        var divisionId = $('#DivisionId').val();
+        var district = $('#DistrictId');
+        district.empty();
+        district.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (divisionId != null && divisionId != '') {
+            $.getJSON('@Url.Action("LoadDistrict")', { divisionId: divisionId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    district.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+

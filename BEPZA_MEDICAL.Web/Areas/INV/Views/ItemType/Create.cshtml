@@ -1,0 +1,179 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.ItemType.ItemTypeViewModel
+
+@{
+    Layout = null;
+}
+
+@*@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Model.Mode == "Create" ? "../Create" : "../Edit" }))
+{*@
+@using (Ajax.BeginForm(Model.Mode, new { Controller = "ItemType", area = "INV" }, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm" }))
+{
+    <div class=".frm-content">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Mode)
+        @*@Html.HiddenFor(m => m.ZoneInfoId)*@
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.IsGroup)
+                    <label style='color: red'>*</label>
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(model => model.IsGroup)
+                </span>
+                @*<span class="label-right">
+                    @Html.LabelFor(model => model.Code)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.Code)
+                </span>*@
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ItemTypeName)
+                    <label style='color: red'>*</label>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.ItemTypeName, new { @class = "required" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.BudgetHeadId)
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(m => m.BudgetHeadId, Model.BudgetHeadList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ParentId)
+                    <label style='color: red'>*</label>
+                </span>
+                <span class="field">
+                    @Html.DropDownListFor(m => m.ParentId, Model.ItemTypeGroupList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.Remarks)
+                </span>
+                <span class="field">
+                    @Html.TextAreaFor(model => model.Remarks)
+                </span>
+            </div>
+            
+            <div class="clear"></div>
+        </div>
+
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+            }
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+            }
+
+            <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+            <div class="clear"></div>
+
+        </div>
+
+        <div class="button-crude button-left" style="float: left;">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    function OnComplete(content) {
+        var data = JSON.parse(content.responseText);
+        if (data.toLowerCase().indexOf("updated") >= 0) {
+
+            $("#message").show();
+            $('#message').text(data).css({ 'color': 'green' });
+            $("#message").delay(3000).hide('slow');
+
+            $.get(
+                    "@Url.Action("GetTreeView", "ItemType")",
+                    {},
+                    function (r) {
+                        if (r != '') {
+                            $('.search-content').show();
+                            $('.frm-content').html(r);
+                        }
+                        else {
+                            $('.search-content').hide();
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color': 'red' });
+                            $("#message").delay(3000).hide();
+                        }
+                    }
+                );
+        }
+        else if (data.toLowerCase().indexOf("saved") >= 0) {
+            $("#message").show();
+            $('#message').text(data).css({ 'color': 'green' });
+            $("#message").delay(3000).hide('slow');
+
+            $.get(
+                    "@Url.Action("GetTreeView")",
+                    {},
+                    function (r) {
+                        if (r != '') {
+                            $('.search-content').show();
+                            $('.frm-content').html(r);
+                        }
+                        else {
+                            $('.search-content').hide();
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color': 'red' });
+                            $("#message").delay(3000).hide();
+                        }
+                    }
+                );
+        }
+        else {
+            $('.search-content').hide();
+            $("#message").show();
+            $('#message').text(data).css({ 'color': 'red' });
+            $("#message").delay(3000).hide('slow');
+        }
+    }
+
+    function OnCompleteBacktoList(content) {
+        if (content.statusText == 'OK') {
+            $('.search-content').show();
+            $('.frm-content').html(content.responseText);
+        }
+    }
+
+    $(function () {
+        var mode = '@Model.Mode';
+        $.validator.unobtrusive.parse('#frm');
+
+        $('#AccountHeadType').change(function () {
+            var headType = $('#AccountHeadType option:selected').text();
+
+            $.getJSON("@Url.Action("GetParentHead")" + "?accountType=" + headType, function (result) {
+                var options = $("#ParentHeadCode");
+                options.empty();
+
+                //don't forget error handling!
+                options.append($("<option />").val("").text('[Select One]'));
+                $.each(result, function (i) {
+                    // var element = "<option value='"+ result[i].value +"A'>" + result[i].text + "</option>";
+                    // alert(element);
+                    options.append($("<option />").val(result[i].value).text(result[i].text));
+                });
+            });
+        })
+
+        if (mode == 'Create') {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        else {
+            $('#btnUpdate').show();
+            $('#btnSave').hide();
+        }
+    })
+</script>

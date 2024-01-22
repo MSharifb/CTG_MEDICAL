@@ -1,0 +1,100 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryHeadGroup.SalaryHeadGroupViewModel
+@using ERP_BEPZA.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+    });
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#Name").focus();
+
+        $("#SortOrder").keydown(function (event) {
+
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    });
+
+</script>
+
+<table width="100%" class="contenttable">
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Name)
+            </div>
+        </td>
+
+        <td >
+            <div class="editor-label">
+                @Html.LabelFor(model => model.HeadType)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td >
+            <div class="editor-field" >
+                @Html.DropDownListFor(model => model.HeadType,Model.HeadTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                                
+            </div>
+        </td>
+
+    </tr>
+
+
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Remarks)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.Remarks)
+            </div>
+        </td>
+
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.SortOrder)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.SortOrder, new { @style = "text-align:right; width:50px" })
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>

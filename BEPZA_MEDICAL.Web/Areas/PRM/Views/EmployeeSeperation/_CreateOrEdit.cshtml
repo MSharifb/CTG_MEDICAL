@@ -1,0 +1,633 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmployeeSeperationViewModel
+@using Microsoft.Web.Helpers;
+@using BEPZA_MEDICAL.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+
+        $('#ApplicationDate, #EffectiveDate').live("change", function () {
+            var EmpId = $('#EmpId').val();
+            if (EmpId != '') {
+                CalShortagePeriod();
+            }
+            else {
+                $('#EffectiveDate').val('');
+                $('#ApplicationDate').val('');
+
+                alert("Please select employee for separation.");
+            }
+            return false;
+        });
+    });
+
+    function CalShortagePeriod() {
+        var isContractual = $('#IsContractual').val();
+        var AppDate = $('#ApplicationDate').val();
+        var EffecDate = $('#EffectiveDate').val();
+        var shortPeriod = 0;
+        var diff = 0;
+
+        if (new Date(EffecDate).getTime() < new Date(AppDate).getTime()) {
+            $('#EffectiveDate').val('');
+            $('#ApplicationDate').val('');
+            $('#message').html('<b>' + "Application date must be less than effective date for employee separation." + '</b>').css('color', '#FF0000');
+            return;
+        }
+        else {
+            $('#message').html('');
+        }
+
+        if (AppDate != "") {
+            if (AppDate != "" && EffecDate != "") {
+
+                // new
+                var url = '@Url.Action("DiffCalulation", "EmployeeSeperation")';
+                var AppDate = AppDate;
+                var EffecDate = EffecDate;
+                $.post(url, { AppDate: AppDate, EffecDate: EffecDate }, function (data) {
+
+                    $('#ShortageDays').val(data);
+
+                    diff = $("#ShortageDays").val();
+
+                    if (isContractual == 'true' || isContractual == 'True') {
+                        shortPeriod = 30 - diff;
+                        if (shortPeriod < 0) {
+                            shortPeriod = 0;
+                        }
+                        $('#ShortageDays').val(shortPeriod);
+                    }
+                    else {
+                        shortPeriod = 90 - diff;
+                        if (shortPeriod < 0) {
+                            shortPeriod = 0;
+                        }
+                        $('#ShortageDays').val(shortPeriod);
+                    }
+                });
+            }
+        }
+        else {
+            $('#ShortageDays').val('0');
+        }
+    }
+
+    $(function () {
+
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+
+    });
+
+    // ******** functions for open popup *************
+    @*$(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 940, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+        DisableEmpSearch();
+        disableUpload();
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+
+    function DisableEmpSearch() {
+        if ($('#EmployeeId').val() > 0)
+            $('#imgEmpSearch').hide();
+        else $('#imgEmpSearch').show();
+    }
+
+    function disableUpload() {
+        var IsSelect = $('#isAddAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+            $('#spAttachment').show();
+            $('#divFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+            $('#spAttachment').hide();
+            $('#divFileAttach').hide();
+        }
+    }
+
+    function openEmployee() {
+        $('#ApplicationDate').val("");
+        $('#EffectiveDate').val("");
+        $('#Type').val("");
+        $('#ShortageDays').val("0");
+        $('#Reason').val("");
+        $('#Remarks').val("");
+        $('#isAddAttachment').removeAttr('checked');
+        $('#File').val("");
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function Closing() {
+
+    }
+    // ---------------------------------
+
+    function GetEmployeeInfo() {
+        var empId = $('#EmployeeId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "EmployeeSeperation")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        $('#EmpId').val('');
+        $('#EmployeeName').val('');
+        $('#Designation').val('');
+        $('#DateofJoining').val('');
+        $('#IsContractual').val('');
+        $('#PreviousEmploymentStatusId').val('');
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $("#EmpId").val(obj.EmpId);
+                $('#EmployeeName').val(obj.EmployeeName);
+                $("#Designation").val(obj.Designation);
+                $('#DateofJoining').val(obj.DateofJoining);
+                $('#IsContractual').val(obj.IsContractual);
+                $('#PreviousEmploymentStatusId').val(obj.PreviousEmploymentStatusId);
+            }, "json");
+        }
+
+        return false;
+    }*@
+
+
+</script>
+@*<div class="GroupBox" style="min-height: 15px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>*@
+<div class="GroupBox">
+    <div class="row emp">
+        <span class="label">
+            @Html.LabelFor(model => model.EmpId)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.EmployeeName)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row emp">
+        <span class="label">
+            @Html.LabelFor(model => model.Designation)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.DateofJoining)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.DateofJoining, new { @class = "read-only", @readonly = true })
+            @Html.HiddenFor(model => model.IsContractual)
+            @Html.HiddenFor(model => model.PreviousEmploymentStatusId)
+            @Html.HiddenFor(model => model.PreviousEmploymentStatus)
+        </span>
+    </div>
+</div>
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Type)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.Type, Model.TypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+        <span class="label-right">
+            @Html.HiddenFor(model => model.ShortageDays)
+            @Html.LabelFor(model => model.OrderOrRefNo)
+        </span><span class="field">
+            @Html.EditorFor(model => model.OrderOrRefNo)
+        </span>
+
+        @*<span class="label-right">
+                @Html.LabelFor(model => model.ShortageDays)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.ShortageDays)
+            </span>*@
+
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ApplicationDate)
+            @* <label class="required-field">
+                *</label>*@
+        </span><span class="field">
+            @Html.EditorFor(model => model.ApplicationDate)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.EffectiveDate)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Reason)
+        </span><span class="field">
+            @Html.EditorFor(model => model.Reason)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Action)
+        </span><span class="field">
+            @Html.EditorFor(model => model.Action)
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Condition)
+        </span><span class="field">
+            @Html.EditorFor(model => model.Condition)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.EditorFor(model => model.Remarks)
+        </span>
+
+    </div>
+
+    <div class="clear">
+    </div>
+
+    @*<div class="GroupBox">
+            <legend>Approval Authority Info</legend>
+            <div class="row emp">
+                <span class="label">
+                    @Html.HiddenFor(model => model.ApprovalEmployeeId)
+                    @Html.LabelFor(model => model.ApprovalEmpId)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ApprovalEmpId)
+                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openApprovalAuthorityEmployee();" />
+
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ApprovalEmpName)
+                    <label class="required-field">
+                        *
+                    </label>
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ApprovalEmpName, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row emp">
+                <span class="label">
+                    @Html.LabelFor(model => model.ApprovalEmpDesignation)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ApprovalEmpDesignation, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+        </div>*@
+
+    <div class="row">
+        <span class="label">
+            @Html.CheckBoxFor(model => model.isAddAttachment, new { onclick = "disableUpload();" })
+            @Html.LabelFor(model => model.isAddAttachment)
+        </span>
+        <span class="field">
+            <div id="divFileAttach">
+                @*<span id="spAttachment" class="label-right">
+                        @Html.LabelFor(model => model.Attachment)
+                    </span>*@
+
+                @Html.HiddenFor(model => model.Attachment)
+                @Html.HiddenFor(model => model.FileName)
+                <input type="file" name="Attachment" id="Attachment" />
+                <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+            </div>
+        </span>
+
+    </div>
+</div>
+
+<div class="clear">
+</div>
+
+
+<fieldset>
+    <legend>Notify to</legend>
+    <div class="row">
+        @Html.TextAreaFor(x => x.NotifyTo, new { style = "width: 420px; height: 50px", placeholder = "You can add more than one employee Id separated by comma(,)" })
+    </div>
+</fieldset>
+
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+
+    function DisableEmpSearch() {
+        if ($('#EmployeeId').val() > 0)
+            $('#imgEmpSearch').hide();
+        else $('#imgEmpSearch').show();
+    }
+
+    function disableUpload() {
+        var IsSelect = $('#isAddAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+           // $('#spAttachment').show();
+            $('#divFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+           // $('#spAttachment').hide();
+            $('#divFileAttach').hide();
+        }
+    }
+    $("select#Type").live('change', function () {
+        $("#message").empty();
+        var permanentAllowed = ["Retirement", "Resignation", "Termination", "Dismissal", "Removal", "Discharge","Rejoin"];
+        var commonAllowed = ["Resignation", "Termination", "Dismissal", "Removal", "Discharge", "Rejoin"];
+
+        var cEmpStatus = $('#PreviousEmploymentStatus').val();
+        var typeText = $("#Type option:selected").text();
+
+        if (cEmpStatus == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please, enter employee information before 'Separation Type'</span>  </div> ");
+            $(this).val('');
+            return;
+        }
+        var index = 0;
+        if (cEmpStatus == "Permanent") {
+            index = $.inArray(typeText, permanentAllowed);
+        }
+        else {
+            index = $.inArray(typeText, commonAllowed);
+        }
+        if (index < 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please, select valid 'Separation Type' </span>  </div> ");
+            $('#Type').val('');
+            return;
+        }
+    });
+</script>
+
+
+@*AutoComple EmpInfo*@
+
+<script type="text/javascript">
+    $(function () {
+        $("#ApprovalEmpId").autocomplete({
+            source: function (request, response) {
+                $('#ApprovalEmpName').val('');
+                $('#ApprovalEmpDesignation').val('');
+                var url = '@Url.Action("AutoCompleteEmployeeList", "EmployeeSeperation")';
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            var EmpIdName = item.EmpID + '-' + item.FullName;
+                            return { label: EmpIdName, value: item.EmpID };
+                        }))
+                    }
+                })
+            },
+            select: function (event, ui) {
+                GetEmployeeInfoAutocomplete(ui.item ? ui.item.value : 0);
+            }
+        });
+
+    });
+
+    function GetEmployeeInfoAutocomplete(icno) {
+        if (icno > 0) {
+            var url = '@Url.Action("GetEmployeeInfoAutocomplete", "EmployeeSeperation")';
+            $.post(url, { ICNO: icno }, function (obj) {
+
+                $("#ApprovalEmployeeId").val('');
+                $('#ApprovalEmpId').val('');
+                $('#ApprovalEmpName').val('');
+                $('#ApprovalEmpDesignation').val('');
+
+                if (obj.Result == false) {
+                    $('#ApprovalEmpId').val('');
+                    alert('System is unable to load data please try again.');
+                }
+                else if (obj.Result == 'InactiveEmployee') {
+                    $('#ApprovalEmpId').val('');
+                    alert('Employee must be active as a signatory.');
+                }
+                else {
+                    $("#ApprovalEmployeeId").val(obj.EmployeeId);
+                    $("#ApprovalEmpId").val(obj.EmpId);
+                    $('#ApprovalEmpName').val(obj.EmployeeName);
+                    $("#ApprovalEmpDesignation").val(obj.EmployeeDesignation);
+                }
+            }, "json");
+        }
+        return false;
+    }
+
+</script>
+
+@*End AutoComple EmpInfo*@
+
+
+@*Employee Info*@
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<br />
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+        DisableEmpSearch();
+        disableUpload();
+    });
+    //Employee Info
+    function openEmployee() {
+        $('#message').empty();
+        $('#Type').val('');
+        var url = '@Url.Action("EmployeeSearch", "Employee")?UseTypeEmpId=1';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+    //Approval Authority Employee Info
+    function openApprovalAuthorityEmployee() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=2';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+
+    function setEmpData(id, useTypeEmpId) {
+        //Accused Person
+        console.log(id);
+        console.log(useTypeEmpId);
+        if (useTypeEmpId == 1) {
+            $('#EmployeeId').val(id);
+            GetEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+        //Complainant Person
+        if (useTypeEmpId == 2) {
+            $('#ApprovalEmployeeId').val(id);
+            GetApprovalEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+
+    }
+    //Employee Info
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfoTemp", "EmployeeSeperation")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    console.log(obj);
+                    $("#EmpId").val(obj.EmpId);
+                    $('#EmployeeName').val(obj.EmployeeName);
+                    $("#Designation").val(obj.Designation);
+                    $('#DateofJoining').val(obj.DateofJoining);
+                    $('#IsContractual').val(obj.IsContractual);
+                    $('#PreviousEmploymentStatusId').val(obj.PreviousEmploymentStatusId);
+                    $('#PreviousEmploymentStatus').val(obj.PreviousEmploymentStatus);
+                },
+                failure: function (response) {
+                    alert('Something Wrong!');
+                }
+            });
+        }
+    }
+    //Approval Employee Info
+    function GetApprovalEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfoTemp", "EmployeeSeperation")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#ApprovalEmpId").val(obj.EmpId);
+                    $('#ApprovalEmpName').val(obj.EmployeeName);
+                    $("#ApprovalEmpDesignation").val(obj.Designation);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+
+    function Closing() {
+
+    }
+
+</script>
+@*End Accused Person Info*@

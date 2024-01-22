@@ -1,0 +1,257 @@
+﻿@{ ViewBag.Title = "jqGrid in ASP.NET MVC - Searching [Custom]"; }
+@{
+    ViewBag.Title = "Application";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.BudgetMasterViewModel
+
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.BudgetType' == 'Development') {
+            $('.page-title').html("Development Budget");
+        }
+        else {
+            $('.page-title').html("Non-Development Budget");
+        }
+    });
+
+    $(function () {
+
+        if ('@Model.ActionType' == 'UpdateBudget') {
+            $('.ApvSave').hide();
+        }
+        else {
+            $('.ApvUpdate').hide();
+        }
+
+        if ('@Model.ApprovalStatus' != 'Submitted') {
+            $('#btnSave').hide();
+        }
+    });
+
+</script>
+
+
+@using (Html.BeginForm("SaveApplication", "RequestedApplication", FormMethod.Post, new { id = "frm", enctype = "multipart/form-data" }))
+{
+     <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+        <div class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+        }
+    </div>
+    
+    
+<div class="form-horizontal">
+
+    <fieldset>
+        @Html.HiddenFor(m => m.BudgetZonesString)
+        <span class="master-id-area">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.ApprovalSelectionId)
+        </span>
+        @Html.HiddenFor(m => m.BudgetType)
+        <div class="form-group">
+            @Html.LabelFor(m => m.MinistryOrDivisionId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.MinistryOrDivisionId, Model.DivisionOrMinistryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control",@disabled = "disabled" })
+            </div>
+
+            @Html.LabelFor(m => m.SourceOfFundId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.SourceOfFundId, Model.SourceOfFundList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" ,@disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApprovalAuthorityId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ApprovalAuthorityId, Model.ApprovalAuthorityList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @disabled = "disabled" })
+            </div>
+
+            @Html.LabelFor(m => m.ProcurementTypeId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ProcurementTypeId, Model.ProcurementTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CreationDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.strCreateDate, new { @class = "read-only", @readonly = true })
+            </div>
+
+            @Html.LabelFor(m => m.ProjectOrZoneList, new { @class = "col-sm-2 control-label", @disabled = "disabled" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.BudgetZones, Model.ProjectOrZoneList, new { @class = "form-control", @disabled = "disabled" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.LastUpdateDate, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(m => m.strLastUpdateDate, new { @class = "read-only", @readonly = true })
+            </div>
+        </div>
+
+    </fieldset>
+        
+    <fieldset>
+
+            <table class="table table-bordered">
+                <thead style="background-color:lightblue">
+                    <tr>
+                        <th class="budget-sub-head">Budget Head</th>
+                        <th class="budget-sub-head">Budget Sub-Head</th>
+                        <th class="construction-type">Construction Type</th>
+                        <th class="project-name">Name of Work / Goods / Service</th>
+                        <th class="budget-amount">Estimated / Accepted Amount<br />(Lac)</th>
+                        <th class="remarks">Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.BudgetDetailList.Count; i++)
+                    {
+                        var item = Model.BudgetDetailList.ToList()[i];
+                        <tr>
+                            <td>@Html.Encode(item.BudgetHeadName)</td>
+                            <td>@Html.Encode(item.BudgetSubHeadName)</td>
+                            <td>@Html.Encode(item.ConstructionTypeName)</td>
+                            <td>@Html.Encode(item.NameOfWorks)</td>
+                            <td>@Html.Encode(item.BudgetAmount)</td>
+                            <td>@Html.Encode(item.Remarks)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        <table class="table table-bordered">
+            <thead style="background-color:lightblue">
+                <tr>
+                    <th>Financial Year</th>
+                    <th>Status</th>
+                    <th>Estemated Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.YearWiseBudgetStatusList.Count; i++)
+                {
+                    var item = Model.YearWiseBudgetStatusList.ToList()[i];
+                    <tr>
+                        <td>@Html.Encode(item.FinancialYearName)</td>
+                        <td>@Html.Encode(item.StatusName)</td>
+                        <td>@Html.Encode(item.EstematedCost)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Comments, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextAreaFor(m => m.Comments, new { @style = @"width:100%", @class = "read-only", @readonly = true })
+                </div>
+            </div>
+
+        </fieldset>
+
+    <fieldset>
+        <legend>Recommendation / Approval Flow</legend>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label labelRequired">Your Remarks</label>
+            <div class="col-sm-10">
+                @Html.TextAreaFor(m => m.Remarks, new { @style = @"width:50%", @required = @"required" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+            </div>
+        </div>
+
+        <table class="table table-bordered" style="width:100%">
+
+            <thead style="height:10px!important">
+                <tr style="height:10px!important">
+                    <th style="width: 30%">Designation</th>
+                    <th style="width: 45%">Employee Name & Department</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                if (Model.ApproverList != null && Model.ApproverList.Any())
+                {
+                    foreach (var x in Model.ApproverList)
+                    {
+                        @Html.Partial("_PartialEmployeeList", x);
+                }
+            }
+                }
+
+            </tbody>
+        </table>
+    </fieldset>
+
+        @*<div class="ApvUpdate">
+            <fieldset>
+                <legend>Recomandation / Approval Flow</legend>
+                <table class="table table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">Designation</th>
+                            <th style="width: 30%">Employee Name</th>
+                            <th> Department</th>
+                            <th> Remarks </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.ApproverList.Count; i++)
+                        {
+                            var item = Model.ApproverList.ToList()[i];
+                            <tr>
+                                <td>@Html.Encode(item.DesignationName)</td>
+                                <td>@Html.Encode(item.EmployeeName)</td>
+                                <td>@Html.Encode(item.DepartmentName)</td>
+                                <td>@Html.Encode(item.Remarks)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </fieldset>
+        </div>*@
+
+</div>
+    
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-12 col-sm-offset-0 text-center">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                <button class="btn btn-primary" type="submit" value="Save" id="btnSave" name="btnSubmit"><i class="fa fa-save"></i> Save</button>
+                }
+        </div>
+    </div>
+</div>
+
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-0 text-left">
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+        </div>
+    </div>
+</div>
+}

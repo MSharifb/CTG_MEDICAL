@@ -1,0 +1,124 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel>
+
+<table class="table table-bordered table-hovered table-responsive">
+    <thead>
+        <tr>
+            @*<th class="checkItem">@Html.CheckBox("ChkAll", "false")</th>*@
+            <th class="application-Date">Apply Date</th>
+            <th class="applicant-Id">Applicant ID</th>
+            <th class="applicant-Name">Applicant Name</th>
+            <th class="requested-amount">Requested Amount</th>
+            <th class="approval-status">Status</th>
+            <th class="approver-action">&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                @Html.Partial("_WelfareFundApplication", item)
+            }
+        }
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+    $('table thead tr input[type=checkbox]').on('change', function () {
+        //debugger;
+        var isChecked = $(this).is(':checked');
+        ToggleCheckBox(isChecked);
+    });
+
+    function ToggleCheckBox(isChecked) {
+        $('table tbody tr .checkItem').find("input[type=checkbox]").each(function () {
+            $(this).prop('checked', isChecked);
+        })
+
+    }
+</script>
+
+<style type="text/css">
+    table {
+        border: 1px solid #34495e;
+    }
+
+        table tbody td {
+            padding: 4px !important;
+            vertical-align: middle !important;
+        }
+
+        table thead {
+            background: #FFFFFF;
+            color: #000000;
+            font-family: Tahoma;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: default;
+        }
+
+            table thead:hover {
+                cursor: default;
+            }
+
+            table thead th {
+                text-align: center;
+                padding: 5px 2px !important;
+            }
+
+        table tbody tr:hover {
+            background: #eceff5;
+            color: #000000;
+        }
+
+    .checkItem {
+        width: 50px;
+        text-align: center;
+    }
+
+    .application-Date {
+        width: 120px;
+        max-width: 120px;
+    }
+
+    .applicant-Id {
+        width: 100px;
+        max-width: 100px;
+    }
+
+    .applicant-Name {
+        max-width: 400px;
+        min-width: 200px;
+        word-wrap: break-word;
+    }
+
+    .requested-amount {
+        width: 150px;
+        max-width: 150px;
+        padding-right: 10px !important;
+    }
+
+    td.requested-amount {
+        text-align: right;
+    }
+
+    .approval-status {
+        width: 120px;
+        max-width: 120px;
+        text-align: center;
+    }
+
+    .approver-action {
+        width: 120px;
+        max-width: 120px;
+        padding: 0;
+    }
+
+        .approver-action button {
+            margin: 0;
+        }
+</style>

@@ -1,0 +1,92 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.EstimationHeadViewModel
+
+<div class="form-horizontal">
+    <fieldset>
+        <div class="form-group">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.HeadName, new { @class = "col-sm-2 default-label labelRequired" })
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.HeadName, new { @style = @"width:100%" })
+            </div>
+            @Html.LabelFor(model => model.ItemCode, new { @class = "col-sm-1 default-label labelRequired" })
+            <div class="col-sm-3">
+                @Html.TextBoxFor(m => m.ItemCode, new { @style = @"width:100%" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "col-sm-2 default-label" })
+            <div class="col-sm-10">
+                @Html.TextAreaFor(m => m.Description, new { @style = @"width:100%" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-2">&nbsp;</div>
+            <div class="col-sm-10">
+                @Html.CheckBoxFor(m => m.IsActive)
+                @Html.LabelFor(model => model.IsActive)
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+@*<div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.Id)
+
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.HeadName)
+            </span>
+
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Description)
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(model => model.Description, new { @class = @"widthField" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.IsActive)
+            </span>
+            <span class="field">
+                @Html.CheckBoxFor(model => model.IsActive)
+            </span>
+        </div>
+    </div>*@
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        buttonHide();
+    });
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function buttonHide() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+</script>
+
+<style type="text/css">
+    .labelRequired:after {
+        content: '*';
+        color: red;
+    }
+</style>

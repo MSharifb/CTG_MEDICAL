@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Base Css Files -->
+    <link href="@Url.Content("~/assets/libs/jqueryui/ui-lightness/jquery-ui-1.10.4.custom.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/bootstrap/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/font-awesome/css/font-awesome.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/fontello/css/fontello.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/animate-css/animate.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/nifty-modal/css/component.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/magnific-popup/magnific-popup.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/ios7-switch/ios7-switch.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/pace/pace.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/sortable/sortable-theme-bootstrap.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/bootstrap-datepicker/css/datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets/libs/jquery-icheck/skins/all.css")" rel="stylesheet" />
+    <!-- Code Highlighter for Demo -->
+    <link href="@Url.Content("~/assets/libs/prettify/github.css")" rel="stylesheet" />
+
+    <!-- Extra CSS Libraries Start -->
+    <link href="@Url.Content("~/assets/css/style.css")" rel="stylesheet" type="text/css" />
+    <!-- Extra CSS Libraries End -->
+    <link href="@Url.Content("~/assets/css/style-responsive.css")" rel="stylesheet" />
+
+    <!-- PROJECT-SPECIFIC STYLES || TO OVERRIDE ALL THE PREVIOUS CSS DECLARATIONS -->
+    <link href="@Url.Content("~/assets/css/project.css")" rel="stylesheet" type="text/css" />
+
+    <link rel="shortcut icon" href="@Url.Content("~/Content/Images/bepza-logo.png")">
+    <link rel="apple-touch-icon" href="@Url.Content("~/assets/img/apple-touch-icon.png")" />
+    <link rel="apple-touch-icon" sizes="57x57" href="@Url.Content("~/assets/img/apple-touch-icon-57x57.png")" />
+    <link rel="apple-touch-icon" sizes="72x72" href="@Url.Content("~/assets/img/apple-touch-icon-72x72.png")" />
+    <link rel="apple-touch-icon" sizes="76x76" href="@Url.Content("~/assets/img/apple-touch-icon-76x76.png")" />
+    <link rel="apple-touch-icon" sizes="114x114" href="@Url.Content("~/assets/img/apple-touch-icon-114x114.png")" />
+    <link rel="apple-touch-icon" sizes="120x120" href="@Url.Content("~/assets/img/apple-touch-icon-120x120.png")" />
+    <link rel="apple-touch-icon" sizes="144x144" href="@Url.Content("~/assets/img/apple-touch-icon-144x144.png")" />
+    <link rel="apple-touch-icon" sizes="152x152" href="@Url.Content("~/assets/img/apple-touch-icon-152x152.png")" />
+    <style>
+        .validation-summary-errors {
+            border-radius: 0;
+            background-color: #f2dede;
+            border-color: #ebccd1;
+            color: #a94442;
+        }
+        .prm, .pgm, .pms, .fis, .ams, .lms, .cpf, .opam, .inv, .ums, .acc, .far, .pmi, .wfm{
+        max-height: 90px;
+        min-height: 90px;
+        height: 90px;
+    }
+
+    .maindata {
+        width: 75% !important;
+    }
+
+        .maindata b {
+            font-size: 15px !important;
+        }
+
+    .widget-content.padding {
+        padding: 12px !important;
+        vertical-align: middle !important;
+    }
+
+
+    </style>
+
+    <script src="@Url.Content("~/assets/libs/jquery/jquery-1.11.1.min.js")"></script>
+    
+ 
+</head>
+<body class="widescreen pace-done fixed-left-void dashboard-common">
+
+
+    <div id="wrapper" class="forced enlarged main-dashboard">
+        <!-- /.navbar-header -->
+        <header id="site-header">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img class="navbar-logo" src="~/Content/Images/bepza-logo.png" alt="Logo">
+                    <span class="navbar-branding">
+                        <span class="brand-text">
+                            Bangladesh Export Processing Zones Authority
+                        </span>
+                        <small class="brand-secondary-text">
+                            Chattogram EPZ Medical Hospital
+                        </small>
+                    </span>
+                    <!-- /.navbar-branding -->
+                </a>
+                <!-- /.navbar-brand -->
+            </div>
+
+
+            <!-- Button mobile view to collapse sidebar menu -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <div class="navbar-collapse2">
+                        <ul class="nav navbar-nav navbar-right top-navbar">
+                            <li class="notifications">
+                                <a href="#">
+                                    <i class="glyphicon glyphicon-bell"></i>
+                                    <span class="badge js-notification-count hide"></span>
+                                </a>
+                            </li>
+                            <li class="dropdown iconify hide-phone">
+                                <a href="#" onclick="javascript:toggle_fullscreen()"><i class="icon-resize-full-2"></i></a>
+                            </li>
+                            <li class="dropdown topbar-profile">
+                                @Html.Partial("_LogOnDashboardPartial")
+                            </li>
+
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+            <div class="hide" id="divTmpNotificationMessages"></div>
+        </header>
+
+        <!-- Right Sidebar End -->
+        <!-- Start right content -->
+        <div class="content-page">
+            <!-- ============================================================== -->
+            <!-- Start Content here -->
+            <!-- ============================================================== -->
+            <div class="content">
+                @RenderBody()
+
+                <!-- Footer Start -->
+                @*<footer>
+                        TechnoVista &copy; 2016
+                        <div class="footer-links pull-right">
+                            <a href="#">About</a><a href="#">Support</a><a href="#">Terms of Service</a><a href="#">Legal</a><a href="#">Help</a><a href="#">Contact Us</a>
+                        </div>
+                    </footer>*@
+                <!-- Footer End -->
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- End content here -->
+        <!-- ============================================================== -->
+
+    </div>
+
+    <div class="md-overlay"></div>
+    <!-- End of eoverlay modal -->
+    <script>
+        var resizefunc = [];
+    </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
+    <script src="@Url.Content("~/assets/libs/bootstrap/js/bootstrap.min.js")"></script>
+
+    <script src="@Url.Content("~/assets/libs/jqueryui/jquery-ui-1.10.4.custom.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/jquery-ui-touch/jquery.ui.touch-punch.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/jquery-detectmobile/detect.js")"></script>
+    <script src="@Url.Content("~/assets/libs/jquery-animate-numbers/jquery.animateNumbers.js")"></script>
+
+    <script src="@Url.Content("~/assets/libs/ios7-switch/ios7.switch.js")"></script>
+    <script src="@Url.Content("~/assets/libs/fastclick/fastclick.js")"></script>
+    <script src="@Url.Content("~/assets/libs/jquery-blockui/jquery.blockUI.js")"></script>
+    <script src="@Url.Content("~/assets/libs/bootstrap-bootbox/bootbox.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/jquery-slimscroll/jquery.slimscroll.js")"></script>
+    <script src="@Url.Content("~/assets/libs/jquery-sparkline/jquery-sparkline.js")"></script>
+    <script src="@Url.Content("~/assets/libs/nifty-modal/js/classie.js")"></script>
+    <script src="@Url.Content("~/assets/libs/nifty-modal/js/modalEffects.js")"></script>
+    <script src="@Url.Content("~/assets/libs/sortable/sortable.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/bootstrap-fileinput/bootstrap.file-input.js")"></script>
+    <script src="@Url.Content("~/assets/libs/bootstrap-select/bootstrap-select.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/bootstrap-select2/select2.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/magnific-popup/jquery.magnific-popup.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/pace/pace.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    <script src="@Url.Content("~/assets/libs/jquery-icheck/icheck.min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/underscorejs/underscore-min.js")"></script>
+    <script src="@Url.Content("~/assets/libs/Moment-js/moment.min.js")"></script>
+
+    <!-- Demo Specific JS Libraries -->
+    <script src="@Url.Content("~/assets/libs/prettify/prettify.js")"></script>
+    <script src="@Url.Content("~/assets/js/init.js")"></script>
+
+
+  
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmpTop
+<div class="GroupBox">
+    <div class="leftColumn">
+        <div class="row">
+            <span class="label" style="width:32%">
+                @Html.LabelFor(model => model.EmpID)
+            </span><span class="field" style="width:42%">
+                @Html.TextBoxFor(model => model.EmpID, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label" style="width:32%">
+                @Html.LabelFor(model => model.Name)
+            </span>
+            <span class="field" style="width:42%">
+                @Html.TextBoxFor(model => model.Name, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label" style="width:32%">
+                @Html.LabelFor(model => model.DesignationTop)
+            </span>
+            <span class="field" style="width:42%">
+                @Html.TextBoxFor(model => model.DesignationTop, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+    </div>
+    <div class="rightColumn">
+        <div class="row">
+            <div class="field" style="width: auto;">
+                @{
+                    if (Model.IsPhotoExist)
+                    {
+                        <div class="Photo-Top">
+                            <img alt="Employe Photo" style="height:107px;" src="@Url.Action("GetImage", "SecurityPersonnelInfo", new { id = Model.EmployeeId, isPhoto = true })" />
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MyCPFBalance.MyCPFBalanceViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Index", "MyCPFBalance", FormMethod.Post, new { id = "frm" }))
+{
+    
+    <fieldset>
+       
+        <div id="appDiv">
+            @Html.Partial("_CreateOrEdit", Model)
+        </div>
+        <br />
+        <div id="appring">
+            <div class="button-center buttonSubmit">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                <input id="btnPrint" type="button" value="Print" style="width: auto; overflow: visible;
+                    padding-left: .25em; padding-right: .25em;" onclick="JavaScript:printPartOfPage('appDiv');" />
+                }
+            </div>
+        </div>
+    </fieldset>
+}
+
+<script type="text/javascript">
+
+    function printPartOfPage(elementId) {
+        //printDivCSS = new String('<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css">')
+        //var reportHeader = "My Loan Status";
+        var printContent = document.getElementById(elementId);
+        var uperPart =  document.getElementById('appDiv').innerHTML;
+        var windowUrl = 'about:blank';
+        var uniqueName = new Date();
+        var windowName = 'Print' + uniqueName.getTime();
+        var printWindow = window.open(windowUrl, windowName, 'left=0,top=60,width=2000,height=3000');
+        //printWindow.document.write("<div align='center'>" + "<h2>" + reportHeader + "</h2>" + "</div>" + uperPart);
+        printWindow.document.write(uperPart);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        //document.billFrame.print();
+        printWindow.close();
+    }
+
+   
+</script>

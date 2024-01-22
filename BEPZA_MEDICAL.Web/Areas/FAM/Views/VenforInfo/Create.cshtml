@@ -1,0 +1,23 @@
+﻿@model MFS_IWM.Web.Areas.FAM.Models.VendorInfo.VendorInformationModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/FAM/Views/Shared/_Layout.cshtml";
+}
+@using (Ajax.BeginForm("Create", "VendorInformation", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    @Html.ValidationSummary(false, MFS_IWM.Web.Utility.Common.ValidationSummaryHead)
+    <fieldset>       
+        @Html.Partial("_CreateOrEdit", Model)
+        <br />
+        <div class="button-center buttonSubmit">
+        @if ((new MFS_IWM.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="submit" value="Save" style="width: auto; overflow: visible; padding-left: .25em;
+                padding-right: .25em;" />
+        }
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,120 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryWithheld.SalaryWithheldModel
+@using ERP_BEPZA.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+
+        $("#Amount").keydown(function (event) {
+            //alert(advance);
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                // Allow: Ctrl+A
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Allow: home, end, left, right
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+        $("select#EmployeeId").change(function () {
+
+            var url = '@Url.Action("GetEmployeeInfo", "PGMCommon")' + '?employeeId=' + $(this).val();
+
+            $.get(url,
+                function (data) {
+                    if (data.Success) {
+                        $("#EmployeeDesignation").val(data.EmployeeDesignation);
+                    } else {
+                        $("#message").val('Unable to load employee data');
+                    }
+                });
+        });
+
+
+    });          //End Document Ready
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+<div class="GroupBox" id="message">
+    @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.Message
+        </div>
+    }
+</div>
+
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SalaryYear)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.SalaryYear, Model.SalaryYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.SalaryMonth)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.SalaryMonth, Model.SalaryMonthList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(m => m.EmployeeId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.EmployeeDesignation)
+        </span><span class="field">
+            @Html.EditorFor(model => model.EmployeeDesignation)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Reason)
+        </span><span class="field">
+            @Html.TextAreaFor(m => m.Reason)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(m => m.Remarks)
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>

@@ -1,0 +1,606 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.ScrapViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div id="wrapper">
+    <legend>Applicant Info</legend>
+    <div id="leftdiv" style="float: left; width: 80%;">
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.IssuedByEmpId)
+                @Html.HiddenFor(model => model.ByEmpId)
+                @Html.HiddenFor(model => model.IssuedToEmpId)
+                @Html.HiddenFor(model => model.ZoneInfoId)
+                @Html.HiddenFor(model => model.ApprovalStepId)
+                @Html.HiddenFor(model => model.ApprovalStatusId)
+                @Html.LabelFor(model => model.EmpID)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(m => m.EmpID, new { @class = "read-only", @readonly = true })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.ToEmpId)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(m => m.ToEmpId, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Department)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Department, new { @class = "read-only", @readonly = true })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.Designation)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.JoiningDate)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.JoiningDate, new { @class = "read-only", @readonly = true })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.ConfirmationDate)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.ConfirmationDate, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+    </div>
+    <div id="rightdiv" style="float: left; width: 20%;">
+        <div class="row">
+            <div class="field" style="width: auto;">
+                @{
+                    if (Model.IsPhotoExist)
+                    {
+                        <div class="Photo-Top">
+                            <img alt="Employee Photo" height="110" width="110" src="@Url.Action("GetEmployeePhoto", "OnlineRequisition", new { id = Model.IssuedToEmpId, isPhoto = true })" />
+                        </div>
+                    }
+                }
+            </div>
+            @*<div style="border: 1px solid #D2DDE7; width: 150px; height: 150px;">
+                    @if (Model != null)
+                    {
+                        if (String.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img height="150" width="150" class="imgThumb" src="@Url.Action("GetEmployeePhoto", "OnlineRequisition", new { id = Model.IssuedToEmpId, isPhoto = true })" />
+                        }
+                        else
+                        {
+                            <img height="150" width="150"
+                                 src="@(Model.ImageUrl)"
+                                 id="uploadedImage" alt="@Model.ImageAltText" />
+                        }
+                    }
+                </div>*@
+        </div>
+    </div>
+</div>
+<div class="GroupBox">
+    <legend>Online Return Request Info</legend>
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IssuedToEmpId)
+    @Html.HiddenFor(model => model.strMode)
+    @Html.HiddenFor(model => model.TotalQuantity)
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ScrapDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ScrapDate, new { @class = "required" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.ScrapNo)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ScrapNo, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Comment)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Comment, new { @style = "width: 673px" })
+        </span>
+        &nbsp;
+        <span class="label-right">
+            &nbsp;
+        </span>
+        <span class="field">
+        </span>
+    </div>
+</div>
+
+<fieldset>
+    <legend>Item Searching</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TypeId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.TypeId, Model.ItemTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.CategoryId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.CategoryId, Model.CategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ModelId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ModelId, Model.ModelList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ColorId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ColorId, Model.ColorList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.UnitId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Returnable Item Info</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ItemId, Model.ItemList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Quantity)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Quantity)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemStatusId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ItemStatusId, Model.StatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.CommentDetail)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.CommentDetail)
+        </span>
+    </div>
+</fieldset>
+
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 70%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>
+                            Item Name
+                        </th>
+                        <th>
+                            unit
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Comment
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.ScrapDetail.Count() > 0) { Html.RenderPartial("_Details", Model); }}
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</div>
+
+<div class="GroupBox">
+    @if (Model.IsConfigurableApprovalFlow)
+    {
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ApproverId)<label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.ApproverId, Model.ApproverList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"required" })
+            </span>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.ApproverId)
+                @Html.LabelFor(model => model.ApproverId)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.ForwardToEmpId)
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" alt="Find" title="Find" />
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ForwardToEmpDesignation)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.ForwardToEmpDesignation)
+            </span>
+        </div>
+    }
+</div>
+<div class="clear"></div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            //$('input[name="btnSave"]').hide();
+            //var Url = window.location.href;
+            //    window.location.href = Url;
+        }
+    }
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=1';
+        url = url.replace('INV', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+    function setEmpData(id, useTypeEmpId) {
+            $('#ApproverId').val(id);
+            GetEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfoTemp", "OfflineScrap")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#ForwardToEmpId").val(obj.EmpId);
+                    $('#ForwardToEmpDesignation').val(obj.Designation);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function Closing() {
+    }
+
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+</script>
+
+<script type="text/javascript">
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+</script>
+
+<script type="text/javascript">
+
+    $("#btnAdd").click(function () {
+        $("#message").empty();
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+            $("#ItemId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select Item.' + "</b>");
+            return false;
+        }
+
+        if ($('#Quantity').val() == null || $('#Quantity').val() == '' || $('#Quantity').val() == '0') {
+            $("#Quantity").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please provide valid Quantity.' + "</b>");
+            return false;
+        }
+
+        if ($('#ItemStatusId').val() == null || $('#ItemStatusId').val() == '' || $('#ItemStatusId').val() == '0') {
+            $("#ItemStatusId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select item status.' + "</b>");
+            return false;
+        }
+
+        var ItemStatusId = $('#ItemStatusId').val();
+        var id = $('#Id').val();
+        var ItemId = $('#ItemId').val();
+        var Item = $('#ItemId option:selected').text();
+        var Quantity = $('#Quantity').val();
+        var Comment = $('#CommentDetail').val();
+        var ColorId = $('#Color').val();
+        var Unit = "";
+        if ($('#UnitId').val() != null && $('#UnitId').val() != '' && $('#UnitId').val() != '0') {
+            Unit = $('#UnitId option:selected').text();
+        }
+
+        var totalReturned = GetTotalRetQt(ItemId);
+        var scrapIssuedToEmpId = $('#IssuedToEmpId').val();
+
+        var url = '@Url.Action("AddDetail", "OfflineScrap")';
+        var data = {
+            ScrapId: id,
+            ItemId: ItemId,
+            Item: Item,
+            Comment: Comment,
+            Quantity: Quantity,
+            Unit: Unit,
+            SumQty: totalReturned,
+            EmployeeId: scrapIssuedToEmpId,
+            ItemStatusId: ItemStatusId
+        };
+
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                if (html.Success) {
+                    $('#message').html("<b style='color:Red'>" + html.Message + "</b>");
+                    return false;
+                }
+                if ($(html).val() != 'Invalid') {
+
+                    $('#grid tbody').append(html);
+                    $('#ItemId').val('')
+                    $('#CommentDetail').val('')
+                    $('#Quantity').val('')
+                    $('#UnitId').val('')
+                    $('#ItemStatusId').val('1')
+                    $('#TypeId').val('')
+                    $('#CategoryId').val('')
+                    $('#ModelId').val('')
+                    $('#ColorId').val('')
+
+                    $('#message').html('');
+
+                    $("#ItemId").removeClass("border-red");
+                    $("#Quantity").removeClass("border-red");
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + 'Invalid.' + "</b>");
+                }
+            }
+        });
+        return false;
+    });
+
+    //function RemoveDb(el, id, url) {
+    //    if (id == 0 || id == undefined) {
+    //        $(el).parent().parent().remove();
+    //    }
+    //    else {
+    //        $.ajax({
+    //            url: url,
+    //            type: 'POST',
+    //            dataType: 'json',
+    //            data: JSON.stringify({ Id: id }),
+    //            contentType: "application/json; charset=utf-8",
+    //            error: function () {
+    //                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+    //            },
+    //            success: function (result) {
+    //                var errMsg = result.Message;
+    //                var errg = result.Success;
+    //                if (errg) {
+    //                    $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+    //                    $(el).parent().parent().remove();
+    //                }
+    //                else {
+    //                    $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+    //                }
+    //            }
+    //        });
+    //    }
+    //}
+
+</script>
+
+<script type="text/javascript">
+
+    $("select#ItemId").change(function () {
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+
+            $("#TypeId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#CategoryId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ModelId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#UnitId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ColorId").val("0");
+            $('.select-single').trigger('chosen:updated');
+        }
+        else {
+            $.get('@Url.Action("GetItemDetails", "ItemPurchase")', { itemId: $('#ItemId').val() }, function (data) {
+                $("#TypeId").val(data.typeId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#CategoryId").val(data.categoryId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ModelId").val(data.modelId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#UnitId").val(data.unitId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ColorId").val(data.colorId);
+                $('.select-single').trigger('chosen:updated');
+
+            });
+        }
+
+    })
+
+    //cascading dropdown
+    $("select#TypeId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#CategoryId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ModelId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#UnitId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ColorId").change(function () {
+        LoadItemDDL();
+    })
+
+    function LoadItemDDL() {
+
+        var TypeId = $("#TypeId").val();
+        var CategoryId = $("#CategoryId").val();
+        var ModelId = $("#ModelId").val();
+        var UnitId = $("#UnitId").val();
+        var ColorId = $("#ColorId").val();
+
+        var ItemSelect = $('select#ItemId');
+        ItemSelect.empty();
+
+        ItemSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        var url = '@Url.Action("GetItemList", "OfflineScrap")' + '?TypeId=' + TypeId + '&CategoryId=' + CategoryId + '&ModelId=' + ModelId + '&UnitId=' + UnitId + '&ColorId=' + ColorId;
+        $.get(url, function (response) {
+            var heads = $.parseJSON(response);
+
+            var ddl = $("#ItemId");
+            // clear all previous options
+            $("#ItemId>option").remove();
+
+            // populate the products
+            for (i = 0; i < heads.length; i++) {
+
+                ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+            }
+            $('.select-single').trigger('chosen:updated');
+        });
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    function GetTotalRetQt(itemId) {
+        var sum = 0;
+        $("#grid tbody tr .retQt :input").each(function () {
+            var currentItemId = $(this).closest('tr').find('.itemIdInfo :input[type=hidden]').val();
+            var value = $(this).val();
+            if (itemId == currentItemId) {
+                sum += parseFloat(value);
+            }
+        });
+        return sum;
+    }
+</script>
+
+

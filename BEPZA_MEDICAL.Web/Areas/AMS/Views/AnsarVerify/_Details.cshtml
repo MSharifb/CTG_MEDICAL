@@ -1,0 +1,11 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.AMS.ViewModel.AnsarVerifyViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.AnsarList != null)
+{
+    foreach (var x in Model.AnsarList)
+    {
+        @Html.Partial("_EmployeeList", x);
+    }
+
+}

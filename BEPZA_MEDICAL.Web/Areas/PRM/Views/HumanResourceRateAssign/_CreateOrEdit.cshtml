@@ -1,0 +1,149 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.HumanResourceRateAssign.HumanResourceRateAssignModel
+@using BEPZA_MEDICAL.Web.Helpers
+<div class="GroupBox">
+    <div class="row emp">
+        @Html.HiddenFor(model => model.ActionType)
+        <span class="label">
+            @Html.LabelFor(model => model.MultiplicationFactor)
+        </span><span class="field">
+            @Html.EditorFor(model => model.MultiplicationFactor)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.EmploymentTypeMasterId)
+            <label style='color: red'>
+                *</label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.EmploymentTypeMasterId, Model.EmploymentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">@Html.LabelFor(model => model.EffectiveDate)
+        </span><span class="field">
+            @if (Model.ActionType == "Create")
+            {
+                @Html.EditorFor(model => model.EffectiveDate)
+            }
+            else
+            { 
+                 @*@Html.TextBoxFor(model => model.DGS, new { @class = "form-control required dtPicker", Value = Model.DGS == DateTime.MinValue ? "" : Model.DGS.ToString("yyyy-MM-dd") })*@ 
+                @Html.TextBoxFor(model => model.EffectiveDate, new { Value = Model.EffectiveDate.ToString("dd-MM-yyyy"), @readonly = true, @style = "width:99px;height:18px;cursor:default;background-color: #f2f5f8;text-align:center;padding: 2px;" })
+            }
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">@Html.LabelFor(model => model.Remarks)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<br />
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 40%">
+            <table id="grid" class="contenttable" width="20%">
+                <thead>
+                    <tr>
+                        <th width="20%" align="center">
+                            Employee Initial
+                        </th>
+                        <th width="20%" align="center">
+                            Resource Level
+                        </th>
+                        <th width="15%" align="center">
+                            <label>
+                                Actual Rate
+                            </label>
+                        </th>
+                        <th width="15%" align="center">
+                            <label>
+                                Budget Rate
+                            </label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.HumanResourceRateAssignDetailList != null)
+                    {
+                        @Html.Partial("_GradeDetailList", Model);
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(function () {
+
+        if ('@Model.message' != '') {
+
+            if ('@Model.isSuccess' != "True") {
+                $('#message').html("<b style='color:Red'>" + '@Model.message' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Green'>" + '@Model.message' + "</b>");
+
+            }
+        }
+
+    });
+</script>
+<script type="text/javascript">
+
+    //    $(function () {
+
+    //        if ('@Model.ActionType' == "Edit") {
+    //        }
+    //        var id = $('#ProjectId').val();
+    //        var doctype = $('#DocumentTypeId').val();
+    //        var url = '@Url.Action("AddDetail", "ApproverPath", new { masterID = "_id_", DocumentTypeId = "_type_" })';
+    //        url = url.replace(/_id_/, id);
+    //        url = url.replace(/_type_/, doctype);
+    //        url = url.replace('amp;', '');
+    //        $('#addDetails').attr("href", url);
+
+    //    });
+
+    // Populate the table in the event of template change
+    $("#EmploymentTypeMasterId").live("change", function () {
+
+        if ($(this).val() != '') {
+            var factor = $('#MultiplicationFactor').val();
+            var ActionType = $('#ActionType').val();
+            var effectiveDate = $('#EffectiveDate').val();
+            var empType = $(this).val();
+
+            if (factor == '') {
+                alert('Multiply Factor must be needed zero for regular employee and greater than zero for contractual/Consultant employee.');
+                return false;
+            }
+            else {
+
+                if (empType == 1 && factor >0) {
+                    alert('For regular employee Multiply Factor must be zero.');
+                    return false;
+                }
+                if (empType > 1 && factor== 0) {
+                    alert('For contractual/Consultant employee Multiply Factor must be greater than zero.');
+                    return false;
+                } 
+            }
+
+            var url = '@Url.Action("GetDetailsTemplate", "HumanResourceRateAssign")' + '?Id=' + $(this).val() + '&factor=' + factor + '&actionType=' + ActionType + '&effectiveDate=' + effectiveDate;
+            var table = $('.contenttable');
+            $('.contenttable').find('.dynamicRow').remove();
+
+            $.get(url, function (data) {
+                $(table).append(data);
+            });
+
+        } else {
+            $('.contenttable').find('.dynamicRow').remove();
+        }
+
+        return false;
+    });   
+
+</script>

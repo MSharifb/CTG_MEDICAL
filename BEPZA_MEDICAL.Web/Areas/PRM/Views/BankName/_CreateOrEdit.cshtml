@@ -1,0 +1,234 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.BankNameViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Name)&nbsp;<span class="required-field">*</span>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Name, new { @class = "required" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.NameInBengali)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.NameInBengali)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span>
+    </div>
+
+    <div class="clear">
+    </div>
+</div>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.BranchName)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.BranchName)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Address)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Address)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.BranchNameInBengali)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.BranchNameInBengali)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.AddressInBengali)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.AddressInBengali)
+        </span>
+
+        <div class="button-crude button-left" style=" float: left;">
+            <input id="btnAdd" type="button" value="Add" />
+        </div>
+    </div>
+
+    <div class="clear">
+    </div>
+</div>
+
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 50%">
+            <table id="grid" class="contenttable" width="100%">
+                <thead>
+                    <tr>
+                        <th style="display: none;">
+                        </th>
+                        <th align="center">
+                            Branch Name
+                            <label style='color: red; font-weight: normal;'>*</label>
+                        </th>
+                        <th width="70%" align="center">
+                            Address
+                            <label style='color: red; font-weight: normal;'>*</label>
+                        </th>
+                        <th width="5%">
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.strMode == "Edit") { Html.RenderPartial("_Detail", Model); }}
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    var arrList = [];
+    //pupulate existing data from database
+    var bBranchs = @Html.Raw(Json.Encode(Model.BankBranches))
+    $.each( bBranchs, function( key, value ) {
+        var bBranch=value.Name;
+        var bAddress = value.Address;
+        //var bBranchB = value.branchNameInBengali;
+        //var bAddressB = value.addressInBengali;
+        var bNameAddr = ($.trim(bBranch.toLowerCase()) + '' + $.trim(bAddress.toLowerCase()));
+        arrList.push(bNameAddr);
+    });
+
+    $("#btnAdd").click(function () {
+        $("#message").empty();
+
+        if ($('#BranchName').val() == '') {
+            $('#message').html("<b style='color:Red'>" + 'Branch Name must be needed.' + "</b>");
+            return false;
+        }
+
+        if ($('#Address').val() == '') {
+            $('#message').html("<b style='color:Red'>" + 'Address must be needed.' + "</b>");
+            return false;
+        }
+        //if ($('#BranchNameInBengali').val() == '') {
+        //    $('#message').html("<b style='color:Red'>" + 'Address must be needed.' + "</b>");
+        //    return false;
+        //}
+        //debugger;
+        var id = '@Model.Id';
+        var branchName = $('#BranchName').val();
+        var address = $('#Address').val();
+        var branchNameInBengali = $('#BranchNameInBengali').val();
+        var addressInBengali = $('#AddressInBengali').val();
+
+        var bNameAddr = ($.trim(branchName.toLowerCase()) + '' + $.trim(address.toLowerCase()));
+        //checking duplicate entry
+        var index = $.inArray(bNameAddr, arrList);
+
+        if (index > 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return false;
+        }
+        //push to arry
+        arrList.push(bNameAddr);
+
+        var url = '@Url.Action("AddDetail", "BankName", new { BankId = "_BankId_", BranchName = "_BranchName_", Address = "_Address_", BranchNameInBengali = "_BranchNameInBengali_", AddressInBengali = "_AddressInBengali_" })';
+        url = url.replace(/_BankId_/, id);
+        url = url.replace(/_BranchName_/, branchName);
+        url = url.replace(/_Address_/, address);
+        url = url.replace(/_BranchNameInBengali_/, branchNameInBengali);
+        url = url.replace(/_AddressInBengali_/, addressInBengali);
+        url = url.replace('amp;', '');
+        url = url.replace('amp;', '');
+        url = url.replace('amp;', '');
+        url = url.replace('amp;', '');
+
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                if ($(html).val() != 'Invalid') {
+
+                    $('#grid tbody').append(html);
+                    $('#BranchName').val('')
+                    $('#Address').val('')
+                    $('#message').html('');
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + 'This Banch Name is invalid.' + "</b>");
+                }
+            }
+        });
+
+        return false;
+
+    });
+
+
+    function RemoveDb(el,id,nameaddr,url) {
+
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+                }
+            });
+        }
+        arrList = $.grep(arrList, function(value) {
+            return value != nameaddr;
+        });
+
+    }
+
+</script>

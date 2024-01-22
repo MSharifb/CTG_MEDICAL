@@ -1,0 +1,180 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.VisaInfoViewModel
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        hideTypeofVisa();
+        disableFamilyMember();
+    });
+
+    function hideTypeofVisa() {
+        var rdo = $('#Type').val();
+        if (rdo == "Passport") {
+            // $('#VisaTypeId').css({ "display": "none"});
+            $('.visa-type').hide();
+        }
+    }
+
+    function disableFamilyMember() {
+        var rdo1 = $('#VisaPassportFor:checked').val();
+        if (rdo1 == "Own") {
+            $('#FamilyMemberId').attr("disabled", true);
+        }
+        else {
+            $('#FamilyMemberId').attr("disabled", false);
+        }
+    }
+</script>
+@using (Html.BeginForm(@Model.ActionType, "PersonalInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Type)
+        @Html.HiddenFor(model => model.EmpTop.Name)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">@*@Html.LabelFor(model => model.VisaPassportFor)*@ <span class="visa-passport">@Html.LabelFor(model => model.VisaPassportFor)</span>
+                </span><span class="field">
+                    @Html.RadioButtonFor(model => model.VisaPassportFor, "Own", new { @checked = true, onclick = "return disableFamilyMember();" })
+                    @Html.Label("Own")
+                    @Html.RadioButtonFor(model => model.VisaPassportFor, "Family Member", new { onclick = "return disableFamilyMember();" })
+                    @Html.Label("Family Member")
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.FamilyMemberId)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.FamilyMemberId, Model.FamilyMemberList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">@*@Html.LabelFor(model => model.VisaPassportNo)*@ <span class="visa-passportNo">@Html.LabelFor(model => model.VisaPassportNo)</span>
+                    <label class="required-field">
+                        *</label></span> <span class="field">@Html.EditorFor(model => model.VisaPassportNo)</span>
+                <span class="visa-type"><span class="label-right">
+                    @Html.LabelFor(model => model.VisaTypeId)<label class="required-field">
+                    </label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.VisaTypeId, Model.VisaTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span></span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.PassportTypeId)
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.PassportTypeId, Model.PassportTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.IssueDate)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.IssueDate)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.ExpireDate)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.ExpireDate)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.IssuePlace)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.IssuePlace)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.IssueCountryId)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.IssueCountryId, Model.CountryList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.Notes)
+                </span><span class="field" style="width: 571px; padding: 0px;">
+                    @Html.TextAreaFor(model => model.Notes, new { @maxlength = 200 })
+                </span>
+                <div class="clear">
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText"  />
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteVisaInfo", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "VisaInfoIndex/" + @Model.EmployeeId.ToString(), new { controlType = Model.Type }, null)
+            }
+        </div>
+    </fieldset>
+    
+    <div class="grid">
+        <table id="jqGrid" cellpadding="0" cellspacing="0">
+        </table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_VisaInformationList", Model)
+    </div>
+    <div class="clear">
+    </div>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    var type = $('#Type').val();
+
+    if (type == 'Visa') {
+        $('.visa-passport label').text('Visa For');
+        $('.visa-passportNo label').text('Visa No');
+    }
+    else {
+        $('.visa-passport label').text('Passport For');
+        $('.visa-passportNo label').text('Passport No');
+    }
+</script>
+<script type="text/javascript">
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+</script>
+@*<script type = "text/javascript">
+
+    $("#IssueCountryId").focusout(function () {
+        var visaPassportNo = $("#VisaPassportNo").val();
+        var issueCountryId = $("#IssueCountryId").val();
+        $.get('@Url.Action("DuplicateCheck")', { visaPass: visaPassportNo, countryId: issueCountryId }, function (data) {
+            if (data.data) {
+                alert("'" + visaPassportNo + "' already exist !");
+                
+            }
+            else {
+                
+            }
+        });
+    })
+</script>
+*@ 

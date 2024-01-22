@@ -1,0 +1,32 @@
+﻿<div class="frm-content">
+        <div class="GroupBox search-content">
+            <div id="jqSearch">
+            </div>
+            <div class="clear">
+            </div>
+            <div class="row">
+                <div class="button-crude button-left">
+                @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    @Html.ActionLink("Approve", "create", null ,new { @class = "addItem",@style=" padding: 5px 36px 10px 10px;"})
+                }
+                </div>
+                <div class="button-crude button-left" style="padding: 5px 0 0 5px">
+                    @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+                    {
+                        @Html.ActionLink("Reject", "create", null, new { @class = "rejectItem" })
+                    }
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="grid">
+            <table id="jqGrid" cellpadding="0" cellspacing="0">
+            </table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+            @Html.Partial("_GridList")
+        </div>
+</div>
+

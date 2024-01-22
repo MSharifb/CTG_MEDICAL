@@ -1,0 +1,107 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.EmpAttachmentViewModel
+@using (Html.BeginForm(@Model.ActionType, "PersonalInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">@Html.LabelFor(m => m.AttachmentTypeId)<label class="required-field">*</label></span>
+                <span class="field">@Html.DropDownListFor(model => model.AttachmentTypeId, Model.AttachmentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+                <span class="label-right">File Location<label class="required-field">*</label></span>
+                <span class="field">
+                    <input type="file" name="Attachment" id="Attachment" /></span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(m => m.FileName)
+                    <label class="required-field">
+                        *</label>
+                </span><span class="field">@Html.EditorFor(m => m.FileName)</span>
+                
+                @Html.HiddenFor(model => model.FileExtention)
+                @Html.HiddenFor(model => model.OriginalFileName)
+
+                <span class="label-right">@Model.FileSize
+                    &nbsp;</span> <span class="field">
+                        @Html.ActionLink("Download", "GetEmpAttachedFile", new { id = Model.Id }, new { id = "hlDowload", target = "_blank" })
+                    </span>@*<a href="@Model.DownloadLink">@Model.FileName</a>*@
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(m => m.Description)</span> 
+                <span class="field">@Html.TextAreaFor(m => m.Description, new { @maxlength = 500 })</span>
+                <span class="label-right"></span><span class="field"></span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText"  />
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteAttachment", new { id = Model.Id }, new { @class = "delete-confirm",@style="margin:0 5px;" })
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {    
+                @Html.ActionLink("Clear", "AttachmentIndex/" + @Model.EmployeeId.ToString() /*, new { controlType=Model.Type }, null*/)
+            }
+        </div>
+    </fieldset>
+    
+    <div class="grid">
+        <table id="jqGrid" cellpadding="0" cellspacing="0">
+        </table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_EmpAttachmentList", Model)
+    </div>
+    <div class="clear">
+    </div>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    if ($('#FileName').val() == '')
+        $('#hlDowload').hide();
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+    $(function () {
+
+        $('#Attachment').live('change', function () {
+
+            if ($(this).val() != '') {
+                
+                var found = $(this).val().lastIndexOf('.');
+                if (found > 0) {
+                    $('#OriginalFileName').val($(this).val());
+                    $('#FileName').val($(this).val().substr(0, $(this).val().lastIndexOf('.')));
+                }
+                else {
+                    $('#FileName').val('');
+                    $('#OriginalFileName').val('');
+                }
+            }
+
+        });
+
+    });
+
+</script>

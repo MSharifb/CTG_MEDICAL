@@ -1,0 +1,22 @@
+﻿@using System.Web.Mvc;
+
+@helper Script(string scriptName, UrlHelper url) {
+    <script type="text/javascript" src="@url.Content("~/Script/" + scriptName)"></script>
+}
+
+@helper DDLOptionalLabel()  {
+    string label =  "[Select One]";
+    @label
+}
+
+
+@helper DDLOptionalAllLabel()  {
+    string label =  "[All]";
+    @label
+}
+
+@helper DDLNotApplicableLabel()  {
+    string label =  "N/A";
+    @label
+
+}

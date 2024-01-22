@@ -1,0 +1,912 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.InvestigationCommitteeInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(m => m.strMode)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.CommitteeFormedEmployeeId)
+            @Html.LabelFor(model => model.RefNo)
+            <label class="required-field">*</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.RefNo)
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.IsContinuous)
+        </span><span class="field">
+            @Html.CheckBoxFor(model => model.IsContinuous)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EffectiveFromDate)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveFromDate)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.EffectiveToDate)
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveToDate)
+        </span>
+    </div>
+</div>
+
+<fieldset>
+    <legend>Member Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IsExternal)
+            <label class="required-field">*</label>
+        </span><span class="field">
+            @Html.CheckBoxFor(model => model.IsExternal)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ActiveStatus)
+        </span>
+        <span class="field">
+            @*@Html.RadioButtonFor(model => model.ActiveStatus, "True", new { @checked = true })
+                @Html.Label("Yes")
+                @Html.RadioButtonFor(model => model.ActiveStatus, "False")
+                @Html.Label("No")*@
+            @Html.CheckBoxFor(model => model.ActiveStatus)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.MemberEmployeeId)
+            @Html.LabelFor(model => model.MemberEmpId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.MemberEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openMemberEmployee();" />
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.MemberEmployeeDesignationName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.MemberEmployeeDesignationName, new { @class = "read-only", @readonly = true })
+
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MemberEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.MemberEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.MemberRole)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.MemberRole)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MemberRemarks)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.MemberRemarks)
+        </span>
+
+    </div>
+    <div class="row" id="SelectBoardComtInfo">
+        <div class="row" align="center">
+            <div style="width: 70%">
+                <div class="clear"></div>
+                <div class="button-crude fixedAddButton" style="text-align: right;">
+                    <input id="btnAddInvestigationMember" type="button" value="Add" />
+                </div>
+                <div class="clear">
+                </div>
+                <table id="InvestigationMemberGrid" class="contenttable fixedcontenttable custom-grid">
+                    <thead>
+                        <tr>
+                            <th>
+                                Member ID
+                            </th>
+                            <th>
+                                Member Name
+                            </th>
+                            <th>
+                                Member Designation
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.InvestigationCommitteeInfoMemberInfoList.Count; i++)
+                        {
+                            var item2 = Model.InvestigationCommitteeInfoMemberInfoList.ToList()[i];
+                            <tr>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].Id)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].InvestigationCommitteeInfoId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].IsExternal)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].ActiveStatus)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].MemberEmployeeId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].MemberName)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].MemberDesignation)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].MemberRole)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.InvestigationCommitteeInfoMemberInfoList[i].MemberRemarks)
+                                </td>
+
+                                <td>
+                                    <label> @item2.MemberEmpId</label>
+                                </td>
+                                <td>
+                                    <label> @item2.MemberName</label>
+                                </td>
+                                <td>
+                                    <label> @item2.MemberDesignation</label>
+                                </td>
+                                <td>
+                                    @if (@item2.ActiveStatus)
+                                    {
+                                        <label> Active</label>
+                                    }
+                                    else
+                                    {
+                                        <label> Inactive</label>
+                                    }
+
+                                </td>
+                                <td>
+                                    <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb2(this,@item2.Id,'@Url.Action("DeleteInvestigationCommitteeMember")')">
+                                      
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Committee Formed For</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintNoteSheetId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ComplaintNoteSheetId, Model.ComplaintNoteSheetList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Remarks)
+        </span>
+        <div class="clear"></div>
+    </div>
+    <div class="row" align="center">
+        <div style="width: 70%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAddCommitteeFormedFor" type="button" value="Add" />
+            </div>
+            <div class="clear">
+            </div>
+            <table id="gridCommitteeFormedFor" class="contenttable fixedcontenttable custom-grid">
+                <thead>
+                    <tr>
+                        <th style="width:30%">
+                            Departmental Proceedings No.
+                        </th>
+                        <th style="width:50%">
+                            Remarks
+                        </th>
+                        <th style="width:20%">
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.InvestigationCommitteeInfoFormedForList.Count; i++)
+                    {
+                        var item = Model.InvestigationCommitteeInfoFormedForList.ToList()[i];
+                        <tr>
+
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.InvestigationCommitteeInfoFormedForList[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.InvestigationCommitteeInfoFormedForList[i].InvestigationCommitteeInfoId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.InvestigationCommitteeInfoFormedForList[i].ComplaintNoteSheetId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.InvestigationCommitteeInfoFormedForList[i].Remarks)
+                            </td>
+                            <td style="text-align:center">
+                                <label>@item.ComplaintNoteSheetName</label>
+                            </td>
+                            <td>
+                                <label>@item.Remarks</label>
+                            </td>
+
+                            <td>
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,'@item.ComplaintNoteSheetId','@Url.Action("DeleteDetail")')">
+                                   
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Committee Formed By</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CommitteeFormedByEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.CommitteeFormedByEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openCommitteeFormedEmployee();" />
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CommitteeFormedByEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.CommitteeFormedByEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CommitteeFormedByDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.CommitteeFormedByDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</fieldset>
+
+<fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.CheckBoxFor(model => model.IsAddAttachment, new { onclick = "disableUpload();" })
+            @Html.LabelFor(model => model.IsAddAttachment)
+        </span>
+        <span class="field">
+            <div id="divFileAttach">
+                @*<span id="spAttachment" class="label-right">
+                        @Html.LabelFor(model => model.Attachment)
+                    </span>*@
+
+                @Html.HiddenFor(model => model.Attachment)
+                @Html.HiddenFor(model => model.FileName)
+                <input type="file" name="Attachment" id="Attachment" />
+                <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+
+            </div>
+        </span>
+    </div>
+</fieldset>
+<div class="clear"></div>
+
+<script type="text/javascript">
+    FormatTextBox();
+
+    $(document).ready(function () {
+        disableUpload();
+    });
+
+    function disableUpload() {
+        var IsSelect = $('#IsAddAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+            // $('#spAttachment').show();
+            $('#divFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+            // $('#spAttachment').hide();
+            $('#divFileAttach').hide();
+        }
+    }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $(document).ready(function () {
+        // $('#IsContinuous').attr("disabled", true);
+
+        if ($('#IsContinuous').is(':checked')) {
+            $('#EffectiveToDate').attr('readonly', true);
+            $("#EffectiveToDate").addClass("read-only");
+            $('#EffectiveToDate').val('');
+        }
+    });
+
+
+    $('#IsContinuous').live('click', function (e) {
+        $("#message").empty();
+        $("#EffectiveToDate").removeClass("border-red");
+        if ($(this).is(':checked')) {
+            $('#EffectiveToDate').attr('readonly', true);
+            $("#EffectiveToDate").addClass("read-only");
+            $('#EffectiveToDate').val('');
+        }
+        else {
+            $('#EffectiveToDate').attr('readonly', false);
+            $("#EffectiveToDate").removeClass("read-only");
+        }
+
+    });
+
+    $("#EffectiveFromDate").live('change', function () {
+        $("#message").empty();
+        var fromDate = new Date($('#EffectiveFromDate').val());
+        var toDate = new Date($('#EffectiveToDate').val());
+
+        if ($('#EffectiveToDate').val() != '' && toDate < fromDate) {
+            // Do something
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> 'Effective From Date'  is lower than to 'Effective To Date' </span>  </div> ");
+            $('#EffectiveFromDate').val('');
+            return;
+        }
+
+    })
+
+    $("#EffectiveToDate").live('change', function () {
+        $("#message").empty();
+        var fromDate = new Date($('#EffectiveFromDate').val());
+        var toDate = new Date($('#EffectiveToDate').val());
+
+        if ($('#EffectiveDateFrom').val() != '' && fromDate > toDate) {
+            // Do something
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> 'Effective To Date' is greater than or equal to 'Effective From Date'  </span>  </div> ");
+            $('#EffectiveToDate').val('');
+            return;
+        }
+
+        if ($(IsContinuous).is(':checked')) {
+            $('#IsContinuous').attr('checked', false);
+        }
+
+    })
+</script>
+
+@*Employee Info*@
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<br />
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    //member info
+    function openMemberEmployee() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=1';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+    //Committee Formed By
+    function openCommitteeFormedEmployee() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=2';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+
+    function setEmpData(id, useTypeEmpId) {
+        //member info
+        if (useTypeEmpId == 1) {
+            $('#MemberEmployeeId').val(id);
+            GetMemberInfoEmployee(id);
+            $("#divEmpList").dialog('close');
+        }
+        //Committee Formed By
+        if (useTypeEmpId == 2) {
+            $('#CommitteeFormedEmployeeId').val(id);
+            GetCommitteeFormedEmployee(id);
+            $("#divEmpList").dialog('close');
+        }
+
+    }
+    //member info
+    function GetMemberInfoEmployee(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "NoteOrderInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    //  var obj = jQuery.parseJSON(response);
+                    if ($(IsExternal).is(':checked')) {
+                        $('#MemberEmployeeName').attr('readonly', true);
+                        $("#MemberEmployeeName").addClass("read-only");
+
+                        $('#MemberEmployeeDesignationName').attr('readonly', true);
+                        $("#MemberEmployeeDesignationName").addClass("read-only");
+                        $('#IsExternal').attr('checked', false);
+                    }
+
+                    $("#MemberEmpId").val(response.EmpId);
+                    $('#MemberEmployeeName').val(response.EmployeeName);
+                    $("#MemberEmployeeDesignationName").val(response.DesignationName);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+    //Committee Formed By
+    function GetCommitteeFormedEmployee(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "NoteOrderInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#CommitteeFormedByEmpId").val(obj.EmpId);
+                    $('#CommitteeFormedByEmployeeName').val(obj.EmployeeName);
+                    $("#CommitteeFormedByDesignationName").val(obj.DesignationName);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+
+    function Closing() {
+    }
+
+</script>
+
+@*Committee Formed For*@
+<script type="text/javascript">
+
+    var arrList = [];
+    //pupulate existing data from database
+    var investigationCommitteeInfoFormedForList = @Html.Raw(Json.Encode(Model.InvestigationCommitteeInfoFormedForList));
+    $.each( investigationCommitteeInfoFormedForList, function( key, value ) {
+        arrList.push(String( value.ComplaintNoteSheetId ));
+    });
+
+    $('#btnAddCommitteeFormedFor').live('click', function (e) {
+        e.preventDefault();
+        $("#message").empty();
+        $("#ComplaintNoteSheetId").removeClass("border-red");
+
+        var investigationCommitteeInfoId = $('#Id').val();
+        var complaintNoteSheetId = $('#ComplaintNoteSheetId').val();
+        var complaintNoteSheetName = $("#ComplaintNoteSheetId option:selected").text();
+        var remarks = $("#Remarks").val();
+
+        //checking duplicate entry
+        var index = $.inArray(complaintNoteSheetId, arrList);
+
+        if (complaintNoteSheetId == null || complaintNoteSheetId == "") {
+            $("#ComplaintNoteSheetId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            //push to arry
+            arrList.push(complaintNoteSheetId);
+
+            var trClone = '<tr>' +
+             '<td style="display: none;">' + '<input type="text" value="0" name="InvestigationCommitteeInfoFormedForList[0].Id"></td>' +
+             '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoFormedForList[0].InvestigationCommitteeInfoId" value="' + investigationCommitteeInfoId + '"></td>' +
+             '<td style="display: none">' + '<input type="text" name="InvestigationCommitteeInfoFormedForList[0].ComplaintNoteSheetId" value="' + complaintNoteSheetId + '" ></td>' +
+             '<td style="display: none">' + '<input type="text" name="InvestigationCommitteeInfoFormedForList[0].Remarks" value="' + remarks + '" ></td>' +
+             '<td style="text-align:center">' + '<label>' + complaintNoteSheetName + '</td>' +
+             '<td>' + '<label>' + remarks + '</td>' +
+             '<td>' + '<a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;'+complaintNoteSheetId+'&quot;,&quot;/PRM/InvestigationCommitteeInfo/DeleteDetail&quot;)"></a></td>' +
+             '</tr>';
+            $('#gridCommitteeFormedFor tbody').append(trClone);
+            RearrengeControlName();
+
+            //reset field
+            $('#ComplaintNoteSheetId').val('');
+            $('#Remarks').val('');
+
+        }
+    })
+
+
+    function RemoveDb(el, id, complaintNoteSheetId, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                }
+            });
+        }
+
+        //delete from arry
+        arrList = $.grep(arrList, function (value) {
+            return value != complaintNoteSheetId;
+        });
+        RearrengeControlName();
+    }
+
+    function RearrengeControlName() {
+        $('#gridCommitteeFormedFor tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>
+
+@*End Committee Formed For*@
+
+
+@*Investigation Member Information*@
+<script type="text/javascript">
+
+    @*var arrList = [];
+    //pupulate existing data from database
+    var investigationMemberInformationList = @Html.Raw(Json.Encode(Model.InvestigationCommitteeInfoMemberInfoList));
+    $.each( investigationCommitteeInfoFormedForList, function( key, value ) {
+        if(value.MemberEmployeeId!=0){
+            arrList.push(String( value.MemberEmployeeId ));
+        }
+
+    });*@
+
+    $('#IsExternal').live('click', function (e) {
+        if ($(this).is(':checked')) {
+            $('#MemberEmployeeName').attr('readonly', false);
+            $("#MemberEmployeeName").removeClass("read-only");
+
+            $('#MemberEmployeeDesignationName').attr('readonly', false);
+            $("#MemberEmployeeDesignationName").removeClass("read-only");
+
+            $('#MemberEmployeeId').val('');
+            $('#MemberEmpId').val('');
+        }
+        else{
+            $('#MemberEmployeeName').attr('readonly', true);
+            $("#MemberEmployeeName").addClass("read-only");
+
+            $('#MemberEmployeeDesignationName').attr('readonly', true);
+            $("#MemberEmployeeDesignationName").addClass("read-only");
+        }
+
+    });
+
+    $('#btnAddInvestigationMember').live('click', function (e) {
+        e.preventDefault();
+        $("#message").empty();
+
+        $("#MemberEmployeeName").removeClass("border-red");
+        $("#MemberEmployeeDesignationName").removeClass("border-red");
+        $("#MemberRole").removeClass("border-red");
+
+        var investigationCommitteeInfoId = $('#Id').val();
+        var isExternal = null;
+        if ($('#IsExternal').is(":checked")) {
+            isExternal = true;
+        }
+        else {
+            isExternal = false;
+        }
+
+        var activeStatus =null;
+        var activeStatusDisplay = "";
+        if($('#ActiveStatus').is(":checked")){
+            activeStatus=true;
+            activeStatusDisplay = "Active";
+        }
+        else{
+            activeStatus=false;
+            activeStatusDisplay = "Inactive";
+        }
+        var memberEmployeeId =$("#MemberEmployeeId").val();
+        //if ($("#MemberEmployeeId").val() != "") {
+        //    memberEmployeeId = $("#MemberEmployeeId").val();
+        //}
+
+
+        var memberEmpId = $("#MemberEmpId").val();
+        var memberName = $("#MemberEmployeeName").val();
+        var memberDesignation = $("#MemberEmployeeDesignationName").val();
+        var memberRole = $("#MemberRole").val();
+        var memberRemarks = $("#MemberRemarks").val();
+
+        //checking duplicate entry
+        //if(memberEmployeeId !=0){
+        //    var index = $.inArray(memberEmployeeId, arrList);
+        //}
+
+
+        if (memberName == null || memberName == "") {
+            $("#MemberEmployeeName").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (memberDesignation == null || memberDesignation == "") {
+            $("#MemberEmployeeDesignationName").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (memberRole == null || memberRole == "") {
+            $("#MemberRole").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        //if (index >= 0) {
+        //    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+        //    return;
+        //}
+        //else {
+        //    //push to arry
+        //    if(memberEmployeeId !=0){
+        //        arrList.push(memberEmployeeId);
+        //    }
+
+
+        var trClone = '<tr>' +
+       '<td style="display: none;">' + '<input type="text" value="0" name="InvestigationCommitteeInfoMemberInfoList[0].Id"></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].InvestigationCommitteeInfoId" value="' + investigationCommitteeInfoId + '"></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].IsExternal" value="' + isExternal + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].ActiveStatus" value="' + activeStatus + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].MemberEmployeeId" value="' + memberEmployeeId + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].MemberName" value="' + memberName + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].MemberDesignation" value="' + memberDesignation + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].MemberRole" value="' + memberRole + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="InvestigationCommitteeInfoMemberInfoList[0].MemberRemarks" value="' + memberRemarks + '" ></td>' +
+       '<td>' + '<label >' + memberEmpId + '</td>' +
+       '<td>' + '<label >' + memberName + '</td>' +
+       '<td>' + '<label  >' + memberDesignation + '</td>' +
+       '<td>' + '<label >' + activeStatusDisplay + '</td>' +
+       '<td>' + '<a  class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb2(this,0,&quot;/PRM/InvestigationCommitteeInfo/DeleteInvestigationCommitteeMember&quot;)"></a></td>' +
+       '</tr>';
+        $('#InvestigationMemberGrid tbody').append(trClone);
+        RearrengeControlName2();
+
+        //reset field
+        $('#IsExternal').attr('checked',false);
+        $('#ActiveStatus').attr('checked',false);
+        $('#MemberEmployeeId').val('');
+        $('#MemberEmpId').val('');
+        $('#MemberEmployeeName').val('');
+        $('#MemberEmployeeDesignationName').val('');
+        $('#MemberRole').val('');
+        $('#MemberRemarks').val('');
+
+        $('#MemberEmployeeName').attr('readonly', true);
+        $("#MemberEmployeeName").addClass("read-only");
+
+        $('#MemberEmployeeDesignationName').attr('readonly', true);
+        $("#MemberEmployeeDesignationName").addClass("read-only");
+        // }
+    })
+
+
+    function RemoveDb2(el, id, url) {       
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                }
+            });
+        }
+
+        //delete from arry
+        //if(memberEmployeeId !=0){
+        //    arrList = $.grep(arrList, function (value) {
+        //        return value != memberEmployeeId;
+        //    });
+        //}
+
+
+        RearrengeControlName2();
+    }
+
+    function RearrengeControlName2() {
+        $('#InvestigationMemberGrid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>
+
+@*End Investigation Member Information*@
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            $("#message").empty();
+            $('#EffectiveToDate').removeClass('border-red');
+
+            if ($('#RefNo').val() == '' || $('#RefNo').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if ($('#EffectiveFromDate').val() == '' || $('#EffectiveFromDate').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }       
+            else if (!$('#IsContinuous').is(':checked')) {
+
+                if ($('#EffectiveToDate').val() == '' || $('#EffectiveToDate').val() == null) {
+                    $('#EffectiveToDate').addClass('border-red');
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the field or select 'Is Continuous'</span>  </div> ");
+
+                    return false;
+                }
+
+            }
+            else if ($('#CommitteeFormedByEmpId').val() == '' || $('#CommitteeFormedByEmpId').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+
+            var rowCount = $('#InvestigationMemberGrid tbody tr').length;
+            if (rowCount == 0 || rowCount < 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, add at least one Member Information.</span> </div> ");
+                return false;
+            }
+
+            var rowCount2 = $('#gridCommitteeFormedFor tbody tr').length;
+            if (rowCount2 == 0 || rowCount2 < 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, add at least one Committee Formed For.</span> </div> ");
+                return false;
+            }
+
+        });
+    });
+</script>

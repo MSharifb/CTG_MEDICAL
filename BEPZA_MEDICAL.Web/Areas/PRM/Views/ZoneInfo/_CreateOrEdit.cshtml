@@ -1,0 +1,98 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ZoneInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.ZoneName, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ZoneName)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ZoneNameInBengali)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ZoneNameInBengali)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrganogramCategoryTypeId, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.OrganogramCategoryTypeId, Model.OrganogramCategoryTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ZoneCode, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ZoneCode)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SortOrder, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.SortOrder)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Prefix, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Prefix)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IsHeadOffice)
+        </span>
+        <span class="field">
+            @Html.CheckBoxFor(model => model.IsHeadOffice)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ZoneCodeForBillingSystem, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.ZoneCodeForBillingSystem)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ZoneAddress, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.ZoneAddress)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ZoneAddressInBengali)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.ZoneAddressInBengali)
+        </span>
+    </div>
+</div>
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        buttonHide();
+    });
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function buttonHide() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+</script>

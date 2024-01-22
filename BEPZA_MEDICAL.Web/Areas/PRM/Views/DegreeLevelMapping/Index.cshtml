@@ -1,0 +1,180 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.DegreeLevelMappingViewModel
+
+@{
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm(Model.ActionType, "DegreeLevelMapping", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+
+<fieldset>
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div id="ErrMsg" class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DegreeTypeId)
+                <label class="required-field">
+                    *
+                </label>
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.DegreeTypeId, Model.DegreeTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "LoadAvailableDegreeLevel();" })
+            </span>
+        </div>
+        <div class="clear"></div>
+        <div class="=row">
+            <div style="width:40%; float:left;margin-right:10px;">
+                    <fieldset>
+                        <legend>Available Degree Level</legend>
+                        <div class="row">
+                            <span class="label">
+                            </span>
+                            <span class="field" style="width:100%">
+                                @Html.DropDownListFor(model => model.AvailableDegreeLevelId, Model.AvailableDegreeLevelList, new { @class = "multiple", multiple=true })
+                            </span>
+                        </div>
+                        <div class="row">
+                        </div>
+                    </fieldset>
+                </div>
+                <div style="width:4%; float:left;margin-top:2%;">
+                    <input type="button" id="left" value="<" />
+                    <input type="button" id="right" value=">" />
+                    <input type="button" id="leftall" value="<<" />
+                    <input type="button" id="rightall" value=">>" />
+                </div>
+                <div style="width: 40%; float: left; margin-right:10px; ">
+                    <fieldset>
+                        <legend>Degree Level</legend>
+                        <div class="row">
+                            <span class="field" style="width:100%">
+                                @Html.DropDownListFor(model => model.DegreeLevelId, Model.DegreeLevelList, new { @class = "multiple", multiple = true })
+                            </span>
+
+                        </div>
+                        <div class="row">
+                        </div>
+                    </fieldset>
+                </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+</fieldset>
+    <div class="button-crude">
+        <input type="button" value="Save" id="btnClear" name="btnClear" />
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+        function moveItems(origin, dest) {
+            $(origin).find(':selected').appendTo(dest);
+        }
+
+        function moveAllItems(origin, dest) {
+            $(origin).children().appendTo(dest);
+        }
+
+        $('#left').click(function () {
+            moveItems('#DegreeLevelId', '#AvailableDegreeLevelId');
+        });
+
+        $('#right').live('click', function () {
+            moveItems('#AvailableDegreeLevelId', '#DegreeLevelId');
+        });
+
+        $('#leftall').live('click', function () {
+            moveAllItems('#DegreeLevelId', '#AvailableDegreeLevelId');
+        });
+
+        $('#rightall').live('click', function () {
+            moveAllItems('#AvailableDegreeLevelId', '#DegreeLevelId');
+        });
+    });
+    $("#btnClear").live('click', function () {
+        $("#DegreeTypeId").removeClass("border-red");
+
+        var degreeTypeId = $("#DegreeTypeId").val();
+
+        if (degreeTypeId == null || degreeTypeId == "" || degreeTypeId==0) {
+            $("#DegreeTypeId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        var ddlArray = new Array();
+        var ddl = document.getElementById('DegreeLevelId');
+        for (i = 0; i < ddl.options.length; i++) {
+            ddlArray[i] = ddl.options[i].value;
+        }
+        var url = "@Url.Action("GetList")";
+
+        var PostingEmp = new Array();
+        function logArrayElements(element, index, array) {
+            PostingEmp.push({ 'DegreeLevelId': element });
+        }
+        ddlArray.forEach(logArrayElements);
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            data: {
+                'degreeLevelId': PostingEmp,
+                'degreeTypeId': degreeTypeId
+            },
+            success: function (result) {
+                $("#message").html("<div class=\"success\"> <span>Information has been updated successfully.</span>  </div> ");
+            }
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    function LoadAvailableDegreeLevel() {
+        var degreeTypeId = $('#DegreeTypeId').val();
+        var availableDegreeLevel = $('#AvailableDegreeLevelId');
+        LoadDegreeLevel(degreeTypeId);
+        availableDegreeLevel.empty();
+
+        if (degreeTypeId != null && degreeTypeId != '') {
+            $.getJSON('@Url.Action("AvailableDegreeLevel")', { degreeTypeId: degreeTypeId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    availableDegreeLevel.append($('<option />', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+    function LoadDegreeLevel(degreeTypeId) {
+        var degreeLevel = $('#DegreeLevelId');
+        degreeLevel.empty();
+
+        if (degreeTypeId != null && degreeTypeId != '') {
+            $.getJSON('@Url.Action("DegreeLevel")', { degreeTypeId: degreeTypeId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    degreeLevel.append($('<option />', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+
+
+</script>
+

@@ -1,0 +1,778 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.AnnualProcurementPlan.AnnualProcurementPlanMasterViewModel
+
+@{
+    ViewBag.Title = "CreateOrEdit";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+@using (Html.BeginForm(@Model.ActionType, "AnnualProcurementPlan", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <div class="form-horizontal">
+        @*@if (Model.ActionType != "Edit")
+            {*@
+        <fieldset>
+            <legend>Choose Budget</legend>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FinancialYearId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required", @onchange = "getBudgetListByFinancialYear(this)" })
+                </div>
+
+                @Html.LabelFor(m => m.BudgetStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.BudgetStatusId, Model.BudgetStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @onchange = "getBudgetListByStatus(this)" })
+                </div>
+            </div>
+        </fieldset>
+        @*}*@
+        <fieldset>
+            <div class="row" style="text-align:right; margin:0 0 5px 0;">
+                <button type="button" class="btn btn-sm btn-primary" id="btnPrint">
+                    <i class="fa fa-print fa-lg"></i>Print
+                </button>
+            </div>
+            @Html.HiddenFor(m => m.BudgetZonesString)
+            <span class="master-id-area">
+                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.ZoneInfoId)
+                @Html.HiddenFor(m => m.ProjectForId)
+                @Html.HiddenFor(m => m.ApprovalStatusId)
+                @Html.HiddenFor(m => m.IsConfirm)
+            </span>
+            <div class="form-group">
+                @Html.LabelFor(m => m.MinistryOrDivisionId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.MinistryOrDivisionId, Model.DivisionOrMinistryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                </div>
+                @Html.LabelFor(m => m.Agency, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.Agency)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProcuringEntityName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProcuringEntityName)
+                </div>
+                @Html.LabelFor(m => m.ProcuringEntityCode, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProcuringEntityCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.ProjectName, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProjectName)
+                </div>
+                @Html.LabelFor(m => m.ProjectCode, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.ProjectCode)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.APPStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.APPStatusId, Model.APPStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                </div>
+            </div>
+
+        </fieldset>
+        <div>
+            @*@Html.LabelFor(m => m.TotalAmount, new { @class = "col-sm-2 control-label" })*@
+            <label>Total Project Cost (in Lac Taka)</label>
+            <div class="col-sm-2">
+                @Html.TextBoxFor(m => m.TotalAmount, new { @style = @"background:#F2F5F8; border:1px solid #CCCCCC; cursor:default;", @readonly = true })
+            </div>
+            <div style="text-align:right; margin-bottom:5px;">
+                <button type="button" class="btn btn-sm btn-primary" id="btnAddNewHead" style="padding:3px;">
+                    <i class="fa fa-plus-circle fa-lg" style="margin-right:7px;"></i>Add New Head
+                </button>
+            </div>
+            <fieldset>
+                @*<div style="width: 100%; overflow-x: scroll;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="APPlotNo">Lot No.</th>
+                                    <th class="packageNo">Package No.</th>
+                                    <th class="construction">Construction Type</th>
+                                    <th class="description">Description of Procurement Package as per DPP/TPP</th>
+                                    <th class="unit">Unit</th>
+                                    <th class="quantity">Quantity</th>
+                                    <th class="procurement">Procurement Method & (Type)</th>
+                                    <th class="source">Source of Fund</th>
+                                    <th class="contract">Contract Approving Authority</th>
+                                    <th class="estd">Estd. Cost in Lac Taka</th>
+                                    <th class="contract">Contract Value in Lac Taka</th>
+                                    <th class="invitation">Invitation for Tender</th>
+                                    <th class="signing">Signing of contract</th>
+                                    <th class="completion">Completion of Contract</th>
+                                    <th class="remarks">Remarks</th>
+                                    <th class="control-option">&nbsp;</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="dvBudgetDetails">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    @Html.Partial("_BudgetDetailHeads", @Model)
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>*@
+                <div id="App-DtlData">
+                    @if (@Model.BudgetDetailHeadList != null && @Model.BudgetDetailHeadList.Count > 0)
+                    {
+                        @Html.Partial("_BudgetDetailHeads", @Model)
+                    }
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Comments, new { @class = "col-sm-2 control-label" })
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(m => m.Comments, new { @style = @"width:100%" })
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Add for signature</legend>
+                @*<div class="form-group">
+                        @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                        <div class="col-sm-4">
+                            @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+                        </div>
+                    </div>
+
+                    <div class="ApvSave">*@
+                <div>
+                    <table class="table table-bordered" style="width:100%">
+
+                        <thead style="height:10px!important">
+                            <tr style="height:10px!important">
+                                <th style="width: 70%">Employee Name & Department</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @{
+                                if (Model.ActionType != "Edit")
+                                {
+                                    if (Model.ApproverList != null && Model.ApproverList.Any())
+                                    {
+                                        foreach (var x in Model.ApproverList)
+                                        {
+                                            @Html.Partial("_PartialEmployeeList", x);
+                                        }
+                                    }
+                                }
+                                else if (Model.ActionType == "Edit" && Model.ApprovalStatus.Contains("Draft"))
+                                {
+                                    if (Model.ApproverList != null && Model.ApproverList.Any())
+                                    {
+                                        foreach (var x in Model.ApproverList)
+                                        {
+                                            @Html.Partial("_PartialEmployeeList", x);
+                                        }
+                                    }
+
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                @*<div class="ApvUpdate">
+                        <table class="table table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="width: 30%">Designation</th>
+                                    <th style="width: 30%">Employee Name</th>
+                                    <th> Department</th>
+                                    <th>Status</th>
+                                    <th> Remarks </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @for (int i = 0; i < Model.ApproverList.Count; i++)
+                                {
+                                    var item = Model.ApproverList.ToList()[i];
+                                <tr>
+                                    <td>@Html.Encode(item.DesignationName)</td>
+                                    <td>@Html.Encode(item.EmployeeName)</td>
+                                    <td>@Html.Encode(item.DepartmentName)</td>
+                                    <td>@Html.Encode(item.Status)</td>
+                                    <td>@Html.Encode(item.Remarks)</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>*@
+
+            </fieldset>
+
+        </div>
+
+    </div>
+    <div class="form-horizontal">
+        @if (@Model.Id > 0)
+        {
+            <div class="form-group">
+                <div class="col-sm-12 text-center">
+                    <a href="@Url.Action("Confirm", new { id = @Model.Id })" class="btn btn-success" id="btnConfirm">
+                        <i class="fa fa-check-circle"></i> Confirm
+                    </a>
+                </div>
+            </div>}
+        @if (!@Model.IsConfirm)
+        {
+            <div class="form-group">
+                <div class="col-sm-12 col-sm-offset-0 text-center">
+                    @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                    {
+                        <button class="btn btn-primary" type="submit" value="Save" id="btnSave" name="btnSubmit"><i class="fa fa-save"></i> Save</button>
+                        <button class="btn btn-primary" type="submit" value="Update" id="btnUpdate" name="btnSubmit"><i class="fa fa-edit"></i> Update</button>
+                    }
+                    <button class="btn btn-primary" type="button" value="Clear" id="btnClear" name="btnClear"><i class="fa fa-refresh"></i> Clear</button>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-0 text-left">
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+                                }
+
+<script type="text/javascript">
+    var approvalStatus = $("#ApprovalStatusId option:selected").text();
+    $(function () {
+        if( @Model.MinistryOrDivisionId == 0){
+            $("#MinistryOrDivisionId option:contains(Prime Minister)").attr('selected', 'selected');
+        }
+    });
+
+    $(function () {
+        if ('@Model.strMode' == 'Update') {
+            $('#btnSave').hide();
+        }
+        else {
+            $('#btnUpdate').hide();
+            $('#btnPrint').hide();
+        }
+
+        if ('@Model.strMode' == 'Update' && approvalStatus == 'Draft') {
+            $('.ApvUpdate').hide();
+        }
+        else if ('@Model.strMode' == 'Update' && approvalStatus != 'Draft') {
+            $('.ApvSave').hide();
+        }
+        else if ('@Model.strMode' == 'Create') {
+            $('.ApvUpdate').hide();
+            $('#btnUpdate').hide();
+        }
+        ShowMessage('@Model.ActionType');
+    });
+    if ('@Model.ErrMsg' != "") {
+
+        if ('@Model.IsError' == '1') {
+
+        }
+        else {
+            $('#message2').html("<b style='color:green'>" + '@Model.ErrMsg' + "</b>");
+        }
+    }
+
+
+    var ShowMessage = function (actionType) {
+
+        var url = window.location.href.split('/');
+        var messageType = "";
+        switch (actionType) {
+            case "Edit":
+                var aa = url[url.length - 1];
+                if (aa.toLowerCase().indexOf("?") >= 0) {
+                    var baseUrl = aa.split('?');
+                    var typeName = baseUrl[1].split('=');
+                    messageType = typeName[1];
+                    if (messageType == "success") {
+
+                    }
+                }
+                break;
+        }
+
+        if (messageType === "success") {
+            $('#message').html("Information has been Saved / Updated successfully");
+            $('#message').css({ "color": "green", "font-weight": "bold" });
+        }
+        if (messageType === "failed") {
+            $('#message').html("Information Save / Update Failed.");
+            $('#message').css({ "color": "red", "font-weight": "bold" });
+        }
+
+    }
+    $('#btnAddNewHead').click(function () {
+        var url = '@Url.Action("AddNewBudgetHead", "AnnualProcurementPlan")';
+        var columnCount = 0;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'text',
+            data: { noOfFinancialYear: columnCount },
+            cache: false,
+            success: function (html) {
+                //$('.dvBudgetDetails').append("<table class='table table-bordered'>" + html + "</table>");
+                $('#App-DtlData').append(html);
+                $('table tbody tr .control-option .add-button button').unbind().click(AddNewItemInformation);
+                $('.control-option .delete-button button').unbind().click(RemoveItemInformation);
+                $('table tbody tr .estd :input').unbind().focusout(unitPriceChange)
+
+                $('table tbody tr .invitation input').unbind().change(DayCalculation)
+                $('table tbody tr .tenderOpening input').change(DayCalculation);
+                $('table tbody tr .tenderElavuation input').change(DayCalculation);
+                $('table tbody tr .approvalToAward input').change(DayCalculation);
+                $('table tbody tr .notificationOfAward input').change(DayCalculation);
+                $('table tbody tr .signing input').change(DayCalculation);
+                $('table tbody tr .timeToContract input').change(DayCalculation);
+                $('table tbody tr .completion input').change(DayCalculation);
+            }
+        })
+    });
+
+    $(document).ready(function () {
+        $('#MinistryOrDivisionId,#FinancialYearId, #APPStatusId, #BudgetZones, #ProcurementTypeId, #ApprovalStatusId, #BudgetId, #BudgetStatusId').select2();
+    })
+
+    function LoadAppHeadId(obj) {
+        var selectedHeadId = obj.value;
+
+        var x = $(obj).closest('tr').next('tr').find('.tempAccHeahId');
+        var table = $(obj).closest('table');
+
+        $(table).find('tbody tr .APPlotNo .tempAccHeahId').each(function () {
+            $(this).val(selectedHeadId);
+        });
+    }
+
+
+    $('#btnPrint').click(function (e) {
+        var appId = $('#Id').val();
+        e.preventDefault();
+        var url = '@Url.Action("PrintAnnualProcurementPlan", "Report")';
+        $.ajax({
+            url: url,
+            data: { appId: appId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                window.open(url, '_blank');
+            }
+        })
+    });
+
+    var AddNewItemInformation = function () {
+        var budgetHeadId = $(this).closest('table').find('.app-head option:selected').val();
+        console.log(budgetHeadId);
+        var eTbody = $(this).closest('table').find('tbody');
+        var url = '@Url.Action("AddNewProject", "AnnualProcurementPlan")';
+
+        $.ajax({
+            url: url,
+            data: { budgetHeadId: budgetHeadId, noOfFinancialYear: 0 },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                eTbody.append("<tr>" + result + "</tr>");
+                $('table tbody tr .control-option .add-button button').unbind().click(AddNewItemInformation);
+                $('.control-option .delete-button button').unbind().click(RemoveItemInformation);
+                $('table tbody tr .estd :input').unbind().focusout(unitPriceChange)
+
+                $('table tbody tr .invitation input').unbind().change(DayCalculation)
+                $('table tbody tr .tenderOpening input').change(DayCalculation);
+                $('table tbody tr .tenderElavuation input').change(DayCalculation);
+                $('table tbody tr .approvalToAward input').change(DayCalculation);
+                $('table tbody tr .notificationOfAward input').change(DayCalculation);
+                $('table tbody tr .signing input').change(DayCalculation);
+                $('table tbody tr .timeToContract input').change(DayCalculation);
+                $('table tbody tr .completion input').change(DayCalculation);
+
+            }
+        })
+    }
+    $('table tbody tr .control-option .add-button button').click(AddNewItemInformation);
+
+    var RemoveItemInformation = function () {
+        $(this).closest('tr').remove();
+        CalculateTotalProjectCost();
+    }
+    $('.control-option .delete-button button').click(RemoveItemInformation);
+
+    $(document).ready(function () {
+        var selectedItems = $('#BudgetZonesString').val().split(',');
+        $('#BudgetZones').val(selectedItems).change();
+    })
+
+
+    var unitPriceChange = function () {
+        CalculateTotalProjectCost();
+    }
+
+    $('table tbody tr .estd :input').focusout(unitPriceChange);
+
+    function CalculateTotalProjectCost() {
+        var sum = 0;
+        $('table tbody tr .estd').each(function () {
+            var amount = $(this).find('input').val();
+            sum = parseFloat(sum) + parseFloat(amount);
+
+            if (isNaN(sum)) {
+                sum = 0;
+            }
+
+            $('#TotalAmount').val(sum);
+
+        })
+    }
+
+    function getBudgetListByFinancialYear(obj) {
+        var financialYearId = obj.value;
+        var statusId = $('#BudgetStatusId').val();
+        getBudgetListByFinStatus(financialYearId,statusId);
+    }
+
+    function getBudgetListByStatus(obj) {
+        var financialYearId = $('#FinancialYearId').val();
+        var statusId = obj.value;
+        getBudgetListByFinStatus(financialYearId,statusId);
+    }
+
+    function getBudgetListByFinStatus(financialYearId, statusId){
+
+        @*var ToId = $('#BudgetId');
+
+        ToId.empty();
+        ToId.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        $.getJSON('@Url.Action("GetBudgetListByFinStatus", "AnnualProcurementPlan")',
+            { financialYearId: financialYearId, statusId: statusId },
+            function (data) {
+                $.each(data,function (index, entity) {
+                    ToId.append($('<option/>',
+                    {
+                        value: entity.Value,
+                        text: entity.Text
+                    }));
+                });
+                ToId.select2();
+            });*@
+
+        $('#App-DtlData').empty();
+        var url = '@Url.Action("AddNewAppItemFromBudget", "AnnualProcurementPlan")';
+        var columnCount = 0;
+        if(financialYearId >0 && statusId> 0){
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'text',
+                data: { financialYearId: financialYearId, statusId: statusId },
+                cache: false,
+                success: function (html) {
+                    $('#App-DtlData').append(html);
+                    $('table tbody tr .control-option .add-button button').unbind().click(AddNewItemInformation);
+                    $('.control-option .delete-button button').unbind().click(RemoveItemInformation);
+                    $('table tbody tr .estd :input').unbind().focusout(unitPriceChange)
+
+                    $('table tbody tr .invitation input').unbind().change(DayCalculation)
+                    $('table tbody tr .tenderOpening input').change(DayCalculation);
+                    $('table tbody tr .tenderElavuation input').change(DayCalculation);
+                    $('table tbody tr .approvalToAward input').change(DayCalculation);
+                    $('table tbody tr .notificationOfAward input').change(DayCalculation);
+                    $('table tbody tr .signing input').change(DayCalculation);
+                    $('table tbody tr .timeToContract input').change(DayCalculation);
+                    $('table tbody tr .completion input').change(DayCalculation);
+                }
+            })
+        }
+    }
+
+    var DayCalculation = function () {
+
+        let planedDate = $(this).parent().find('input:eq(0)').val();
+        let planedays = $(this).parent().find('input:eq(1)').val();
+
+        console.log(planedDate);
+
+        if (typeof planedDate === "undefined") {
+            console.log("undefined");
+        }
+        else{
+            if (planedays >= 0 && planedDate!=''){
+                $(this).parent().find('input:eq(2)').val(getdate(planedays,planedDate));
+            }
+        }
+    }
+
+    $('table tbody tr .invitation input').change(DayCalculation);
+    $('table tbody tr .tenderOpening input').change(DayCalculation);
+    $('table tbody tr .tenderElavuation input').change(DayCalculation);
+    $('table tbody tr .approvalToAward input').change(DayCalculation);
+    $('table tbody tr .notificationOfAward input').change(DayCalculation);
+    $('table tbody tr .signing input').change(DayCalculation);
+    $('table tbody tr .timeToContract input').change(DayCalculation);
+    $('table tbody tr .completion input').change(DayCalculation);
+
+    function OnChangeInvitationfor(){
+        console.log("Here");
+    };
+
+    function getdate(noOfDays, previousDate) {
+        var tt = $('#DateOfCommencement').val();
+        var daysToAdd = parseInt(noOfDays);
+        var date = new Date(previousDate);
+        var newdate = new Date(date);
+
+        newdate.setDate(newdate.getDate() + daysToAdd);
+
+        var dd = newdate.getDate();
+        var mm = newdate.getMonth() + 1;
+        var y = newdate.getFullYear();
+
+        var month = mm.toString();
+        var day = dd.toString();
+
+        if (day.length === 1) {
+            dd = "0" + dd;
+        }
+        if (month.length === 1) {
+            mm = "0" + mm;
+        }
+
+        //var someFormattedDate = mm + '-' + dd + '-' + y;
+        var calculatedDate = y + '-' + mm + '-' + dd;
+        return calculatedDate;
+    }
+
+</script>
+
+<style type="text/css">
+
+
+    table tbody th, table thead th{
+        background: #2980b9 !important;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        /*height: 100px;*/
+        vertical-align: middle !important;
+        display: table-cell;
+        text-align: center;
+        color: #FFFFFF;
+    }
+    .appTbl>thead{
+        display:block;
+    }
+    .appTbl>tbody{
+        display:block;
+        overflow: auto;
+        max-height: 500px;
+    }
+
+    table thead th:hover {
+        cursor: default;
+    }
+
+    .APPlotNo {
+        min-width: 50px;
+        padding: 1px !important;
+    }
+
+    .packageNo {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .construction {
+        max-width: 75px;
+        padding: 1px !important;
+    }
+
+        .construction select {
+            width: 75px;
+            max-width: 75px;
+            min-width: 75px;
+            padding: 1px !important;
+        }
+
+    .description {
+        min-width: 275px;
+        padding: 1px !important;
+    }
+
+        .description textarea {
+            height: 80px;
+        }
+
+    .unit {
+        min-width: 40px;
+        padding: 1px !important;
+    }
+
+    .quantity {
+        min-width: 50px;
+        padding: 1px !important;
+    }
+
+    .procurement {
+        min-width: 85px;
+        padding: 1px !important;
+    }
+
+    .timeCode {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .source {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .contract {
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+    .estd {
+        min-width: 70px;
+        padding: 1px !important;
+    }
+
+    .invitation {
+        min-width: 120px;
+        padding: 1px !important;
+    }
+
+        .invitation input {
+            width: 100px;
+        }
+
+    .signing {
+        min-width: 120px;
+        padding: 1px !important;
+    }
+
+        .signing input {
+            width: 100px;
+        }
+
+    .completion {
+        min-width: 120px;
+        padding: 1px !important;
+    }
+
+        .completion input {
+            width: 100px;
+        }
+
+        .tenderOpening, .tenderElavuation, .approvalToAward, .notificationOfAward, .timeToContract {
+        min-width: 120px;
+        padding: 1px !important;
+    }
+
+        .tenderOpening input{
+            width: 100px;
+        }
+        .tenderElavuation input{
+            width: 100px;
+        }
+        .approvalToAward input{
+            width: 100px;
+        }
+        .notificationOfAward input{
+            width: 100px;
+        }
+        .timeToContract input{
+            width: 100px;
+        }
+
+    .remarks {
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+        .remarks input[type=text] {
+            width: 100%;
+        }
+
+    .control-option {
+        max-width: 65px;
+        width: 65px;
+        min-width: 65px;
+        padding: 1px !important;
+    }
+
+    .budget-sub-head {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+
+    .head-devider {
+        padding: 0;
+        border: none;
+        border-top: medium double #908c8c;
+        color: #333;
+        text-align: center;
+    }
+
+        .head-devider:before { /* Not really supposed to work, but does */
+            content: "***";
+            display: inline-block;
+            position: relative;
+            top: -0.7em;
+            font-size: 1.5em;
+            padding: 0 0.25em;
+            background: white;
+        }
+
+    .select2-selection {
+        border-radius: 0px !important;
+        padding: 0px 2px !important;
+        border: 1px solid #D2D6DE !important;
+    }
+
+    .my-button {
+        min-width: 100px;
+        width: 100px;
+    }
+
+    .select2-results__option {
+        font-size: 13px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+        font-size: 13px;
+    }
+</style>

@@ -1,0 +1,212 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobGradeViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.GradeName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.GradeName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+        </span>
+        <span class="field">
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width:70%">
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAddGradeStep" type="button" value="Add" />
+                <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+            </div>
+            <div class="clear">
+            </div>
+            <table id="gridGradeStep" class="contenttable fixedcontenttable custom-grid">
+                <thead>
+                    <tr>
+                        <th>
+                            Step Name
+                        </th>
+                        <th>
+                            Step Amount
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.GradeStep.Count; i++)
+                    {
+                        var item = Model.GradeStep.ToList()[i];
+                        <tr>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.GradeStep[i].Id)
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.GradeStep[i].StepName, new { @class = "required chkStepName" })
+                            </td>
+                            <td>
+                                @Html.TextBoxFor(m => m.GradeStep[i].StepAmount, new { @class = "required checkintvalue" })
+                            </td>
+                            <td>
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb2(this,@item.Id,'@Url.Action("DeleteJobGradeStep")')">
+                                   
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    //$(function () {
+    //    var Url = window.location.href;
+    //    $("#btnClear").live("click", function (event) {
+    //        event.preventDefault();
+    //        window.location.href = Url;
+    //    });
+    //});
+
+    //$(document).ready(function () {
+    $('.checkintvalue').keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+            // let it happen, don't do anything
+            return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+    //});
+
+    //pattern = "[0-9]*"
+
+    $('#btnAddGradeStep').click(function (e) {
+        e.preventDefault();
+        $('#gridGradeStep tbody').append('<tr><td style="display: none;"><input type="text" value="0" name="GradeStep[0].Id"></td><td><input class="required chkStepName" type="text" value="0" name="GradeStep[0].StepName" ></td><td><input class="required checkintvalue"  type="text" pattern = "[0-9]*" value="0" name="GradeStep[0].StepAmount" data-val="true"></td><td><a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb2(this,0,&quot;/PRM/JobGrade/DeleteJobGradeStep&quot;)"></a></td></tr>');
+
+        RearrengeControlName2();
+
+    })
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAddGradeStep').show();
+    })
+
+    function RemoveDb2(el, id, url) {
+        //alert("Ok");
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#messageGadeStep").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#messageGadeStep").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#messageGadeStep").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+                }
+            });
+        }
+        RearrengeControlName2();
+    }
+
+    function RearrengeControlName2() {
+        $('#gridGradeStep tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0)
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+            })
+        })
+    }
+
+    $(document).ready(function () {
+        $("input").change(function (e) {
+            var $target = $(e.target);
+            var checkNeg = function (c) {
+                for (var i = 0, $ci; i < c.length; i++) {
+                    $ci = $(c[i]);
+                    if (parseInt($ci.text()) < 0) $ci.css("color", "red");
+                    else $ci.css("color", "black");
+                }
+            };
+            checkNeg($target.parents("#gridGradeStep").find("[data-var]"));
+        });
+    });
+
+   
+
+    $('#btnSaveGradeStep').live('click', function (e) {
+      
+        $('#messageGadeStep').empty();
+        var rowCount = $('#gridGradeStep tbody tr').length;
+        if (rowCount == 0 || rowCount < 0) {
+            $("#messageGadeStep").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, add at least one Grade Step.</span> </div> ");
+            return false;
+            e.preventDefault();
+        }
+
+        $(".checkintvalue").each(function () {
+            var value = parseInt($(this).val());
+            if (value <= 0 || isNaN(value)) {
+                $(this).parent().addClass('border-red');
+                $("#messageGadeStep").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'Step Amount' must be greater than Zero.</span> </div> ");
+                e.preventDefault();
+            }
+            else {
+                $(this).parent().removeClass('border-red');
+            }
+        });
+
+        $(".chkStepName").each(function () {
+            var value = parseInt($(this).val());
+            if (value <= 0 || isNaN(value)) {
+                $(this).parent().addClass('border-red');
+                $("#messageGadeStep").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'Step Name' must be greater than Zero.</span> </div> ");
+                e.preventDefault();
+            }
+            else {
+                $(this).parent().removeClass('border-red');
+            }
+        });
+    })
+    
+</script>
+

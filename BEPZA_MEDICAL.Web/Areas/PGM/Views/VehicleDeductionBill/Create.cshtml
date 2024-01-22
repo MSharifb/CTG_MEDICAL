@@ -1,0 +1,53 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.VehicleDeductionBill.VehicleDeductionBillViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "VehicleDeductionBill", FormMethod.Post, new { id = "frm" }))
+{
+ 
+    <fieldset>
+        <div class="GroupBox" style="max-height: 15px" id="message" >
+            <div id="SuccessMessage" style="color:green; font-weight: bold;">@ViewBag.SuccessMessage</div>
+            <div id="ErrorMessage" style="color:red; font-weight: bold;">@ViewBag.ErrorMessage</div>
+        </div>
+        @* @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)*@
+        <div>
+            @Html.Partial("_CreateOrEdit", Model)
+        </div>
+        <div class="button-crude">
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />     
+            }
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#SuccessMessage').show("slow").delay(5000).hide("slow");
+     
+
+    if($('#SuccessMessage').length > 0)
+    {
+        $('#EmpID').val('');
+        $('#EmployeeInitial').val('');
+        $('#FullName').val('');
+        $('#Designation').val('');
+        $('#OfficalAmount').val(0);
+        $('#PersonalAmount').val(0);
+        $('#Remarks').val('');
+        $('#SalaryYear').val(0);
+        $('#SalaryMonth').val(0);
+
+        $('#SuccessMessage').val('');
+    }
+
+     
+ });
+</script>

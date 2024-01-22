@@ -1,0 +1,176 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRforOfficer.OfficerPersonalCharacteristicsViewModel
+
+@using (Html.BeginForm(Model.ActionType, "ACRforOfficer"))
+{
+     <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.HiddenFor(model => model.OfficerInfoId)
+                    @Html.HiddenFor(model => model.EmployeeId)
+                    @Html.LabelFor(model => model.EmpId)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRDate)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRDate, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeName)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRPeriodFrom)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRPeriodFrom, new { @class = "read-only", @readonly = true })
+                </span>
+
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeDesignation)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeDesignation, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.ACRPeriodTo)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.ACRPeriodTo, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmployeeDepartment)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.EmployeeDepartment, new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.SeniorityNumber)
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.SeniorityNumber, new { @class = "read-only", @readonly = true })
+                </span>
+
+            </div>
+        </div>
+<div class="GroupBox">
+<div class="row" align="center">
+    <div style="width: 80%">
+        <div class="clear"></div>
+        <table id="grid" class="contenttable">
+            <thead>
+                <tr>
+                    <th>
+                       #
+                    </th>
+                    <th>
+                       Attributes
+                    </th>
+                    <th>
+                       4
+                    </th>
+                    <th>
+                        3
+                    </th>
+                    <th>
+                        2
+                    </th>
+                    <th>
+                       1
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (int i = 0; i < Model.AttributeDetailList.Count; i++)
+                {
+                    var item1 = Model.AttributeDetailList.ToList()[i];
+                    <tr>
+                        <td style="display: none;">
+                            @Html.HiddenFor(m => m.AttributeDetailList[i].Id)
+                        </td>
+                        <td style="display: none;">
+                            @Html.HiddenFor(m => m.AttributeDetailList[i].OfficerInfoId)
+                        </td>
+                        <td style="display: none;">
+                            @Html.HiddenFor(m => m.AttributeDetailList[i].AttributeDetailId)
+                        </td>
+                        <td style="display: none;">
+                            @Html.HiddenFor(m => m.AttributeDetailList[i].SerialNumber)
+                        </td>
+                        <td style="display: none;">
+                            @Html.HiddenFor(m => m.AttributeDetailList[i].AttributeName)
+                        </td>
+                        <td>
+                            <label> @item1.SerialNumber</label>
+                        </td>
+                        <td style="text-align:left">
+                            <label> @item1.AttributeName</label>
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.AttributeDetailList[i].ChkFour)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.AttributeDetailList[i].ChkThree)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.AttributeDetailList[i].CkhTwo)
+                        </td>
+                        <td>
+                            @Html.CheckBoxFor(m => m.AttributeDetailList[i].ChkOne)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="clear" style="height:10px">
+    </div>
+</div>
+    <div class="clear">
+    </div>
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="@Model.ButtonText" name="btnCreate" id="btnCreate" style="margin: 0 10px 0 0;" />
+        }
+        @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+        {
+            @Html.ActionLink("Delete", "DeletePersonalCharacteristics", new { id = Model.OfficerInfoId }, new { @class = "delete-confirm", @style = "margin: 0 10px 0 0;" })
+        }
+        <div class="clear">
+        </div>
+    </div>
+
+
+</div>
+}
+<div class="button-crude button-left" style="float: left;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<br />
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    $('input[type="checkbox"]').live('click', function () {
+        $(this).closest('tr').find('input').not(this).attr('checked', false);
+    });
+
+</script>

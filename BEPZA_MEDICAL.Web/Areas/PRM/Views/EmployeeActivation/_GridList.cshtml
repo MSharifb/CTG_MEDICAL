@@ -1,0 +1,45 @@
+﻿<script type="text/javascript">
+
+   
+
+</script>
+<style>
+   .ui-datepicker-trigger { z-index: 1000; }
+</style>
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+  $('#jqGrid').jqGrid({
+  url: '@Url.Action("GetList")',
+  datatype: 'json',
+  mtype: 'POST',
+  colNames: ['Id', 'EmployeeID', 'Emp. ID', 'Employee Name', 'Initial', 'Designation', 'Division','Activation Date'],
+  colModel: [
+  { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+  { name: 'EmployeeID', index: 'EmployeeID', align: 'left', search: false, hidden: true, edittype: 'text' },
+  { name: 'EmpId', index: 'EmpId', align: 'center', width: '50px', search: false, edittype: 'text' },
+  { name: 'EmployeeName', index: 'EmployeeName', align: 'left', width: '300px', search: true, edittype: 'text' },
+  { name: 'EmployeeInitial', index: 'EmployeeInitial', align: 'left', width: '60px', search: true, edittype: 'text' },
+  { name: 'Designation', index: 'DesignationId', align: 'left', width: '150px', search: false, edittype: 'text' },
+  { name: 'Division', index: 'DivisionId', align: 'left', width: '120px', search: true, edittype: 'select', surl: '@Url.Action("DivisionforView")' },
+  { name: 'ActivationDate', index: 'ActivationDate', width: '60px', align: 'center', search: false, edittype: 'text', width: '120px' }
+  ],
+  autowidth: true,
+  caption: "Activated Employee List",
+  rowList: [20, 30, 40, 50, 100],
+  pager: $('#jqGridPager'),
+  rowNum: 20,
+  sortname: 'EmployeeID',
+  sortorder: 'asc',
+  viewrecords: true,
+  height: '100%',
+  width: '50%'
+  });
+  // Pager Function
+  $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true});
+
+  });
+
+
+</script>

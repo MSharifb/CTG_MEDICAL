@@ -1,0 +1,665 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.RequisitionInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <legend>Offline Requisition/Indent Info</legend>
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.IssuedToEmpId)
+    @Html.HiddenFor(model => model.IssuedByEmpId)
+    @Html.HiddenFor(model => model.ZoneInfoId)
+    @Html.HiddenFor(model => model.strMode)
+    @Html.HiddenFor(model => model.TotalQuantity)
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IndentDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.IndentDate, new { @class = "required" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.IndentNo)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.IndentNo, new { @class = "read-only", @readonly = true })
+
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ToEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(m => m.ToEmpId)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openIssuedToEmployee();" alt="Find" title="Find" />
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Designation)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Department)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Department, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ByEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.ByEmpId)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openEmployee();" alt="Find" title="Find" />
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Comment)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.Comment, new { @style = "width: 673px" })
+        </span>
+        &nbsp;
+
+    </div>
+</div>
+
+
+<fieldset>
+    <legend>Item Searching</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TypeId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.TypeId, Model.ItemTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.CategoryId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.CategoryId, Model.CategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ModelId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ModelId, Model.ModelList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ColorId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ColorId, Model.ColorList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.UnitId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+</fieldset>
+<fieldset>
+    <legend>Requisition Item Info</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ItemId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.ItemId, Model.ItemList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Quantity)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Quantity)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.CommentDetail)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.CommentDetail)
+        </span>
+        <div class="label-right">
+            <label id="stockLabel"></label>
+        </div>
+    </div>
+</fieldset>
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 70%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>
+                            Item Name
+                        </th>
+                        <th>
+                            unit
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Comment
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.RequisitionDetail.Count() > 0) { Html.RenderPartial("_Details", Model); }}
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</div>
+<div class="GroupBox">
+    @if (Model.IsConfigurableApprovalFlow)
+    {
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ForwardToEmpId)
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.ForwardToEmpId, Model.ForwardToList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.ForwardToEmpId)
+                @Html.LabelFor(model => model.ForwardToEmpId)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.ForwardToEmployeeId)
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' onclick="return openApproverEmployee();" alt="Find" title="Find" />
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ForwardToEmpDesignation)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.ForwardToEmpDesignation)
+            </span>
+        </div>
+    }
+</div>
+
+<div class="clear"></div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            //$('input[name="btnSave"]').hide();
+            //var Url = window.location.href;
+            //    window.location.href = Url;
+        }
+    }
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=1';
+        url = url.replace('INV', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+    //Issued To Employee
+
+    function openIssuedToEmployee() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=2';
+        url = url.replace('INV', 'PRM');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    //open Approver Employee
+    function openApproverEmployee() {
+        var url = '@Url.Action("EmployeeSearchTwo", "Employee")?UseTypeEmpId=3';
+        url = url.replace('INV', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setEmpData(id, useTypeEmpId) {
+        //Issued By
+        if (useTypeEmpId == 1) {
+            $('#IssuedByEmpId').val(id);
+            GetEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+        //Issued To
+        if (useTypeEmpId == 2) {
+            $('#IssuedToEmpId').val(id);
+            GetIssuedToEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+
+        //Approver To
+        if (useTypeEmpId == 3) {
+            $('#ForwardToEmpId').val(id);
+            GetApproverEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfoTemp", "OfflineRequisitionInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#ByEmpId').val(obj.EmpId);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+    //Approval Employee Info
+    function GetIssuedToEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfoTemp", "OfflineRequisitionInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#ToEmpId").val(obj.EmpId);
+                    $('#Designation').val(obj.Designation);
+                    $("#Department").val(obj.DepartmentName);
+                    GetApproveList(obj.TempEmpId);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    //Forword to Employee Info
+    function GetApproverEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfoTemp", "OfflineRequisitionInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#ForwardToEmployeeId").val(obj.EmpId);
+                    $('#ForwardToEmpDesignation').val(obj.Designation);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+    function GetApproveList(TempEmpId) {
+
+        var forwardToEmpId = $('#ForwardToEmpId');
+        forwardToEmpId.empty();
+        forwardToEmpId.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (TempEmpId != null && TempEmpId != '') {
+            $.getJSON('@Url.Action("LoadApproveList")', { empId: TempEmpId }, function (obj) {
+                $.each(obj, function (index, data) {
+                    forwardToEmpId.append($('<option/>', {
+                        value: data.Id,
+                        text: data.Name
+                    }));
+                });
+            });
+        }
+    }
+
+
+    function Closing() {
+    }
+
+    @*function GetEmployeeInfo() {
+        var byEmpId = $('#IssuedByEmpId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "OfflineRequisitionInfo")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        $('#ByEmpId').val('');
+
+        $.post(url, serializedForm, function (obj) {
+
+            if (StringHasValue(obj.Result) == true) {
+                alert(obj.Result);
+            }
+            else if (obj.Result == false) {
+                alert('System is unable to load data please try again.');
+            }
+            else {
+                $('#ByEmpId').val(obj.ByEmpId);
+                $("#IssuedByEmpId").val(obj.IssuedByEmpId);
+            }
+        }, "json");
+
+        return false;
+    }*@
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+</script>
+
+<script type="text/javascript">
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+</script>
+
+<script type="text/javascript">
+
+    $("#btnAdd").click(function () {
+        $("#message").empty();
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+            $("#ItemId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please select Item.' + "</b>");
+            return false;
+        }
+
+        if ($('#Quantity').val() == null || $('#Quantity').val() == '' || $('#Quantity').val() == '0') {
+            $("#Quantity").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Please provide valid Quantity.' + "</b>");
+            return false;
+        }
+
+        var id = $('#Id').val();
+        var ItemId = $('#ItemId').val();
+        var Item = $('#ItemId option:selected').text();
+        var Quantity = $('#Quantity').val();
+        var Comment = $('#CommentDetail').val();
+        var ColorId = $('#Color').val();
+        var Unit = "";
+        if ($('#UnitId').val() != null && $('#UnitId').val() != '' && $('#UnitId').val() != '0') {
+            Unit = $('#UnitId option:selected').text();
+        }
+
+        console.log(ItemId);
+        var url = '@Url.Action("AddDetail", "OfflineRequisitionInfo")';
+        var data = {
+            OffRequisitionId: id,
+            ItemId: ItemId,
+            Item: Item,
+            Comment: Comment,
+            Quantity: Quantity,
+            Unit: Unit
+        };
+
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                if ($(html).val() != 'Invalid') {
+
+                    $('#grid tbody').append(html);
+                    $('#ItemId').val('')
+                    $('#CommentDetail').val('')
+                    $('#Quantity').val('')
+                    $('#UnitId').val('')
+                    $('#message').html('');
+                    $('#TypeId').val('')
+                    $('#CategoryId').val('')
+                    $('#ModelId').val('')
+                    $('#ColorId').val('')
+
+                    $("#ItemId").removeClass("border-red");
+                    $("#Quantity").removeClass("border-red");
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + 'Invalid.' + "</b>");
+                }
+            }
+        });
+        return false;
+    });
+
+    //function RemoveDb(el, id, url) {
+    //    if (id == 0 || id == undefined) {
+    //        $(el).parent().parent().remove();
+    //    }
+    //    else {
+    //        $.ajax({
+    //            url: url,
+    //            type: 'POST',
+    //            dataType: 'json',
+    //            data: JSON.stringify({ Id: id }),
+    //            contentType: "application/json; charset=utf-8",
+    //            error: function () {
+    //                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+    //            },
+    //            success: function (result) {
+    //                var errMsg = result.Message;
+    //                var errg = result.Success;
+    //                if (errg) {
+    //                    $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+    //                    $(el).parent().parent().remove();
+    //                }
+    //                else {
+    //                    $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+    //                }
+    //            }
+    //        });
+    //    }
+    //}
+
+</script>
+
+<script type="text/javascript">
+
+    $("select#ItemId").change(function () {
+
+        if ($('#ItemId').val() == null || $('#ItemId').val() == '' || $('#ItemId').val() == '0') {
+
+            $("#TypeId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#CategoryId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ModelId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#UnitId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $("#ColorId").val("0");
+            $('.select-single').trigger('chosen:updated');
+
+            $('#stockLabel').html('');
+        }
+        else {
+            $.get('@Url.Action("GetItemDetails", "ItemPurchase")', { itemId: $('#ItemId').val() }, function (data) {
+                $("#TypeId").val(data.typeId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#CategoryId").val(data.categoryId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ModelId").val(data.modelId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#UnitId").val(data.unitId);
+                $('.select-single').trigger('chosen:updated');
+
+                $("#ColorId").val(data.colorId);
+                $('.select-single').trigger('chosen:updated');
+
+                $('#stockLabel').html('<b style=\"color:green\">Stock balance for this item: ' + data.stockBalance + '</b>');
+            });
+        }
+
+    })
+
+    //cascading dropdown
+    $("select#TypeId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#CategoryId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ModelId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#UnitId").change(function () {
+        LoadItemDDL();
+    })
+
+    $("select#ColorId").change(function () {
+        LoadItemDDL();
+    })
+
+    function LoadItemDDL() {
+
+        var TypeId = $("#TypeId").val();
+        var CategoryId = $("#CategoryId").val();
+        var ModelId = $("#ModelId").val();
+        var UnitId = $("#UnitId").val();
+        var ColorId = $("#ColorId").val();
+
+        var ItemSelect = $('select#ItemId');
+        ItemSelect.empty();
+
+        ItemSelect.append($('<option/>',
+        {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        var url = '@Url.Action("GetItemList", "OfflineRequisitionInfo")' + '?TypeId=' + TypeId + '&CategoryId=' + CategoryId + '&ModelId=' + ModelId + '&UnitId=' + UnitId + '&ColorId=' + ColorId;
+        $.get(url, function (response) {
+            var heads = $.parseJSON(response);
+
+            var ddl = $("#ItemId");
+            // clear all previous options
+            $("#ItemId>option").remove();
+
+            // populate the products
+            for (i = 0; i < heads.length; i++) {
+
+                ddl.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+            }
+            $('.select-single').trigger('chosen:updated');
+        });
+
+    }
+
+</script>
+
+

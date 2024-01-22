@@ -1,0 +1,382 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxExemptionRule.TaxExemptionRuleViewModel
+@using ERP_BEPZA.Web.Helpers
+
+<div class="GroupBox">
+    <legend>Advanced Paid Tax</legend>
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.strMode)
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IncomeYear)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @{
+                if (Model.strMode == "Edit")
+                {
+                    @Html.TextBoxFor(m => m.IncomeYear, new { @class = "read-only", @readonly = true })
+                }
+                else
+                {
+                    @Html.DropDownListFor(m => m.IncomeYear, Model.IncomeYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new {required = "required"})
+                }
+            }
+            
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.AssessmentYear)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(m => m.AssessmentYear, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</div>
+<fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HeadId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.HeadId, Model.HeadList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <table style="width:100%">
+        <tr>
+            <td style="width:50%">
+                
+                @Html.CheckBoxFor(m => m.IsPercentageOnBasis)
+                <div id="rule1" class="GroupBox" style="width:95%;height:80px">
+                    <div class="row">
+                        <span class="label" style="width:40%">
+                            @Html.LabelFor(model => model.TaxExemptionBasisOn)
+                        </span>
+                        <span class="field" style="width:60%">
+                            @Html.DropDownListFor(m => m.TaxExemptionBasisOn, Model.ExemptionBasisList, @String.Format("{0}", Content.DDLOptionalLabel()), new { style = "width:180px" })
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:40%">
+                            @Html.LabelFor(model => model.TaxableInPercentage, new { style = "width:150px" })
+                        </span>
+                        <span class="field" style="width:60%">
+                            @Html.TextBoxFor(m => m.TaxableInPercentage, new { style = "width:180px" })
+                        </span>
+                    </div>
+                </div>
+            </td>
+            <td style="width:50%">
+                
+                @Html.CheckBoxFor(m => m.HaveYearlyExemptionLimit)
+                <div id="rule2" class="GroupBox" style="width:95%;height:80px">
+                    <div class="row">
+                        <span class="label" style="width:40%">
+                            @Html.LabelFor(model => model.MonthlyExemptionLimitAmount)
+                        </span>
+                        <span class="field" style="width:60%">
+                            @Html.TextBoxFor(m => m.MonthlyExemptionLimitAmount)
+                        </span>
+                    </div>
+                    <div class="row">
+                        <span class="label" style="width:40%">
+                            @Html.LabelFor(model => model.YearlyExemptionLimitAmount)
+                        </span>
+                        <span class="field" style="width:60%">
+                            @Html.TextBoxFor(m => m.YearlyExemptionLimitAmount, new { @class = "read-only", @readonly = true })
+                        </span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div class="button-crude button-center">
+        @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="submit" value="Add New Exemption Rule" id="btnAddRule" name="btnSubmit" style="margin-right: 8px;" />
+        }
+    </div>
+
+</fieldset>
+<div class="clear"></div>
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width: 70%">
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+                        <th>
+                            Salary Head
+                        </th>
+                        <th>
+                            Basis Of Calculation
+                        </th>
+                        <th>
+                            Percentage On Basis
+                        </th>
+                        <th>
+                            Yearly Exemption Limit
+                        </th>
+                        <th>
+                            Delete
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.DetailList.Count() > 0) { Html.RenderPartial("_MasterDetail", Model); }}
+
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#rule1").find("input,button,textbox,select,label").attr("disabled", "disabled");
+        $("#rule2").find("input,button,textbox,select,label").attr("disabled", "disabled");
+
+        showErrMsg();
+    });
+
+    $("#IsPercentageOnBasis").change(function () {
+        if (this.checked) {
+            $("#rule1").find("input,button,textbox,select,label").attr("disabled", false);
+        }
+        else
+            $("#rule1").find("input,button,textbox,select,label").attr("disabled", "disabled");
+    });
+
+    $("#HaveYearlyExemptionLimit").change(function () {
+        if (this.checked) {
+            $("#rule2").find("input,button,textbox,select,label").attr("disabled", false);
+
+            $("#MonthlyExemptionLimitAmount").change(function () {
+                var monthlyLimit = $("#MonthlyExemptionLimitAmount").val();
+                
+                if (monthlyLimit == isNaN || monthlyLimit == "") {
+                    $("#TaxExemptionBasisOn").addClass("border-red");
+                    $('#message').html("<b style='color:Red'>" + 'Invalid number.' + "</b>");
+                    return false;
+                }
+                else {
+                    var yearlyLimit = monthlyLimit * 12;
+                    $("#YearlyExemptionLimitAmount").val(yearlyLimit);
+                }
+            })
+        }
+        else
+            $("#rule2").find("input,button,textbox,select,label").attr("disabled", "disabled");
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+
+    $(function() {
+        var Url = window.location.href;
+        $("#btnClear").live("click",
+            function(event) {
+                event.preventDefault();
+                window.location.href = Url;
+            });
+    });
+
+    //Check string has null or empty
+    var StringHasValue = function(strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+    $("#btnAddRule").click(function() {
+        $("#message").empty();
+        var IsPercentageOnBasis = false;
+        var HaveYearlyExemptionLimit = false;
+        var TaxExemptionBasisOn;
+        var TaxableInPercentage;
+        var YearlyExemptionLimitAmount;
+        var TaxExemptionBasis;
+        
+        if ($("#IsPercentageOnBasis").is(':checked')) {
+            if ($('#TaxExemptionBasisOn').val() == null ||
+                $('#TaxExemptionBasisOn').val() == '' ||
+                $('#TaxExemptionBasisOn').val() == '0') {
+                $("#TaxExemptionBasisOn").addClass("border-red");
+                $('#message').html("<b style='color:Red'>" + 'Fill up the required Information.' + "</b>");
+                return false;
+            }
+            if ($('#TaxableInPercentage').val() == null ||
+                $('#TaxableInPercentage').val() == '' ||
+                $('#TaxableInPercentage').val() < 0 ||
+                $('#TaxableInPercentage').val() == isNaN) {
+                $("#TaxableInPercentage").addClass("border-red");
+                $('#message').html("<b style='color:Red'>" + 'Fill up the required Information.' + "</b>");
+                return false;
+            }
+            IsPercentageOnBasis = true;
+            TaxExemptionBasisOn = $('#TaxExemptionBasisOn option:selected').val();
+            TaxableInPercentage = $('#TaxableInPercentage').val();
+            TaxExemptionBasis = $('#TaxExemptionBasisOn option:selected').text();
+        }
+        //start change from here
+        if ($("#HaveYearlyExemptionLimit").is(':checked')) {
+            if ($('#MonthlyExemptionLimitAmount').val() == null ||
+                $('#MonthlyExemptionLimitAmount').val() == '' ||
+                $('#MonthlyExemptionLimitAmount').val() == '0') {
+                $("#MonthlyExemptionLimitAmount").addClass("border-red");
+                $('#message').html("<b style='color:Red'>" + 'Fill up the required Information.' + "</b>");
+                return false;
+            }
+
+            HaveYearlyExemptionLimit = true;
+            YearlyExemptionLimitAmount = $('#YearlyExemptionLimitAmount').val();
+        }
+        if (HaveYearlyExemptionLimit == false && IsPercentageOnBasis == false) {
+            $('#message').html("<b style='color:Red'>" + 'Give at least one set of rules.' + "</b>");
+            return false;
+             }
+        if ($('#HeadId').val() == null || $('#HeadId').val() == '' || $('#HeadId').val() == '0') {
+            $("#HeadId").addClass("border-red");
+            $('#message').html("<b style='color:Red'>" + 'Fill up the mandatory fields.' + "</b>");
+            return false;
+        }
+        var HeadId = $("#HeadId option:selected").val();
+        var HeadName = $("#HeadId option:selected").text();
+
+        var ExemptionId = 0;
+        if ($('#strMode').val() == 'Edit') {
+            ExemptionId = $('#Id').val();
+        }
+
+        var url = '@Url.Action("AddDetail", "TaxExemptionRule")';
+
+
+        var data = {
+            ExemptionId: ExemptionId,
+            IsPercentageOnBasis: IsPercentageOnBasis,
+            HeadId: HeadId,
+            TaxExemptionBasisOn: TaxExemptionBasisOn,
+            TaxableInPercentage: TaxableInPercentage,
+            HaveYearlyExemptionLimit: HaveYearlyExemptionLimit,
+            YearlyExemptionLimitAmount: YearlyExemptionLimitAmount,
+            HeadName: HeadName,
+            TaxExemptionBasis: TaxExemptionBasis
+        };
+        $.ajax({
+            url: url,
+            data: data,
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                if (html.Success) {
+                    $('#message').html("<b style='color:Red'>" + html.Message + "</b>");
+                    return false;
+                }
+                if ($(html).val() != 'Invalid') {
+
+                    $('#grid tbody').append(html);
+                    $('#TaxExemptionBasisOn').val('');
+                    $('#TaxableInPercentage').val('');
+                    $('#YearlyExemptionLimitAmount').val('');
+                    $('#HeadId').val('');
+                    $('#message').html('');
+                    $('#YearlyExemptionLimitAmount').val('');
+                    $('#MonthlyExemptionLimitAmount').val('');
+
+                    $("#HeadId").removeClass("border-red");
+                    $("#TaxExemptionBasisOn").removeClass("border-red");
+                    $("#TaxableInPercentage").removeClass("border-red");
+                    $("#YearlyExemptionLimitAmount").removeClass("border-red");
+                    $("#MonthlyExemptionLimitAmount").removeClass("border-red");
+                    
+                }
+                else {
+                    $('#message').html("<b style='color:Red'>" + 'Invalid.' + "</b>");
+                }
+            }
+        });
+        return false;
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAddRule').show();
+    })
+
+
+    function RemoveDb(el, id, url) {
+        if (confirm("Do you want to delete this Rule?")) {
+            if (id == 0 || id == undefined) {
+                $(el).parent().parent().remove();
+            }
+            else {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify({ Id: id }),
+                    contentType: "application/json; charset=utf-8",
+                    error: function () {
+                        $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                    },
+                    success: function (result) {
+                        var errMsg = result.Message;
+                        var errg = result.Success;
+                        if (errg) {
+                            $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                            $(el).parent().parent().remove();
+                        }
+                        else {
+                            $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                        }
+                    }
+                });
+            }
+        }
+
+    }
+
+    $('#IncomeYear').live('change', function () {
+        var incomeYear = $(this).val();
+        if (incomeYear != null) {
+            $.ajax({
+                url: '@Url.Action("GetAssessmentYear", "TaxExemptionRule")',
+                data: { incomeYear: incomeYear },
+                dataType: "json",
+                type: "POST",
+                error: function () {
+                    alert("Something Wrong!");
+                },
+                success: function (result) {
+
+                    if (result != '') {
+                        $("#IncomeYear").removeClass("border-red");
+                        $("#AssessmentYear").val(result.assessmentYear);
+                    }
+                }
+
+            });
+        }
+    });
+
+</script>
+
+<style type="text/css">
+
+    #left, #right {
+        width: 500px;
+        float: left;
+        /*change this to whatever required*/
+    }
+</style>
+

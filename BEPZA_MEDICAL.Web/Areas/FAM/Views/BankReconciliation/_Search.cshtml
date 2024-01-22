@@ -1,0 +1,95 @@
+﻿ @using BEPZA_MEDICAL.Web.Areas.FAM.Models.BankReconciliation
+
+@model BankReconciliationModel
+    <div class="message">
+        @if (!string.IsNullOrEmpty(Model.strMessage))
+        {
+            <div class="@Model.strClass">
+                @Model.strMessage
+            </div>
+        }
+    </div>
+    <div class="GroupBox">
+        <table id="gridDebit" class="contenttable custom-grid" >
+            <thead>
+                <tr>
+                    <th> &nbsp;&nbsp; </th>
+                    <th> Cheque Date </th>
+                    <th> Cheque No </th>
+                    <th> Amount </th>
+                    <th> Voucher No </th>
+                    <th> Voucher Date </th>
+                    <th> Clear Date </th>
+                    <th> Description </th>
+                    <th> Remove </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int i = 0; }
+                @foreach (var item in Model.Debits)
+                {
+		            <tr class="row">
+                        <td style="display:none;">@Html.Hidden("Debits[" + i + "].Id", item.Id, new { style = "width:100px;" })</td>
+                        <td>@Html.CheckBox("Debits[" + i + "].IsReconciled", item.IsReconciled)</td>
+                        <td>@Html.TextBox("Debits[" + i + "].ChequeDate", item.ChequeDate.ToString("dd-MM-yyyy"), new { style = "width:100px;", @class = "date-picker" })</td>
+                        <td>@Html.TextBox("Debits[" + i + "].ChequeNo", item.ChequeNo, new { style = "width:100px;" })</td>
+                        <td>@Html.TextBox("Debits[" + i + "].Amount", item.Amount, new { style = "width:100px;" })</td>
+                        <td>@Html.TextBox("Debits[" + i + "].VoucherNo", item.VoucherNo, new { style = "width:100px;" })</td>
+                        <td>@Html.TextBox("Debits[" + i + "].VoucherDate", item.VoucherDate.ToString("dd-MM-yyyy"), new { style = "width:100px;", @class = "date-picker" })</td>
+                        <td>@Html.TextBox("Debits[" + i + "].ClearDate", item.ClearDate.HasValue ? item.ClearDate.Value.ToString("dd-MM-yyyy") == "01-01-0001" ? "" : item.ClearDate.Value.ToString("dd-MM-yyyy") : "", new { style = "width:100px;", @class = "date-picker" })</td>
+                        <td>@Html.TextBox("Debits[" + i++ + "].Description", item.Description, new { style = "width:100px;" })</td>
+                        <td><a class="deleteRow" title="delete" href="#"><img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" /></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <center style="color:#3C78B5;font-size: 14px;"><b> Credits/Withdrawals  </b></center>
+    <div class="button-crude" style="text-align:right;">
+            <input id="btnAddCredits" type="button" value="Add" />
+        </div>
+        <div class="clear"></div>
+    <div class="GroupBox">
+        <table id="gridCredit" class="contenttable custom-grid" >
+            <thead>
+                <tr>
+                    <th> &nbsp;&nbsp; </th>
+                    <th> Cheque Date </th>
+                    <th> Cheque No </th>
+                    <th> Amount </th>
+                    <th> Voucher No </th>
+                    <th> Voucher Date </th>
+                    <th> Clear Date </th>
+                    <th> Description </th>
+                    <th> Remove </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ i = 0; }
+                @foreach (var item in Model.Credits)
+                {
+		            <tr class="row">
+                        <td style="display:none;">@Html.Hidden("Credits[" + i + "].Id", item.Id)</td>
+                        <td>@Html.CheckBox("Credits[" + i + "].IsReconciled", item.IsReconciled)</td>
+                        <td>@Html.TextBox("Credits[" + i + "].ChequeDate", item.ChequeDate.ToString("dd-MM-yyyy"), new { style = "width:100px;", @class = "date-picker" })</td>
+                        <td>@Html.TextBox("Credits[" + i + "].ChequeNo", item.ChequeNo, new { style = "width:100px;" })</td>
+                        <td>@Html.TextBox("Credits[" + i + "].Amount", item.Amount, new { style = "width:100px;" })</td>
+                        <td>@Html.TextBox("Credits[" + i + "].VoucherNo", item.VoucherNo, new { style = "width:100px;" })</td>
+                        <td>@Html.TextBox("Credits[" + i + "].VoucherDate", item.VoucherDate.ToString("dd-MM-yyyy"), new { style = "width:100px;", @class = "date-picker" })</td>
+                        <td>@Html.TextBox("Credits[" + i + "].ClearDate", item.ClearDate.HasValue ? item.ClearDate.Value.ToString("dd-MM-yyyy") == "01-01-0001" ? "" : item.ClearDate.Value.ToString("dd-MM-yyyy") : "", new { style = "width:100px;", @class = "date-picker" })</td>
+                        <td>@Html.TextBox("Credits[" + i++ + "].Description", item.Description, new { style = "width:100px;" })</td>
+                        <td><a class="deleteRow" title="delete" href="#"><img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" /></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.date-picker').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' })
+        .css({ 'width': '100px' });
+        })
+    </script>

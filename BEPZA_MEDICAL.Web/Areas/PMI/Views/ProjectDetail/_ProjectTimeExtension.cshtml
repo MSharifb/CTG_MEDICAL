@@ -1,0 +1,25 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.ProjectTimeExtensionViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr>
+    @using (Html.BeginCollectionItem("ProjectTimeExtensionList"))
+    {
+
+        @Html.HiddenFor(m => m.Id)
+        <td class="day-field">
+            @Html.TextBoxFor(m => m.ExtendedDays)
+        </td>
+        <td class="ex-date-field">
+            @Html.EditorFor(m => m.ExtendedDate)
+        </td>
+        <td class="date-field">
+            @Html.TextBoxFor(m => m.ExpectedCompletionDate, "{0:yyyy-MM-dd}", new { @readonly = @"readonly", @style = @"background:#F2F5F8;" })
+        </td>
+        <td class="control-field">
+            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-trash"></i></button>
+        </td>
+
+    }
+</tr>
+
+

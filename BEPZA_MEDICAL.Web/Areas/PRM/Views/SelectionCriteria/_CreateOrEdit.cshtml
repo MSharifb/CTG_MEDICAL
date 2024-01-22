@@ -1,0 +1,345 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SelectionCriteriaViewModel
+
+@{
+    Layout = null;
+}
+<fieldset>
+    <legend>Set Selection Criteria </legend>
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.JobAdvertisementInfoId, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.JobAdvertisementInfoId, Model.AdvetisementCodeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" ,onchange = "LoadPostName();" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DesignationId, new { @class = "label-required" })
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="field" style="width:1%">
+            @Html.CheckBoxFor(model => model.IsSameCriteria)
+        </span>
+        <span class="label-right" style="margin-left:15px; width:40%">
+            @Html.LabelFor(model => model.IsSameCriteria)
+        </span>
+        
+    </div>
+    <fieldset>
+        <legend>Selection Criteria Details Information</legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.SelectionCriteriaOrExamTypeId, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.DropDownListFor(model => model.SelectionCriteriaOrExamTypeId, Model.SelectionCriteriaOrExamList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+            <span class="field" style="width:1%">
+                @Html.CheckBoxFor(model => model.IsLastExam)
+            </span>
+            <span class="label-right" style="margin-left:15px">
+                @Html.LabelFor(model => model.IsLastExam)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FullMark, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.FullMark)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.PassMark, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.PassMark)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Remarks)
+            </span><span class="field">
+                @Html.EditorFor(model => model.Remarks)
+            </span>
+        </div>
+
+        <div class="row" align="center">
+            <div style="width: 80%">
+                <div class="clear"></div>
+                <div class="button-crude fixedAddButton" style="text-align: right;">
+                    <input id="btnAdd" type="button" value="Add" />
+                    <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+                </div>
+
+                <div class="clear">
+                </div>
+                <table id="grid" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th>
+                               Selection Criteria
+                            </th>
+                            <th>
+                                Full Mark
+                            </th>
+                            <th>
+                                Pass Mark
+                            </th>
+                            <th>
+                                Remarks
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @for (int i = 0; i < Model.SelectionCriteriaDetailList.Count; i++)
+                        {
+                            var item2 = Model.SelectionCriteriaDetailList.ToList()[i];
+                            <tr >
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.SelectionCriteriaDetailList[i].Id)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.SelectionCriteriaDetailList[i].SelectionCriteriaOrExamTypeId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.SelectionCriteriaDetailList[i].FullMark)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.SelectionCriteriaDetailList[i].PassMark)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.SelectionCriteriaDetailList[i].Remarks)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.SelectionCriteriaDetailList[i].IsLastExam, new { @class="ExamType"})
+                                </td>
+
+                                <td>
+                                    <label> @item2.SelectionCriteriaOrExamName</label>
+                                </td>
+                                <td>
+                                    <label> @item2.FullMark</label>
+                                </td>
+                                <td>
+                                    <label> @item2.PassMark</label>
+                                </td>
+                                <td>
+                                    <label> @item2.Remarks</label>
+                                </td>
+                                <td>
+                                    <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item2.Id,@item2.SelectionCriteriaOrExamTypeId,'@Url.Action("DeleteSelectionCriteriaDetail")')"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="clear" style="height:10px">
+            </div>
+        </div>
+    </fieldset>
+</fieldset>
+
+<script type="text/javascript">
+    var arrList = [];
+    //pupulate existing data from database
+    var SelectionCriteriaOrExam = @Html.Raw(Json.Encode(Model.SelectionCriteriaDetailList));
+    $.each( SelectionCriteriaOrExam, function( key, value ) {
+        arrList.push(String( value.SelectionCriteriaOrExamTypeId ));
+    });
+
+
+    $('#btnAdd').live('click', function () {
+        $('#message').empty();
+        var selectionCriDtlId = $('#Id').val();
+        var selectionCriTypeId = $('#SelectionCriteriaOrExamTypeId').val();
+        var selectionCriTypeName = $("#SelectionCriteriaOrExamTypeId option:selected").text();
+
+        var fullMark = $('#FullMark').val();
+        var passMark = $('#PassMark').val();
+        var reMarks = $('#Remarks').val();
+        var isLastExam=$('#IsLastExam').prop('checked');
+        //checking duplicate entry
+        var index = $.inArray(selectionCriTypeId, arrList);
+
+        if (fullMark == null || fullMark == "" || fullMark < 1) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (passMark == null || passMark == "" || passMark < 1) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (selectionCriTypeId == null || selectionCriTypeId == 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            arrList.push(selectionCriTypeId);
+
+            var trClone = '<tr>' +
+                '<td style="display: none;">' + '<input type="text" value="0" name="SelectionCriteriaDetailList[0].Id"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="SelectionCriteriaDetailList[0].SelectionCriteriaOrExamTypeId" value="' + selectionCriTypeId + '"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="SelectionCriteriaDetailList[0].FullMark" value="' + fullMark + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="SelectionCriteriaDetailList[0].PassMark" value="' + passMark + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="SelectionCriteriaDetailList[0].Remarks" value="' + reMarks + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="SelectionCriteriaDetailList[0].IsLastExam" value="' + isLastExam + '" class="ExamType"></td>' +
+
+                '<td>' + '<label for="SelectionCriteriaOrExamName">' + selectionCriTypeName + '</td>' +
+                '<td>' + '<label for="FullMark" >' + fullMark + '</td>' +
+                 '<td>' + '<label for="PassMark">' + passMark + '</td>' +
+                '<td>' + '<label for="Remarks" >' + reMarks + '</td>' +
+                '<td>' + '<a class="deleteIcon-tempGrid" title="delete" href="#" title="delete" onclick="RemoveDb(this,0,&quot;' + selectionCriTypeId +'&quot;)"></a></td>' +
+                '</tr>';
+            $('#grid tbody').append(trClone);
+            RearrengeControlName2();
+        }
+    })
+
+    function RemoveDb(el,id, selectionCriTypeId,url) {
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+        arrList = $.grep(arrList, function(value) {
+            return value != selectionCriTypeId;
+        });
+        RearrengeControlName2();
+    }
+
+
+    function RearrengeControlName2() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    function LoadPostName() {
+        var adInfoId = $('#JobAdvertisementInfoId').val();
+        var designation = $('#DesignationId');
+        designation.empty();
+        designation.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (adInfoId != null && adInfoId != '') {
+            $.getJSON('@Url.Action("JobPostName")', { adInfoId: adInfoId }, function (thanas) {
+                $.each(thanas, function (index, thana) {
+                    designation.append($('<option/>', {
+                        value: thana.Id,
+                        text: thana.Name
+                    }));
+                });
+            });
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#IsSameCriteria').change(function () {
+
+            if (this.checked) {
+                $('#DesignationId').attr('disabled', true);
+            }
+            else {
+                $('#DesignationId').removeAttr('disabled')
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+
+            var requisitionNo = $('#JobAdvertisementInfoId').val();
+
+            if (requisitionNo == null || requisitionNo == 0 || requisitionNo == "" ) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+
+            var rows = $('#grid').find('tr').length
+            if (rows == 1 || rows < 1) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Sorry! Row is not available.</span>  </div> ");
+                return false;
+            }
+
+            var IsFinalExam=[];
+            $("#grid tbody tr").each(function () {
+            $("#grid tbody td").each(function () {
+                var passmark = $(this).find(".ExamType").val();
+                if(passmark!=undefined)
+                IsFinalExam.push(passmark.toLowerCase());
+            });
+            });
+
+            var isIt = $.inArray("true", IsFinalExam);
+            if(isIt==-1){
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, select at least one Criteria/Exam type.</span>  </div> ");
+                return false;
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+

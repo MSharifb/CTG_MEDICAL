@@ -1,0 +1,19 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.QueryAnalyzerViewModel
+
+@{
+    Layout = null;
+}
+@using (Html.BeginForm(null, "DynamicQueryAnalyzer", FormMethod.Post, new { id = "frmExportToExcel" }))
+{
+    <div id="dvPreview">
+        @Html.Partial("_Preview")
+    </div>
+    <div class="clear"></div>
+    <div style="margin-bottom:20px"></div>
+    <div id="button" class="button-crude">
+        <a href="javascript:" class="button noprint btn btn-primary" id="btnPrint" onclick="getDirectPrint('printable')">Print</a>&nbsp;
+        <a href="javascript:" class="button btn btn-primary" id="btnPrintPreview" onclick="getPrint('printable')">Preview</a>&nbsp;
+        <a href="javascript:" class="button btn btn-primary" id="btnPrintExcel" onclick="reportPreview()">Preview with Excel</a>
+    </div>    
+}
+

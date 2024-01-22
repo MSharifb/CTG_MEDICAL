@@ -1,0 +1,76 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.Configuration
+@model ConfigurationModel
+           
+
+@using (Ajax.BeginForm("Index",null, new AjaxOptions { HttpMethod = "POST",OnComplete = "OnComplete" }, new { id = "frm" }))
+{
+    @Html.HiddenFor(model => model.Id) 
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.Name)
+            
+                <label style='color: red'>
+                *</label>        
+                </span>
+            <span class="field">@Html.EditorFor(model => model.Name) </span>
+            <span class="label-right">@Html.LabelFor(model => model.SortOrder)<label style='color: red'>
+                *</label>
+            </span><span class="field">@Html.TextBoxFor(model => model.SortOrder, new { @style = "width:30px" }) </span>
+        </div>
+        <div class="row">
+            <span class="label">@Html.LabelFor(model => model.Remarks) </span><span class="field">@Html.EditorFor(model => model.Remarks)
+            </span>
+        </div>
+        <div class="clear"></div>
+    </div>
+    
+    <div class="GroupBox">  
+
+        <table align="center">
+            <tr>
+                <td>
+                    <div class="buttonSubmit">
+                    @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                    {
+                        <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+                    }
+                    </div>
+                </td>
+                <td>
+                    <div class="buttonSubmit">
+                    @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                    {
+                        <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+                    }
+                    </div>
+                </td>
+                <td>
+                    <div class="buttonSubmit">
+                        <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        function OnComplete(content) {
+            var data = jQuery.parseJSON(content.response)
+            if (data.Success <= 0) {
+                $("#message").removeClass('success');
+                $("#message").text(data.Message).addClass('failed');
+            }
+            else {
+                $("#message").removeClass('failed');
+                $("#message").text(data.Message).addClass('success');
+                if (jQuery.contains(data.Message, 'updated') || jQuery.contains(data.Message, 'deleted')) {
+                    $("#frm").attr('action', '@Url.Action("Create")' + '?type=' + $('.ui-selected:first').text());
+                    $('#btnUpdate').hide();
+                    $('#btnSave').show();
+                }
+                document.getElementById('frm').reset();
+                jQuery("#jqGrid").trigger("reloadGrid");
+            }
+        }
+    </script>
+}
+

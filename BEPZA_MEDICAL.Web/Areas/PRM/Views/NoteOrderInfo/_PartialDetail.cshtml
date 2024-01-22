@@ -1,0 +1,21 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NoteOrderInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+
+    @using (Html.BeginCollectionItem("NoteOrderInfoTypeList"))
+    {
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.TypeSlNo)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.TypeName)
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" title="view" onclick="ViewTypeDetails(this,@Model.TypeId,'@Url.Action(@Html.Encode(Model.ActionName), @Html.Encode(Model.ControllerName))')">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="view" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>
+

@@ -1,0 +1,226 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.AdditionalInformationofVehicleViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FIxedAssetId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.FIxedAssetId, Model.AssetCodeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.SourceOfFundId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.SourceOfFundId, Model.SourceOfFundList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Registration, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Registration, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Chassis, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Chassis, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Engine, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Engine, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CC, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.CC, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Seats, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Seats, new { @class = "form-control" })
+            </div>
+        </div>
+        <fieldset>
+            <legend>Existing Spare Parts</legend>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SparePartId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(model => model.SparePartId, Model.SparePartList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(model => model.Quantity, new { @class = "col-sm-1 control-label" })
+                <div class="col-sm-1">
+                    @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                <div style="width: 70%">
+                    <div class="clear"></div>
+                    <div class="text-right">
+                        <button class="btn btn-success" id="btnAdd"><i class="fa fa-plus"></i> Add</button>
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <table id="grid" class="contenttable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Spare Part
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Remove
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (int i = 0; i < Model.AdditionalInfoVehicleDetailList.Count; i++)
+                            {
+                                var item = Model.AdditionalInfoVehicleDetailList.ToList()[i];
+                                <tr>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AdditionalInfoVehicleDetailList[i].Id)
+                                    </td>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AdditionalInfoVehicleDetailList[i].SparePartId)
+                                    </td>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AdditionalInfoVehicleDetailList[i].Quantity)
+                                    </td>
+                                    <td>
+                                        <span> @item.SparePartName</span>
+                                    </td>
+                                    <td>
+                                        <span> @item.Quantity</span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,@item.SparePartId,'@Url.Action("DeleteAssetMaintenanceInformationDetail")')"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear" style="height:10px">
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-6">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+    </fieldset>
+</div>
+<script type="text/javascript">
+    var arrList = [];
+    //pupulate existing data from database
+    var SelectionCriteriaOrExam = @Html.Raw(Json.Encode(Model.AdditionalInfoVehicleDetailList));
+    $.each( SelectionCriteriaOrExam, function( key, value ) {
+        arrList.push(String( value.SparePartId ));
+    });
+
+
+    $('#btnAdd').on('click', function (e) {
+        e.preventDefault();
+        $('#message').empty();
+        var assetMaintenanceInformationDetailId = $('#Id').val();
+        var sparePartId = $('#SparePartId').val();
+        var sparePartName = $("#SparePartId option:selected").text();
+
+        var quantity = $('#Quantity').val();
+        //checking duplicate entry
+        var index = $.inArray(sparePartId, arrList);
+
+        if (sparePartId == null || sparePartId == 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            arrList.push(sparePartId);
+
+            var trClone = '<tr>' +
+                '<td style="display: none;">' + '<input type="text" value="0" name="AdditionalInfoVehicleDetailList[0].Id"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="AdditionalInfoVehicleDetailList[0].SparePartId" value="' + sparePartId + '"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="AdditionalInfoVehicleDetailList[0].Quantity" value="' + quantity + '" ></td>' +
+
+                '<td>' + '<label for="SparePartName">' + sparePartName + '</td>' +
+                '<td>' + '<label for="FullMark" >' + quantity + '</td>' +
+                '<td>' + '<a class="deleteIcon-tempGrid" title="delete" href="#" title="delete" onclick="RemoveDb(this,0,&quot;' + sparePartId +'&quot;)"></a></td>' +
+                '</tr>';
+            $('#grid tbody').append(trClone);
+            RearrengeControlName2();
+        }
+    })
+
+    function RemoveDb(el,id,sparePartId,url) {
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+        arrList = $.grep(arrList, function(value) {
+            return value != sparePartId;
+        });
+        RearrengeControlName2();
+    }
+
+
+    function RearrengeControlName2() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>

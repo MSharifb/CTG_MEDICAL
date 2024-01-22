@@ -1,0 +1,40 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.DistrictViewModel
+@using BEPZA_MEDICAL.Web.Utility
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#CountryId").focus();
+    });    
+</script>
+
+@*, OnSuccess = "OnSubmitSuccess", OnFailure = "OnSubmitFailure" *@
+@using (Ajax.BeginForm("Index", "District", new AjaxOptions { HttpMethod = "POST"}, new { id = "frm" }))
+{   
+    <div>
+        <div class="left-sidebar">
+            <ul>
+                <li>@Html.ActionLink("Division", "Index", "CountryDivision")</li>
+                <li class="selected">@Html.ActionLink("District", "Index", "District")</li>
+                <li>@Html.ActionLink("Upazila", "ThanaIndex", "Thana")</li>
+            </ul>
+        </div>
+        <div class="form-content">
+            <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            </div>
+            @Html.Partial("_CreateOrEdit", Model)
+            <div class="GroupBox">
+                <table id="jqGrid" cellpadding="0" cellspacing="0">
+                </table>
+                <div id="jqGridPager" style="text-align: center;">
+                </div>
+                <div id="divList">
+                    @Html.Partial("_GridList")
+                </div>
+            </div>
+        </div>
+    </div>
+}

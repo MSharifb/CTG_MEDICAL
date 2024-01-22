@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="dsProcurementplanFund" targetNamespace="http://tempuri.org/dsProcurementplanFund.xsd" xmlns:mstns="http://tempuri.org/dsProcurementplanFund.xsd" xmlns="http://tempuri.org/dsProcurementplanFund.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vwPMIProcurementPlanFundRptTableAdapter" GeneratorDataComponentClassName="vwPMIProcurementPlanFundRptTableAdapter" Name="vwPMIProcurementPlanFundRpt" UserDataComponentName="vwPMIProcurementPlanFundRptTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="DBConnectionString (Web.config)" DbObjectName="ERP_BEPZA.dbo.vwPMIProcurementPlanFundRpt" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="false">
+                    <CommandText>SELECT ID, ProjectMasterId, SourceOfFund, Cost FROM dbo.vwPMIProcurementPlanFundRpt</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="ID" DataSetColumn="ID" />
+              <Mapping SourceColumn="ProjectMasterId" DataSetColumn="ProjectMasterId" />
+              <Mapping SourceColumn="SourceOfFund" DataSetColumn="SourceOfFund" />
+              <Mapping SourceColumn="Cost" DataSetColumn="Cost" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="dsProcurementplanFund" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dsProcurementplanFund" msprop:Generator_UserDSName="dsProcurementplanFund">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vwPMIProcurementPlanFundRpt" msprop:Generator_TableClassName="vwPMIProcurementPlanFundRptDataTable" msprop:Generator_TableVarName="tablevwPMIProcurementPlanFundRpt" msprop:Generator_TablePropName="vwPMIProcurementPlanFundRpt" msprop:Generator_RowDeletingName="vwPMIProcurementPlanFundRptRowDeleting" msprop:Generator_RowChangingName="vwPMIProcurementPlanFundRptRowChanging" msprop:Generator_RowEvHandlerName="vwPMIProcurementPlanFundRptRowChangeEventHandler" msprop:Generator_RowDeletedName="vwPMIProcurementPlanFundRptRowDeleted" msprop:Generator_UserTableName="vwPMIProcurementPlanFundRpt" msprop:Generator_RowChangedName="vwPMIProcurementPlanFundRptRowChanged" msprop:Generator_RowEvArgName="vwPMIProcurementPlanFundRptRowChangeEvent" msprop:Generator_RowClassName="vwPMIProcurementPlanFundRptRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:int" minOccurs="0" />
+              <xs:element name="ProjectMasterId" msprop:Generator_ColumnVarNameInTable="columnProjectMasterId" msprop:Generator_ColumnPropNameInRow="ProjectMasterId" msprop:Generator_ColumnPropNameInTable="ProjectMasterIdColumn" msprop:Generator_UserColumnName="ProjectMasterId" type="xs:int" />
+              <xs:element name="SourceOfFund" msprop:Generator_ColumnVarNameInTable="columnSourceOfFund" msprop:Generator_ColumnPropNameInRow="SourceOfFund" msprop:Generator_ColumnPropNameInTable="SourceOfFundColumn" msprop:Generator_UserColumnName="SourceOfFund" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Cost" msprop:Generator_ColumnVarNameInTable="columnCost" msprop:Generator_ColumnPropNameInRow="Cost" msprop:Generator_ColumnPropNameInTable="CostColumn" msprop:Generator_UserColumnName="Cost" type="xs:decimal" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

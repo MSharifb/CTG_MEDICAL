@@ -1,0 +1,401 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRClosingViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend> FDR Closing/Renew </legend>
+        <div style="display:none">
+          @Html.HiddenFor(model => model.ActionType)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankInfoId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.BankInfoId, Model.BankInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankInfoBranchDetailId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.BankInfoBranchDetailId, Model.BankInfoBranchDetailList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control chosen-ddl" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FixedDepositInfoId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.FixedDepositInfoId, Model.FDRNoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required chosen-ddl" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClosingDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-6">
+                @Html.EditorFor(model => model.ClosingDate, new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InitialDeposit, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.InitialDeposit, new { @readonly = true, @class = "form-control read-only" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FDRAmount, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.FDRAmount, new {@readonly=true, @class = "form-control read-only" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestRate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.InterestRate, new { @readonly = true, @class = "form-control read-only"})
+            </div>
+            <div class="col-sm-1">
+                %
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TaxRate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.TaxRate, new { @readonly = true, @class = "form-control read-only"})
+            </div>
+            <div class="col-sm-1">
+                %
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Duration, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Duration, new { @readonly = true, @class = "form-control required read-only" })
+            </div>
+            <div class="col-sm-4">
+                <label>Month(s)</label>
+            </div>
+        </div>
+        @if (@Model.FundType != "BEPZA")
+        {           
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProfitRecvId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.ProfitRecvId, Model.ProfitRecvList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required chosen-ddl" })
+            </div>
+        </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(model => model.InterestAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.InterestAmount, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankCharge, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.BankCharge, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TaxAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.TaxAmount, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProfitAmount, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.ProfitAmount, new { @readonly = true, @class = "form-control required read-only" })
+            </div>
+            <div class="col-sm-5"><label>Net Profit = Total Interest - (Total Excise Duty Others + TAX Amount) </label></div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.WithdrawalAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.WithdrawalAmount, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LossAmount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.LossAmount, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClosingAmount, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.ClosingAmount, new { @readonly = true, @class = "form-control required read-only" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.ChequeId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.ChequeId, Model.ChequeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required", onchange = "LoadReason();" })
+            </div>
+        </div>*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-6">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<script type="text/javascript">
+    function getButtonAction(el) {
+        var actionType = $(el).attr('btnactionmode');
+        $("#ActionType").val(actionType);
+    }
+
+    $('#FixedDepositInfoId').on('change', function () {
+        var fdrId = $(this).val();
+
+        //reset fields
+        $("#ProfitRecvId").val('');
+        $("#InitialDeposit").val('');
+        $("#FDRAmount").val('');
+        $("#InterestRate").val('');
+        $("#TaxRate").val('');
+        $("#Duration").val('');
+        $("#InterestAmount").val('');
+        $("#TaxAmount").val('');
+        $("#BankCharge").val('');
+        $("#ProfitAmount").val('');
+        $("#ChequeId").val('');
+        $("#WithdrawalAmount").val('');
+        $("#ClosingAmount").val('');
+        $("#ClosingDate").val('');
+
+        if (fdrId > 0) {
+            fillFixedDopositInfo(fdrId);
+        }
+    });
+
+    function fillFixedDopositInfo(fdrId) {
+        var url = '@Url.Action("GetFDRDestils", "FDRClosing")' + '?id=' + fdrId;
+        $.get(url, function (response) {
+            $("#ProfitRecvId").val(response.ProfitRecvId);
+            $("#InitialDeposit").val(response.InitialDeposit);
+            $("#FDRAmount").val(response.FDRAmount);
+            $("#InterestRate").val(response.InterestRate);
+            $("#TaxRate").val(response.TAXRate);
+            $("#Duration").val(response.Duration);
+            $("#InterestAmount").val(response.TotalInterestAmount);
+            $("#TaxAmount").val(response.TotalTAXAmount);
+            $("#BankCharge").val(response.TotalBankCharge);
+            $("#ProfitAmount").val(response.TotalProfit);
+            $("#ChequeId").val(response.ChequeId);
+            $("#WithdrawalAmount").val(response.WithdrawalAmount);
+            $("#ClosingAmount").val(response.ClosingAmount);
+            $("#ClosingDate").val(response.ClosingDate);
+
+            $("#ProfitRecvId").trigger("chosen:updated")
+        });
+    }
+
+    //$("#ProfitRecvId").on('change', function () {
+    //    fillBankChequeNo($(this).val());
+    //})
+
+    // bank Cheque No
+    function fillBankChequeNo(bankAccountId) {
+        var cheque = $('#ChequeId');
+        cheque.empty();
+        cheque.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankAccountId != '') {
+            $.getJSON('@Url.Action("GetBankCheckNo")', { id: bankAccountId }, function (obj) {
+                $.each(obj, function (index, data) {
+                    cheque.append($('<option/>', {
+                        value: data.Id,
+                        text: data.Name
+                    }));
+                });
+            });
+
+        }
+    }
+
+    //cascading dropdown
+    $("#BankInfoId").on('change', function () {
+        fillBankBranch($(this).val());
+    });
+    $("#BankInfoBranchDetailId").on('change', function () {
+        getFDRNo($(this).val());
+    });
+
+    // bank brances
+    function fillBankBranch(bankInfoId) {
+        var presentBranch = $('#BankInfoBranchDetailId');
+        //presentBranch.empty();
+
+        // clear all previous options
+        $("select#BankInfoBranchDetailId>option").remove();
+
+        presentBranch.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+        if (bankInfoId != '') {
+            $.getJSON('@Url.Action("GetBankBranch")', { id: bankInfoId }, function (branchs) {
+                $.each(branchs, function (index, data) {
+                    presentBranch.append($('<option/>', {
+                        value: data.branchId,
+                        text: data.branchName
+                    }));
+                });
+                presentBranch.trigger("chosen:updated")
+            });
+        }
+    }
+
+    // Geting FDR by Bank Branch
+    function getFDRNo(branchId) {
+        var fdrNo = $('#FixedDepositInfoId');
+        fdrNo.empty();
+
+        fdrNo.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (branchId != '') {
+            $.getJSON('@Url.Action("GetFDRNo")', { id: branchId }, function (branchs) {
+                $.each(branchs, function (index, data) {
+                    fdrNo.append($('<option/>', {
+                        value: data.Value,
+                        text: data.Text
+                    }));
+                });
+                fdrNo.trigger("chosen:updated")
+            });
+        }
+    }
+
+
+
+    //function  total profit
+    function calculateTotalProfit(totalInterest, totalTax, totalBcharge) {
+        var totalProfit = totalInterest - (totalBcharge + totalTax);
+        $('#ProfitAmount').val(totalProfit.toFixed(2));
+    }
+
+    //function Closing Amount
+    function calculateClosingAmount(fdrAmount, totalProfit) {
+        var netReceivableAmount = fdrAmount + totalProfit;
+        $('#ClosingAmount').val(netReceivableAmount.toFixed(2));
+    }
+
+    //function Closing Amount for BEPZA Fund
+    function calculateClosingAmountforBEPZAFund(fdrAmount, totalProfit, AccruedAmount) {
+        var netReceivableAmount = fdrAmount + totalProfit - AccruedAmount;
+        $('#ClosingAmount').val(netReceivableAmount.toFixed(2));
+    }
+
+
+    $("#LossAmount,#InterestAmount,#BankCharge,#TaxAmount,#WithdrawalAmount").on('change keyup blur', function (e) {
+        e.preventDefault();
+
+        var clsAmount = parseFloat($("#ClosingAmount").val());
+        var lossAmount = parseFloat($("#LossAmount").val());
+        var fdrAmount = parseFloat($("#FDRAmount").val());
+        //var interestRate = parseFloat($("#InterestRate").val());
+        //var taxRate = parseFloat($("#TaxRate").val());
+
+        //if (interestRate > 0 && fdrAmount > 0) {
+        //    var intAmt = fdrAmount * (interestRate / 100);
+        //    $("#InterestAmount").val(intAmt.toFixed(2))
+        //}
+
+        //if (taxRate >= 0 && fdrAmount > 0) {
+        //    var taxAmt = fdrAmount * (taxRate / 100);
+        //    $("#TaxAmount").val(taxAmt.toFixed(2))
+        //}
+
+        var interestAmount = parseFloat($("#InterestAmount").val());
+        var bankCharge = parseFloat($("#BankCharge").val());
+        var taxAmount = parseFloat($("#TaxAmount").val());
+
+        if (isNaN(interestAmount)) {
+            interestAmount = 0;
+        }
+
+        if (isNaN(bankCharge)) {
+            bankCharge = 0;
+        }
+
+        if (isNaN(taxAmount)) {
+            taxAmount = 0;
+        }
+
+        if (interestAmount >= 0 && bankCharge >= 0 && taxAmount >=0) {
+            calculateTotalProfit(interestAmount, taxAmount, bankCharge);
+        }
+
+        var profit = parseFloat($("#ProfitAmount").val());
+
+        if(@Html.Raw(Json.Encode(Model.FundType))=="BEPZA"){
+
+            var AccruedAmount = parseFloat($("#WithdrawalAmount").val());
+            if (isNaN(AccruedAmount)) {
+                AccruedAmount = 0;
+            }
+
+            if (fdrAmount > 0 && profit > 0 && AccruedAmount>=0) {
+                calculateClosingAmountforBEPZAFund(fdrAmount, profit, AccruedAmount)
+            }
+
+            if (clsAmount > 0 && lossAmount >= 0 && AccruedAmount>=0) {
+                var finalClsAmount = fdrAmount + profit - lossAmount-AccruedAmount;
+                $('#ClosingAmount').val(finalClsAmount.toFixed(2));
+            }
+        }
+        else{
+
+            if (fdrAmount > 0 && profit > 0) {
+                calculateClosingAmount(fdrAmount, profit)
+            }
+
+            if (clsAmount > 0 && lossAmount >= 0) {
+                var finalClsAmount = fdrAmount + profit - lossAmount;
+                $('#ClosingAmount').val(finalClsAmount.toFixed(2));
+            }
+        }
+    })
+
+
+
+</script>
+
+@*History*@
+<script type="text/javascript">
+    $(function () {
+        $("#btnHistory").on('click', function (e) {
+            e.preventDefault();
+            var DepositInfoId = $('#FixedDepositInfoId').val();
+
+            $("#FixedDepositInfoId").removeClass("border-red");
+            if (DepositInfoId == null || DepositInfoId <= 0 || DepositInfoId == "") {
+                $("#FixedDepositInfoId").addClass("border-red");
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please Select FDR No. </span>  </div> ");
+                return;
+            }
+
+            GetHistory(DepositInfoId);
+        })
+    })
+
+    function GetHistory(DepositInfoId) {
+        @*window.location.href = '@Url.Action("History", "FDRClosing")' + '?id=' + DepositInfoId;*@
+        window.open('@Url.Action("History", "FDRClosing")' + '?id=' + DepositInfoId, '_blank');
+    }
+</script>
+@*End History*@

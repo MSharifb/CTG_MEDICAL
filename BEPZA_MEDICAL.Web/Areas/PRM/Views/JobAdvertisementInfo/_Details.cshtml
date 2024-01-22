@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobAdvertisementInfo.JobAdvertisementInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.JobRequisitionInfoDetailList != null)
+{
+    foreach (var x in Model.JobRequisitionInfoDetailList)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

@@ -1,0 +1,11 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.PaymentInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@if (Model != null && Model.EmployeeList != null)
+{
+    foreach (var x in Model.EmployeeList)
+    {
+        @Html.Partial("_EmployeeList", x);
+    }
+
+}

@@ -1,0 +1,983 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmployeeConfirmationIncrementPromotionViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="message">
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        if (@Model.IsError == 1)
+        {
+            <div class="failed">
+                @Model.ErrMsg
+            </div>
+        }
+        else
+        {
+            <div class="success">
+                @Model.ErrMsg
+            </div>
+        }
+    }
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+</div>
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Type)
+        </span>
+        <span class="field">
+            @if (Model.Id > 0)
+            {
+                @Html.HiddenFor(model => model.Type)
+            }
+
+            @Html.RadioButtonFor(model => model.Type, "Confirmation", new { @checked = true, onclick = "return disableToGrade();" })
+            @Html.Label("Confirmation")
+            @Html.RadioButtonFor(model => model.Type, "Increment", new { onclick = "return disableToGrade();" })
+            @Html.Label("Increment")
+            @Html.RadioButtonFor(model => model.Type, "Promotion", new { onclick = "return disableToGrade();" })
+            @Html.Label("Promotion")
+            @Html.RadioButtonFor(model => model.Type, "Demotion", new { onclick = "return disableToGrade();" })
+            @Html.Label("Demotion")
+        </span>
+    </div>
+    <div>
+        @*from hiddn field*@
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.FromDisciplineId)
+        @Html.HiddenFor(model => model.FromDivisionId)
+        @Html.HiddenFor(model => model.FromEmploymentProcessId)
+        @Html.HiddenFor(model => model.FromEmploymentTypeId)
+        @Html.HiddenFor(model => model.FromOrganogramLevelId)
+        @Html.HiddenFor(model => model.FromDesignationId)
+        @Html.HiddenFor(model => model.FromSalaryScaleId)
+        @Html.HiddenFor(model => model.FromGradeId)
+        @Html.HiddenFor(model => model.FromStepId)
+        @Html.HiddenFor(model => model.FromZoneInfoId)
+        @Html.HiddenFor(model => model.FromRegionId)
+
+        @*to hiddn field*@
+        @Html.HiddenFor(model => model.ToDisciplineId)
+        @Html.HiddenFor(model => model.ToDivisionId)
+        @Html.HiddenFor(model => model.ToOrganogramLevelId)
+        @Html.HiddenFor(model => model.ToSalaryScaleId)
+        @Html.HiddenFor(model => model.ToGradeId)
+        @Html.HiddenFor(model => model.InitialBasic)
+        @Html.HiddenFor(model => model.YearlyIncrement)
+        @Html.HiddenFor(model => model.ToRegionId)
+        @Html.HiddenFor(model => model.DateofConfirmation)
+
+        @Html.HiddenFor(model => model.Attachment)
+        @Html.HiddenFor(model => model.FileName)
+    </div>
+    <div class="row">       
+        <span class="label">
+            @Html.LabelFor(model => model.ZoneListByUserId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ZoneListByUserId, Model.ZoneListByUser)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmpId, new { @class = "label-required" })
+        </span><span class="field">
+
+            @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" onclick="return openEmployee();" />
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.OrderNo)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderNo)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.OrderDate, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.OrderDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.JoiningDate)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.JoiningDate, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.EffectiveDate, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EffectiveDate)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromDivisionId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromDivisionName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="label">
+            @Html.TextAreaFor(model => model.Remarks, new { @style = "width:250px" })
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromEmploymentProcessId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromEmploymentProcessName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToEmploymentProcessId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ToEmploymentProcessId, Model.ToEmploymentProcessList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required  not-increment" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromEmploymentTypeId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromEmploymentType, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToEmploymentTypeId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ToEmploymentTypeId, Model.EmploymentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required not-increment" })
+
+        </span>
+    </div>
+    <div class="row" id="divToZone">
+        <span class="label">
+            @Html.LabelFor(model => model.FromZoneInfoId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromZoneName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToZoneInfoId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ToZoneInfoId, Model.ToZoneInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "select-single" })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromOrganogramLevelId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromOrganogramLevelName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToOrganogramLevelId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ToOrganogramLevelName, new { @class = "read-only", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgOrgSearch" alt="Search" onclick="return openOrganogram();" />
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromDesignationId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromDesignation, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToDesignationId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ToDesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })@*select-single*@
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromSalaryScaleId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromSalaryScale, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+
+            @Html.LabelFor(model => model.ToSalaryScaleId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ToSalaryScale, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromGradeId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromGrade, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToGradeId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ToGrade, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromStepId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.FromStep, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToStepId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.ToStepId, Model.StepList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromBasicSalary)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.FromBasicSalary)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ToBasicSalary, new { @class = "label-required" })
+        </span>
+        <span class="label">
+            @Html.TextBoxFor(model => model.ToBasicSalary)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FromGrossSalary)
+        </span><span class="field">
+            @Html.EditorFor(model => model.FromGrossSalary)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.ToGrossSalary, new { @class = "label-required" })
+        </span><span class="label">
+            @Html.TextBoxFor(model => model.ToGrossSalary)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IncrementAmount)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.IncrementAmount)
+        </span>
+        <span class="label-right">
+            &nbsp;
+        </span>
+        <span class="field">
+            &nbsp;
+        </span>
+    </div>
+    <div class="row">
+        <div class="row">
+            <span class="label">
+                @Html.CheckBoxFor(model => model.IsAddAttachment, new { onclick = "disableUpload();" })
+                @Html.LabelFor(model => model.IsAddAttachment)
+            </span>
+            <span class="field">
+                <div id="divFileAttach">                   
+                    <input type="file" name="Attachment" id="Attachment" />
+                    <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+                </div>
+            </span>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+<fieldset>
+    <legend>Notify to</legend>
+    <div class="row">
+        @Html.TextAreaFor(x => x.NotifyTo, new { style = "width: 420px; height: 50px", placeholder = "You can add more than one employee Id separated by comma(,)" })
+    </div>
+</fieldset>
+
+
+<div id="divEmpList" style="display:none">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+@*Organogram*@
+
+<div id="divOrganogramList" style="display:none">
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#divOrganogramList").dialog({
+            autoOpen: false,
+            modal: true,
+            height: 380,
+            width: 800,
+            title: 'Organogram Level',
+            buttons:
+            {
+                Ok: function () { $(this).dialog("close"); }
+            },
+            beforeclose: function (event, ui) { Closing(); }
+        });
+    });
+
+    $('#ToZoneInfoId').live('change', function () {
+        //alert("OK");
+        $('#ToOrganogramLevelId').val('');
+        $('#ToOrganogramLevelName').val('');
+    });
+
+    function openOrganogram() {
+        var zoneId = $("#ToZoneInfoId").val();
+        if (zoneId == '') {
+            alert("To Select Zone/Executive Office");
+            return false;
+        }
+        @*var url = '@Url.Action("TreeViewSearchList", "OrganogramLevel")' + '?OrgIdentityName=1';*@
+        var url = '@Url.Action("OrganogramLevelTreeSearchList", "EmployeeTransferInfo")?zoneId=' + zoneId;
+        $.ajax(
+        {
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            success: function (result) {
+                $('#divOrganogramList').html(result);
+            },
+            error: function () {
+                alert('System is unable to load data please try again.');
+            }
+        });
+
+        $("#divOrganogramList").dialog('open');
+        return false;
+    }
+
+    // This function is call from client view
+    function SetOrganogramId(organogramId, organogramName) {
+        $('#ToOrganogramLevelId').val(organogramId);
+        $('#ToOrganogramLevelName').val(organogramName);
+        GetEmpOfficeDeptSectionByOrganogramId(organogramId);
+        FillDesignaitonCombo(organogramId);
+    }
+
+
+    function GetEmployeeDeptOfficeSecInfo(OrganogramLevelId) {
+
+        var url = '@Url.Action("GetOrganogramHierarchyInfo", "EmployeeConfirmationIncrementPromotion", "PRM")';
+        if (OrganogramLevelId > 0) {
+            $('#ToDivisionId').val('');
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    //$(orgDetail).html(data.OrgLabel);
+                    $('#ToDivisionId').val(data.divisionId);
+                },
+
+                failure: function (response) {
+                    //$(orgDetail).html("");
+                }
+            });
+        }
+    }
+
+    function GetEmpOfficeDeptSectionByOrganogramId(OrganogramLevelId) {
+        var url = '@Url.Action("GetOrganogramInfo", "EmployeeConfirmationIncrementPromotion", "PRM")';
+        if (OrganogramLevelId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: '{organogramLevelId: "' + OrganogramLevelId + '" }',
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#ToDisciplineId').val(obj.OfficeId);
+                    if (obj.DepId == 0) {
+                        $("#ToDivisionId").val(null);
+                    }
+                    else {
+                        $("#ToDivisionId").val(obj.DepId);
+                    }
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+</script>
+
+@*End Organogram*@
+
+
+
+<script type="text/javascript">
+
+    // Designation by OrganogramLevel
+    function FillDesignaitonCombo(OrgId) {
+        if (OrgId != '') {
+            var url = '@Url.Action("GetDesignationByOrganogramLevelId", "Employee")' + '?Id=' + OrgId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                var ddlDesignations = $("select#ToDesignationId");
+                // clear all previous options
+                $("select#ToDesignationId>option").remove();
+                // populate the products
+
+                for (i = 0; i < heads.length; i++) {
+                    //debugger;
+                    ddlDesignations.append($("<option />").val(heads[i].Value).text(heads[i].Text));
+                }
+                ddlDesignations.chosen();
+            });
+        }
+        else {
+
+            $("select#ToDesignationId>option").remove();
+            $("select#ToDesignationId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+    //cascading dropdown
+    $("select#ToDesignationId").change(function () {
+        $("input#ToDesignationId").val($(this).val());
+        FillJobGrade($(this).val());
+    });
+
+
+    // JobGrade by Designaiton
+    function FillJobGrade(designationId) {
+        //reset value
+        $("#ToGradeId").val('');
+        $("#ToGrade").val('');
+
+        $("#ToSalaryScaleId").val('');
+        $("#ToSalaryScale").val('');
+        if (designationId != '') {
+            var url = '@Url.Action("GetJobGradeByDesignaitonId", "Employee")' + '?Id=' + designationId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                $("#ToGradeId").val(heads.GradeId);
+                $("#ToGrade").val(heads.GradeName)
+                FillSalaryScale(heads.GradeId);
+                loadGradeSetp(heads.GradeId);
+            });
+        }
+    }
+
+    // SalaryScale by JobGrade
+    function FillSalaryScale(jobGradeId) {
+        //reset value
+        $("#ToSalaryScaleId").val('');
+        $("#ToSalaryScale").val('');
+        if (jobGradeId != '') {
+            var url = '@Url.Action("GetSalaryScaleByJobGradeId", "Employee")' + '?Id=' + jobGradeId;
+            $.get(url, function (response) {
+                var heads = $.parseJSON(response);
+                $("#ToSalaryScaleId").val(heads.SalaryScaleId);
+                $("#ToSalaryScale").val(heads.SalaryScaleName);
+
+            });
+        }
+    }
+
+    function loadGradeSetp(gradeId) {
+
+        //  var selectedGrade = $('select#ToGradeId').val();
+
+        var stepSelect = $('select#ToStepId');
+        stepSelect.empty();
+        stepSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+
+        if (gradeId != null && gradeId != '') {
+            $.getJSON('@Url.Action("GetStep", "SalaryStructure", new { area = "PGM" })', { gradeId: gradeId }, function (data) {
+                $.each(data.steps, function (index, step) {
+                    stepSelect.append($('<option/>', {
+                        value: step.Id,
+                        text: step.StepName
+                    }));
+                });
+            });
+        }
+        else {
+            $("#ToStepId>option").remove();
+            $("#ToStepId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+            $('#ToBasicSalary').val(0);
+            $('#ToGrossSalary').val(0);
+        }
+    }
+
+    var eDesingId = '@Model.ToDesignationId';
+    if (eDesingId != "" && eDesingId != "") {
+
+    }
+</script>
+
+
+
+<script type="text/javascript">
+
+    // ******** functions for open popup *************
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+        DisableEmpSearch();
+    });
+
+    function DisableEmpSearch() {
+        if ($('#Id').val() > 0)
+            $('#imgEmpSearch').hide();
+        else
+            $('#imgEmpSearch').show();
+    }
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "EmployeeConfirmationIncrementPromotion")' + '?Type=' + $('input:radio[id=Type]:checked').val() + '&&ZoneId=' + $('#ZoneListByUserId').val();      
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        disableToGrade();
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id);
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+    }
+
+    function incrementAmount() {
+        var amt = $('#ToGrossSalary').val() - $('#FromGrossSalary').val();
+        if (amt > 0)
+            $('#IncrementAmount').val(amt.toFixed(2));
+        else
+            $('#IncrementAmount').val(0);
+    }
+
+    function Closing() {
+
+    }
+
+    //--------------------------------------
+    function GetEmployeeInfo() {
+        var empId = $('#EmployeeId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "EmployeeConfirmationIncrementPromotion")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        $('#EmpId').val('');
+        $('#EmployeeName').val('');
+        $('#JoiningDate').val('');
+        $('#FromDisciplineId').val('');
+        $('#ToDisciplineId').val('');
+        $('#FromDivisionId').val('');
+        $('#FromDivisionName').val('');
+        $('#ToDivisionId').val('');
+        $('#FromDesignation').val('');
+        $('#FromDesignationId').val('');
+        $('#FromEmploymentTypeId').val('');
+        $('#FromEmploymentType').val('');
+
+        $('#FromEmploymentProcessId').val('');
+        $('#FromEmploymentProcessName').val('');
+
+        $('#FromSalaryScaleId').val('');
+        $('#FromSalaryScale').val('');
+        $('#FromOrganogramLevelId').val('');
+        $('#FromOrganogramLevelName').val('');
+
+        $('#FromGradeId').val('');
+        $('#FromGrade').val('');
+        $('#FromStep').val('');
+        $('#FromStepId').val('');
+        $('#FromBasicSalary').val('');
+        $('#FromGrossSalary').val('');
+
+        $('#InitialBasic').val('');
+        $('#YearlyIncrement').val('');
+        $('#DateofConfirmation').val('');
+
+        $('#ToDivisionId').val('');
+        $('#ToOrganogramLevelId').val('');
+        $('#ToOrganogramLevelName').val('');
+
+        $('#ToDesignationId').val('');
+        $('#ToDesignation').val('');
+
+        $('#ToSalaryScaleId').val('');
+        $('#ToSalaryScale').val('');
+
+        $('#ToGradeId').val('');
+        $('#ToGrade').val('');
+
+        $('input#ToStepId').val('');
+        $('select#ToStepId').val('');
+        $('#FromZoneInfoId').val('');
+        //$('#ToZoneInfoId').val('');
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+
+                if (obj.Result == 'NoSalaryStructure') {
+                    alert('The employee has no salary structure.');
+                }
+                else if (obj.Result == false) {
+                    alert('System is unable to load data please try again.');
+                }
+                else {
+                    $("#EmpId").val(obj.EmpId);
+                    $('#EmployeeName').val(obj.EmployeeName);
+                    $('#JoiningDate').val(obj.JoiningDate);
+                    $('#FromDisciplineId').val(obj.FromDisciplineId);
+                    $('#FromDivisionId').val(obj.FromDivisionId);
+                    $('#FromDivisionName').val(obj.FromDivisionName);
+                    $('#FromEmploymentProcessId').val(obj.FromEmploymentProcessId);
+                    $('#FromEmploymentProcessName').val(obj.FromEmploymentProcessName);
+
+                    $('#FromDesignation').val(obj.FromDesignation);
+                    $('#FromDesignationId').val(obj.FromDesignationId);
+                    $('#FromEmploymentTypeId').val(obj.FromEmploymentTypeId);
+                    $('#FromEmploymentType').val(obj.FromEmploymentType);
+
+                    $('#FromSalaryScaleId').val(obj.FromSalaryScaleId);
+                    $('#FromSalaryScale').val(obj.FromSalaryScale);
+
+                    $('#FromOrganogramLevelId').val(obj.FromOrganogramLevelId);
+                    $('#FromOrganogramLevelName').val(obj.FromOrganogramLevelName);
+
+                    $('#FromGradeId').val(obj.FromGradeId);
+                    $('#FromGrade').val(obj.FromGrade);
+                    $('#FromStep').val(obj.FromStep);
+                    $('#FromStepId').val(obj.FromStepId);
+                    $('#FromBasicSalary').val(obj.FromBasicSalary);
+                    $('#FromGrossSalary').val(obj.FromGrossSalary);
+                    $('#InitialBasic').val(obj.InitialBasic);
+                    $('#YearlyIncrement').val(obj.YearlyIncrement);
+                    $('#DateofConfirmation').val(obj.DateofConfirmation);
+                    $('#FromZoneInfoId').val(obj.FromZoneInfoId);
+                    //$('#ToZoneInfoId').val(obj.FromZoneInfoId);
+                    $('#FromRegionId').val(obj.FromRegionId);
+                    $('#ToRegionId').val(obj.FromRegionId);
+                    disableFieldsByType();
+
+                    var ConfirmationType = $('input[type=radio]:checked').val();
+
+                    if (ConfirmationType == 'Confirmation' || ConfirmationType == 'Increment') {
+                        $('#ToDisciplineId').val(obj.FromDisciplineId);
+                        $('#ToDivisionId').val(obj.FromDivisionId);
+                        $('#ToOrganogramLevelId').val(obj.FromOrganogramLevelId);
+                        $('#ToOrganogramLevelName').val(obj.FromOrganogramLevelName);
+                        $('#ToSalaryScaleId').val(obj.FromSalaryScaleId);
+                        $('#ToSalaryScale').val(obj.FromSalaryScale);
+                        $('#ToGradeId').val(obj.FromGradeId);
+                        $('#ToGrade').val(obj.FromGrade);
+
+                        if (obj.FromDesignationId != null && obj.FromDesignationId != '') {
+                            LoadDesignationById(obj.FromDesignationId);
+                        }
+
+                        if (obj.FromGradeId != null && obj.FromGradeId != '') {
+                            loadGradeSetp(obj.FromGradeId);
+                        }
+                    }
+
+                    if (ConfirmationType == 'Confirmation') {
+
+                        LoadEmploymentTypeList(obj.EmploymentTypeList);
+
+                    }
+                    else if (ConfirmationType == 'Increment') {
+
+                        if (obj.FromEmploymentTypeId != null && obj.FromEmploymentTypeId != '') {
+                            LoadEmploymentTypeById(obj.FromEmploymentTypeId);
+                            //$("select#ToEmploymentTypeId option:first-child").attr("selected", true);
+                        }
+
+                    }
+                    else {
+                        // alert(" Promotion  OR  Demotion");
+
+                        LoadEmploymentTypeList(obj.EmploymentTypeList);
+                    }
+                }
+
+            }, "json");
+        }
+        return false;
+    }
+
+    // ---------------------------------
+    $(function () {
+        $("select#ToStepId").change(function () {
+            $(".message").empty();
+            $("#ToBasicSalary").removeClass('border-red');
+            $("#ToGrossSalary").removeClass('border-red');
+
+            scaleId = $("#FromSalaryScaleId").val();
+            gradeId = $("input#ToGradeId").val();
+            stepId = $("select#ToStepId").val();
+
+            populateSalaryDetails(scaleId, gradeId, stepId);
+        })
+
+        disableFieldsByType();
+
+        $("input#ToGrossSalary").change(function () {
+            var ss = $('#DateofConfirmation').val();
+            if ($('#DateofConfirmation').val() == '') {
+                calculateBasic();
+            }
+        });
+    });
+
+    function disableToGrade() {
+        $('#EmployeeId').val(0);
+        GetEmployeeInfo();
+        disableFieldsByType();
+        setEmploymentProcess();
+    }
+
+    function setEmploymentProcess() {      
+        var ConfirmationType = $('input[type=radio]:checked').val();
+        if (ConfirmationType == 'Promotion') {
+            $('#ToEmploymentProcessId').val(2);           
+        }
+        else if (ConfirmationType == 'Demotion') {
+            $('#ToEmploymentProcessId').val(4);
+        }
+        else {
+            $('#ToEmploymentProcessId').val('');
+        }
+    }
+
+
+    function LoadDesignationById(designationId) {
+        var selectDesignation = $('select#ToDesignationId');
+        selectDesignation.empty();
+
+        if (designationId != null && designationId != '') {
+
+            $.getJSON('@Url.Action("GetDesignationById", "EmployeeConfirmationIncrementPromotion")', { designationId: designationId }, function (data) {
+                $.each(data.designations, function (index, designation) {
+                    selectDesignation.append($('<option/>', {
+                        value: designation.Id,
+                        text: designation.Name
+                    }));
+                });
+            });
+
+        }
+        else {
+            selectDesignation.append($('<option/>', {
+                value: '',
+                text: '@Content.DDLOptionalLabel()'
+            }));
+        }
+    }
+
+
+    function populateSalaryDetails(scaleId, gradeId, stepId) {
+        //console.log('?scaleId=' + scaleId + '&gradeId=' + gradeId + '&stepId=' + stepId);
+        if (gradeId != '' && stepId != '') {
+
+            $.get('@Url.Action("GetBasicGrossByStep", "EmployeeConfirmationIncrementPromotion")' + '?scaleId=' + scaleId + '&gradeId=' + gradeId + '&stepId=' + stepId, function (data) {
+
+                $('#ToBasicSalary').val(data.Basic);
+                $('#ToGrossSalary').val(data.Gross);
+                incrementAmount();
+            });
+
+        }
+    }
+
+    function calculateBasic() {
+        //console.log('basic: ' + basic + ' gross: ' + gross);
+        var basic = parseFloat($('#InitialBasic').val());
+        var gross = parseFloat($('#ToGrossSalary').val());
+
+        if (basic > 0 && gross > 0) {
+            var basic = gross * (basic / 100);
+            $('#ToBasicSalary').val(basic.toFixed(2));
+            incrementAmount();
+        }
+    }
+
+    function disableFieldsByType() {
+        var rdo = $('#Type:checked').val();
+        //  debugger;
+        //  new add by Suman
+        if (rdo == "Confirmation") {
+            $('#imgOrgSearch').hide();
+            $('#ToEmploymentTypeId').removeClass('read-only');
+            $('#ToDesignationId').addClass('read-only');
+            $('#divToZone').hide();
+
+        }
+        else if (rdo == "Increment") {
+            $('#imgOrgSearch').hide();
+            $('#ToEmploymentTypeId').addClass('read-only');
+            $('#ToDesignationId').addClass('read-only');
+            $('#divToZone').hide();
+        }
+        else {
+            $('#imgOrgSearch').show();
+            $('#ToEmploymentTypeId').removeClass('read-only');
+            $('#ToDesignationId').removeClass('read-only');
+            $('#divToZone').show();
+        }
+
+        if (rdo == "Increment") {
+            if (!$('#Id').val()) {
+
+                $('#ToBasicSalary, #ToGrossSalary, #IncrementAmount').val(0);
+
+            }
+
+            if ($('#DateofConfirmation').val() == '') {
+                $('#ToGrossSalary').attr('readonly', false);
+                $('#ToGrossSalary').removeClass('read-only');
+            }
+            else {
+                $('#ToGrossSalary').attr('readonly', true);
+                $('#ToGrossSalary').addClass('read-only');
+            }
+        }
+        else {
+            $('#ToBasicSalary, #ToGrossSalary,#IncrementAmount').attr('readonly', true);
+            $('#ToBasicSalary,#ToGrossSalary,#IncrementAmount').addClass('read-only');
+
+        }
+
+        if ('@Model.Id' > 0) {
+            $(':radio').attr("disabled", true);
+        }
+    }
+
+    function disableUpload() {
+        var IsSelect = $('#IsAddAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+            $('#spAttachment').show();
+            $('#divFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+            $('#spAttachment').hide();
+            $('#divFileAttach').hide();
+        }
+    }
+
+    function LoadEmploymentTypeList(EmploymentTypeList) {
+        var selectToEmploymentType = $('select#ToEmploymentTypeId');
+        selectToEmploymentType.empty();
+        selectToEmploymentType.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        if (EmploymentTypeList != null && EmploymentTypeList != "") {
+            $.each(EmploymentTypeList, function (index, item) {
+                selectToEmploymentType.append($('<option/>', {
+                    value: item.Id,
+                    text: item.Name
+                }));
+            });
+        }
+    }
+
+    function LoadEmploymentTypeById(employmentTypeId) {
+        var selectToEmploymentType = $('select#ToEmploymentTypeId');
+        selectToEmploymentType.empty();
+        @*selectToEmploymentType.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));*@
+        if (employmentTypeId != null && employmentTypeId != "") {
+            $.getJSON('@Url.Action("GetEmploymentTypeById", "EmployeeConfirmationIncrementPromotion")', { employmentTypeId: employmentTypeId }, function (data) {
+                $.each(data.employmentTypes, function (index, employmentType) {
+                    selectToEmploymentType.append($('<option />', {
+                        value: employmentType.Id,
+                        text: employmentType.Name
+                    }));
+                });
+            });
+        }
+        else {
+            selectToEmploymentType.append($('<option/>', {
+                value: '',
+                text: '@Content.DDLOptionalLabel()'
+            }));
+        }
+    }
+
+    $('#btnSave').live(function (e) {
+        $(".message").empty();
+        $("#ToBasicSalary").removeClass('border-red');
+        $("#ToGrossSalary").removeClass('border-red');
+        var toBasicSalry = $("#ToBasicSalary").val();
+        var toGrossSalary = $("#ToGrossSalary").val();
+        if (toBasicSalry <= 0) {
+            $("#ToBasicSalary").addClass('border-red');
+            $(".message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Basic must be greater than Zero.</span> </div> ");
+            e.preventDefault();
+        }
+        else if (toGrossSalary <= 0) {
+            $("#ToGrossSalary").addClass('border-red');
+            $(".message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Gross  must be greater than Zero.</span> </div> ");
+            e.preventDefault();
+        }
+
+    });
+</script>

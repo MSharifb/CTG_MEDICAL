@@ -1,0 +1,23 @@
+﻿@using MFS_IWM.Web.Areas.PGM.Models.TaxRate
+@model IList<TaxRateModel>
+           
+<div class="frm-content">
+        <div class="GroupBox search-content">
+            <div id="jqSearch">
+            </div>
+            <div class="row">
+                <div class="button-crude button-left">
+                    @Ajax.ActionLink("Add New", "create", new AjaxOptions { OnComplete = "OnCompleteAddnew" })
+                
+                </div>            
+            </div>
+        </div>
+        <div class="grid">
+            <table id="jqGrid" cellpadding="0" cellspacing="0">
+            </table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+            @Html.Partial("_GridList", Model)
+        </div>
+</div>
+

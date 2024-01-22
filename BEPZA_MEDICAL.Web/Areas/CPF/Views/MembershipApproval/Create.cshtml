@@ -1,0 +1,60 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MembershipInformationViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm("Create", "MembershipApproval", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" class="message" style="min-height: 15px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div style="color: Red">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <div id="appDiv">
+        @Html.Partial("_CreateOrEdit", Model)
+    </div>
+    <fieldset>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input id="btnSave" type="submit" value="Submit" style="width: auto; overflow: visible;
+                    padding-left: .25em;" />
+               
+            }
+            <input id="btnPrint" type="button" value="Preview" style="width: auto; overflow: visible;
+                padding-left: .25em; padding-right: .25em;" onclick="JavaScript:printPartOfPage('appDiv');" />
+            <input type="button" value="Clear" id="btnClear" name="btnClear" style="width: auto;
+                overflow: visible;" onclick="document.getElementById('frm').reset();" />
+        </div>
+    </fieldset>
+}
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    function printPartOfPage(elementId) {
+        printDivCSS = new String('<link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css">')
+        var reportHeader = "My Membership Application";
+        var printContent = document.getElementById(elementId);
+        var uperPart = printDivCSS + document.getElementById('appDiv').innerHTML;
+
+        var windowUrl = 'about:blank';
+        var uniqueName = new Date();
+        var windowName = 'Print' + uniqueName.getTime();
+        var printWindow = window.open(windowUrl, windowName, 'left=0,top=60,width=2000,height=3000');
+
+        printWindow.document.write("<div align='center'>" + "<h2>" + reportHeader + "</h2>" + "</div>" + uperPart);
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+    }
+
+</script>

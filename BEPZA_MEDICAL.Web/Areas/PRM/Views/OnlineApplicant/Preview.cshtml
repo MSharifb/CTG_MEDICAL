@@ -1,0 +1,1081 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicationFormModel
+@{
+    Layout = null; // "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+@*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet" />
+
+<div id="report">
+    <div class="clearfix">
+        <div style="float:left; width:65px;">
+            <img src="~/Content/Images/bepza-logo.png" width="60" />
+        </div>
+        <div class="text-left">
+            Government of the People's Republic of Bangladesh
+            <h3 style="margin-top: 5px; margin-bottom: 0px;"> Bangladesh Export Processing Zones Authority</h3>
+        </div>
+    </div>
+   
+    <hr />
+    <div class="panel panel-default panel-base">
+        <div class="panel-heading">
+           <h4> Basic Information</h4>
+
+
+        </div>
+        <div class="panel-body">
+            <table>
+                <tr>
+                    <td class="tcol1"><b>Name In English</b></td>
+                    <td class="tcol2">:</td>
+                    <td colspan="4"><b>@Model.GeneralInfo.Name</b></td>
+                    
+                    <td rowspan="9">
+                        <table>
+                            <tr>
+                                <td>
+
+                                    @if (Model.GeneralInfo.Photo != null)
+                                    {
+                                        string imageBase64 = Convert.ToBase64String(Model.GeneralInfo.Photo);
+                                        string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
+                                        <img src="@imageSrc" class="img-responsive" alt="Responsive image" id="imgUp" style="width: 100px; height: 130px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/Content/Images/default.png")" class="img-responsive" id="imgUp" alt="Responsive image" />
+                                    }
+
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><b>@Model.GeneralInfo.Name</b></td>
+                            </tr>
+                            <tr>
+                                <td>
+
+                                    @if (Model.MaritalInfo.Signature != null)
+                                    {
+                                        string imageBase64Signature = Convert.ToBase64String(Model.MaritalInfo.Signature);
+                                        string imageSrcSignature = string.Format("data:image/gif;base64,{0}", imageBase64Signature);
+                                        <img src="@imageSrcSignature" class="img-responsive" alt="Responsive image" id="imgUp" style="width: 100px; height: 80px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/Content/images/signature_scan.gif")" class="img-responsive" id="imgUp" alt="Responsive image" style="width: 100px; height: 80px;" />
+                                    }
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Name In Bengali</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.NameB</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Gender</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.Gender</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Date of Birth</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.DateOfBirth.ToString("dd-MM-yyyy")</td>
+                    <td>Age</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.age</td>
+                </tr>
+
+                <tr>
+                    <td class="tcol1">Place of Birth</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string PlaceOfBirth = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblDistrict>)ViewBag.Distict).Where(p => p.intPK == Model.GeneralInfo.PlaceOfBirth).Select(o => o.Name).SingleOrDefault();
+                        }
+
+                        @PlaceOfBirth
+
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <tr>
+                    <td class="tcol1">Nationality</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.Nationality</td>
+                    <td>Dual</td>
+                    <td class="tcol2">:</td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">National ID</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.NationalId</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+
+                <tr>
+                    <td class="tcol1">Religion</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            var relText = ""; // ((IEnumerable<EREC.Entity.Religion>)Model.ReligionList).Where(p => p.Id == Model.GeneralInfo.ReligionId).Select(o => o.Name).SingleOrDefault();
+                            foreach (var item in Model.ReligionList)
+                            {
+                                if (Convert.ToInt32(item.Value) == Model.GeneralInfo.ReligionId) { 
+                                    relText = item.Text;
+                                }
+                            }
+                        }
+
+                        @relText
+
+                    </td>
+                    <td>Mobile Phone No.</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.MobilePhoneNo</td>
+                </tr>
+
+                <tr>
+                    <td class="tcol1">Birth Registration No.</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.BirthRegNo</td>
+                    <td>E-Mail</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.Email</td>
+                </tr>
+
+
+            </table>
+
+        </div>
+    </div>
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading ">
+            <h4> Parents Information</h4>
+
+        </div>
+        <div class="panel-body">
+
+            <table>
+                <tr>
+                    <td class="tcol1">Father's Name</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.FathersName</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Occupation</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.FathersOccupation</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Nationality</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string FathersNationality = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblCountry>)ViewBag.Country).Where(p => p.intPK == Model.GeneralInfo.FathersNationality).Select(o => o.Name).SingleOrDefault();
+                        }
+
+                        @FathersNationality
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Mother's Name</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.MothersName</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Occupation</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.GeneralInfo.MothersOccupation</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Nationality</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string MothersNationality = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblCountry>)ViewBag.Country).Where(p => p.intPK == Model.GeneralInfo.MothersNationality).Select(o => o.Name).SingleOrDefault();
+                        }
+
+                        @MothersNationality
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading">
+            <h4>Address-Present</h4>
+        </div>
+        <div class="panel-body">
+
+            <table>
+                <tr>
+                    <td class="tcol1">Address</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.PresentAddress</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">District</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string PresentDistrict = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblDistrict>)ViewBag.Distict).Where(p => p.intPK == Model.AddressInfo.PresentDistrict).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @PresentDistrict
+
+                    </td>
+                <tr>
+                    <td class="tcol1">Thana/Upazila</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string PresentThana = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblUpazila>)ViewBag.Upazila).Where(p => p.intPK == Model.AddressInfo.PresentThana).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @PresentThana
+
+                    </td>
+                <tr>
+                    <td class="tcol1">Post Code</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.PresentPostCode</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading">
+            <h4>Address-Permanent</h4>
+        </div>
+        <div class="panel-body">
+
+
+            <table>
+                <tr>
+                    <td class="tcol1">Address</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.PermanentAddress</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">District</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string PermanentDistrict = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblDistrict>)ViewBag.Distict).Where(p => p.intPK == Model.AddressInfo.PermanentDistrict).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @PermanentDistrict
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Thana/Upazila</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string PermanentThana = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblUpazila>)ViewBag.Upazila).Where(p => p.intPK == Model.AddressInfo.PermanentThana).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @PermanentThana
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Post Code</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.PermanentPostCode</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading">
+            <h4>Emergency Contact</h4>
+        </div>
+        <div class="panel-body">
+
+            <table>
+                <tr>
+                    <td class="tcol1">Name</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.EmergecyName</td>
+
+                    <td class="tcol1">Relationship</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.EmergencyRelationship</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Contact No.</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.EmergencyContactNo</td>
+
+                    <td class="tcol1">E-mail</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.EmergencyEmail</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Address</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.AddressInfo.EmergencyAddress</td>
+
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading">
+            <h4>SSC or Equivalent</h4>
+        </div>
+        <div class="panel-body">
+
+            <table>
+                <tr>
+                    <td class="tcol1">Examination</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string SscExam = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblExamination>)ViewBag.ExaminationList).Where(p => p.intPK == Model.EducationalInfo.SscExam).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @SscExam
+                    </td>
+                </tr>
+                @{
+                    string SscBoard = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_UniversityAndBoard>)ViewBag.boardList).Where(p => p.Id == Model.EducationalInfo.SscBoard).Select(o => o.Name).SingleOrDefault();
+                    string Ssclb = "Board";
+                    if (Model.EducationalInfo.SscBoard.ToString() == "12")
+                    {
+                        Ssclb = "Authority";
+                        SscBoard = Model.EducationalInfo.SscOtherBoard;
+                    }
+                }
+
+                <tr>
+
+                    <td class="tcol1">@Ssclb</td>
+                    <td class="tcol2">:</td>
+                    <td>
+
+
+                        @SscBoard
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Roll No.</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.SscRollNo</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Registration No.</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.SscRegistrationNo</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Result</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.SscResult</td>
+                </tr>
+                @{
+                    string sscDivision_CGPA = Model.EducationalInfo.SscResultCGPA.ToString();
+                    string sscDivision_CGPAlb = "CGPA";
+                    if (Model.EducationalInfo.SscResult == "Division")
+                    {
+                        sscDivision_CGPA = Model.EducationalInfo.SscResultDivision;
+                        sscDivision_CGPAlb = "Division";
+                    }
+                }
+
+                <tr>
+                    <td>@sscDivision_CGPAlb</td>
+                    <td class="tcol2">:</td>
+                    <td>
+
+
+                        @sscDivision_CGPA
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Group</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string SscGroup = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_SubjectGroup>)ViewBag.ExamGroupList).Where(p => p.Id == Model.EducationalInfo.SscGroup).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @SscGroup
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Passing Year</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.SscPassingYear</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading">
+           <h4> HSC or Equivalent</h4>
+        </div>
+        <div class="panel-body">
+
+
+            <table>
+                <tr>
+                    <td class="tcol1">Examination</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string HscExam = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblExamination>)ViewBag.ExaminationList).Where(p => p.intPK == Model.EducationalInfo.HscExam).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @HscExam
+                    </td>
+                </tr>
+                @{
+                    string HscBoard = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_UniversityAndBoard>)ViewBag.boardList).Where(p => p.Id == Model.EducationalInfo.HscBoard).Select(o => o.Name).SingleOrDefault();
+                    string Hsclb = "Board";
+                    if (Model.EducationalInfo.HscBoard.ToString() == "12")
+                    {
+                        Hsclb = "Authority";
+                        HscBoard = Model.EducationalInfo.HscOtherBoard;
+                    }
+                }
+                <tr>
+                    <td class="tcol1">@Hsclb</td>
+                    <td class="tcol2">:</td>
+                    <td>
+
+
+                        @HscBoard
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Roll No.</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.HscRollNo</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Registration No.</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.HscRegistrationNo</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Result</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.HscResult</td>
+                </tr>
+                @{
+                    string HscDivision_CGPA = Model.EducationalInfo.HscResultCGPA.ToString();
+                    string HscDivision_CGPAlb = "CGPA";
+                    if (Model.EducationalInfo.HscResult == "Division")
+                    {
+                        HscDivision_CGPAlb = "Division";
+                        HscDivision_CGPA = Model.EducationalInfo.HscResultDivision;
+                    }
+                }
+                <tr>
+                    <td class="tcol1">@HscDivision_CGPAlb</td>
+                    <td class="tcol2">:</td>
+                    <td>
+
+
+                        @HscDivision_CGPA
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Group</td>
+                    <td class="tcol2">:</td>
+                    <td>
+                        @{
+                            string HscGroup = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_SubjectGroup>)ViewBag.ExamGroupList).Where(p => p.Id == Model.EducationalInfo.HscGroup).Select(o => o.Name).SingleOrDefault();
+
+                        }
+
+                        @HscGroup
+                    </td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Passing Year</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.HscPassingYear</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    @{
+        if (Convert.ToBoolean(Model.EducationalInfo.Honours))
+        {
+
+
+            <div class="panel panel-base panel-default">
+                <div class="panel-heading">
+                  <h4>Honours</h4>  
+                </div>
+                <div class="panel-body">
+
+                    <table>
+                        @{
+                        string LlbHonsUniversity = "";
+                        string HonsExamination = "";
+                        string HonsSubject = "";
+                        string LlbHonsUniversitylb = "University/Institute";
+                            if (Model.EducationalInfo.HonsUniversity.ToString() == "133")
+                            {
+                                LlbHonsUniversitylb = "Authority";
+
+                            }
+                            else
+                            {
+                                LlbHonsUniversity = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_UniversityAndBoard>)ViewBag.UniversityList).Where(p => p.Id == Model.EducationalInfo.HonsUniversity).Select(o => o.Name).SingleOrDefault();
+
+                            }
+                            HonsExamination = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_DegreeLevel>)ViewBag.DegreeLevel).Where(p => p.Id == Model.EducationalInfo.HonsExaminationId).Select(o => o.Name).SingleOrDefault();
+                            HonsSubject = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_SubjectGroup>)ViewBag.SubjectList).Where(p => p.Id == Model.EducationalInfo.HonsSubjectId).Select(o => o.Name).SingleOrDefault();
+                        }
+                        <tr>
+                            <td class="tcol1">Examination</td>
+                            <td class="tcol2">:</td>
+                            <td>@HonsExamination</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">@LlbHonsUniversitylb</td>
+                            <td class="tcol2">:</td>
+                            <td>@LlbHonsUniversity</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Academic Institution</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.HonsAcademicInstitution</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Subject</td>
+                            <td class="tcol2">:</td>
+                            <td>@HonsSubject</td>
+                        </tr>                     
+                        <tr>
+                            <td class="tcol1">Result</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.HonsResult</td>
+                        </tr>
+                        @{
+            if (Model.EducationalInfo.HonsResult == "Division/Class")
+            {
+                <tr>
+                    <td class="tcol1">Division/Class</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.HonsDivision</td>
+                </tr>
+            }
+            if (Model.EducationalInfo.HonsResult == "Grading")
+            {
+                <tr>
+                    <td class="tcol1">CGPA</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.HonsCgpa</td>
+                </tr>
+                            <tr>
+                                <td class="tcol1">Scale</td>
+                                <td class="tcol2">:</td>
+                                <td>@Model.EducationalInfo.HonsScale</td>
+                            </tr>
+            }
+
+            if (Model.EducationalInfo.HonsResult == "Appeared")
+            {
+                <tr>
+                    <td class="tcol1">Exam Concluded</td>
+                    <td class="tcol2">:</td>
+                    <td>@Convert.ToDateTime(Model.EducationalInfo.HonsConcludingdate).ToString("dd-MM-yyyy")</td>
+                </tr>
+            }
+            else
+            {
+                
+                            <tr>
+                                <td class="tcol1">Passing Year</td>
+                                <td class="tcol2">:</td>
+                                <td>@Model.EducationalInfo.HonsPassingYear</td>
+                            </tr>
+            }
+                        }
+                    </table>
+                </div>
+            </div>
+        }}
+   
+
+    @{
+        if (Convert.ToBoolean(Model.EducationalInfo.MPass))
+        {
+
+
+            <div class="panel panel-base panel-default">
+                <div class="panel-heading">
+                   <h4>Masters</h4> 
+                </div>
+                <div class="panel-body">
+
+                    <table>
+                        @{
+            string MUniversity = "";
+            string MExamination = "";
+            string MSubject = "";
+            string MUniversitylb = "University/Institute";
+
+            if (Model.EducationalInfo.MPassUniversity.ToString() == "133")
+            {
+                MUniversitylb = "Authority";
+
+            }
+            else
+            {
+                MUniversity = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_UniversityAndBoard>)ViewBag.UniversityList).Where(p => p.Id == Model.EducationalInfo.MPassUniversity).Select(o => o.Name).SingleOrDefault();
+
+            }
+            MExamination = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_DegreeLevel>)ViewBag.DegreeLevel).Where(p => p.Id == Model.EducationalInfo.MPassExaminationId).Select(o => o.Name).SingleOrDefault();
+            MSubject = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_SubjectGroup>)ViewBag.SubjectList).Where(p => p.Id == Model.EducationalInfo.MPassSubjectId).Select(o => o.Name).SingleOrDefault();
+                      
+                        }
+                        <tr>
+                            <td class="tcol1">Examination</td>
+                            <td class="tcol2">:</td>
+                            <td>@MExamination</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">@MUniversitylb</td>
+                            <td class="tcol2">:</td>
+                            <td>@MUniversity</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Academic Institution</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.MPassAcademicInstitution</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Subject</td>
+                            <td class="tcol2">:</td>
+                            <td>@MSubject</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Result</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.MPassResult</td>
+                        </tr>
+                        @{
+            if (Model.EducationalInfo.MPassResult == "Division/Class")
+            {
+                <tr>
+                    <td class="tcol1">Division/Class</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.MPassDivision</td>
+                </tr>
+            }
+            if (Model.EducationalInfo.MPassResult == "Grading")
+            {
+                <tr>
+                    <td class="tcol1">CGPA</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.MPassCgpa</td>
+                </tr>
+                            <tr>
+                                <td class="tcol1">Scale</td>
+                                <td class="tcol2">:</td>
+                                <td>@Model.EducationalInfo.MPassScale</td>
+                            </tr>
+            }
+
+            if (Model.EducationalInfo.MPassResult == "Appeared")
+            {
+                <tr>
+                    <td class="tcol1">Exam Concluded</td>
+                    <td class="tcol2">:</td>
+                    <td>@Convert.ToDateTime(Model.EducationalInfo.MPassConcludingdate).ToString("dd-MM-yyyy")</td>
+                </tr>
+            }
+            else
+            {
+
+                <tr>
+                    <td class="tcol1">Passing Year</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.MPassPassingYear</td>
+                </tr>
+            }
+                        }
+                    </table>
+                </div>
+            </div>
+        }}
+
+
+    @{
+        if (Convert.ToBoolean(Model.EducationalInfo.OtherDegree1))
+        {
+
+
+            <div class="panel panel-base panel-default">
+                <div class="panel-heading">
+                   <h4>Others Degree One</h4> 
+                </div>
+                <div class="panel-body">
+
+                    <table>
+                        @{
+            string OD1University = "";
+            string MExamination = "";
+
+            OD1University = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_UniversityAndBoard>)ViewBag.UniversityList).Where(p => p.Id == Model.EducationalInfo.OD1University).Select(o => o.Name).SingleOrDefault();
+
+            MExamination = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_DegreeLevel>)ViewBag.DegreeLevel).Where(p => p.Id == Model.EducationalInfo.OD1ExaminationId).Select(o => o.Name).SingleOrDefault();
+
+                        }
+                        <tr>
+                            <td class="tcol1">Examination</td>
+                            <td class="tcol2">:</td>
+                            <td>@MExamination</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">University/Institute</td>
+                            <td class="tcol2">:</td>
+                            <td>@OD1University</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Academic Institution</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.OD1AcademicInstitution</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Subject</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.OD1Subject</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Result</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.OD1Result</td>
+                        </tr>
+                        @{
+            if (Model.EducationalInfo.OD1Result == "Division/Class")
+            {
+                <tr>
+                    <td class="tcol1">Division/Class</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.OD1Division</td>
+                </tr>
+            }
+            if (Model.EducationalInfo.OD1Result == "Grading")
+            {
+                <tr>
+                    <td class="tcol1">CGPA</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.OD1Cgpa</td>
+                </tr>
+                            <tr>
+                                <td class="tcol1">Scale</td>
+                                <td class="tcol2">:</td>
+                                <td>@Model.EducationalInfo.OD1Scale</td>
+                            </tr>
+            }
+
+            if (Model.EducationalInfo.OD1Result == "Appeared")
+            {
+                <tr>
+                    <td class="tcol1">Exam Concluded</td>
+                    <td class="tcol2">:</td>
+                    <td>@Convert.ToDateTime(Model.EducationalInfo.OD1Concludingdate).ToString("dd-MM-yyyy")</td>
+                </tr>
+            }
+            else
+            {
+
+                <tr>
+                    <td class="tcol1">Passing Year</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.OD1PassingYear</td>
+                </tr>
+            }
+                        }
+                    </table>
+                </div>
+            </div>
+        }}
+
+
+    @{
+        if (Convert.ToBoolean(Model.EducationalInfo.OtherDegree2))
+        {
+
+
+            <div class="panel panel-base panel-default">
+                <div class="panel-heading">
+                   <h4>Others Degree Two</h4> 
+                </div>
+                <div class="panel-body">
+
+                    <table>
+                        @{
+            string OD1University = "";
+            string MExamination = "";
+
+            OD1University = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_UniversityAndBoard>)ViewBag.UniversityList).Where(p => p.Id == Model.EducationalInfo.OD2University).Select(o => o.Name).SingleOrDefault();
+
+            MExamination = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_DegreeLevel>)ViewBag.DegreeLevel).Where(p => p.Id == Model.EducationalInfo.OD2ExaminationId).Select(o => o.Name).SingleOrDefault();
+
+                        }
+                        <tr>
+                            <td class="tcol1">Examination</td>
+                            <td class="tcol2">:</td>
+                            <td>@MExamination</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">University/Institute</td>
+                            <td class="tcol2">:</td>
+                            <td>@OD1University</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Academic Institution</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.OD2AcademicInstitution</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Subject</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.OD2Subject</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Result</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.OD2Result</td>
+                        </tr>
+                        @{
+            if (Model.EducationalInfo.OD2Result == "Division/Class")
+            {
+                <tr>
+                    <td class="tcol1">Division/Class</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.OD2Division</td>
+                </tr>
+            }
+            if (Model.EducationalInfo.OD2Result == "Grading")
+            {
+                <tr>
+                    <td class="tcol1">CGPA</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.OD2Cgpa</td>
+                </tr>
+                            <tr>
+                                <td class="tcol1">Scale</td>
+                                <td class="tcol2">:</td>
+                                <td>@Model.EducationalInfo.OD2Scale</td>
+                            </tr>
+            }
+
+            if (Model.EducationalInfo.OD2Result == "Appeared")
+            {
+                <tr>
+                    <td class="tcol1">Exam Concluded</td>
+                    <td class="tcol2">:</td>
+                    <td>@Convert.ToDateTime(Model.EducationalInfo.OD2Concludingdate).ToString("dd-MM-yyyy")</td>
+                </tr>
+            }
+            else
+            {
+
+                <tr>
+                    <td class="tcol1">Passing Year</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.EducationalInfo.OD2PassingYear</td>
+                </tr>
+            }
+                        }
+                    </table>
+                </div>
+            </div>
+        }}
+
+
+    @{
+        if (Convert.ToBoolean(Model.EducationalInfo.ProfessionalDegree))
+        {
+
+
+            <div class="panel panel-base panel-default">
+                <div class="panel-heading">
+                   <h4>Professional Degree</h4> 
+                </div>
+                <div class="panel-body">
+
+                    <table>
+                        @{
+            string MExamination = "", OD1University = "", CountryName = "";
+            MExamination = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_ProfessionalCertificate>)ViewBag.CertificateCategoryList).Where(p => p.Id == Model.EducationalInfo.CertificationCategoryId).Select(o => o.Name).SingleOrDefault();
+            OD1University = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.PRM_UniversityAndBoard>)ViewBag.UniversityList).Where(p => p.Id == Model.EducationalInfo.ProfessionalUniversity).Select(o => o.Name).SingleOrDefault();
+            CountryName = ((IEnumerable<BEPZA_MEDICAL.DAL.PRM.EREC_tblCountry>)ViewBag.Country).Where(p => p.intPK == Model.EducationalInfo.CountryId).Select(o => o.Name).SingleOrDefault();
+                        }
+                        <tr>
+                            <td class="tcol1">Certificate Category</td>
+                            <td class="tcol2">:</td>
+                            <td>@MExamination</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Certification Title</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.CertificationTitle</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">University/Institute</td>
+                            <td class="tcol2">:</td>
+                            <td>@OD1University</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Passing Year</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.ProfessionalPassingYear</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Country</td>
+                            <td class="tcol2">:</td>
+                            <td>@CountryName</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Certification Detail</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.EducationalInfo.Comments</td>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+        }}
+
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading">
+           <h4>Experience Detail (If any) & Additional Qualification (If any)</h4> 
+        </div>
+        <div class="panel-body">
+
+            <table>
+                <tr>
+                    <td class="tcol1">Total Year of Experience</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.MaritalInfo.TotalYearofExp</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Detail Experience</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.MaritalInfo.ExperienceDetail</td>
+                </tr>
+                <tr>
+                    <td class="tcol1">Additional Qualification</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.MaritalInfo.AdditionalQualification</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="panel panel-base panel-default">
+        <div class="panel-heading">
+          <h4> Quota Information</h4> 
+        </div>
+        <div class="panel-body">
+
+
+            <table>
+                <tr>
+                    <td class="tcol1">Child of Freedom Fighter</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.MaritalInfo.ChildOfFreedomFighter</td>
+                </tr>
+                @{
+                    if (Model.MaritalInfo.ChildOfFreedomFighter == "Yes")
+                    {
+
+
+                        <tr>
+                            <td class="tcol1">Name of Freedom Fighter</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.MaritalInfo.NameOfFreedomFighter</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Certificate/Gazette/<i> Mukti Barta No.</i></td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.MaritalInfo.CertificateNo</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Issuing Authority</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.MaritalInfo.IssuingAuthority</td>
+                        </tr>
+                        <tr>
+                            <td class="tcol1">Date of Issue</td>
+                            <td class="tcol2">:</td>
+                            <td>@Convert.ToDateTime(Model.MaritalInfo.DateOfIssue).ToString("dd-MM-yyyy")</td>
+                        </tr>
+                    }
+                }
+                <tr>
+                    <td class="tcol1">Ethnic Group</td>
+                    <td class="tcol2">:</td>
+                    <td>@Model.MaritalInfo.EthnicGroup</td>
+                </tr>
+                @{
+                    if (Model.MaritalInfo.EthnicGroup == "Yes")
+                    {
+
+                        <tr>
+                            <td class="tcol1">Name of the Community</td>
+                            <td class="tcol2">:</td>
+                            <td>@Model.MaritalInfo.NameOfTheCommunity</td>
+                        </tr>    }
+                }
+            </table>
+        </div>
+    </div>
+
+</div>

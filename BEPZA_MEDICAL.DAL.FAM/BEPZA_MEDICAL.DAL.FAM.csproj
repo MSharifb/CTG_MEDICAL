@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{78FE58FE-5248-41DA-880A-CE51EFE4C970}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.DAL.FAM</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.DAL.FAM</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomEntities\BankSearch.cs" />
+    <Compile Include="CustomEntities\ChequeSearch.cs" />
+    <Compile Include="CustomEntities\CentralBudgetFinancialYearSearch.cs" />
+    <Compile Include="CustomEntities\CentralBudgetAllocationFYSearch.cs" />
+    <Compile Include="CustomEntities\BSPLReportHeadMappingSearch.cs" />
+    <Compile Include="CustomEntities\DivisionUnitBudgetByDUFYSearch.cs" />
+    <Compile Include="CustomEntities\DivisionUnitFinancialYearRevisionSearch.cs" />
+    <Compile Include="CustomEntities\SpecialAccountAssignmentSearch.cs" />
+    <Compile Include="CustomEntities\RevisionCentralBudgetByFYSearch.cs" />
+    <Compile Include="CustomEntities\RevisionOfCentralBudgetFYSearch.cs" />
+    <Compile Include="CustomEntities\DivisionFinancialYearSearch.cs" />
+    <Compile Include="CustomEntities\DivisionSearch.cs" />
+    <Compile Include="CustomEntities\VoucherSearch.cs" />
+    <Compile Include="ERP_BEPZA.FAM.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.FAM.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="FAM_ExecuteFunctions.cs" />
+    <Compile Include="FAM_GenericRepository.cs" />
+    <Compile Include="FAM_UnitOfWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="ERP_BEPZA.FAM.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ERP_BEPZA.FAM.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Properties\DataSources\IWM_MFSFAMEntities.datasource" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

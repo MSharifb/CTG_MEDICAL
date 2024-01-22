@@ -1,0 +1,435 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.HearingInfoViwModel
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.HearingInfoRecordedEmployeeId)
+            @Html.HiddenFor(model => model.HearingFixationInfoDetailId)
+            @Html.LabelFor(model => model.ComplaintNoteSheetId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @if (Model.strMode == "Edit")
+            {   @Html.HiddenFor(model => model.ComplaintNoteSheetId)
+                @Html.TextBoxFor(model => model.ComplaintNoteSheetName, new { @class = "read-only", @readonly = true })
+            }
+            else
+            {
+                @Html.DropDownListFor(m => m.ComplaintNoteSheetId, Model.ComplaintNoteSheetList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            }
+        </span>
+    </div>
+</div>
+<fieldset>
+    <legend>Complaint History</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.RefNo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.RefNo, new { @class = "read-only required", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplaintDate, new { @class = "read-only required", @readonly = true })
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDate, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmpId, new { @class = "read-only required", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantEmpId, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintEmployeeName, new { @class = "read-only required", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantEmployeeName, new { @class = "read-only required", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintDepartmentName, new { @class = "read-only", @readonly = true })
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ComplainantDepartmentName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplainantDepartmentName, new { @class = "read-only", @readonly = true })
+
+        </span>
+    </div>
+</fieldset>
+
+
+<fieldset>
+    <legend>Hearing Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingFixationInfoId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.HearingFixationInfoId, Model.HearingFixationInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingDetails)
+        </span>
+        <span class="field" style="width:80%">
+            @Html.TextAreaFor(model => model.HearingDetails, new { Style = "width:95%", @rows = 10 })
+        </span>
+        <div class="clear"></div>
+    </div>
+    <fieldset>
+        <legend>Latest Hearing Date and Time Fixation</legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.HearingDate)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.HearingDate, new { @class = "read-only", @readonly = true })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.HearingTime)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.HearingTime, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.HearingLocation)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.HearingLocation, new { @class = "read-only", @readonly = true })
+            </span>
+
+        </div>
+    </fieldset>
+</fieldset>
+
+<fieldset>
+    <legend>Hearing Information Record By</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingInfoRecordedByEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingInfoRecordedByEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingInfoRecordedByEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingInfoRecordedByEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.HearingInfoRecordedByDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.HearingInfoRecordedByDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</fieldset>
+
+<fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.CheckBoxFor(model => model.IsAddAttachment, new { onclick = "disableUpload();" })
+            @Html.LabelFor(model => model.IsAddAttachment)
+        </span><span class="field">
+            <div id="divFileAttach">
+                @Html.HiddenFor(model => model.Attachment)
+                @Html.HiddenFor(model => model.FileName)
+                <input type="file" name="Attachment" id="Attachment" />
+                <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+            </div>
+        </span>
+    </div>
+</fieldset>
+<div class="clear"></div>
+
+<script type="text/javascript">
+    FormatTextBox();
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+
+        disableUpload();
+        showErrMsg();
+    });
+
+    function disableUpload() {
+        var IsSelect = $('#IsAddAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+            // $('#spAttachment').show();
+            $('#divFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+            //$('#spAttachment').hide();
+            $('#divFileAttach').hide();
+        }
+    }
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('input[name="btnSave"]').hide();
+        }
+    }
+</script>
+
+
+<script type="text/javascript">
+    $('#ComplaintNoteSheetId').live('change', function (e) {
+        e.preventDefault();
+
+        $("#RefNo").val('');
+        $('#ComplaintDate').val('');
+        $("#ComplaintEmpId").val('');
+        $("#ComplaintEmployeeName").val('');
+        $("#ComplaintDesignationName").val('');
+        $("#ComplaintDepartmentName").val('');
+        $("#ComplainantEmpId").val('');
+        $("#ComplainantEmployeeName").val('');
+        $("#ComplainantDesignationName").val('');
+        $("#ComplainantDepartmentName").val('');
+
+        //Hearing Date and Time Fixation
+        $("#HearingFixationInfoDetailId").val('');
+        $("#HearingDate").val('');
+        $('#HearingTime').val('');
+        $("#HearingLocation").val('');
+
+        GetComplaintNoteInfo($(this).val());
+        loadHearingRefNo();
+
+    });
+
+    function GetComplaintNoteInfo(complaintNoteSheetId) {
+        var url = '@Url.Action("GetComplaintNoteInfo", "NoteOrderInfo")';
+        if (complaintNoteSheetId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ complaintNoteSheetId: complaintNoteSheetId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#RefNo").val(obj.RefNo);
+                    $('#ComplaintDate').val(obj.ComplaintDate);
+                    $("#ComplaintEmpId").val(obj.ComplaintEmpId);
+                    $("#ComplaintEmployeeName").val(obj.ComplaintEmployeeName);
+                    $("#ComplaintDesignationName").val(obj.ComplaintDesignationName);
+                    $("#ComplaintDepartmentName").val(obj.ComplaintDepartmentName);
+                    $("#ComplainantEmpId").val(obj.ComplainantEmpId);
+                    $("#ComplainantEmployeeName").val(obj.ComplainantEmployeeName);
+                    $("#ComplainantDesignationName").val(obj.ComplainantDesignationName);
+                    $("#ComplainantDepartmentName").val(obj.ComplainantDepartmentName);
+
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function loadHearingRefNo() {
+        var selectedComplaintNoteSheet = $('select#ComplaintNoteSheetId').val();
+        var hearingFixationInfoSelect = $('select#HearingFixationInfoId');
+        hearingFixationInfoSelect.empty();
+        hearingFixationInfoSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+       
+        if (selectedComplaintNoteSheet != null && selectedComplaintNoteSheet != '') {
+            $.getJSON('@Url.Action("GetHearingFixationInfo", "HearingInfo")', { deptProceedingId: selectedComplaintNoteSheet }, function (data) {
+                $.each(data.hearingRefNos, function (index, step) {
+                    hearingFixationInfoSelect.append($('<option/>', {
+                        value: step.Id,
+                        text: step.HearingRefNo
+                    }));
+                    $('select#HearingFixationInfoId').val($('input#HearingFixationInfoId').val());
+                });
+            });
+        }
+        else {
+            $("#HearingFixationInfoId>option").remove();
+            $("#HearingFixationInfoId").html("<option value=\"" + "" + "\">" + "[Select One]" + "</option>");
+        }
+    }
+</script>
+
+@*Employee Info*@
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        $('#HearingInfoRecordedEmployeeId').val(id);
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "NoteOrderInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#HearingInfoRecordedByEmpId").val(obj.EmpId);
+                    $('#HearingInfoRecordedByEmployeeName').val(obj.EmployeeName);
+                    $("#HearingInfoRecordedByDesignationName").val(obj.DesignationName);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+
+    function Closing() {
+
+    }
+
+</script>
+@*End Employee Info*@
+
+
+<script type="text/javascript">
+    $('#HearingFixationInfoId').live('change', function (e) {
+        //e.preventDefault();      
+        $("#HearingFixationInfoDetailId").val('');
+        $("#HearingDate").val('');
+        $('#HearingTime').val('');
+        $("#HearingLocation").val('');
+        var hFixInfoId = $(this).val();
+        if (hFixInfoId > 0) {
+            GetHearingFixInfoDetail(hFixInfoId);
+        }
+    });
+
+    function GetHearingFixInfoDetail(hFixInfoId) {
+        var url = '@Url.Action("GetHearingFixInfoDetail", "HearingInfo")';
+       
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ hFixInfoId: hFixInfoId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $("#HearingFixationInfoDetailId").val(obj.HearingFixationInfoDetailId);
+                    $("#HearingDate").val(obj.HearingDate);
+                    $('#HearingTime').val(obj.HearingTime);
+                    $("#HearingLocation").val(obj.HearingLocation);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    
+
+</script>

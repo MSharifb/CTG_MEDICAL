@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3a58eb83d8cd4000aa1e21cc25629083" Name="Diagram1" ZoomLevel="45" ShowGrid="false" DisplayType="false">
+        <AssociationConnector Association="ERP_BEPZAModene" Width="1.5" PointX="17.875" PointY="12.75" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_Agency" Width="1.5" PointX="5.25" PointY="1" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ApprovalAuthority" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_BudgetHead" Width="1.5" PointX="3" PointY="4.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_BudgetType" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ConstructionCategory" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ConstructionType" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_EstimationUnit" Width="1.5" PointX="7.75" PointY="4.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_Ministry" Width="1.5" PointX="0.75" PointY="1" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_PaymentStatus" Width="1.5" PointX="5.25" PointY="10.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProcurementType" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProjectStatus" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_SourceOfFund" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.vwPMIProcurementPlanFundRpt" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.vwPMIStatusInformation" Width="1.5" PointX="9.75" PointY="8.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.CommonConfigType" Width="1.5" PointX="7.75" PointY="10.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_BudgetZoneOrProject" Width="1.5" PointX="5.25" PointY="3.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_EstimationSetup" Width="1.5" PointX="10" PointY="4.875" IsExpanded="false" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationSetup_PMI_EstimationUnit" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_EstimationZone" Width="1.5" PointX="12.25" PointY="6.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProcurementMethod" Width="1.5" PointX="7.5" PointY="1.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProjectDetails" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="false" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectDetails_PMI_ApprovalAuthority" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectDetails_PMI_ProcurementMethod" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectDetails_PMI_ProcurementType" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectDetails_PMI_SourceOfFund" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProjectTimeExtension" Width="1.5" PointX="6.3160462166723077" PointY="30.459084152457809" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.vwPMIEstimation" Width="1.5" PointX="7.86856583686013" PointY="9.9530278341625955" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_BudgetDetailsYearlyCost" Width="1.5" PointX="2.9049993822840041" PointY="2.4713175010268191" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_BudgetMaster" Width="1.5" PointX="4.1117123663945643" PointY="16.218139954012884" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetMaster_PMI_ApprovalAuthority" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetDetailsYearlyCost_PMI_ProjectStatus" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetMaster_PMI_Ministry" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetMaster_PMI_ProcurementType" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetMaster_PMI_SourceOfFund" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetZoneOrProject_PMI_BudgetMaster" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.acc_Accounting_Period_Information" Width="1.5" PointX="5.9506486644738583" PointY="24.045896422139322" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetDetailsYearlyCost_FAM_FinancialYearInformation" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_EstimationHead" Width="1.5" PointX="6.9565946659802433" PointY="18.698929422860466" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_EstimationHeadDescription" Width="1.5" PointX="10.497235468820314" PointY="13.457501551815076" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_EstimationMaster" Width="1.5" PointX="5.4965644131864257" PointY="9.7851465539006259" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationHeadDescription_PMI_EstimationHead" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationSetup_PMI_EstimationHead" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationHeadDescription_PMI_EstimationMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationZone_PMI_ProjectMaster" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.vwPMIBudgetInfo" Width="1.5" PointX="0.87363269220741124" PointY="14.12208381952815" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_EstimationDetails" Width="1.5" PointX="11.773824920772494" PointY="21.434571365562533" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_TenderDetails" Width="1.5" PointX="2.0090936375824238" PointY="24.084966313133467" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationDetails_PMI_EstimationHead" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationDetails_PMI_EstimationMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationDetails_PMI_EstimationSetup" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_EstimationDetails_PMI_EstimationUnit" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ApprovalFlowDetails" Width="1.5" PointX="10.025569404487296" PointY="8.2297496833977064" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ApprovalFlowMaster" Width="1.5" PointX="11.398775724414167" PointY="21.162424261291708" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ApprovalSection" Width="1.5" PointX="11.600002817623318" PointY="26.01202128548735" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ApprovalFlowDetails_PMI_ApprovalFlowMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ApprovalFlowMaster_PMI_ApprovalSection" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProjectApproverStatus" Width="1.5" PointX="5.0392701723795712" PointY="27.320807901826132" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_AnnualProcurementPlanMaster" Width="1.5" PointX="4.807197546962275" PointY="0.061230525402925222" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AnnualProcurementPlanMaster_PMI_Ministry" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AnnualProcurementPlanMaster_PMI_ProjectStatus" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.vwPMIProjectSummary" Width="1.5" PointX="8.68340999478633" PointY="9.7798021630289966" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProjectMaster" Width="1.5" PointX="10.774395111377535" PointY="12.840275278706232" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectMaster_PMI_Agency" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectMaster_PMI_ConstructionCategory" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectMaster_PMI_ConstructionType" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectMaster_PMI_Ministry" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectMaster_PMI_PaymentStatus" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectDetails_PMI_ProjectMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectMaster_PMI_ProjectStatus" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProjectTimeExtension_PMI_ProjectMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_TenderDetails_PMI_ProjectMaster" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_AppZones" Width="1.5" PointX="2.4699097473499876" PointY="11.78038156581129" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AppZones_PMI_AnnualProcurementPlanMaster" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.acc_Cost_Centre_or_Institute_Information" Width="1.5" PointX="3.7494154645825803" PointY="14.184603191066815" />
+        <AssociationConnector Association="ERP_BEPZAModel.FKE18F415067F93324" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_WorkStatus" Width="1.5" PointX="0.37160958180744647" PointY="24.12924979260622" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_BudgetDetailsYearlyBilled" Width="1.5" PointX="5.4140465936688926" PointY="4.5841496906169459" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_BudgetDetails" Width="1.5" PointX="0.050432279729485642" PointY="20.141171822390135" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetDetails_PMI_BudgetMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetDetails_PMI_ConstructionType" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetDetailsYearlyBilled_PMI_BudgetDetails" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetDetailsYearlyCost_PMI_BudgetDetails" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_AnnualProcurementPlanDetails" Width="1.5" PointX="9.6421772528636165" PointY="17.328678124271647" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AnnualProcurementPlanDetails_PMI_AnnualProcurementPlanMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AnnualProcurementPlanDetails_PMI_ApprovalAuthority" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AnnualProcurementPlanDetails_PMI_ConstructionType" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AnnualProcurementPlanDetails_PMI_ProcurementMethod" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_AnnualProcurementPlanDetails_PMI_SourceOfFund" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProgressReportDetailsYearlyBilled" Width="1.5" PointX="9.3448415367607218" PointY="11.484206309301875" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProgressReportDetails" Width="1.5" PointX="9.475255992950526" PointY="19.513703176525283" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProgressReportMaster" Width="1.5" PointX="9.732268267186484" PointY="3.88976311864786" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProgressReportMaster_PMI_AnnualProcurementPlanMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProgressReportDetails_PMI_ProgressReportMaster" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProgressReportDetails_PMI_WorkStatus" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProgressReportDetailsYearlyBilled_PMI_ProgressReportDetails" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProjectFor" Width="1.5" PointX="2.4139066033130074" PointY="4.5439745655953763" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_Head" Width="1.5" PointX="1.2930711737335991" PointY="17.121394686923079" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.vwPMIBudgetHead" Width="1.5" PointX="1.4449953816109316" PointY="0.83308209517648546" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProgressReportAttachment" Width="1.5" PointX="7.7960976342652453" PointY="14.05262563286937" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProgressReportAttachment_PMI_ProgressReportMaster" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.vwPMINewBudgetInfo" Width="1.5" PointX="2.5782426104779552" PointY="2.7171216768758009" />
+        <EntityTypeShape EntityType="ERP_BEPZAModel.PMI_ProgressReportSignature" Width="1.5" PointX="7.58800786900707" PointY="8.3114223220904453" />
+        <AssociationConnector Association="ERP_BEPZAModel.FK_PMI_ProgressReportSignature_PMI_ProgressReportMaster" />
+        <!--<AssociationConnector Association="ERP_BEPZAModel.FK_PMh="1.5" PoMethod" />-->
+        <!--<AssociationConnector Association="ERP_BEPZAModel.FK_PMI_BudgetDetailsYearlyCost_PMI_BudgetD-->
+        
+        
+        
+        etails" /&gt;
+        
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

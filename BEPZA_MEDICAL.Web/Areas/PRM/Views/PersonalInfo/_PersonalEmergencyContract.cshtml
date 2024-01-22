@@ -1,0 +1,234 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalEmergencyContractViewModel
+@using Microsoft.Web.Helpers;
+@using (Html.BeginForm(Model.ActionType, "PersonalInfo", FormMethod.Post, new { @encType = "multipart/form-data", id = "frm" }))
+{
+    <fieldset>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.ActionType)
+        @Html.HiddenFor(model => model.Photo)
+        @Html.HiddenFor(model => model.HasDatabaserValue)
+        @Html.HiddenFor(model => model.isAddPhoto)
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox" align="center">
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.RelationId)<label class="required-field">
+                    *</label></span> <span class="field">@Html.DropDownListFor(model => model.RelationId, Model.RelationList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.TitleId)
+                </span><span class="field">@Html.DropDownListFor(model => model.TitleId, Model.TitleList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+                <span class="label-right">@Html.LabelFor(d => d.FirstName)
+                    <label class="required-field">
+                        *</label></span> <span class="field">@Html.EditorFor(d => d.FirstName)</span>
+            </div>
+            <div class="row" >
+                <span class="label">@Html.LabelFor(model => model.LastName)</span> <span class="field">@Html.EditorFor(d => d.LastName)</span>
+                <span class="label-right">@Html.LabelFor(d => d.FullName)</span> <span class="field">
+                @Html.EditorFor(model => model.FullName)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.MobileNo)<label class="required-field">
+                    *</label></span> <span class="field">@Html.EditorFor(d => d.MobileNo)</span>
+                <span class="label-right">@Html.LabelFor(d => d.EmailAddress)</span> <span class="field">@Html.EditorFor(model => model.EmailAddress)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.OfficePhone)</span> <span class="field">@Html.EditorFor(d => d.OfficePhone)</span>
+                <span class="label-right">@Html.LabelFor(d => d.HomePhone)</span> <span class="field">@Html.EditorFor(model => model.HomePhone)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.FaxNo)</span> <span class="field">@Html.EditorFor(model => model.FaxNo)</span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(d => d.OfficeAddress)</span> 
+                <span class="field">@Html.TextAreaFor(d => d.OfficeAddress, new { @maxlength = 200 })</span>
+                <span class="label-right">@Html.LabelFor(d => d.HomeAddress)<label class="required-field">
+                    *</label></span> <span class="field">@Html.TextAreaFor(d => d.HomeAddress, new { @maxlength = 200 })</span>
+            </div>
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                <div class="row">
+                    <br />
+                    <br />
+                    <label style="color: #3C78B5;">
+                        <input type="checkbox" id="AddPhotoCheckBox" /> &nbsp;Add/Remove Photo ?
+                    </label>
+                </div>
+            }
+            <div class="clear">
+            </div>
+        </div>
+        <div class="GroupBox" align="center" id="photoUpload">
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                <div class="row">
+                    @FileUpload.GetHtml(initialNumberOfFiles: 1, allowMoreFilesToBeAdded: false,
+            includeFormTag: false, addText: "Add Files", uploadText: "Upload File")
+                </div>
+            }
+            <div class="row">
+                <div style="border: 1px solid #D2DDE7; width: 150px; height: 150px; margin: 20px">
+                    @if (Model != null)
+                    {
+                        @*if ((Model.Photo != null) && Model.Photo.Length > 0)
+                        {        
+                        <img height="150" width="150" class="imgThumb" src="@Url.Action("GetEmergencyContractPhoto", "PersonalInfo", new { id = Model.EmployeeId })"/>                              
+                                
+                        }*@
+
+                        if (Model.ImageUrl != "" && Model.ImageAltText != "")
+                        { 
+                        <img height="150" width="150" 
+                            src="@(Model.ImageUrl)" 
+                            id="uploadedImage"  alt="@Model.ImageAltText"/> 
+                        }
+                    }
+                </div>
+            </div>
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                <div class="row">
+                    <div class="button-crude">
+                        <input type="submit" value="Upload" name="btnSubmit" id="btnPhotoUpload" style="margin-right: 8px;" />
+                        <input type="submit" value="Remove" name="btnSubmit" id="btnPhotoRemove" style="margin-right: 8px;" />
+                    </div>
+                </div>
+            }
+            <div class="clear">
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+                {
+                    <input type="submit" value="Delete" id="btnDelete" name="btnSubmit" />
+                }
+                @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+                {
+                    <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+                }
+            </div>
+        </div>
+        <div class="GroupBox">
+            <table id="jqGrid" cellpadding="0" cellspacing="0" class="ui-jqgrid-view">
+            </table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+        </div>
+        <div class="button-crude button-left">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </fieldset>         
+}
+
+<script type="text/javascript">
+
+    $(function () {
+
+        if ('@Model.isAddPhoto' == 'True') {
+            $("#photoUpload").show();
+            $('#AddPhotoCheckBox').attr("checked", true);
+        }
+        else {
+            $('#AddPhotoCheckBox').attr("checked", false);
+            $("#photoUpload").hide();
+        }
+        $('#AddPhotoCheckBox').live("click", function () {
+            if ($('#AddPhotoCheckBox').is(':checked')) {
+                $("#photoUpload").slideDown("slow");
+            }
+            else {
+                $("#photoUpload").slideUp("slow");
+            }
+        });
+
+        $("#btnDelete").live("click", function () {
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("DeleteConfirmEmergencyContract", "PersonalInfo")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success) {
+                            var indexUrl = '@Url.Action("PersonalEmergencyContractIndex", "PersonalInfo", new { id = Model.EmployeeId, message = "_msg_" })';
+                            indexUrl = indexUrl.replace(/_msg_/, obj.Message)
+                            window.document.location = indexUrl;
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+    });
+
+    function AutoFullName() {
+        $("#FullName").val(($('#TitleId').val() == '' ? '' : ($('#TitleId option:selected').text()) + ' ')
+            + $.trim($('#FirstName').val()) + ' ' + $.trim($('#LastName').val()));
+    }
+    $(function () {
+        if ('@Model.Message' != "") {
+            if ('@Model.IsSuccessful' == 'True') {
+                $('#message').html("<b style='color:Green'>" + '@Model.Message' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + '@Model.Message' + "</b>");
+            }
+        }
+
+        $("#btnClear").live("click", function () {
+            var url = '@Url.Action("PersonalEmergencyContractIndex", new { id = Model.EmployeeId })';
+            window.location.href = url;
+        });
+
+        if ('@Model.HasDatabaserValue' == 'True') {
+            $("#btnSave").hide();
+            $("#btnClear").hide();
+            $("#btnUpdate").show();
+            $("#btnDelete").show();
+        }
+        else {
+            $("#btnSave").show();
+            $("#btnClear").show();
+            $("#btnUpdate").hide();
+            $("#btnDelete").hide();
+        }
+
+        $("#TitleId").change(function () {
+            AutoFullName();
+        });
+
+        $("#FirstName, #LastName").keyup(function () {
+            AutoFullName();
+        })
+    })
+    
+</script>

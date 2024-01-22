@@ -1,0 +1,65 @@
+﻿@model ERP_BEPZA.DAL.PGM.PRM_SalaryStructureDetail
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>PRM_SalaryStructureDetail</legend>
+
+    <div class="display-label">PRM_SalaryStructure</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_SalaryStructure.IUser)
+    </div>
+
+    <div class="display-label">PRM_SalaryHead</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.PRM_SalaryHead.HeadName)
+    </div>
+
+    <div class="display-label">HeadType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.HeadType)
+    </div>
+
+    <div class="display-label">AmountType</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AmountType)
+    </div>
+
+    <div class="display-label">IsTaxable</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsTaxable)
+    </div>
+
+    <div class="display-label">IUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IUser)
+    </div>
+
+    <div class="display-label">EUser</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EUser)
+    </div>
+
+    <div class="display-label">IDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IDate)
+    </div>
+
+    <div class="display-label">EDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.EDate)
+    </div>
+
+    <div class="display-label">Amount</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

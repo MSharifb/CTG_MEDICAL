@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.RequisitionInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.RequisitionDetail!= null)
+{
+    foreach (var x in Model.RequisitionDetail)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "CommonConfig";
+    Layout = "~/Areas/PMI/Views/Shared/_Layout.cshtml";
+}
+<h1>
+    <div align="center">
+        @ViewBag.TitleName
+    </div>
+</h1>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Name").focus();
+    });
+
+
+</script>
+@using (Ajax.BeginForm("Index", "CommonConfig", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div id="wraper">
+        <div id="leftdiv" style="float: left; width: 25%; height: 80%;">
+            <div class="GroupBox">
+                <div style="width: 90%; height: 500px; overflow: scroll; overflow-x: hidden;">
+                    @Html.Partial("_CommonConfigTypeList")
+                </div>
+            </div>
+        </div>
+        <div id="rightdiv" style="float: left; width: 74%; height: 80%;">
+            <div class="GroupBox">
+                <div class="GroupBox" style="min-height: 15px" id="message">
+                    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+                </div>
+                <div class="row">
+                    @Html.Partial("_CreateOrEdit")
+                </div>
+                <div class="row">
+                    @Html.Partial("_CommonConfigList")
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+
+    
+
+
+    $(document).ready(function () {
+        var menuText = $('#leftPanelList .ui-selectable').find('li').each(function () {
+            var className = $(this).attr('class');
+            if (className == 'ui-selectee ui-selected') {
+                var item = $(this).text();
+                $('#gview_jqGrid .ui-jqgrid-title').html(item);
+            }
+
+        })
+    })
+</script>

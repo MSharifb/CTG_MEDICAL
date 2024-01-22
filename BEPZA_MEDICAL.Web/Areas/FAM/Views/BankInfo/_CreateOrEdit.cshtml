@@ -1,0 +1,164 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.BankInfo
+@model BankInformationModel
+
+@*@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Model.Mode == "Create" ? "/FAM/BankInfo/Create" : "/FAM/BankInfo/Edit" }))*@
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    <div class="GroupBox">
+        @Html.Partial("_CreateOrEditMaster", Model)
+    </div>
+
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                Account Head
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.AccHeadId, Model.AccHeadList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+            <span class="label-right">
+              Bank Account Number                  
+            </span>
+            <span class="field">
+                <input type="text" id="txtAccNo" name="txtAccNo" />
+            </span>            
+        </div>
+        <div class="button-crude" style="float:left; text-align:right; width: 706px;">
+            @*@Ajax.ActionLink("Add", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })*@
+            <input id="btnAdd" type="button" value="Add" onclick="AddItemToGrid();" />
+            <input id="btnChildUpdate" type="button" value="Update" style="display:none;" />
+        </div><div class="clear"></div>
+        <table id="grid" style="width:57.5%;" class="contenttable" >
+            <thead>
+                <tr>
+                    <th> Bank Name </th>
+                    <th> Branch Name </th>
+                    <th> Bank Account Number </th>
+                    <th> Account Head </th>
+                    <th> Remove </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.BankInfoChilds.Count; i++)
+                {
+                    var item = Model.BankInfoChilds.ToList()[i];
+                    <tr class="row">
+                        <td style="display:none;"><input type="text" name="@("BankInfoChilds[" + i + "].Id")" value="@item.Id" /></td>
+                        <td style="display:none;"><input type="text" name="@("BankInfoChilds[" + i + "].BankBranchMapId")" value="@item.BankBranchMapId" /></td>
+                        <td><a class='select-row' href="javascript:void(0)">@Model.BankList.Where(x => x.Value == Convert.ToString(Model.BankId)).FirstOrDefault().Text</a></td>
+                        <td>@Model.BranchList.Where(x => x.Value == Convert.ToString(Model.BranchId)).FirstOrDefault().Text</td>                        
+                        <td><input style="display:none;" type="text" name="@("BankInfoChilds[" + i + "].BankAccountNo")" value="@item.BankAccountNo" /><span>@item.BankAccountNo</span></td>
+                        <td><input style="display:none;" type="text" name="@("BankInfoChilds[" + i + "].AccountHeadId")" value="@item.AccountHeadId" /><span>@( Model.AccHeadList.Where(x => x.Value == Convert.ToString(item.AccountHeadId)).FirstOrDefault() == null ? "" : Model.AccHeadList.Where(x => x.Value == Convert.ToString(item.AccountHeadId)).FirstOrDefault().Text)</span></td>
+                        <td><a class="deleteRow" title="delete" href="javascript:void(0)"><img alt="delete" style="border: none;" src="@Url.("~/Content/Images/Delete.png")" /></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @*@foreach (var item in Model.BankInfoChild)
+        {
+		    @Html.Partial("_CreateOrEditDetails", item) 
+        }*@
+        <div class="clear"></div>
+    </div>
+    
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+        <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+        }
+        else
+        {
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+        }     
+
+        <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        <div class="clear">
+        </div>
+    </div>
+    
+}
+<div class="button-crude button-left">
+    @Ajax.ActionLink("Back to List", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })
+</div>   
+<div class="clear"></div>
+<script type="text/javascript">
+
+$(function () {
+    var mode = '@Model.Mode';
+    $.validator.unobtrusive.parse('#frm');
+
+    if (mode == 'Create') {
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+    }
+    else {
+        $('#btnUpdate').show();
+        $('#btnSave').hide();
+    }    
+})
+
+function OnCompleteBacktoList(content) {
+    if (content.statusText == 'OK') {
+        $('.search-content').hide();
+        $('.frm-content').html(content.responseText);
+    } else {
+        $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+    }
+}
+
+function OnComplete(content) {
+    var data = content.responseText;
+    if (data.toLowerCase().indexOf("updated") >= 0) {
+                    
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(3000).hide('slow');
+
+        $.get("@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else if (data.toLowerCase().indexOf("saved") >= 0) {
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'green' });
+        $("#message").delay(3000).hide('slow');
+
+        $.get("@Url.Action("BackToList")",{},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else {
+        //$('.search-content').hide();
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'red' });
+        $("#message").delay(3000).hide('slow');
+    }
+}
+</script>

@@ -1,0 +1,488 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RecruitmentQualificationDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+  <div class="form-horizontal">
+      <fieldset>
+          <legend>Educational Qualification</legend>
+          <div class="form-group">
+              @Html.HiddenFor(m=>m.Id)
+              @Html.LabelFor(m => m.DegreeTypeId, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.DropDownListFor(m => m.DegreeTypeId, Model.DegreeTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", onchange = "LoadDegree();"})
+              </div>
+              @Html.LabelFor(m => m.SubjectGroupList, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.ListBoxFor(m => m.SubjectOrGroupId, Model.SubjectGroupList, new { @class = "form-control", @SelectionMode = "Multiple" })
+              </div>
+          </div>
+          <div class="form-group">
+              @Html.LabelFor(m => m.DegreeLevelId, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.DropDownListFor(m => m.DegreeLevelId, Model.DegreeLevelList, @String.Format("{0}", Content.DDLOptionalAllLabel()), new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group">
+              @Html.LabelFor(m => m.DivisionOrGradeId, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.DropDownListFor(m => m.DivisionOrGradeId, Model.AcademicGradeList, @String.Format("{0}", Content.DDLOptionalAllLabel()), new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group">
+              @Html.LabelFor(m => m.GPA, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.TextBoxFor(model => model.GPA, new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group" align="center">
+              <div style="max-height: 500px; overflow-y: auto;">
+                  <div class="text-right" style="margin: 0 8px 5px 0">
+                      <button class="btn btn-success" id="btnAddEducation"><i class="fa fa-plus"></i> Add</button>
+                  </div>
+                  <div class="clearfix"></div>
+                  <table id="educationGrid" class="contenttable fixedcontenttable custom-grid" style="width:98%">
+                      <thead>
+                          <tr>
+                              <th>
+                                  Degree Type
+                              </th>
+                              <th>
+                                  Degree Level
+                              </th>
+                              <th>
+                                  Division/Grade
+                              </th>
+                              <th>
+                                  GPA/CGPA
+                              </th>
+                              <th>
+                                  Subject/Group
+                              </th>
+                              <th>
+                                  Remove
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @for (int i = 0; i < Model.RecruitmentQualificationEducationList.Count; i++)
+                          {
+                              var item = Model.RecruitmentQualificationEducationList.ToList()[i];
+                              <tr>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationEducationList[i].Id)
+                                  </td>
+                                  @*<td style="display: none;">
+                                    @Html.HiddenFor(m => m.RecruitmentQualificationEducationList[i].RecruitmentQualificationDetailsId)
+                                </td>*@
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationEducationList[i].DegreeTypeId)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationEducationList[i].DegreeLevelId)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationEducationList[i].DivisionOrGradeId)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationEducationList[i].GPAOrCGPA)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationEducationList[i].SubjectOrGroupId)
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item.DegreeType
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item.DegreeLevel
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item.DivisionOrGrade
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item.GPAOrCGPA
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item.SubjectOrGroup
+                                  </td>
+                                  <td>
+                                      <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,'@Url.Action("DeleteRecruitmentEducation")')">
+                                      </a>
+                                  </td>
+                              </tr>
+                          }
+                      </tbody>
+
+                  </table>
+              </div>
+          </div>
+      </fieldset>
+      <fieldset>
+          <legend>Job Experience</legend>
+          <div class="form-group">
+              @Html.LabelFor(m => m.YearOfExp, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.TextBoxFor(model => model.YearOfExp, new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group">
+              @Html.LabelFor(m => m.OnBy, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.DropDownListFor(m => m.OnBy, Model.OnList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", onchange = "LoadByOn();"})
+              </div>
+          </div>
+          <div class="form-group payscale">
+              @Html.LabelFor(m => m.JobGradeId, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.DropDownListFor(m => m.JobGradeId, Model.PayScaleList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group post">
+              @Html.LabelFor(m => m.PostId, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.DropDownListFor(m => m.PostId, Model.PostNameList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group certificate">
+              @Html.LabelFor(m => m.ProfessionalCertificateId, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.DropDownListFor(m => m.ProfessionalCertificateId, Model.ProfessionalCertificateList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group">
+              @Html.LabelFor(m => m.TotalYearOfExp, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.TextBoxFor(model => model.TotalYearOfExp, new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group">
+              @Html.LabelFor(m => m.Remarks, new { @class = "col-sm-2 control-label" })
+              <div class="col-sm-4">
+                  @Html.TextBoxFor(model => model.Remarks, new { @class = "form-control" })
+              </div>
+          </div>
+          <div class="form-group" align="center">
+              <div style="max-height: 500px; overflow-y: auto;">
+                  <div class="text-right" style="margin: 0 8px 5px 0">
+                      <button class="btn btn-success" id="btnAddJobExp"><i class="fa fa-plus"></i> Add</button>
+                  </div>
+                  <div class="clearfix"></div>
+                  <table id="gridJobExp" class="contenttable fixedcontenttable custom-grid" style="width:98%">
+                      <thead>
+                          <tr>
+                              <th>
+                                  Year of Experience
+                              </th>
+                              <th>
+                                  Post/Salary Scale/Prof. Certificate
+                              </th>
+                              <th>
+                                  Total Year of Experience
+                              </th>
+                              <th>
+                                  Remarks
+                              </th>
+                              <th>
+                                  Remove
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @for (int i = 0; i < Model.RecruitmentQualificationJobExpList.Count; i++)
+                          {
+                              var item2 = Model.RecruitmentQualificationJobExpList.ToList()[i];
+                              <tr>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].Id)
+                                  </td>
+                                  @*<td style="display: none;">
+                                    @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].RecruitmentQualificationDetailsId)
+                                </td>*@
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].YearOfExp)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].OnBy)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].PostId)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].JobGradeId)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].ProfessionalCertificateId)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].TotalYearOfExp)
+                                  </td>
+                                  <td style="display: none;">
+                                      @Html.HiddenFor(m => m.RecruitmentQualificationJobExpList[i].Remarks)
+                                  </td>
+
+                                  <td style="text-align:left">
+                                      @item2.YearOfExp
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item2.OnType
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item2.TotalYearOfExp
+                                  </td>
+                                  <td style="text-align:left">
+                                      @item2.Remarks
+                                  </td>
+                                  <td>
+                                      <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item2.Id,'@Url.Action("DeleteRecruitmentJobExp")')">
+                                      </a>
+                                  </td>
+                              </tr>
+                          }
+                      </tbody>
+
+                  </table>
+              </div>
+          </div>
+
+      </fieldset>
+  </div>
+<script type="text/javascript">
+    $(function () {
+        $('#SubjectOrGroupId').multiselect({
+            includeSelectAllOption: true
+        });
+
+        var byOn = $('#OnBy').val();
+        if (byOn == 'PayScale') {
+            $('.post').hide();
+            $('.certificate').hide();
+        }
+    });
+
+    function LoadDegree() {
+        var degreeTypeId = $('#DegreeTypeId').val();
+        var degreeLevel = $('#DegreeLevelId');
+        degreeLevel.empty();
+        degreeLevel.append($('<option/>', {
+            value: '', text: '@Content.DDLOptionalAllLabel()'
+        }));
+        if (degreeTypeId != null && degreeTypeId != '') {
+            $.getJSON('@Url.Action("LoadDegreeLevel")', { degreeTypeId: degreeTypeId }, function (degrees) {
+                $.each(degrees, function (index, degree) {
+                    degreeLevel.append($('<option/>', {
+                        value: degree.Id,
+                        text: degree.Name
+                    }));
+                });
+            });
+        }
+    }
+    function LoadByOn() {
+        var byOn = $('#OnBy').val();
+        if (byOn == 'PayScale') {
+            $('.post').hide();
+            $('.certificate').hide();
+            $('.payscale').show();
+        }
+        else if (byOn == 'Post') {
+            $('.post').show();
+            $('.certificate').hide();
+            $('.payscale').hide();
+        }
+        else if (byOn == 'Certificate') {
+            $('.post').hide();
+            $('.certificate').show();
+            $('.payscale').hide();
+       }
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $('#btnAddEducation').on('click', function (e) {
+        e.preventDefault();
+        //debugger;
+        $('#message').empty();
+        var degreeTypeId = $('#DegreeTypeId').val();
+        var degreeType = $("#DegreeTypeId option:selected").text();
+
+        var degreeLevelId = $('#DegreeLevelId').val();
+        var degreeLevel = $("#DegreeLevelId option:selected").text();
+
+        var divisionOrGradeId = $('#DivisionOrGradeId').val();
+        var divisionOrGrade = $("#DivisionOrGradeId option:selected").text();
+
+        var subjectOrGroupId = $('#SubjectOrGroupId').val();
+        var subjectOrGroup = '';// []; //= $("#SubjectOrGroupId option:selected").text();
+
+        if (subjectOrGroupId != null) {
+            for (var i = 0; i < subjectOrGroupId.length; i++) {
+
+                var val = subjectOrGroupId[i];
+                var txt = $("#SubjectOrGroupId option[value='" + val + "']").text();
+
+                subjectOrGroup += ' ' + txt + ','
+            }
+        }
+
+        var gpa = $('#GPA').val();
+
+        if (degreeTypeId == '' || degreeTypeId == 'null') {
+            alert("Select Degree Type");
+            return;
+        }
+
+        var trClone = '<tr>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationEducationList[0].Id"  value="0"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationEducationList[0].DegreeTypeId"  value="' + degreeTypeId + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationEducationList[0].DegreeLevelId"  value="' + degreeLevelId + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationEducationList[0].DivisionOrGradeId"  value="' + divisionOrGradeId + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationEducationList[0].GPAOrCGPA"  value="' + gpa + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationEducationList[0].SubjectOrGroupId"  value="' + subjectOrGroupId + '"></td>' +
+                   '<td>' + '<label for="DegreeType">' + degreeType + '</td>' +
+                   '<td>' + '<label for="DegreeLevel" >' + degreeLevel + '</td>' +
+                   '<td>' + '<label for="DivisionOrGrade">' + divisionOrGrade + '</td>' +
+                   '<td>' + '<label for="GPAOrCGPA">' + gpa + '</td>' +
+                   '<td>' + '<label for="SubjectOrGroup">' + subjectOrGroup + '</td>' +
+                   '<td><a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;/PRM/RecruitmentQualificationInfo/DeleteRecruitmentEducation&quot;)"></a></td>' +
+                   '</tr>';
+        $('#educationGrid tbody').append(trClone);
+        RearrengeControlName();
+        $('#SubjectOrGroupId').multiselect("deselectAll", false).multiselect("refresh");
+
+    })
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+
+                }
+            });
+        }
+        RearrengeControlName();
+    }
+
+    function RearrengeControlName() {
+        $('#educationGrid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').prop('name', $(this).find('input').prop('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+</script>
+
+<script type="text/javascript">
+
+    $('#btnAddJobExp').on('click', function (e) {
+        e.preventDefault();
+
+        $('#message').empty();
+        var yearOfExp = $('#YearOfExp').val();
+
+        var onBy = $('#OnBy').val();
+
+        var onType = null;
+        var jobGradeId = null;
+        var designationId = null;
+        var professionalCertificateId = null;
+        if (onBy == 'PayScale') {
+             jobGradeId = $('#JobGradeId').val();
+             onType = $("#JobGradeId option:selected").text();
+        }
+        else if (onBy == 'Post') {
+            designationId = $('#PostId').val();
+            onType = $("#PostId option:selected").text();
+        }
+        else if (onBy == 'Certificate') {
+             professionalCertificateId = $('#ProfessionalCertificateId').val();
+             onType = $("#ProfessionalCertificateId option:selected").text();
+        }
+        var totalYearOfExp = $('#TotalYearOfExp').val();
+        var remarks = $('#Remarks').val();
+
+        var trExp = '<tr>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].Id"  value="0"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].YearOfExp"  value="' + yearOfExp + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].OnBy"  value="' + onBy + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].PostId"  value="' + designationId + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].JobGradeId"  value="' + jobGradeId + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].ProfessionalCertificateId"  value="' + professionalCertificateId + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].TotalYearOfExp"  value="' + totalYearOfExp + '"></td>' +
+                   '<td style="display: none;">' + '<input type="text" name="RecruitmentQualificationJobExpList[0].Remarks"  value="' + remarks + '"></td>' +
+
+                   '<td>' + '<label for="YearOfExp">' + yearOfExp + '</td>' +
+                   '<td>' + '<label for="OnType">' + onType + '</td>' +
+                   '<td>' + '<label for="TotalYearOfExp">' + totalYearOfExp + '</td>' +
+                   '<td>' + '<label for="Remarks">' + remarks + '</td>' +
+                   '<td><a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;/PRM/RecruitmentQualificationInfo/DeleteRecruitmentJobExp&quot;)"></a></td>' +
+                   '</tr>';
+        $('#gridJobExp tbody').append(trExp);
+        RearrengeControlName2();
+
+    })
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+
+                }
+            });
+        }
+        RearrengeControlName2();
+    }
+
+    function RearrengeControlName2() {
+        $('#gridJobExp tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').prop('name', $(this).find('input').prop('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+</script>

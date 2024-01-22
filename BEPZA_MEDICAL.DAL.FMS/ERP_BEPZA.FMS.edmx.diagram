@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c094fb85aae54bd39491df06a0795cfe" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_FixedDepositInfoInstallmentSchedule" Width="1.5" PointX="7.5" PointY="13.375" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_FixedDepositTypeInfo" Width="1.5" PointX="3" PointY="2" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_FDRInstallmentInfo" Width="1.5" PointX="7.5" PointY="7.125" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_BankInfoBranchDetail" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_FDRType" Width="1.5" PointX="10.375" PointY="0.75" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_SourceofFund" Width="1.5" PointX="10.375" PointY="12" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_FixedDepositInfo" Width="1.5" PointX="12.625" PointY="2.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_FixedDepositInfo_FMS_BankInfoBranchDetail" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_FDRInstallmentInfoViewModel_FMS_FixedDepositInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FMS_FixedDepositInfo_FMS_FDRType" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_FixedDepositInfo_FMS_FixedDepositTypeInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_FixedDepositInfoInstallmentSchedule_FMS_FixedDepositInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FMS_FixedDepositInfo_FMS_SourceofFund" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_FDRClosingInfo" Width="1.5" PointX="14.875" PointY="5.125" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_FDRClosingInfo_FMS_FixedDepositInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_BankInfo" Width="1.5" PointX="0.75" PointY="6.375" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_BankInfoBranchDetail_FMS_BankInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_FixedDepositInfo_FMS_BankInfo" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_BankWiseOfferRate" Width="1.5" PointX="5.25" PointY="7.125" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_BankWiseOfferRate_FMS_BankInfo" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_BankWiseOfferRate_FMS_BankInfoBranchDetail" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_BankWiseOfferRate_FMS_FDRType" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.acc_Cost_Centre_or_Institute_Information" Width="1.5" PointX="0.75" PointY="12.75" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FKE18F415067F93324" />
+        <EntityTypeShape EntityType="BEPZA_MEDICAL.DAL.FMS.FMS_CPFInterestReceivable" Width="1.5" PointX="14.875" PointY="11.875" />
+        <AssociationConnector Association="BEPZA_MEDICAL.DAL.FMS.FK_FMS_CPFInterestReceivable_FMS_FixedDepositInfo" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

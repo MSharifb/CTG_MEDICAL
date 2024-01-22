@@ -1,0 +1,84 @@
+﻿
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Department', 'Department', 'Post Name', 'Post Name', 'Recruitment Type', 'Edit', 'Delete'],
+            colModel: [
+                  { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                  { name: 'DepartmentId', index: 'DepartmentId', align: 'left', width: '60px', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("DepartmentforView")' },
+                  { name: 'DepartmentName', index: 'DepartmentName', align: 'left', width: '60px', search: false, edittype: 'select'},
+                  { name: 'DesignationId', index: 'DesignationId', align: 'left', width: '60px', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("DesignationforView")' },
+                  { name: 'DesignationName', index: 'DesignationName', align: 'left', width: '60px', search: false, edittype: 'select' },
+                  { name: 'Recruitment', index: 'Recruitment', align: 'left', width: '60px', search: false, edittype: 'select' },
+                  { name: 'Edit', index: 'Edit', align: 'center', search: false, sortable: false, width: '50px', edittype: 'image', formatter: viewformatEdiorLink },
+                  { name: 'Delete', index: 'Delete', align: 'right', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Recruitment Qualification Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            loadComplete: function () {
+                $("a.deleteItem").on('click', function (e) {
+                    e.preventDefault();
+                    deleteLinkObj = $(this);  //for future use
+                    $('#delete-dialog').dialog('open');
+                    return false; // prevents the default behaviour
+                });
+            }
+        });
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink(" ", "Edit", new { id = "_id_" }, new { @class = "editItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;     
+    }
+</script>
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").on("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>

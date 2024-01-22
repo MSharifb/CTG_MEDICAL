@@ -1,0 +1,72 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.SMS.ViewModel.SecurityPersonnelInfo.SecurityPersonnelViewModel
+@{
+    Layout = "~/Areas/SMS/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" id="Id" value="@Model.Id" />
+@*<input type="hidden" id="AnsarPersonalInfoId" value="@Model.PersonalInfo.Id" />*@
+
+@{
+    string Id = "#";
+    string bepzaId = "#";
+    if (Model.Id != 0)
+    { Id = "/" + Model.Id.ToString(); }
+    if (!string.IsNullOrWhiteSpace(Model.BEPZAId))
+    { bepzaId = "/" + Model.BEPZAId; }
+
+    var selectedSignatureClass = string.Empty;
+    //if (Model.AnsarPhotograph.EmployeeId != 0 && !Model.AnsarPhotograph.IsPhoto)
+    //{ selectedSignatureClass = "selected"; }
+     
+}
+<div class="employee">
+    <div class="left-sidebar">
+        <ul>
+            <li class="@Model.EmploymentInfo.SelectedClass">@Html.ActionLink("Employment Information", "EmploymentInfoIndex" + Id, null, new { @class = "emp-info" })</li>  
+            <li class="@Model.AccademicQlfnInfo.SideBarClassName">@Html.ActionLink("Educational Qualification", "AccademicQlfnInfoIndex" + Id, new { IsMenu = true }, new { @class = "edu-info" })</li>    
+            <li class="@Model.JobExperienceInfo.SideBarClassName">@Html.ActionLink("Previous Job Information", "JobExperienceInfoIndex" + Id, new { IsMenu = true }, new { @class = "job-exp" })</li> 
+            <li class="@Model.EmpServiceHistoryViewModel.SideBarClassName">@Html.ActionLink("Service History", "ServiceHistoryIndex" + Id, new { IsMenu = true }, new { @class = "service-history" })</li>                
+        </ul>
+    </div>
+    <div class="form-content">
+        @switch (Model.ViewType)
+        {
+            case "EmploymentInfo":
+            @Html.Partial("_EmploymentInfo", Model.EmploymentInfo)
+       break;
+            case "AccademicQlfnInfo":
+            @Html.Partial("_AccademicQlyInfo", Model.AccademicQlfnInfo)
+       break;
+            case "JobExperienceInfo":
+            @Html.Partial("_JobExperienceInfo", Model.JobExperienceInfo)
+       break;
+            case "EmpServiceHisotory":
+            @Html.Partial("_EmpServiceHistory", Model.EmpServiceHistoryViewModel)
+       break;
+       default:
+       break;
+        }
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var editMode = false;
+    var bepzaId = '@Model.BEPZAId';
+    var id = '@Model.Id';
+
+    if (id != 0) {
+        editMode = true;        
+    }
+
+    if (!editMode) {
+        $('.emp-info, .edu-info, .job-exp, .service-history').attr('href', '#');
+    }    
+
+    function DeleteConfirm()
+    {
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+</script>

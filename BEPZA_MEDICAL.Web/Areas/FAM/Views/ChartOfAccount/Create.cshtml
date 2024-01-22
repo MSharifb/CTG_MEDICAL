@@ -1,0 +1,239 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.ChartOfAccount
+@model ChartOfAccountModel
+@*@{
+    ViewBag.Title = "Common Configuration";
+    Layout = "~/Areas/FAM/Views/Shared/_Layout.cshtml";
+}   *@   
+@*@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = "../FAM/chartofaccount/Create" }))*@
+@*@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Model.Mode == "Create" ? "../FAM/chartofaccount/Create" : "../FAM/chartofaccount/Edit" }))*@
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Model.Mode == "Create" ? "../Create" : "../Edit" }))
+{
+    <div class=".frm-content">
+      @Html.HiddenFor(m=> m.Id)
+       
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AccountHeadType)
+                <label style='color: red'>*</label> 
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m=> m.AccountHeadType, Model.AccountHeadTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.AccountHeadCode)
+                <label style='color: red'>*</label> 
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.AccountHeadCode)
+            </span>
+            
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.AccountHeadName)
+                <label style='color: red'>*</label> 
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.AccountHeadName)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.IsPostingAccount)                
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.IsPostingAccount)
+            </span>
+        </div>
+        <div class="row"><span class="label">
+                @Html.LabelFor(model => model.OpeningBalance)
+                <label style='color: red'>*</label> 
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.OpeningBalance)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.IsBank)                
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.IsBank)
+            </span>
+            
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ParentHeadCode)
+                <label style='color: red'>*</label> 
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.ParentHeadCode, Model.ParentHeadCodeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.IsBudgetHead)                
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.IsBudgetHead)
+            </span>
+            
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.BSPLName)                
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.BSPLName)
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.BSPLSerial)                
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.BSPLSerial)
+            </span>
+            
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.CashBankType)
+                <label style='color: red'>*</label> 
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.CashBankType, Model.CashBankTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            </span><span class="label-right">
+                @Html.LabelFor(model => model.IsActive)                
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.IsActive)
+            </span>
+            
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Remarks)                
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(m => m.Remarks, new { rows = "3", cols = "177", style="width:570px" })
+            </span>
+        </div>
+        <div class="clear"></div>
+    </div>    
+
+    <div class="button-crude">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+        }
+        else
+        {
+        }
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+        {
+            <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+        }     
+
+        <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        <div class="clear"></div>
+    </div>
+
+    </div>
+}
+<div class="button-crude button-left">
+    @Ajax.ActionLink("Back to List", "GetTreeView", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })
+</div>    
+    <script type="text/javascript">
+        function OnComplete(content) {
+            var data = content.responseText;
+            if (data.toLowerCase().indexOf("updated") >= 0) {
+                    
+                    $("#message").show();
+                    $('#message').text(data).css({ 'color':'green' });
+                    $("#message").delay(3000).hide('slow');
+
+                $.get(
+                        "@Url.Action("GetTreeView")",
+                        {},
+                        function(r){
+                            if(r != ''){
+                                $('.search-content').show();
+                                $('.frm-content').html(r);
+                            }
+                            else{
+                                $('.search-content').hide();
+                                $("#message").show();
+                                $('#message').text(data).css({ 'color':'red' });
+                                $("#message").delay(3000).hide();
+                            }
+                        }
+                    );
+            }
+            else if (data.toLowerCase().indexOf("saved") >= 0) {
+                $("#message").show();
+                $('#message').text(data).css({ 'color':'green' });
+                $("#message").delay(3000).hide('slow');
+
+                $.get(
+                        "@Url.Action("GetTreeView")",
+                        {},
+                        function(r){
+                            if(r != ''){
+                                $('.search-content').show();
+                                $('.frm-content').html(r);
+                            }
+                            else{
+                                $('.search-content').hide();
+                                $("#message").show();
+                                $('#message').text(data).css({ 'color':'red' });
+                                $("#message").delay(3000).hide();
+                            }
+                        }
+                    );
+            }
+            else {
+                $('.search-content').hide();
+                $("#message").show();
+                $('#message').text(data).css({ 'color':'red' });
+                $("#message").delay(3000).hide('slow');
+            }
+        }
+
+        function OnCompleteBacktoList(content) {
+
+            if (content.statusText == 'OK') {
+                //   console.log(content);
+                //var data = jQuery.parseJSON(content.response)
+                $('.search-content').show();
+                $('.frm-content').html(content.responseText);
+            }
+        }
+        
+        
+
+        $(function () {
+            var mode = '@Model.Mode';
+                        
+                        $.validator.unobtrusive.parse('#frm');
+
+            $('#AccountHeadType').change(function(){
+                var headType = $('#AccountHeadType option:selected').text();  
+                
+                $.getJSON("@Url.Action("GetParentHead")" + "?accountType="+ headType, function(result) {
+                    var options = $("#ParentHeadCode");
+                     options.empty();
+
+                    //don't forget error handling!
+                    options.append($("<option />").val("").text('[Select One]'));
+                    $.each(result, function(i) {
+//                        var element = "<option value='"+ result[i].value +"A'>" + result[i].text + "</option>";
+//                        alert(element);
+                        options.append($("<option />").val(result[i].value).text(result[i].text));
+                    });
+                });
+
+            })
+
+            if (mode == 'Create') {
+                $('#btnSave').show();
+                $('#btnUpdate').hide();
+            }
+            else {
+                $('#btnUpdate').show();
+                $('#btnSave').hide();
+            }
+        })
+</script>

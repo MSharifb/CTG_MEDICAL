@@ -1,0 +1,23 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.AccidentInformationViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/FAR/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "AccidentInformation", FormMethod.Post, new { id = "frm" }))
+{
+   
+    @Html.Partial("_CreateOrEdit", Model)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2 text-right">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <button class="btn btn-success" id="btnSave"><i class="fa fa-edit"></i> Update</button>
+                }
+                <a href="@Url.Action("Index")" class="btn btn-warning"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+}
+
+

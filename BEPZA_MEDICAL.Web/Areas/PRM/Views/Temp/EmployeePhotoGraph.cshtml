@@ -1,0 +1,77 @@
+﻿@model MFS_IWM.Web.Areas.PRM.ViewModel.EmployeePhotoGraphViewModel
+@using Microsoft.Web.Helpers;
+@{
+    ViewBag.Title = "EmployeePhotoGraph";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {      
+        if ('@Model.ErrMsg' != "") {
+
+            if ('@Model.IsError' == "1") {
+                $("#error-dialog .msg").html('@Model.ErrMsg'.replace(/#/gi, "<br/>* ")).css("color", "red");
+                $('#error-dialog').dialog('open');
+            }
+            else {
+                $("#successfull-dialog .msg").html('@Model.ErrMsg'.replace(/#/gi, "<br/>* ")).css("color", "Green");
+                $('#successfull-dialog').dialog('open');
+            }
+        }
+    }); 
+</script>
+@using (Html.BeginForm("CommonAction", "Temp", new { id = Model.EmployeeId }, FormMethod.Post,
+        new { @encType = "multipart/form-data" }))
+{     
+    <div class="GroupBox" align="center">
+        <div class="row">
+            <h2>
+                Employee Photograph Uploader</h2>
+        </div>
+        <div class="row">
+            @FileUpload.GetHtml(initialNumberOfFiles: 1, allowMoreFilesToBeAdded: false,
+            includeFormTag: false, addText: "Add Files", uploadText: "Upload File")
+        </div>
+        <div class="row">
+            <div style="border: 1px solid black; width: 150px; height: 150px; margin: 20px">
+                @if (Model != null)
+                {
+                    if (String.IsNullOrEmpty(Model.ImageUrl))
+                    {        
+                    <img height="150" width="150" class="imgThumb" src="@Url.Action("GetImage", "Temp", new { id = Model.EmployeeId })"/>
+                               
+                    }
+                    else
+                    { 
+                    <img height="150" width="150" 
+                             src="@(Model.ImageUrl)" 
+                             id="uploadedImage"  alt="@Model.ImageAltText"/>
+                   
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="GroupBox">
+        <table align="center">
+            <tr>
+                <td>
+                    <div class="buttonSubmit">
+                        <input type="submit" value="Save" name="btnSubmit" />
+                    </div>
+                </td>
+                <td>
+                    <div class="buttonSubmit">
+                        <input type="submit" value="Upload" name="btnSubmit" />
+                    </div>
+                </td>
+                <td>
+                    <div class="buttonSubmit">
+                        <input type="submit" value="Delete" name="btnSubmit" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>    
+
+}

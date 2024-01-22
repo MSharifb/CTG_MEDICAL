@@ -1,0 +1,123 @@
+﻿@using System.Activities.Statements
+@model BEPZA_MEDICAL.Web.Models.MenuModels
+
+@{
+    var curMenu = string.Empty;
+}
+<h4 class="page-title">
+    @Sitemap()
+</h4>
+@helper Sitemap()
+{
+    string[] rawUrl = Request.RawUrl.TrimStart('/').Split('/');
+    string controllername = string.Empty;
+    string actionname = string.Empty;
+
+    try
+    {
+        controllername = Convert.ToString(ViewContext.ParentActionViewContext.RouteData.Values["controller"]).Trim();
+        actionname = Convert.ToString(ViewContext.ParentActionViewContext.RouteData.Values["action"]).Trim();
+
+    }
+    catch { }
+
+
+    List<BEPZA_MEDICAL.Web.Models.Menu> list = Model.MenuList.OrderBy(x => x.ControllerName).ToList();
+
+    BEPZA_MEDICAL.Web.Models.Menu currentMenu = list.FirstOrDefault(l => !string.IsNullOrEmpty(l.ControllerName)
+                                          && l.ControllerName.ToLower().Equals(controllername.ToLower()) 
+                                          && !string.IsNullOrEmpty(l.ActionName) 
+                                          && l.ActionName.ToLower().Equals(actionname.ToLower() + "/"));
+
+
+
+
+    if (currentMenu != null)
+    {
+        // Push into a stack to reverse them
+        var node = currentMenu;
+        var nodes = new Stack<BEPZA_MEDICAL.Web.Models.Menu>();
+        while (!string.IsNullOrEmpty(node.ParentMenuName))
+        {
+            nodes.Push(list.Single(l => l.MenuId == node.ParentMenuId));
+            node = list.Single(l => l.MenuId == node.ParentMenuId);
+        }
+
+        while (nodes.Count != 0)
+        {
+            BEPZA_MEDICAL.Web.Models.Menu n = nodes.Pop();
+        }
+        
+        @currentMenu.MenuName
+        if (@currentMenu.MenuName == null || @currentMenu.MenuName == "")
+        {
+           //
+        }
+    }
+    else
+    {
+        if (Request.Url != null)
+        {
+            string[] module = Request.Url.AbsoluteUri.Split('/');
+            var path = TempData["clickPath"] != null ? Convert.ToString(TempData["clickPath"]).ToLower() : string.Empty;
+
+            if (module.Length > 3)
+            {
+                if (module.Length > 4)
+                {
+                    string controllerName = module[4];
+                    
+                    var pmid = Model.MenuList.FirstOrDefault(m => !string.IsNullOrEmpty(m.ControllerName)
+                        && (
+                        m.ControllerName.ToLower().Trim().Equals(controllerName.ToLower().Trim())
+                        || m.ControllerName.ToLower().Trim().Equals(path + controllerName.ToLower().Trim())
+                        ));
+                    if (pmid != null)
+                    {
+                        var node = pmid;
+                        var nodes = new Stack<BEPZA_MEDICAL.Web.Models.Menu>();
+                        while (!string.IsNullOrEmpty(node.ParentMenuName))
+                        {
+                            nodes.Push(list.Single(l => l.MenuId == node.ParentMenuId));
+                            node = list.Single(l => l.MenuId == node.ParentMenuId);
+                        }
+
+                        while (nodes.Count != 0)
+                        {
+                            BEPZA_MEDICAL.Web.Models.Menu n = nodes.Pop();
+                        }
+                        @pmid.MenuName
+                    }
+                }
+
+                if (module.Length > 5)
+                {
+                    string controllerName = module[5];
+                    var pmid = Model.MenuList.FirstOrDefault(m => !string.IsNullOrEmpty(m.ControllerName)
+                        && (
+                        m.ControllerName.ToLower().Trim().Equals(controllerName.ToLower().Trim())
+                        || m.ControllerName.ToLower().Trim().Equals(path + controllerName.ToLower().Trim())
+                        ));
+                    if (pmid != null)
+                    {
+
+                        var node = pmid;
+                        var nodes = new Stack<BEPZA_MEDICAL.Web.Models.Menu>();
+                        while (!string.IsNullOrEmpty(node.ParentMenuName))
+                        {
+                            nodes.Push(list.Single(l => l.MenuId == node.ParentMenuId));
+                            node = list.Single(l => l.MenuId == node.ParentMenuId);
+                        }
+
+                        while (nodes.Count != 0)
+                        {
+                            BEPZA_MEDICAL.Web.Models.Menu n = nodes.Pop();
+                        }
+                        @pmid.MenuName
+                    }
+                }
+            }
+        }
+    }
+}
+

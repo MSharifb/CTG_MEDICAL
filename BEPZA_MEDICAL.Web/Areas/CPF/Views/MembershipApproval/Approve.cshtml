@@ -1,0 +1,124 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MembershipInformationViewModel
+@{
+    ViewBag.Title = "Approve";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Approve", "MembershipApproval", FormMethod.Post, new { id = "frm" }))
+{  
+    <div class="GroupBox" class="message" style="min-height: 15px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div style="color: Red">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <fieldset>
+        @Html.HiddenFor(model => model.Id)
+        <div id="appDiv">
+            @Html.Partial("_CreateOrEdit", Model)
+        </div>
+        <div class="button-center buttonSubmit" style="margin-top: 10px;">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                
+                <input type="submit" id="btnApproved" value="Approved" style="width: auto; overflow: visible;
+                    padding-left: .25em; padding-right: .25em;" />
+                <input type="submit" id="btnReject" value="Reject" style="width: auto; overflow: visible;
+                    padding-left: .25em; padding-right: .25em;" />
+            }
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<div class="row" style="padding: 10px">
+    @Html.CheckBox("ShowApproval")<b style="color: #3C78B5; vertical-align: top; padding: 2px">
+        View Approval History</b>
+    <div class="PS">
+    </div>
+    <div class="History" style="display: none">
+        <div class="GroupBox">
+            <div class="row">
+                @if (Model.ApprovalPathList != null && Model.ApprovalPathList.Count > 0)
+                {
+                    foreach (var approvalObj in Model.ApprovalPathList)
+                    {
+            
+                    <table>
+                        <tr>
+                            <td>
+                                <span style="color: #3C78B5; float: left; margin: 0 0 0 38px; overflow: visible;
+                                    text-align: left; vertical-align: middle;">@Html.Encode(approvalObj.Status) by :
+                                </span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.ApprovedBy)</span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; float: left; margin: 0 0 0 38px; overflow: visible;
+                                    text-align: left; vertical-align: middle;">Submission Date :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.ApprovedDate)
+                                </span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; float: left; margin: 0 0 0 38px; overflow: visible;
+                                    text-align: left; vertical-align: middle;">Status :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.Status)
+                                </span>
+                            </td>
+                            <td>
+                                <span style="color: #3C78B5; float: left; margin: 0 0 0 38px; overflow: visible;
+                                    text-align: left; vertical-align: middle;">Comment :</span>
+                            </td>
+                            <td>
+                                <span>@Html.Encode(approvalObj.Comments)</span>
+                            </td>
+                        </tr>
+                    </table>
+                
+                    }
+                }
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+
+    $(function () {
+        if ('@Model.Mode' == "Edit") {
+
+            $('.button-left a.addItem').hide();
+            $('#grid .dynamicRow').find('td input.datePicker').attr('readonly', true).css('background-color', '#F2F5F8');
+            $('#grid .dynamicRow').find('td:last img').hide();
+        }
+    });
+
+   
+    $('#btnApproved').live('click', function () {
+
+        $('#ApprovalStatusId').val(4);
+
+    });
+
+    $('#btnReject').live('click', function () {
+
+        $('#ApprovalStatusId').val(5);
+
+    });
+
+
+    $("#ShowApproval").click(function () {
+        $(".History").toggle("slow");
+    });
+</script>

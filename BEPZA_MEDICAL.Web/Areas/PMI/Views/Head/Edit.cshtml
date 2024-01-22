@@ -1,0 +1,35 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.HeadViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("Edit", "Head", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div id="ErrMsg" class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+        @*@Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)*@
+    </div>
+    @Html.Partial("_CreateOrEdit", Model)
+    <div class="GroupBox">
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <button type="submit" class="btn btn-sm btn-primary" value="Update" id="btnSave" name="btnSubmit" style="margin-right: 8px;"><i class="fa fa-edit"> Update</i></button>
+            }
+        </div>
+    </div>
+}
+<div class="button-crude button-left">
+    <a href="@Url.Action("Index")" class="btn btn-sm btn-primary"> <i class="fa fa-backward"></i> Back to List</a>
+</div>

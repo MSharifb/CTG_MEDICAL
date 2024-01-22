@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{179EA875-D8BF-4A2A-A8D8-52578F159AB7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.DAL.FAR</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.DAL.FAR</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="acc_Accounting_Period_Information.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.FAR.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.FAR.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AccidentInformation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AdditionalInfoofVehicle.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AdditionalInfoofVehicleDetail.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AssetCondition.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AssetMaintenanceInformation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AssetMaintenanceInformationDetail.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AssetStatus.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_AssetTransfer.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_Catagory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_Depreciation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_DepreciationDetail.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_DepreciationMethod.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_ExecuteFunctions.cs" />
+    <Compile Include="FAR_FixedAsset.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_GenericRepository.cs" />
+    <Compile Include="FAR_Location.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_MaintenanceTypeInformation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_Repair.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_SaleDisposal.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_SparePartInformation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_SubCategory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_Supplier.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FAR_UnitOfWork.cs" />
+    <Compile Include="FAR_uspVoucherPosting_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SP_FAR_AssetRegisterWithDepreciationCalRpt_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_AssetTransferHistoryRpt_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_FixedAssetRegisterRpt_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_FixedAssetScheduleRpt_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_GetDepreciationByFixedAssetId_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_GetDepreciationStatus_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_GetNextFinancialYear_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_GetUniqueMRRList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_FAR_LocationWiseAssetListRpt_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="ERP_BEPZA.FAR.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ERP_BEPZA.FAR.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ERP_BEPZA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.FAR.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ERP_BEPZA.FAR.edmx.diagram">
+      <DependentUpon>ERP_BEPZA.FAR.edmx</DependentUpon>
+    </None>
+    <None Include="ERP_BEPZA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.FAR.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

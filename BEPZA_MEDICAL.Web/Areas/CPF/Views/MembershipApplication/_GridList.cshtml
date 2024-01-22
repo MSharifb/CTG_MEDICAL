@@ -1,0 +1,91 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Employee ID', 'Membership ID', 'Employee Name', 'Initial', 'Designation', 'Permanent Date', 'Joining Date', 'Permanent Period', 'And', 'Membership Status', 'Delete'],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'EmployeeCode', index: 'EmployeeCode', width: '70px', align: 'center', search: true, hidden: false, edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'MembershipID', index: 'MembershipID', width: '90px', align: 'left', search: true, edittype: 'text'},
+                            { name: 'EmployeeName', index: 'EmployeeName', align: 'left', search: true, edittype: 'text' },
+                            { name: 'EmployeeInitial', index: 'EmployeeInitial', width: '70px', align: 'left', search: true, hidden: false, edittype: 'text' },
+                            { name: 'Designation', index: 'Designation', align: 'left', search: false, edittype: 'text' },
+                            { name: 'PermanentDate', index: 'PermanentDate', align: 'center', search: false, width: '100px', edittype: 'text' },
+                            { name: 'JoiningDate', index: 'JoiningDate', align: 'center', search: false, width: '90px', edittype: 'text' },
+                            { name: 'PermanentPeriod', index: 'PermanentPeriod', align: 'center', hidden: true, search: true, edittype: 'text' },
+                            { name: 'And', index: 'And', align: 'center', hidden: true, search: true, edittype: 'text' },
+                            { name: 'MembershipStatus', index: 'MembershipStatus', width: '70px', align: 'center', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetMembershipStatusList")' },
+                            { name: 'Delete', index: 'Delete', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '50px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+            autowidth: true,
+            caption: "My Membership Application",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    $(function () {
+
+        $('#sg_PermanentPeriod, #sg_And').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' })
+        .css({ 'width': '100px' });
+
+    }) 
+</script>
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+     
+</script>
+

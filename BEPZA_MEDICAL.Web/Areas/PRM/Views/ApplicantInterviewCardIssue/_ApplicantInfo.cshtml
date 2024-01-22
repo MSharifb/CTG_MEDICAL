@@ -1,0 +1,57 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantInterviewCardIssueViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ApplicantInformationListDetail"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ApplicantInfoId)
+        @Html.HiddenFor(x => x.ApplicantName)
+        
+        @*<td style="width: 30px; text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>*@
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.DesignationName)
+        </td>
+        <td width="10%" style="text-align: left">
+            @*@if (@Model.RollNo == 0 || @Model.RollNo == null) { 
+            @Html.TextBoxFor(x => x.RollNo, new { @class = "required" })
+            }
+            else
+            {*@
+            @Html.TextBoxFor(x => x.RollNo, new { @class = "read-only", @readonly = true})                
+            @*}*@
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.ApplicantName)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.FatherName)
+        </td>
+        <td width="8%" style="text-align: center">
+            @Html.Encode(Model.DateOfBirth)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.NID)
+        </td>
+        @*<td width="5%" style="text-align: center">
+            <a href="#" title="view" onclick="ViewApplicantInfo(this,@Model.ApplicantInfoId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" title="view" onclick="GetInterviewCard(this,@Model.ApplicantInfoId,@Model.RollNo)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>*@
+        @*<td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>*@
+    }
+</tr>
+<script type="text/javascript">
+    FormatTextBox();
+</script>

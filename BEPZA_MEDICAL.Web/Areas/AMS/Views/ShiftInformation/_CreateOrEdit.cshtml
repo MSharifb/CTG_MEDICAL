@@ -1,0 +1,665 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftInformation.ShiftInformationViewModel
+    @Html.HiddenFor(m => m.Mode)
+<div id="pageData"></div>
+    <div class="GroupBox" id="shiftInfo">
+        @Html.HiddenFor(m => m.Id)
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.ShiftType)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(m => m.ShiftType, Model.ShiftTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+
+                </span>
+            </div>
+            <div class="row roster-ctr">
+                <div class="label">
+                    @Html.LabelFor(model => model.DepartmentId)
+                </div>
+                <div class="field">
+                    @Html.DropDownListFor(m => m.DepartmentId, Model.Department, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="label">
+                    @Html.LabelFor(model => model.ShiftName)
+                    <label class="required-field">*</label>
+                </div>
+                <div class="field">
+                    @Html.EditorFor(m => m.ShiftName)
+                </div>
+            </div>
+            <div class="row roster-ctr">
+                <span class="label">
+                  @Html.LabelFor(model => model.IsRoster)
+                </span><span class="field">
+                    @Html.EditorFor(m => m.IsRoster) 
+                </span>
+            </div>
+            <div class="row roster-ctr">
+                <span class="label">
+                    @Html.LabelFor(model => model.IsNightShift)
+                </span><span class="field">
+                    @Html.EditorFor(m => m.IsNightShift)
+                </span>
+            </div>
+
+        <div class="clear">
+        </div>
+    </div>
+
+    <div class="GroupBox" id="ShiftDetailInfo">
+      
+            <div class="row">
+                <span class="label">
+                    <label for="PeriodFrom"> Period From </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="PeriodFrom" type="text" name="PeriodFrom" class="date cmrequired">
+                </span><span class="label-right">
+                    <label for="InTime"> In Time </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="InTime" type="text" name="InTime" class="time-picker readonly cmrequired">
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    <label for="PeriodFrom"> Period To </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="PeriodTo" type="text" name="PeriodTo" class="date cmrequired">
+                </span><span class="label-right">
+                    <label for="OutTime"> Out Time </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="OutTime" type="text" name="OutTime" class="time-picker readonly cmrequired">
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    <label for="InGraceTime"> In Grace Time (Min.)  </label>
+                </span><span class="field">
+                    <input id="InGraceTime" type="text" name="InGraceTime" class="integer">
+                </span><span class="label-right">
+                    <label for="AbsentTime"> Absent Time (Min.) </label>
+                </span><span class="field">
+                    <input id="AbsentTime" type="text" name="AbsentTime" class="integer">
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    <label for="InGraceTime"> Out Grace Time (Min.) </label>
+                </span><span class="field">
+                    <input id="OutGraceTime" type="text" name="OutGraceTime" class="integer">
+                </span><span class="label-right">
+                    <label for="EffectiveDate"> Effective Date </label> <label class="required-field">*</label>
+                </span><span class="field">
+                           <input id="EffectiveDate" type="text" name="EffectiveDate" class="date cmrequired">
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    <label for="Remarks"> Remarks </label>
+                </span><span class="field">
+                    <textarea id="Remarks" name="Remarks"></textarea>
+                </span><span class="label-right">
+
+                </span><span class="field">
+
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+
+        <div class="clear">
+        </div>
+
+        <table id="shiftGrid" class="contenttable fixedcontenttable custom-grid">
+            <thead>
+                <tr>
+                    <th>
+                        Period From
+                    </th>
+                    <th>
+                        Period To
+                    </th>
+                    <th>
+                        In Time
+                    </th>
+                    <th>
+                        Out Time
+                    </th>
+                    <th id="thChequeNo">
+                        Effective Date
+                    </th>
+                    <th>
+                        Remarks
+                    </th>
+                    <th>
+                        Remove
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in  Model.AMS_ShiftInformationDetail)
+                {
+                    <tr class="row">
+                        <td> <label> @item.PeriodFrom.ToString("dd/MM/yyyy") </label> </td>
+                        <td> <label> @item.PeriodTo.ToString("dd/MM/yyyy") </label> </td>
+                        <td> <label> @item.InTime </label> </td>
+                        <td> <label> @item.OutTime </label> </td>
+                        <td> <label> @item.EffectiveDate.ToString("dd/MM/yyyy") </label> </td>
+                        <td> <label> @item.Remarks </label> </td>
+                        <td>
+                            <a onclick="RemoveDb(this,@item.Id,'S','@Url.Action("DeleteDetail")')" title="delete" href="#">
+                                <img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" />
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+<br/>
+<div class="clear">
+</div>
+
+<div class="GroupBox" id="frmBreak">
+
+        <div class="row">
+            <span class="label">
+                <label for="Break"> Break Name </label> <label class="required-field">*</label>
+            </span><span class="field">
+                <input id="BreakName" type="text" name="BreakName" class="cmrequired">
+            </span><span class="label-right">
+                <label for="StartTime"> Start Time </label> <label class="required-field">*</label>
+            </span><span class="field">
+                <input id="StartTime" type="text" name="StartTime" class="cmrequired time-picker readonly">
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                <label for="Remarks"> Remarks </label>
+            </span><span class="field">
+                <textarea id="Remarks" name="Remarks"></textarea>
+            </span><span class="label-right">
+                <label for="BOutTime"> End Time </label> <label class="required-field">*</label>
+            </span><span class="field">
+                <input id="EndTime" type="text" name="EndTime" class="cmrequired time-picker readonly">
+            </span>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="button-crude fixedAddButton" style="text-align: right;">
+            <input id="btnBreakAdd" type="button" value="Add" />
+        </div>
+
+    <div class="clear">
+    </div>
+
+    <table id="grid" class="contenttable fixedcontenttable">
+        <thead>
+            <tr>
+                <th>
+                    Break Name
+                </th>
+                <th>
+                    Start Time
+                </th>
+
+                <th>
+                    End Time
+                </th>
+
+                <th>
+                    Remarks
+                </th>
+                <th>
+                    Remove
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.AMS_ShiftBreakInformationViewModel)
+            {
+                <tr class="row">
+                    <td> <label> @item.BreakName </label> </td>
+                    <td> <label> @item.StartTime </label> </td>
+                    <td> <label> @item.EndTime </label> </td>
+                    <td> <label> @item.Remarks </label> </td>
+                    <td>
+                        <a onclick="RemoveDb(this,@item.Id,'B','@Url.Action("DeleteDetail")')" title="delete" href="#">
+                            <img alt="delete" style="border: none;" src="@Url.Content("~/Content/Images/Delete.png")" />
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+    <br />
+    <div class="clear">
+    </div>
+<script>
+    var indexUrl = 'http://'+ '@Request.Url.Authority' + '@Url.Action("Index", "ShiftInformation")';
+    $("#pageData").data("URL", { redirectUrl: indexUrl });
+
+</script>
+<script src="@Url.Content("~/Scripts/AMS/ShiftInfo.js")" type="text/javascript"></script>
+
+<script>
+    // New Added By Nazrul for Clear Button
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+</script>
+
+    @*<script type="text/javascript">
+
+        function trs()
+        {
+          var v=  ValidateForm();
+          alert(v);
+          }
+
+        var mode = '';
+        $(function () {
+            mode = '@Model.Mode';
+            $('#debitTotal').attr('readonly',true);
+            $('#creditTotal').attr('readonly',true);
+            $('#VoucherNumber').attr('readonly',true);
+            $('#SelectedHeadCurrentBalance').attr('readonly',true);
+            $('#SelectedAccountHeadName').attr('readonly', true);
+
+            $.validator.unobtrusive.parse('#frm');
+
+            $('#btnReject').live('click', function(){
+                if($(this).val()=="Reject")
+                {
+                    $('#recommenderOrApprover').val("Reject");
+                }
+            });
+
+            if (mode == 'Create') {
+                $('#btnSave').show();
+                $('#btnUpdate').hide();
+                $('#thChequeNoRV').hide();
+                $('#tdChequeNumberRV').hide();
+                $('.date-picker').val("")
+
+                //For Invoice voucher from Report
+                var vt = $('#VoucherTypeId option:selected').text()
+                // alert(vt);
+                if(vt=='IV')
+                {
+                    CheckControlDisable(vt);
+
+                    $('#VoucherTypeId').attr('disabled',true);
+                    $(".debit").attr('readonly','true');
+                    $('#ddlProject').attr('disabled',true);
+                    $('#ReferenceNumber').attr('readonly','true');
+                }
+                //else if(vt=='JV')
+                else if(vt=='AV')
+                {
+                    CheckControlDisable(vt);
+                    $('#VoucherTypeId').attr('disabled',true);
+                    $(".debit").attr('readonly','true');
+                    // $('#ddlProject').attr('disabled',true);
+                    $('.ddl-project').attr('disabled',true);
+                    $('#ReferenceNumber').attr('readonly','true');
+                    $('#ReferenceType').attr('disabled',true);
+                }
+
+            }
+            else {
+                $('#VoucherTypeId').attr('disabled',true);
+                $('.voucher-type-id').val($('#VoucherTypeId').val()).attr('name','VoucherTypeId');
+
+                $('#btnUpdate').show();
+                $('#btnSave').hide();
+
+                //default call during edit mode
+
+                $('#VoucherTypeId').change();
+
+                $("#PayeeId").change();
+                $('.debit, .credit').focusout()
+                $("#ApprovalPathId").change();
+
+
+
+
+                //For Invoice voucher from Report
+                var vt = $('#VoucherTypeId option:selected').text()
+                // alert(vt);
+                if(vt=='IV')
+                {
+                    CheckControlDisable(vt);
+
+                    $('#VoucherTypeId').attr('disabled',true);
+                    $(".debit").attr('readonly','true');
+                    $('#ddlProject').attr('disabled',true);
+                    $('#ReferenceNumber').attr('readonly','true');
+                }
+                //else if(vt=='JV')
+                else if(vt=='AV')
+                {
+                    CheckControlDisable(vt);
+                    $('#VoucherTypeId').attr('disabled',true);
+                    $(".debit").attr('readonly','true');
+                    // $('#ddlProject').attr('disabled',true);
+                    $('.ddl-project').attr('disabled',true);
+                    $('#ReferenceNumber').attr('readonly','true');
+                    $('#ReferenceType').attr('disabled',true);
+                }
+
+
+
+            }
+        })
+
+        function OnCompleteBacktoList(content) {
+            if (content.statusText == 'OK') {
+                $('.search-content').hide();
+                $('.frm-content').html(content.responseText);
+            } else {
+                $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+            }
+        }
+
+        function OnComplete(content) {
+
+            var data = content.responseText;
+            if (data.toLowerCase().indexOf("updated") >= 0) {
+
+                    $("#message").show();
+                    $('#message').text(data).css({ 'color':'green' });
+                    $("#message").delay(8000).hide('slow');
+
+                $.get(
+                        "@Url.Action("BackToList")",
+                        {},
+                        function(r){
+                            if(r != ''){
+                                //$('.search-content').show();
+                                $('.frm-content').html(r);
+                            }
+                            else{
+                                //$('.search-content').hide();
+                                $("#message").show();
+                                $('#message').text(data).css({ 'color':'red' });
+                                $("#message").delay(8000).hide();
+                            }
+                        }
+                    );
+            }
+            else if (data.toLowerCase().indexOf("saved") >= 0) {
+                $("#message").show();
+                $('#message').text(data).css({ 'color':'green' });
+                $("#message").delay(8000).hide('slow');
+
+                $.get(
+                        "@Url.Action("BackToList")",
+                        {},
+                        function(r){
+                            if(r != ''){
+                                //$('.search-content').show();
+                                $('.frm-content').html(r);
+                            }
+                            else{
+                                //$('.search-content').hide();
+                                $("#message").show();
+                                $('#message').text(data).css({ 'color':'red' });
+                                $("#message").delay(8000).hide();
+                            }
+                        }
+                    );
+            }
+            else {
+                //$('.search-content').hide();
+                $("#message").show();
+                $('#message').text(data).css({ 'color':'red' });
+                $("#message").delay(8000).hide('slow');
+            }
+        }
+
+
+
+
+
+
+
+
+        function setDisabledControl() {
+                //disable ctrols for Approver & Recommender
+                var  AppRec = '@Model.recommenderOrApprover';
+                var voucherStatus = '@Model.VoucherStatus';
+
+                if((AppRec == "Recommender") || (AppRec == "Approver") || (voucherStatus=="Approved") || (voucherStatus=="Recommended"))
+                {
+                    $('.fixedContent').find('input').attr('disabled',true)
+                    $('.fixedContent').find('select').attr('disabled',true)
+                    $('.fixedcontenttable').find('input').attr('disabled',true)
+                    $('.fixedcontenttable').find('select').attr('disabled',true)
+
+        //            $('#PayeeId, #payeeAddr, #ReceivedBy, #ReceiveId').val('').attr('disabled',true);
+
+
+                    $('.fixedAddButton').find('input').attr('disabled',true)
+                    $('.fixeddeleteRow').find('img').hide()
+                    $('#Narration').attr('disabled',true);
+                    $('.ui-datepicker-trigger').hide();
+
+                }
+                }
+
+        function CheckControlDisable(vt){
+                    if(vt =='RV'){
+
+                        $('#PayeeId, #payeeAddr').val('').attr('disabled',true);
+                        $('#ReceivedBy, #ReceiveId').removeAttr('disabled');
+
+        //                ddlChequeNumber.Visible = false;
+
+        //                $("#ddlChequeNumber").each(function(){
+        //                   $(this).hide();
+        //                });
+
+        //                $('#txtChequeNumber').show();
+
+                        $("#tdChequeNo").hide();
+                        $("#thChequeNo").hide();
+
+                        $("#tdChequeNumberRV").show();
+                        $("#thChequeNo").show();
+
+        //                var  AppRec = '@Model.recommenderOrApprover';
+        //                if((AppRec == "Recommender") || (AppRec == "Approver"))
+        //                {
+        //                    $('#ReceiveId').attr('disabled',true);
+        //                    $('#ReceivedBy').attr('disabled',true);
+        //                }
+
+                    }
+                    else if(vt == 'PV'){
+        //                $('#ReceivedBy, #ReceiveId').val('').attr('disabled',true);
+                        $('#ReceiveId').val('').attr('disabled',true);
+                        $('#PayeeId, #payeeAddr').removeAttr('disabled');
+
+                        $("#tdChequeNumberRV").hide();
+                        $("#thChequeNoRV").hide();
+
+                        $("#tdChequeNo").show();
+                        $("#thChequeNo").show();
+
+
+        //                var  AppRec = '@Model.recommenderOrApprover';
+        //                if((AppRec == "Recommender") || (AppRec == "Approver"))
+        //                {
+        //                    $('#PayeeId').attr('disabled',true);
+        //                }
+
+                    }
+                    else
+                    {
+                        $('#PayeeId, #payeeAddr').removeAttr('disabled');
+                        $('#ReceivedBy, #ReceiveId').removeAttr('disabled');
+                        var  AppRec = '@Model.recommenderOrApprover';
+                    }
+
+                    if(vt=='JV' || vt=='IV' || vt=='AV'){
+                        var paymentModeId = '';
+                        $('#PaymentTypeId option').each(function(i){
+                            if($(this).text()=='None')
+                                paymentModeId = $(this).attr('value');
+                        })
+                        $('#PaymentTypeId').val(paymentModeId);
+
+                        $("#tdChequeNo").hide();
+                        $("#thChequeNo").hide();
+
+                        $("#tdChequeNumberRV").show();
+                        $("#thChequeNo").show();
+
+                        $('.clsCheque').hide();
+
+        //                alert("Here");
+        //                $('#BankOrCash').attr("checked", true);
+        //                $('#BankOrCash').attr("checked", false);
+                    }
+                }
+
+
+            function OpenProjectInformation() {
+
+                var url = '@Url.Action("SearchInvoiceVoucher", "VoucherSearch")';
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'text',
+                    error: function () {
+                        alert('System is unable to load data please try again.');
+                    },
+                    success: function (result) {
+                        $('#divProjectList').html(result);
+                    }
+                });
+                $("#divProjectList").dialog('open');
+                return false;
+            }
+
+                ////disable ctrols for Approver & Recommender
+                window.onload = setDisabledControl();
+
+
+
+
+
+        $(function () {
+
+                $("#divProjectList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Invoice Voucher Search', beforeclose: function (event, ui) { Closing(); } });
+
+        });
+
+        function Closing() { }
+
+        function SetProjectIdForSearching(id) {
+
+                GetProjectInformation(id);
+
+                $("#divProjectList").dialog('close');
+            }
+
+        function GetProjectInformation(voucherId) {
+
+            if (voucherId > 0) {
+
+                $("input[id$='Id']").val(voucherId);
+
+                $.getJSON('@Url.Action("LoadVoucherInfo", "VoucherInfo")', { voucherId: voucherId }, function (results) {
+                    $('#InvoiceVoucherReferenceId').val(results.InvoiceVoucherReferenceId);
+                    $('#ReferenceNumber').val(results.InvoiceVoucherReferenceNumber);
+                    $('#InvoiceVoucherAmount').val(results.InvoiceVoucherAmount);
+                    $('#RealizationVoucherTotal').val(results.RealizationVoucherTotal);
+                });
+
+        //        AddDetails(projectId);
+            }
+            else {
+
+            }
+            return false;
+        }
+
+        $('#ReferenceType').live('change',function(){
+
+            if($('#ReferenceType').val()=='Invoice')
+            {
+
+               document.getElementById("divInvoiceAmountInfo").style.visibility = "visible";
+               document.getElementById("imgSearchInvoiceVoucher").style.visibility ="visible";
+               document.getElementById("divIsRealized").style.visibility = "visible";
+            }
+            else
+            {
+
+                $('#ReferenceNumber').val("");
+                $('#InvoiceVoucherReferenceId').val(0);
+                $('#InvoiceVoucherAmount').val(0);
+                $('#RealizationVoucherTotal').val(0);
+                $('#IsRealized').attr('checked', false);
+                document.getElementById("imgSearchInvoiceVoucher").style.visibility ="hidden";
+                document.getElementById("divInvoiceAmountInfo").style.visibility ="hidden";
+                document.getElementById("divIsRealized").style.visibility = "hidden";
+
+            }
+        })
+
+
+
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $('#InvoiceVoucherAmount').attr('readonly', true);
+                $('#RealizationVoucherTotal').attr('readonly', true);
+                $('#ReferenceNumber').attr('readonly', true);
+
+                document.getElementById("imgSearchInvoiceVoucher").style.visibility = "hidden";
+                document.getElementById("divInvoiceAmountInfo").style.visibility = "hidden";
+                document.getElementById("divIsRealized").style.visibility = "hidden";
+
+                if ($('#ReferenceType').val() == 'Invoice') {
+
+                    document.getElementById("divInvoiceAmountInfo").style.visibility = "visible";
+                    //document.getElementById("imgSearchInvoiceVoucher").style.visibility = "visible";
+                    document.getElementById("divIsRealized").style.visibility = "visible";
+
+                    var voucherId = $('#InvoiceVoucherReferenceId').val();
+                    var currentVoucherId = $('#Id').val();
+                    $.getJSON('@Url.Action("LoadVoucherInfoEdit", "VoucherInfo")', { voucherId: voucherId, currentVoucherId: currentVoucherId }, function (results) {
+                        $('#InvoiceVoucherReferenceId').val(results.InvoiceVoucherReferenceId);
+                        $('#ReferenceNumber').val(results.InvoiceVoucherReferenceNumber);
+                        $('#InvoiceVoucherAmount').val(results.InvoiceVoucherAmount);
+                        $('#RealizationVoucherTotal').val(results.RealizationVoucherTotal);
+                    });
+                }
+
+            });
+        </script>*@
+

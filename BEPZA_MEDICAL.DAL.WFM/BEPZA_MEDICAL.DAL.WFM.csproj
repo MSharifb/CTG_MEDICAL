@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9649C07C-675F-4A34-9A4B-C590E0D0FB20}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.DAL.WFM</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.DAL.WFM</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ERP_BEPZA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.WFM.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.WFM.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="SP_WFM_getCoABudgetHeadAmount_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_WFM_getCoABudgetHeatList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_WFM_RptApprovedApplicantList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_WFM_SectionWiseWelfareFund_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_WFM_WelfareFundConsolidateReport_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_WFM_ZoneWiseWelfareFund_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwWfmApplicationInformation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_ApprovalWelfareFundInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_ApprovalWelfareFundInfoCommittee.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_ApprovalWelfareFundInfoEmployeeDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_CycleInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_ExecuteFunctions.cs" />
+    <Compile Include="WFM_GenericRepository.cs" />
+    <Compile Include="WFM_OfflineApplicationInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_OfflineApplicationInfoDetailAttachment.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_OnlineApplicationInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_OnlineApplicationInfoDetailAttachment.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_PaymentInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_PaymentInfoEmployeeDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_ReasonOfWelfareCategory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_UnitOfWork.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WFM_uspVoucherPosting_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_VerifyTheApplication.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_VerifyTheApplicationDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_WelfareFundCategory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="WFM_WelfareFundPolicy.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="ERP_BEPZA.WFM.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ERP_BEPZA.WFM.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ERP_BEPZA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.WFM.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ERP_BEPZA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.WFM.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.cs</LastGenOutput>
+    </None>
+    <None Include="ERP_BEPZA.WFM.edmx.diagram">
+      <DependentUpon>ERP_BEPZA.WFM.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

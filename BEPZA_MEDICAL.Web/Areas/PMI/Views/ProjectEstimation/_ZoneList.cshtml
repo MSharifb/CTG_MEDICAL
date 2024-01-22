@@ -1,0 +1,13 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.EstimationZoneListViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("ZoneList"))
+{
+    <div>
+        @Html.HiddenFor(m=>m.Id)
+        @Html.CheckBoxFor(x => x.IsSelected)
+        @Html.LabelFor(x => x.IsSelected, Model.ZoneName)
+        @Html.HiddenFor(x => x.ZoneId)
+        @Html.HiddenFor(x => x.Id)
+    </div>
+}   

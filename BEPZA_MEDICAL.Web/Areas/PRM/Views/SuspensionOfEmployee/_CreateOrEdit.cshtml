@@ -1,0 +1,557 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SuspensionOfEmployeeViewModel
+
+@{
+    Layout = null;
+}
+<fieldset>
+    <legend>Employee Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.HiddenFor(model => model.SalaryStructureId)
+            @Html.HiddenFor(model => model.SalaryScaleId)
+            @Html.HiddenFor(model => model.GradeId)
+            @Html.HiddenFor(model => model.StepId)
+            @Html.HiddenFor(model => model.GrossSalary)
+            @Html.HiddenFor(model => model.isConsolidated)
+            @Html.LabelFor(model => model.EmpId, new { @class = "label-required" })
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only required", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.SalaryScaleName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.SalaryScaleName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Name)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Name, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.GradeName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.GradeName, new { @class = "read-only", @readonly = true })
+        </span>
+
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Designation)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Designation, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.StepName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.StepName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+</fieldset>
+
+<fieldset>
+    <legend>Salary Payments</legend>
+    <div class="row">
+        <div class="leftColumn" title="Addition" style="width:48%">
+            <table id="Addition" class="contenttable" title="Addition">
+                <thead>
+                    <tr>
+                        <td align="center" colspan="4" bgcolor="#BBD0E5">Addition</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            Salary Head
+                        </td>
+                        <td align="center">
+                            Amount Type
+                        </td>
+                        <td align="center">
+                            Actual Amount
+                        </td>
+                        <td align="center">
+                            Amount
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.strMode == "Edit") { Html.RenderPartial("_Detail", Model); }}
+                </tbody>
+            </table>
+        </div>
+        <div class="rightColumn" style="width:48%">
+            <table id="Deduction" class="contenttable" title="Deduction">
+                <thead>
+                    <tr>
+                        <td align="center" colspan="4" bgcolor="#FFE5E5">Deduction</td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            Salary Head
+                        </td>
+                        <td align="center">
+                            Amount Type
+                        </td>
+                        <td align="center">
+                            Actual Amount
+                        </td>
+                        <td align="center">
+                            Amount
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.strMode == "Edit") { Html.RenderPartial("_DetailMore", Model); }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+</fieldset>
+
+<fieldset>
+    <div class="=row">
+        <div style="width:25%; float:right; margin-right:5px;">
+            <fieldset>
+                @*<div class="button-crude button-left" style="margin: 5px">
+                        @Html.ActionLink("Get", "AddDetail", new { masterID = Model.Id }, new { @class = "addItem", @id = "addDetails", @style = "padding: 2px 31px 19px 9px;" })
+                    </div>*@
+                <div class="button-crude fixedAddButton" style="text-align: left;">
+                    <input id="addItem" type="button" value="Get" />
+                </div>
+                <div class="row">
+                    <span class="label" style="width:40%">
+                        @Html.LabelFor(model => model.TotalAddition)
+                    </span><span class="field" style="width:55%">
+                        @Html.EditorFor(model => model.TotalAddition)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:40%">
+                        @Html.LabelFor(model => model.TotalDeduction)
+                    </span><span class="field" style="width:55%">
+                        @Html.EditorFor(model => model.TotalDeduction)
+                    </span>
+                </div>
+                <div class="row">
+                    <span class="label" style="width:40%">
+                        @Html.LabelFor(model => model.NetPay)
+                    </span><span class="field" style="width:55%">
+                        @Html.EditorFor(model => model.NetPay)
+                    </span>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div style="width:70%; float:left;">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.SuspensionDate, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.SuspensionDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FromDate, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.FromDate)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.ToDate, new { @class = "label-required" })
+            </span><span class="field">
+                @Html.EditorFor(model => model.ToDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Status)
+            </span><span class="field">
+                @{ if (Model.strMode == "Edit")
+                 {
+                    @Html.DropDownListFor(x => x.Status, Model.StatusList, new { onchange = "LoadMonthYear();" })
+                 }
+                 else
+                 {
+                    @Html.TextBoxFor(x => x.Status, new { @class = "read-only", @readonly = true })
+                 }
+                }
+            </span>
+            <div class="chkbx">
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    @Html.CheckBoxFor(x => x.IsAdjustWithSalary) &nbsp;@Html.LabelFor(x => x.IsAdjustWithSalary)
+                </span>
+            </div>
+        </div>
+        <div class="row asOnDate">
+            <span class="label">&nbsp;</span>
+            <span class="field">&nbsp;</span>
+            @{ if (Model.strMode == "Edit")
+             { <span class="label-right">
+                @Html.LabelFor(model => model.AdjustOnDate)
+            </span><span class="field">
+                @Html.EditorFor(x => x.AdjustOnDate)
+            </span>
+             }
+            }
+        </div>
+        <div class="row monthYear">
+            <span class="label">&nbsp;</span>
+            <span class="field">&nbsp;</span>
+            <div class="monthYear">
+                @{ if (Model.strMode == "Edit")
+                 { <span class="label-right">
+                    @Html.LabelFor(model => model.SalaryAdjustOnMonth)
+                </span><span class="field">
+                    @Html.DropDownListFor(x => x.SalaryAdjustOnMonth, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "GetValidMonth();" })
+                </span>
+                    <span class="label-right" style="text-align: right; padding:1% 0% 0% 46%">
+                        @Html.LabelFor(model => model.Year)
+                    </span><span class="field" style="text-align: right; margin: -3% 0% 0% 66.3%;">
+                        @Html.DropDownListFor(x => x.Year, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onchange = "GetValidYear();" })
+                    </span>
+                 }
+                }
+            </div>
+        </div>
+
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>Notify to</legend>
+    <div class="row">
+        @Html.TextAreaFor(x => x.NotifyTo, new { style = "width: 420px; height: 50px", placeholder = "You can add more than one employee Id separated by comma(,)" })
+    </div>
+</fieldset>
+
+
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if(@Model.EmployeeId > 0)
+        {
+            RequisitionInfo(@Model.EmployeeId);
+            DeductionInfo(@Model.EmployeeId);
+        }
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id);
+        GetEmployeeInfo(id);
+        RequisitionInfo(id);
+        DeductionInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "SuspensionOfEmployee")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#EmpId').val(obj.EmpId);
+                    $('#SalaryStructureId').val(obj.SalaryStructureId);
+                    $('#SalaryScaleId').val(obj.SalaryScaleId);
+                    $('#GradeId').val(obj.GradeId);
+                    $('#StepId').val(obj.StepId);
+                    $('#GrossSalary').val(obj.GrossSalary);
+                    $('#isConsolidated').val(obj.isConsolidated);
+                    $('#Name').val(obj.EmployeeName);
+                    $("#Designation").val(obj.Designation);
+                    $("#SalaryScaleName").val(obj.SalaryScaleName);
+                    $("#GradeName").val(obj.GradeName);
+                    $("#StepName").val(obj.StepName);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    var loadUrl = "@Url.Action("SalaryPayment")";
+    function RequisitionInfo(empId) {
+        if (empId != "" && empId != undefined) {
+            $("#ErrorMessage").html("");
+            $.ajax({
+                type: "GET",
+                url: loadUrl,
+                data: { empId: empId },
+                success: (function (result) {
+                    $("#Addition tbody").html(result);
+                })
+            });
+        }
+        else
+            $("#ErrorMessage").show().html("<b> Required Requisition Information</b>").css("color", "red");
+    }
+
+    var loadUrlDeduction = "@Url.Action("DeductionSalaryPayment")";
+    function DeductionInfo(empId) {
+        if (empId != "" && empId != undefined) {
+            $("#ErrorMessage").html("");
+            $.ajax({
+                type: "GET",
+                url: loadUrlDeduction,
+                data: { empId: empId },
+                success: (function (data) {
+                    $("#Deduction tbody").html(data);
+                })
+            });
+        }
+        else
+            $("#ErrorMessage").show().html("<b> Required Requisition Information</b>").css("color", "red");
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#addItem').live('click', function (e) {
+            e.preventDefault();
+            var addsum = 0;
+            var deSum = 0;
+
+            $('.additionSum').each(function () {
+                var additionSum = $(this);
+                var q = additionSum.closest('tr').find('.additionSum').val();
+                addsum += parseInt(q);
+            });
+            $('.DeductionSum').each(function () {
+                var DeductionSum = $(this);
+                var q = DeductionSum.closest('tr').find('.DeductionSum').val();
+                deSum += parseInt(q);
+            });
+
+            $("#TotalAddition").val(addsum);
+            $("#TotalDeduction").val(deSum);
+            $("#NetPay").val(addsum - deSum);
+
+        });
+    })
+    $(document).ready(function () {
+        LoadMonthYear();
+    });
+
+    $('#IsAdjustWithSalary').change(function () {
+        //debugger;
+        var chkValue = false;
+        if ($('#IsAdjustWithSalary').is(":checked")) {
+            chkValue = true;
+        }
+        AdjustSalary(chkValue);
+    });
+
+    function LoadMonthYear() {
+        var val = $('#Status').val();
+
+        if (val === "Active") {
+            $('.chkbx').hide();
+            $('.asOnDate').hide();
+            $('.monthYear').hide();
+        } else {
+            $('.chkbx').show();
+            var chkValue = false;
+            if ($('#IsAdjustWithSalary').is(":checked")) {
+                chkValue = true;
+            }
+            AdjustSalary(chkValue);
+        }
+    }
+
+    function AdjustSalary(chkVal)
+    {
+        //debugger;
+        if(chkVal == true)
+        {
+            $('.asOnDate').hide();
+            $('.monthYear').show();
+        }
+         if(chkVal == false)
+        {
+            $('.asOnDate').show();
+            $('.monthYear').hide();
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("form").submit(function () {
+            var empId = $('#EmpId').val();
+            var suspensionDate = $('#SuspensionDate').val();
+            var fromDate = $('#FromDate').val();
+            var toDate = $('#ToDate').val();
+            var status = $('#Status').val();
+
+            if (empId == null || empId == 0 || empId == "") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            if (suspensionDate == null || suspensionDate == 0 || suspensionDate == "") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            if (fromDate == null || fromDate == 0 || fromDate == "") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            if (toDate == null || toDate == 0 || toDate == "") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+
+            if (status == 'Cancel') {
+                var x = GetValidMonth();
+                var y = GetValidYear();
+                if (x == false) {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'Salary Adjust on Month' will be greater than or equal to 'Effective From'</span>  </div> ");
+                    return false;
+                }
+                if (y == false) {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Invalid Year</span>  </div> ");
+                    return false;
+                }
+            }
+        });
+    });
+
+
+    function GetValidMonth() {
+        $("#SalaryAdjustOnMonth").removeClass("border-red");
+        var name = $("#SalaryAdjustOnMonth option:selected").text();
+        var fromDate = $("#FromDate").val();
+        var dat = new Date('1 ' + name + ' 2016');
+        var month = (dat.getMonth());
+        var fromMonth = new Date(fromDate).getMonth();
+        if (month < fromMonth) {
+            $("#SalaryAdjustOnMonth").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>'Salary Adjust on Month' will be greater than or equal to 'Effective From'</span>  </div> ");
+            return false;
+        }
+    }
+
+    function GetValidYear() {
+        $("#Year").removeClass("border-red");
+        var year = $("#Year").val();
+        var fromDate = $("#FromDate").val();
+        var yearofMonth = new Date(fromDate).getFullYear();
+        if (year < yearofMonth) {
+            $("#Year").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Invalid Year</span>  </div> ");
+            return false;
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#FromDate").live('change', function () {
+            var from = $('#FromDate').val();
+            var to = $('#ToDate').val();
+            if (to != '') {
+                getDate(from, to);
+            }
+        })
+
+        $("#ToDate").live('change', function () {
+            var from = $('#FromDate').val();
+            var to = $('#ToDate').val();
+            getDate(from, to);
+        })
+
+        function getDate(from, to) {
+            $('#message').empty();
+            if ((new Date(from).getTime() > new Date(to).getTime())) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Effective To Date must be Greater than or Equal to Effective From Date.</span>  </div> ");
+                $('#ToDate').val('');
+                return;
+            }
+        }
+    });
+
+</script>

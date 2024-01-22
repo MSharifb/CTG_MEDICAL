@@ -1,0 +1,42 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.PaymentInfoEmployeeDetailsViewDetail
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("EmployeeList"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ApprovedAmount)
+        @Html.HiddenFor(x => x.EmployeeId)
+        <td style="width: 30px; text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.EmpId)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.EmployeeName)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.Designation)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.Department)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.Section)
+        </td>
+        <td width="8%" style="text-align: center">
+            @Html.Encode(Model.ApprovedAmount)
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" class="viewItem" title="view" onclick="ViewApplicantInfo(this,@Model.EmployeeId)">
+
+            </a>
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" class="deleteIcon-tempGrid" title="Delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+            </a>
+        </td>
+
+    }
+</tr>

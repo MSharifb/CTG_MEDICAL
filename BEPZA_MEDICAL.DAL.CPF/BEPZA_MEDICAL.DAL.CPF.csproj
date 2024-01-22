@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{49924C85-1F37-43A3-962B-D6ABCEC9C76E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.DAL.CPF</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.DAL.CPF</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Nonshipping>true</Nonshipping>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="APV_ApprovalStatus.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonConfigGetResult.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonConfigType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_AccountHeadCategory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_AvailableInvAccrualStepNo_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_BankAccountInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_ContributionRateSetup.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_DefaultMapping.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_DocumentType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_EmployeeCPF_WF_FundStatus_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_ExecuteFunctions.cs" />
+    <Compile Include="CPF_FinalResultOfCpf_EmployeeWise_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_FN_GetEmployeeTotalContribution_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_ForfeitedRule.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GenericRepository.cs" />
+    <Compile Include="CPF_GetApprovalStatusList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetChartOfAccount_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetContributionDuringtheYear_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetContributionOfPF_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetDesignationList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetDivisionUnit_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetJobGradeList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetLevelOfCOA_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetLoanPolicy_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetMyCPFLoanApplication_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetMyCPFSummary_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetMyLoanStatus_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetMyLoanSummary_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetPFYearList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetTestName_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GetVoucherTypeList_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_GratuityInterestRate.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_LoanPolicy.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_MemberNominee.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_MemberSchedule_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_MembershipInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_MonthlyContribution_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_OpeningBalance.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_PaymentType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_ProfitDistribution.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_ProfitDistributionDetail.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_ProfitInterestRate.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_ProvidentFundSatementProvisioin_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_RptCpfLoanInfo_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_RptCpfMemberInformation_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_RptGenerateScheduleofInvestment_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_RptMonthlyProvidentFundRegister_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_RptProvidentFundLoanInstallment_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_RptProvidentFundWorksheet_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_Settlement.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SpecialParameter.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_PFListOfLoan_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptIndividualMonthlyPFStatement_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptIndividualYearlyPFStatement_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptMonthlyPFStatementMaster_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptMonthlyPFStatement_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptNewJoinInMembership_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptNomineeFormInformation_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptPFStatementHistory_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_SP_RptYearlyPFStatement_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_UnitOfWork.cs" />
+    <Compile Include="CPF_uspVoucherPostingForProfit_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_VoucherGenerateDetail_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CPF_Withdraw.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CustomEntities\MembershipInformationSearch.cs" />
+    <Compile Include="CustomEntities\MembershipSearch.cs" />
+    <Compile Include="CustomEntities\ProfitDistributionDetailModel.cs" />
+    <Compile Include="CustomPropertyAttribute.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.CPF.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.CPF.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetDebitOrCredit.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetMyLoanStatusResult.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="vwCPFNominee.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="ERP_BEPZA.CPF.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ERP_BEPZA.CPF.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ERP_BEPZA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.CPF.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ERP_BEPZA.CPF.edmx.diagram">
+      <DependentUpon>ERP_BEPZA.CPF.edmx</DependentUpon>
+    </None>
+    <None Include="ERP_BEPZA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.CPF.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

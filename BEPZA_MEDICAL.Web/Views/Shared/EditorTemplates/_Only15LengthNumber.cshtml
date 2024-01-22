@@ -1,0 +1,51 @@
+﻿@model System.Nullable<Decimal>
+@Html.TextBox("", Model, new { @class = "alowOnlyNumber", @maxlength = "15", @style = " text-align: right;", @onkeydown = "alowOnlyCurrency(this,event)", @onkeyup = "checkDecimalDegit(this)" })
+<script type="text/javascript">
+
+    function alowOnlyCurrency(textBox, event) {
+       
+        // Allow: backspace, delete, tab and escape class = "alowOnlyCurrency",
+        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
+        // Allow: Ctrl+A
+                        (event.keyCode == 65 && event.ctrlKey === true) ||
+        // Allow: Decimal (.)
+                         (event.keyCode == 110 || event.keyCode === 190) ||
+        // Allow: home, end, left, right
+                        (event.keyCode >= 35 && event.keyCode <= 39)) {
+
+            // let it happen, don't do anything
+            return;
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+
+                event.preventDefault();
+            }
+
+        }
+
+    }
+
+    function checkDecimalDegit(textBox) {
+
+        var degitAfterDecimal = 2;
+        var someNum = textBox.value;
+        var index = new String(textBox.value).indexOf(".");
+
+        if (index > -1) {
+            leftStr = someNum.substring(0, index);
+            rightStr = textBox.value.substring(index);
+            if (rightStr.length > degitAfterDecimal + 1) //1 for decimal point 
+            {
+                rightStr = rightStr.substring(0, degitAfterDecimal + 1);
+            }
+            someNum = leftStr + rightStr;
+        }
+
+        if (textBox.value != someNum) {
+            textBox.value = someNum;
+        }
+    }
+      
+</script>

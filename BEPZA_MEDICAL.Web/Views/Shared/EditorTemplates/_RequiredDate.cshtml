@@ -1,0 +1,17 @@
+﻿@model System.Nullable<DateTime>
+
+@Html.TextBox("", String.Format("{0:yyyy-MM-dd}", Model), new { @class = "datePicker required", @style = "width:100px;" })
+
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $(".datePicker").datepicker({
+            autoclose: true,
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '-100:+100',
+            buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")',
+            buttonImageOnly: true, showOn: "button", buttonText: 'Choose'
+        });
+    });
+</script>

@@ -1,0 +1,213 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmployeePhotoGraphViewModel
+@using Microsoft.Web.Helpers;
+@using (Html.BeginForm(Model.ActionType, "Employee", FormMethod.Post,
+        new { id = "form", @encType = "multipart/form-data" }))
+{
+
+    @Html.HiddenFor(model => model.ActionType)
+    <div class="GroupBox" style="min-height: 15px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmpCode)
+                <label class="required-field">
+                    *
+                </label>
+            </span> <span class="field">@Html.EditorFor(model => model.EmpCode)</span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FullName)
+                <label class="required-field">
+                    *
+                </label>
+            </span> <span class="field">@Html.EditorFor(m => m.FullName)</span>
+            <span class="label-right"></span><span class="field"></span>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+
+    <div class="GroupBox">
+        @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+        {
+            <div class="row">
+                <span class="label">&nbsp;</span>
+                <span class="field">
+
+                    @FileUpload.GetHtml(initialNumberOfFiles: 1, allowMoreFilesToBeAdded: false,
+                                    includeFormTag: false, addText: "Add Files", uploadText: "Upload File")
+
+                </span>
+                <span style="margin-left: 25px; width: 200px;" class="label">Maximum image size(512 KB) and jpg, jpeg, png or gif image only</span>
+            </div>
+        }
+        <div class="row">
+            <span class="label">&nbsp;</span>
+            <span class="field">
+                <div style="border: 1px solid black; width: 150px; height: 150px; margin: 5px;">
+
+                    @if (Model != null)
+                    {
+                        @Html.HiddenFor(d => d.EmployeeId);
+                        @Html.HiddenFor(d => d.IsPhoto);
+                        @Html.HiddenFor(d => d.PhotoSignature);
+                                                              if (String.IsNullOrEmpty(Model.ImageUrl))
+                                                              {
+                                                                <img height="150" width="150" alt="Image" class="imgThumb" src="@Url.Action("GetImage", "Employee", new { id = Model.EmployeeId, isPhoto = Model.IsPhoto })" />
+                                                              }
+                                                              else
+                                                              {
+                                                                <img height="150" width="150"
+                                                                     src="@(Model.ImageUrl)"
+                                                                     id="uploadedImage" alt="" />
+                                                              }
+                    }
+
+                </div>
+
+            </span>
+
+        </div>
+        <div class="row">
+            <span class="label">&nbsp;</span>
+            <span class="field">
+                @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+                {
+                    <div class="button-crude" style="text-align:left;padding-left:10px">
+                        @*<input type="submit" value="Upload" name="btnSubmit" id="btnUpload" onclick="return CheckExtention();" />*@
+                        <input type="submit" value="Upload" name="btnSubmit" id="btnUpload" />
+                        <input type="submit" value="Save" name="btnSubmit" id="btnSave" />
+                        <input type="submit" value="Delete" name="btnSubmit" id="btnDelete" />
+                    </div>
+
+                }
+            </span>
+        </div>
+    </div>
+
+
+}
+<div class="button-crude button-left" style="margin: 5px">
+
+    @Html.ActionLink("Back to List", "Index", "Employee")
+</div>
+<script type="text/javascript">
+
+
+    $(function () {
+        if ('@Model.ActionType' == "EmployeePhotographCreate") {
+            $('#btnDelete').hide();
+            $('#btnSave').show();
+            $('#btnUpload').show();
+        }
+        if ('@Model.ActionType' == "EmployeePhotographDelete") {
+            $('#btnDelete').show();
+            $('#btnUpload').hide();
+            $('#btnSave').hide();
+        }
+
+        if ('@Model.Message' != "") {
+            if ('@Model.IsSuccessful' == 'True') {
+                $('#message').html("<b style='color:Green'>" + '@Model.Message' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + '@Model.Message' + "</b>");
+            }
+        }
+        if ('@Model.DateofInactive' != '') {
+            fnDisableEditMode();
+            $("#btnDelete").hide();
+        }
+
+    });
+
+
+    //function CheckExtention() {
+    //    var extention = $("input[type='file']").val().split('.')[1];
+
+    //    var v = extention.toLowerCase() == extention;
+    //    if (!v) {
+    //        $("#message").html('<b>Photo extention must be in small letter.</b>').css({ color: 'red' })
+    //    }
+    //    else {
+    //        $("#message").html('');
+    //    }
+    //    return v;
+    //}
+
+    //$(function () {
+
+    //    $("input[type='file']").change(function () {
+
+    //        var val = $("input[type='file']").val();
+    //        var filename = $("input[type='file']").val().split('.')[0];
+    //        var extention = $("input[type='file']").val().split('.')[1].toUpperCase();
+
+    //        if (extention == 'JPG' || extention == 'jpg' || extention == 'JPEG' || extention == 'jpeg' || extention == 'GIF' || extention == 'gif' || extention == 'PNG' || extention == 'png') {
+    //            $("input[type='file']").val(filename + '.' + extention.toLowerCase());
+    //        }
+    //        else {
+
+    //            $("#message").html('<b>Please select JPG,JPEG, GIF or PNG image file only.</b>').css({ color: 'red' })
+
+    //            $("input[type='file']").val("");
+    //        }
+    //    });
+    //})
+</script>
+
+
+<script type="text/jscript">
+
+    //get file path from client system
+    function getNameFromPath(strFilepath) {
+        var objRE = new RegExp(/([^\/\\]+)$/);
+        var strName = objRE.exec(strFilepath);
+
+        if (strName == null) {
+            return null;
+        }
+        else {
+            return strName[0];
+        }
+    }
+
+    $(function () {
+        $('input[type=file]').live("change", function () {
+            var file = getNameFromPath($(this).val());
+            if (file != null) {
+                var extension = file.substr((file.lastIndexOf('.') + 1)).toLowerCase();
+                switch (extension) {
+                    case 'jpg':
+                    case 'png':
+                    case 'gif':
+                    case 'jpeg':
+                        flag = true;
+                        break;
+                    default:
+                        flag = false;
+                }
+            }
+            if (flag == false) {
+                $("#message").html('<b>Please select JPG,JPEG, GIF or PNG image file only.</b>').css({ color: 'red' })
+                $("input[type='file']").val("");
+                return false;
+            }
+            else {
+                var fileSize = 0;
+                fileSize = this.files[0].size;
+                fileSize = Math.round(fileSize / 1024);
+                if (fileSize >= 512) {
+                    $("#message").html('<b>Please select image file less than 512 KB.</b>').css({ color: 'red' })
+                    $("input[type='file']").val("");
+                    return false;
+                }
+
+            }
+        });
+    });
+</script>

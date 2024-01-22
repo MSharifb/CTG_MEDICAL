@@ -1,0 +1,31 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SelectionBoardInfoViewModel
+@Html.HiddenFor(m => m.strMode)
+@foreach (var item in Model.SelectionBoardInfo)
+{
+    <tr>
+        <td style="width: 30px; text-align: center">
+            @Html.CheckBox("chkDesignation", item.IsChecked, new { @class = "rchk", @value = item.DesignationId, @disabled=true })
+          
+        </td>
+        <td style="width: 30px; text-align: center;display:none">
+            @Html.Encode(item.DesignationId)
+        </td>
+        <td style="text-align: center" class="desig">
+            @Html.Encode(item.DesignationName)
+        </td>
+        <td width="10%" align="center" style="text-align: center; display: none">
+            @Html.Encode(item.DepartmentId)
+        </td>
+        <td style="text-align: center;">
+            @Html.Encode(item.DepartmentName)
+        </td>
+        <td style="text-align: left; display: none">
+            @Html.Encode(item.SectionId)
+        </td>
+        <td style="text-align: center;">
+            @Html.Encode(item.SectionName)
+        </td>
+    </tr>
+}
+
+

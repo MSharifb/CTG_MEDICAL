@@ -1,0 +1,162 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApproverInformationViewModel
+
+
+<div class="form-group">
+    @Html.LabelFor(m => m.ZoneId, new { @class = "col-sm-3 control-label labelRequired" })
+    <div class="col-sm-9">
+        @Html.DropDownListFor(m => m.ZoneId, Model.ZoneList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-8">
+        <div class="clear"></div>
+        <div style="background: #FFFFFF" id="treeViewSearch">
+        </div>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                PopulateTreeView();
+            })
+
+            function ClearTree() {
+                $('#treeViewSearch').empty();
+            }
+
+            $('#ZoneId').change(function () {
+                $("#treeViewSearch").jstree("destroy");
+                PopulateTreeView();
+            });
+
+            function PopulateTreeView() {
+
+                var zoneId = $("#ZoneId option:selected").val();
+                if (zoneId == '') { zoneId = '0' }
+                var url = '@Url.Action("GetTreeData", "ApprovalFlow")?zoneId=' + zoneId;
+                $('#treeViewSearch').jstree({
+                    "plugins": [
+                                "search",
+
+                    ],
+                    'core': {
+                        'check_callback': true,
+                        'data': {
+                            'url': url,
+                            'data': function (node) {
+                                return { "id": node.title };
+                            }
+                        }
+                    }
+                });
+
+                $(document).on('click', '.jstree-anchor', function (e) {
+                    var anchorId = $(this).parent().attr('id');
+                    var nodeName = '';
+                    var authorType = $("#AuthorTypeId option:selected").text();
+                    GetDesignationInformation(anchorId);
+                    //switch (authorType) {
+                    //    case "Head of Level":
+                    //        GetEmployeeInformation(anchorId);
+                    //        break;
+                    //    case "Organogram Post":
+                    //        GetDesignationInformation(anchorId);
+                    //        break;
+                    //}
+
+                    //var clickId = anchorId.substring(anchorId.indexOf('_') + 1, anchorId.length);
+                    //alert("Id : " + anchorId + ", Value : " + nodeName);
+                });
+
+                $('#treeViewSearch').on('changed.jstree', function (e, data) {
+                    var nodeId = $('#treeViewSearch').jstree('get_selected').attr('id');
+
+
+                    //var i, j, r = [];
+
+                    //for (i = 0, j = data.selected.length; i < j; i++) {
+                    //    r.push(data.instance.get_node(data.selected[i]).text);
+                    //}
+                    //alert('Selected Node: ' + r.join(', '));
+                    // $('#event_result').html('Selected: ' + r.join(', '));
+                }).jstree();
+
+            };
+        </script>
+
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            @Html.Label("Post Name", new { @class = "col-sm-5 control-label labelRequired", @Id = @"lblEmpDesg" })
+            <div class="col-sm-7">
+                @Html.DropDownListFor(m => m.EmployeeId, Model.EmployeeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(m => m.Designation, new { @class = "col-sm-4 control-label labelRequired" })
+                <div class="col-sm-8">
+                    @Html.TextBoxFor(m => m.Designation, new { @class = "form-control read-only", @readonly = true })
+                </div>
+            </div>*@
+    </div>
+</div>
+
+<script type="text/javascript">
+    function GetEmployeeInformation(nodeId) {
+        var url = '@Url.Action("GetEmployeeInfoByOrganogramLevel", "ApprovalFlow")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { levelId: nodeId },
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                $("#EmployeeId").empty();
+                $("#EmployeeId").append($("<option></option>").val('').html('[Select One]'));
+                $.each(data, function () {
+                    $("#EmployeeId").append($("<option></option>").val(this['Id']).html(this['FullName']));
+                });
+            }
+        });
+        $('#LevelId').val(nodeId);
+    }
+
+    function GetDesignationInformation(nodeId) {
+        //debugger;
+        var url = '@Url.Action("GetDesignationInfo", "ApprovalFlow")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { levelId: nodeId },
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                $("#EmployeeId").empty();
+                $("#EmployeeId").append($("<option></option>").val('').html('[Select One]'));
+                $.each(data, function () {
+                    $("#EmployeeId").append($("<option></option>").val(this['Id']).html(this['Name']));
+                });
+            }
+        });
+        $('#SelectedLevelId').val(nodeId);
+    }
+
+    $(document).ready(function () {
+        GetLoggedInZoneId();
+        return false;
+    });
+
+    function GetLoggedInZoneId() {
+        var url = '@Url.Action("GetLoggedZoneId", "ApprovalFlow")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            cache: false,
+            success: function (data) {
+                $('#ZoneId').val(data);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,124 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxWithheld.TaxWithheldViewModel
+@using ERP_BEPZA.Web.Helpers
+
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#Amount").keydown(function (event) {
+            //alert(advance);
+            // Allow: backspace, delete, tab, escape, and enter
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+                // Allow: Ctrl+A
+                (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (event.keyCode >= 35 && event.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            else {
+                // Ensure that it is a number and stop the keypress
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+    });          //End Document Ready
+
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+
+
+</script>
+<div class="GroupBox" id="message">
+    @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+</div>
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TaxYear)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.TaxYear, Model.TaxYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.TaxMonth)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(m => m.TaxMonth, Model.TaxMonthList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(m => m.EmployeeId, new { @class = "label-required" })
+        </span>
+        <span class="field" style="width: 50%;">
+            @Html.DropDownListFor(model => model.EmployeeId, Model.EmployeeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+    </div>
+    
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeDesignation)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.EmployeeDesignation, new { @readonly = "readonly", @class = "read-only" })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Reason)
+            <label style='color: red'>
+            </label>
+        </span><span class="field">
+            @Html.TextAreaFor(m => m.Reason)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.Remarks)
+            <label style='color: red'>
+            </label>
+        </span><span class="field">
+            @Html.TextAreaFor(m => m.Remarks)
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $("select#EmployeeId").change(function () {
+
+        var url = '@Url.Action("GetEmployeeInfo", "PGMCommon")' + '?employeeId=' + $(this).val();
+
+        $.get(url,
+            function (data) {
+                if (data.Success) {
+                    $("#EmployeeDesignation").val(data.EmployeeDesignation);
+                    $("#AccountNo").val(data.AccountNumber);
+                } else {
+                    $("#message").val('Unable to load employee data');
+                }
+            });
+    });
+
+
+</script>

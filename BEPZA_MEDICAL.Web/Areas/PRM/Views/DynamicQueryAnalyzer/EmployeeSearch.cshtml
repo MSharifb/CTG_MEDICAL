@@ -1,0 +1,32 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmployeeSearchViewModel
+@{
+
+    ViewBag.Title = "Index";
+    //Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+    Layout =null;
+}
+
+@*@using (Ajax.BeginForm("Index", "Employee", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+    {*@
+<div id="message">
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="success">
+            @Model.Message
+        </div>
+    }
+</div>
+@Html.HiddenFor(model => model.EmployeeStatus)
+<fieldset>
+    <div id="jqSearch">
+    </div>
+</fieldset>
+<br />
+<table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+<div id="jqGridPager" style="text-align: center;">
+</div>
+<div id="divList">
+    @Html.Partial("_EmployeeSearchGridList", Model)
+</div>
+
+@*}*@

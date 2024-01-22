@@ -1,0 +1,99 @@
+﻿<style>
+    .ui-datepicker-trigger {
+        z-index: 1000;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Asset Code', 'Asset Name/Model', 'Category', 'Category', 'Sub-Category', 'Sub-Category', 'Asset Status', 'Asset Status',
+                      'Location', 'Supplier', 'Purchase Date Between', 'And', 'Purchase Date', 'Dep. Rate', 'Asset Cost', 'Status','Edit', 'Delete'],
+            colModel: [
+                { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                { name: 'AssetCode', index: 'AssetCode', width: '70px', align: 'left', hidden: false, search: true, edittype: 'text' },
+                { name: 'AssetName', index: 'AssetName', width: '120px', align: 'left', search: true, edittype: 'text' },
+
+                { name: 'CategoryId', index: 'CategoryId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetCategoryList")' },
+                { name: 'CategoryName', index: 'CategoryName', width: '130px', align: 'left', search: false, edittype: 'text' },
+
+                { name: 'SubCategoryId', index: 'SubCategoryId', hidden: true, search: true, align: 'left', edittype: 'select', surl: '@Url.Action("GetAssetSubCategoryList")' },
+                { name: 'SubCategoryName', index: 'SubCategoryName', width: '120px', align: 'left', search: false, edittype: 'text' },
+
+                { name: 'AssetStatusId', index: 'AssetStatusId', align: 'left', hidden: true, search: false, edittype: 'select', surl: '@Url.Action("GetAssetStatusList")' },
+
+                { name: 'AssetStatus', index: 'AssetStatus', width: '90px',hidden:true, align: 'center', search: false, edittype: 'text' },
+               
+                { name: 'LocationId', index: 'LocationId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetAssetLocationList")' },
+                { name: 'SupplierId', index: 'SupplierId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetAssetSupplierList")' },
+
+                { name: 'PurchaseDateBetween', index: 'PurchaseDateBetween', align: 'left', hidden: true, search: true, edittype: 'text' },
+                { name: 'PurchaseDateAnd', index: 'PurchaseDateAnd', align: 'left', hidden: true, search: true, edittype: 'text' },               
+                { name: 'PurchaseDate', index: 'PurchaseDate', width: '90px', align: 'center', search: false, edittype: 'text' },
+                { name: 'DepreciationRate', index: 'DepreciationRate', width: '50px', align: 'right', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                { name: 'AssetCost', index: 'AssetCost', width: '100px', align: 'right', search: false, edittype: 'text', formatter: 'currency', formatoptions: { thousandsSeparator: ",", decimalPlaces: 2, prefix: "", suffix: "", defaultValue: '0.00' } },
+                { name: 'ApprovalStatus', index: 'ApprovalStatus', width: '60px', align: 'center', search: false, edittype: 'text' },
+                { name: 'Edit', index: 'Edit', align: 'center', search: false, sortable: false, width: '50px', edittype: 'image', formatter: viewformateadorLink },
+                { name: 'Delete', index: 'Delete', align: 'Center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Fixed Asset Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            loadComplete: function () {
+                $("a.deleteItem").on('click', function (e) {
+                    e.preventDefault();
+                    deleteLinkObj = $(this);  //for future use
+                    $('#delete-dialog').dialog('open');
+                    return false; // prevents the default behaviour
+                });
+            }
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+    function viewformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Edit", new { id = "_id_" }, new { @class = "editItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+</script>
+
+
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+

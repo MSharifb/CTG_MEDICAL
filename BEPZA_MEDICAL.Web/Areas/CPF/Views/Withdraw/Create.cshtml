@@ -1,0 +1,35 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.Withdraw.WithdrawViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm("Create", "Withdraw", FormMethod.Post, new { id = "frm" }))
+{
+    
+    <fieldset>
+        <div class="GroupBox" id="message" style="min-height:15px;">
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div style="color:Red">
+                    @Model.ErrMsg
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <br />
+        <div class="button-center buttonSubmit">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input id="btnSave" type="submit" value="Save" style="width: auto; overflow: visible; padding-left: .25em;
+                    padding-right: .25em;" />
+            }
+            <input type="button" value="Clear" id="btnClear" name="btnClear"  />
+        </div>
+    </fieldset>
+}
+<div class=" button-crude button-left ">
+    @Html.ActionLink("Back to List", "Index")
+</div>

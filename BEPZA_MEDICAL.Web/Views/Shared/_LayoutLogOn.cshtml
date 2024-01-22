@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="@Url.Content("~/Content/Images/logo-mpa.png")" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/cupertino/jquery-ui-1.8.16.custom.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.6.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.16.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/modernizr-1.7.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        //Used for Theme
+        $(function () {
+            $("input:submit, input:button, a, button", ".jqUI").button();
+            //$("a", ".jqUI").click(function () { return false; });
+        });
+    </script>
+</head>
+<body>
+    <div class="page">
+
+        <div id="header" style="background-color:#003466;">
+            <div id="title">
+                <div style="float:left;">
+                    <a href="http://www.mpa.gov.bd/" target="_blank">
+                        <img alt="logo" src="@Url.Content("~/Content/Images/bepza-logo.png")" />
+                    </a>
+                </div>
+                <div style="float:left;padding-left:10px">
+                    <span class="project-headline"> Management & Financial System </span>
+                    <br />
+                </div>
+            </div>
+            <div id="logindisplay">
+                <br />
+                @{ string curDate = DateTime.Now.ToString("dd MMMM yyyy"); }
+                @curDate
+            </div>
+            <nav>&nbsp</nav>
+        </div>
+
+        <div id="main" class="jqUI" style="min-height:83%;">
+            @RenderBody()
+        </div>
+        <div id="footer" class="footerLogo" align="center" style="background-color:#003466;font-size: small;">
+            <font style="font-weight: normal; color: White">Copyright © BEPZA, </font><a href="https://www.bepza.gov.bd/" target="_blank" style="text-decoration: none;">
+                <font style="color: ; font-weight: bold;">Maintained By  </font><font style="color: ;
+                    font-weight: bold;">BEPZA MIS </font> <font style="font-weight: normal; color: White">
+                    Team
+                </font>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

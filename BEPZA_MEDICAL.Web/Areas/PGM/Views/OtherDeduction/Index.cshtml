@@ -1,0 +1,44 @@
+﻿@using BOM_MPA.Web.Areas.PGM.Models.OtherAdjustDeduct
+@model OtherAdjustDeductModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+@using (Ajax.BeginForm("Index", "OtherDeduction", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    
+    <div class="GroupBox" style="max-height: 15px" id="message">
+    </div>
+    <div class="GroupBox">
+        <div id="jqSearch">
+        </div>
+        <div class="clear">
+    </div>
+    </div>
+    
+    
+    <div class="button-crude button-left">
+    @if ((new BOM_MPA.Web.Utility.AppConstant()).IsAddAssigned)
+    {
+        @Html.ActionLink("Add New", "Create")
+    }
+    </div>
+    <br /> 
+    <br />   
+    <table id="jqGrid" cellpadding="0" cellspacing="0">
+    </table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>  
+    <div id="divList">
+        <div id='delete-dialog' title='Delete Record' style="height: 20px">
+            <p style="line-height: 1em">
+                <span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>
+                Do you want to delete this record?
+            </p>
+        </div>
+        @Html.Partial("_GridList")
+    </div>
+}

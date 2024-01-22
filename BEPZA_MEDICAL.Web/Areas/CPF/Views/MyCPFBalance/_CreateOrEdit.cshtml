@@ -1,0 +1,337 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MyCPFBalance.MyCPFBalanceViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<style type="text/css">
+    .groupCaption {
+        color: blue;
+        text-decoration: underline;
+    }
+</style>
+
+<div>
+    <h2 style="text-align: center; padding: 0px;">@Html.Encode(Model.CompanyName)</h2>
+    <h4 style="text-align: center;">@Html.Encode(Model.CompanyAddress)</h4>
+    <h3 style="text-align: center; padding: 0px;">
+        My CPF Balance</h3>
+</div>
+
+<fieldset>
+    <legend>Member Information</legend>
+    <div class="row">
+        <table style="table-layout: fixed; width: 90%; margin: 10px auto;">
+            <colgroup>
+                <col width="15%" />
+                <col width="2%" />
+                <col width="35%" />
+                <col width="15%" />
+                <col width="2%" />
+                <col width="35%" />
+            </colgroup>
+            <tr>
+                <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                    @Html.LabelFor(model => model.EmpID)
+                </td>
+                <td>
+                    :
+                </td>
+                <td>
+                    @Html.Encode(Model.EmpID)
+                </td>
+                <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                    &nbsp;
+                </td>
+                <td>
+                    
+                </td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                    @Html.LabelFor(model => model.FullName)
+                </td>
+                <td>
+                    :
+                </td>
+                <td>
+                    @Html.Encode(Model.FullName)
+                </td>
+                <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                    @Html.LabelFor(model => model.MembershipID)
+                </td>
+                <td>
+                    :
+                </td>
+                <td>
+                    @Html.Encode(Model.MembershipID)
+                </td>
+            </tr>
+            <tr>
+                <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                    @Html.LabelFor(model => model.BalanceOn)
+                </td>
+                <td>
+                    :
+                </td>
+                <td>
+                    @Html.Encode(Model.BalanceOn)
+                </td>
+                <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                    @Html.LabelFor(model => model.MembershipLength)
+                </td>
+                <td>
+                    :
+                </td>
+                <td>
+                    @Html.Encode(Model.MembershipLength) (Years)
+                </td>
+            </tr>
+        </table>
+    </div>
+</fieldset>
+<fieldset>    
+<legend>Contribution</legend>
+    <div class="row">
+        <div style="width: 90%; margin: 10px auto;">
+        
+            <table style="table-layout: fixed; width: 50%; float: left;">
+                <colgroup>
+                    <col width="40%" />
+                    <col width="2%" />
+                    <col width="55%" />
+                </colgroup>
+                <tr>
+                    <td class="groupCaption">Employee Part (A) </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.OwnContributionAmount)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.OwnContributionAmount)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.OwnShareofProfit)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.OwnShareofProfit)
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        ...............................................................................
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.OwnTotal)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.OwnTotal)
+                    </td>
+                </tr>
+            </table>
+            <table style="table-layout: fixed; width: 45%; margin-left: 10px; float: left;">
+                <colgroup>
+                    <col width="45%" />
+                    <col width="2%" />
+                    <col width="55%" />
+                </colgroup>
+                 <tr>
+                    <td>@Html.LabelFor(model => model.EmployerPart, new{ @class= "groupCaption" }) </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.ComContributionAmount)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.ComContributionAmount)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.ComShareofProfit)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.ComShareofProfit)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        ...............................................................................
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        &nbsp;
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        @Html.Encode(Model.ComTotal)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.ForfeitedAmount)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.ForfeitedAmount)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        ...............................................................................
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.ComTotalWithoutForfietedAmount)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.ComTotalWithoutForfietedAmount)
+                    </td>
+                </tr>              
+                <tr>
+                    <td>
+                        ...............................................................................
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.PFTotal)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.PFTotal)
+                    </td>
+                </tr>           
+            </table>
+        </div>
+    </div>
+</fieldset>
+<fieldset>    
+<legend>Loan</legend>
+    <div class="row">
+        <div style="width: 90%; margin: 10px auto;">        
+            <table style="table-layout: fixed; width: 50%; float: left;">
+                <colgroup>
+                    <col width="40%" />
+                    <col width="2%" />
+                    <col width="55%" />
+                </colgroup>                
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.LoanAmount)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.LoanAmount)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.PaidAmount)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.PaidAmount)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        ...............................................................................
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.Dues)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.Dues) 
+                    </td>
+                </tr>
+            </table>
+            @*<table style="table-layout: fixed; width: 45%; margin-left: 10px; float: left;">
+                <colgroup>
+                    <col width="45%" />
+                    <col width="2%" />
+                    <col width="55%" />
+                </colgroup>                 
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.BothContribution)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.BothContribution)
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.LoanDues)
+                    </td>
+                    <td>
+                        :
+                    </td>
+                    <td>
+                        @Html.Encode(Model.LoanDues)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        ...............................................................................
+                    </td>
+                </tr>
+                <tr>
+                    <td style="color: #3C78B5; text-align: left; vertical-align: middle;">
+                        @Html.LabelFor(model => model.NetBalance)
+                    </td>
+                    <td>
+                        
+                    </td>
+                    <td>
+                        @Html.Encode(Model.NetBalance)
+                    </td>
+                </tr>                              
+            </table>*@
+        </div>
+    </div>
+</fieldset>

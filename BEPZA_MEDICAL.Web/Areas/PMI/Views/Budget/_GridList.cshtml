@@ -1,0 +1,148 @@
+﻿<script type="text/javascript">
+
+    $(function () {
+        $("a.deleteItem").click(function () {
+            deleteLinkObj = $(this);  //for future use
+            console.log(deleteLinkObj);
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 320, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    $.post(deleteLinkObj[0].href, function (obj) {  //Post to action
+                        console.log("Delete ?");
+                        if (obj.Success == 1) {
+                            $('.message').html("<b>" + obj.Message + "</b>").css("color", "green");
+                            $('#sButton').trigger('click');
+                        }
+                        else {
+                            $('.message').html("<b>" + obj.Message + "</b>").css("color", "red");
+                            $('#sButton').trigger('click');
+                        }
+
+
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+
+    });
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList","Budget")' + '?budgetType=Development',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Year', 'Budget Status', ''],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'FinancialYearName', index: 'FinancialYearName', align: 'left', search: true, edittype: 'select', width: '100px', surl: '@Url.Action("GetFinancialYear")' },
+                            { name: 'BudgetStatusName', index: 'BudgetStatusName', align: 'left', search: true, edittype: 'select', width: '120px', surl: '@Url.Action("GetBudgetStatus")' },
+                            { name: 'Delete', index: 'Delete', align: 'right', hidden: true, search: false, hidden: IsDeleteAssigned, sortable: false, width: '70px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Non Development Budget",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'BudgetDetailId',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            grouping: true,
+            groupingView: {
+                groupField: ["Id"],
+                groupColumnShow: [false, false],
+
+                groupText: ['<b>Tracking Number : {0}</b>']
+            },
+            loadComplete: function () {
+                $("a.deleteItem").on('click', function (e) {
+                    e.preventDefault();
+                    deleteLinkObj = $(this);  //for future use
+                    $('#delete-dialog').dialog('open');
+                    return false; // prevents the default behaviour
+                });
+                //debugger;
+                var i, group, cssClass, headerIdPrefix = this.id + "ghead_0",
+               groups = $(this).jqGrid("getGridParam", "groupingView").groups, l = groups.length;
+
+                for (i = 0; i < l; i++) {
+                    group = groups[i];
+                    if (group.dataIndex == "Id") {
+                        cssClass = "myHeaderStyle";
+                        if (cssClass !== "") {
+                            $("#" + headerIdPrefix + "_" + i).addClass(cssClass);
+                        }
+                    }
+                }
+            },
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+    });
+
+     function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_BudgetDetailId_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_BudgetDetailId_/, rowObject[0]);
+
+        return url;
+    }
+
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_BudgetDetailId_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_BudgetDetailId_/, rowObject[1]);
+        $('#btnUpdate').css("display", "block");
+        return url;
+    }
+
+    $(function () {
+        $('#sg_ApprovalDate, #sg_DateOfEffective').datepicker({ buttonImage: '@Url.Content("~/Content/Images/calendar-blue.gif")', dateFormat: 'dd-mm-yy', buttonImageOnly: true, showOn: "button", buttonText: 'Choose' })
+        .css({ 'width': '100px' });
+    })
+</script>
+
+
+<style type="text/css">
+    .ui-jqgrid .ui-jqgrid-htable th div {
+        word-wrap: break-word; /* IE 5.5+ and CSS3 */
+        white-space: pre-wrap; /* CSS3 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        white-space: normal !important;
+        height: auto;
+        vertical-align: text-top;
+        padding-top: 2px;
+        padding-bottom: 3px;
+    }
+</style>
+
+<style type="text/css">
+    .myHeaderStyle {
+        font-weight: bolder;
+        color: black;
+        text-decoration: underline;
+        cursor: pointer;
+        text-transform: uppercase;
+    }
+
+        .myHeaderStyle:hover {
+            background: #E9E9E9;
+        }
+</style>

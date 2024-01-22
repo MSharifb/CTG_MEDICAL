@@ -1,0 +1,180 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+
+@using (Ajax.BeginForm("Index", "AssignApprovalFlow", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div id="message" class="form-group messageBox clearfix">
+        @if (Model != null)
+        {
+            if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+        }
+    </div>
+    <fieldset class="search-area">
+        <legend> Search </legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalProcessId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(m => m.ApprovalProcessId, Model.AprovalProcessList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", onchange = "ShowButton();" })
+                </div>
+
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.StartDate, new { @class = @"col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(m => m.StartDate)
+                </div>
+                @Html.LabelFor(m => m.EndDate, new { @class = @"col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(m => m.EndDate)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2">&nbsp;</div>
+            <div class="col-sm-10 text-left">
+                <button class="btn btn-sm btn-primary" id="btnSearch"><i class="fa fa-search"></i> Search</button>
+                <button class="btn btn-sm btn-primary" id="btnCancel"><i class="fa fa-refresh"></i> Cancel</button>
+            </div>
+        </div>
+
+    </fieldset>
+    <div class="clear" style="height:10px">
+    </div>
+    <div id="divList">
+        @*@Html.Partial("_GridListWelfareFund")*@
+    </div>
+    <div class="clear" style="height:10px">
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10">
+            <button class="btn btn-sm btn-primary" id="btnPrint"><i class="fa fa-print"></i> Print</button>
+        </div>
+    </div>
+}
+
+<div id="divApplicationViewer">
+    <iframe id="styleAdvance" src="" width="100%" height="100%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divApplicationViewer").dialog({ autoOpen: false, modal: true, height: 650, width: 900, title: 'Application', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    $('#btnSearch').click(function (e) {
+        //e.preventDefault();
+        GetApplicationList();
+    });
+
+    $(document).ready(function () {
+        $('#ApprovalProcessId, #ApprovalStatusId').select2();
+    });
+
+    function GetApplicationList() {
+        var approvalProcessId = $('#ApprovalProcessId option:selected').val();
+        if (approvalProcessId == '') {
+            return;
+        };
+        var approvalStatusId = $('#ApprovalStatusId option:selected').val();
+        var statusId = parseInt(approvalStatusId);
+        if (approvalStatusId == '') {
+            approvalStatusId = 0;
+        };
+        var startDate = $('#StartDate').val();
+        var endDate = $('#EndDate').val();
+
+        $('#divList').empty();
+        var url = '@Url.Action("SearchItem", "Approval")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { approvalProcessId: approvalProcessId, approvalStatusId: approvalStatusId, startDate: startDate, endDate: endDate },
+            cache: false,
+            success: function (result) {
+                //console.log(result);
+                $('#divList').append(result);
+            }
+        });
+    };
+
+
+    $('#btnPrint').click(function (e) {
+        e.preventDefault();
+
+        var approvalProcessId = $('#ApprovalProcessId option:selected').val();
+        if (approvalProcessId == '') {
+            return;
+        };
+        var approvalStatusId = $('#ApprovalStatusId option:selected').val();
+        var statusId = parseInt(approvalStatusId);
+        if (approvalStatusId == '') {
+            return;
+        };
+        var startDate = $('#StartDate').val();
+        var endDate = $('#EndDate').val();
+        var url = '@Url.Action("RequestedApplicationList", "Report")';
+        $.ajax({
+            url: url,
+            data: { approvalProcessId: approvalProcessId, approvalStatusId: approvalStatusId, startDate: startDate, endDate: endDate },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                window.open(url, '_blank');
+            }
+        })
+    })
+
+    function ShowButton() {
+        var item = $("#ApprovalProcessId option:selected").text();
+        if (item == "BEPZA Welfare Fund ") {
+            $('#btnPrint').show();
+        }
+        else {
+            $('#btnPrint').hide();
+        }
+    };
+
+</script>
+
+
+<style type="text/css">
+    .search-area .btn {
+        min-width: 100px !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+    }
+
+    #StartDate, #EndDate {
+        width: 85% !important;
+    }
+
+    .search-area .form-group {
+        margin: 3px 2px;
+    }
+</style>

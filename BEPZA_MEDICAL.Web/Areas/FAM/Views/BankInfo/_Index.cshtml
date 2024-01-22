@@ -1,0 +1,191 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.BankInfo
+
+@model BankInformationModel
+<div class="frm-content">
+        <div class="GroupBox search-content">
+            <div id="jqSearch">
+            </div>
+            <div class="row">
+                <div class="button-crude button-left">
+                    @Ajax.ActionLink("Add New", "create", new AjaxOptions { OnComplete = "OnCompleteAddnew" })
+                
+                </div>            
+            </div>
+        </div>
+        <div class="grid">
+            <table id="jqGrid" cellpadding="0" cellspacing="0">
+            </table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+            @Html.Partial("_GridList", Model)
+        </div>
+</div>
+<script type="text/javascript">
+    function OnCompleteAddnew(content) {
+        if (content.statusText == 'OK') {
+            $('.search-content').hide();
+            $('.frm-content').html(content.responseText);
+        } else {
+            $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+        }
+    }
+    
+    
+    function  AddItemToGrid () {
+        var i = $('#grid tbody tr').length;
+        $('#message').empty();
+
+        var bankId=0;
+        var branchId=0;
+        var accHeadId=0;
+        var accNo=0;
+
+        var tmpBankId=0;
+        var tmpBranchId=0;
+        var tmpAccNo=0;
+        var tmpAccHead=0;
+
+        var bankName = $('#BankId option:selected').text();
+        bankId = $('#BankId option:selected').val();
+        if (bankId == '') { $('#message').text('Please Enter Bank Name').css({ 'color': 'red' }); return false }
+
+        var branchName = $('#BranchId option:selected').text();
+        branchId = $('#BranchId option:selected').val();
+        if (branchId == '') { $('#message').text('Please Enter Branch Name').css({ 'color': 'red' }); return false }
+
+        var accHeadName = $('#AccHeadId option:selected').text();
+        accHeadId = $('#AccHeadId option:selected').val();
+        if (accHeadId == '') { $('#message').text('Please Enter Account Head Name').css({ 'color': 'red' }); return false }
+
+        accNo = $('#txtAccNo').val();
+
+        var isDuplicate = false;
+        $('#grid tbody tr').each(function (i) {
+            var tmpBankId='';
+
+             tmpBankId= $(this).find("td:eq(2)").find('input').val();
+            tmpBranchId = $(this).find("td:eq(3)").find('input').val();
+            tmpAccNo = $(this).find("td:eq(4)").find('input').val();
+            tmpAccHead = $(this).find("td:eq(5)").find('input').val();
+            
+            if (bankId == tmpBankId && branchId == tmpBranchId && accNo == tmpAccNo && accHeadId == tmpAccHead) 
+            { isDuplicate = true; $('#message').show().text('Duplicate record not allowed').css({ 'color': 'red' }); }
+        })
+        if (isDuplicate) return false;
+
+
+        var row = "<tr class='row'>" +
+        "<td style='display:none;'><input type='text' name='BankInfoChilds[" + i + "].Id' value='0' /></td>" +
+        "<td style='display:none;'><input type='text' name='BankInfoChilds[" + i + "].BankBranchMapId' value='0' /></td>" +
+
+        "<td><input style='display:none' type='text' value='" + bankId + "'></input><a class='select-row' href='#'>" + bankName + "</a></td>" +
+        "<td><input style='display:none' type='text' value='" + branchId + "'></input>" + branchName + "</td>" +
+        "<td><input style='display:none' type='text' name='BankInfoChilds[" + i + "].BankAccountNo' value='" + accNo + "'></input><span>" + accNo + "</span></td>" +
+        "<td><input style='display:none' type='text' name='BankInfoChilds[" + i + "].AccountHeadId' value='" + accHeadId + "'></input><span>" + accHeadName + "</span></td>" +
+        "<td><a class='deleteRow' title='delete' href='#'><img style='border: none; ' src='@Url.Content("~/Content/Images/Delete.png")'></a></td>";
+        $('#grid').find('tbody').append(row);
+
+    }
+
+
+
+    $('.row a.deleteRow').live('click', function () {
+        $(this).parent().parent().remove();
+        ResetDynamicTableSequenceNumber();
+    })
+
+    function ResetDynamicTableSequenceNumber() {
+            var counter = 0;
+            $('#grid tr.row').each(function () {          
+                $(this).find("td input").each(function () {
+                    var toVal=$(this).attr("name");
+                    var v= toVal.substr(0,15);
+                    var v1= toVal.substr(16,toVal.length-14);
+                    $(this).attr("name",v+counter+v1);
+//                    alert($(this).attr("name"));
+                });
+                counter++;
+            });
+        } 
+
+    
+    $('.row a.select-row').live('click', function () {
+        $('#grid tbody tr').removeClass("ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight");
+        $(this).parent().parent().addClass("ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight");
+        $('#btnAdd').hide();
+        $('#btnChildUpdate').show();
+
+        var tds = $(this).parent().parent().children();
+        var bankName = $(tds[2]).text();
+        var branchName = $(tds[3]).text();
+        var bankAcc = $(tds[4]).text();
+        var accHead = $(tds[5]).text();
+
+        $("#BankId option:contains(" + bankName + ")").attr('selected', 'selected');
+        $("#BranchId option:contains(" + branchName + ")").attr('selected', 'selected');
+        $("#AccHeadId option:contains(" + accHead + ")").attr('selected', 'selected');
+
+        $('#txtAccNo').val(bankAcc);
+    })
+
+    $('#btnChildUpdate').live('click', function () {
+        
+        //duplicate check
+        $('#message').empty();
+        var bankName = $('#BankId option:selected').text();
+        var bankId = $('#BankId option:selected').val();
+        if (bankId == '') { $('#message').text('Please Enter Bank Name').css({ 'color': 'red' }); return false }
+
+        var branchName = $('#BranchId option:selected').text();
+        var branchId = $('#BranchId option:selected').val();
+        if (branchId == '') { $('#message').text('Please Enter Branch Name').css({ 'color': 'red' }); return false }
+
+        var accHeadName = $('#AccHeadId option:selected').text();
+        var accHeadId = $('#AccHeadId option:selected').val();
+        if (accHeadId == '') { $('#message').text('Please Enter Account Head Name Name').css({ 'color': 'red' }); return false }
+
+        var accNo = $('#txtAccNo').val();
+
+        var isDuplicate = false;
+        $('#grid tbody tr').each(function (i) {
+            if(!$(this).hasClass('ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight')){
+                var tmpBankId = $(this).find("td:eq(2)").find('input').val();
+                var tmpBranchId = $(this).find("td:eq(3)").find('input').val();
+                var tmpAccNo = $(this).find("td:eq(4)").find('input').val();
+                var tmpAccHead = $(this).find("td:eq(5)").find('input').val();
+                if (bankId == tmpBankId && branchId == tmpBranchId && accNo == tmpAccNo && accHeadId == tmpAccHead) { isDuplicate = true; $('#message').show().text('Duplicate record not allowed').css({ 'color': 'red' }); }
+            }
+        })
+        if (isDuplicate) return false;
+
+        //set updated value
+        $('#grid tbody tr').each(function (i) {
+            $(this).find("td:eq(2)").find('a').text(bankName);
+            $(this).find("td:eq(3)").text(branchName);
+
+        })
+
+        var tds = $('#grid tbody tr.ui-state-highlight').children();
+        //$(tds[2]).find('a').text(bankName);
+        //$(tds[3]).text(branchName);
+
+        $(tds[4]).find('input').val(accNo);
+        $(tds[4]).find('span').text(accNo);
+
+        $(tds[5]).find('input').val(accHeadId);
+        $(tds[5]).find('span').text(accHeadName);
+
+        //return to add mode
+        //document.getElementById('frm').reset();
+        $('#btnAdd').show();
+        $('#btnChildUpdate').hide();
+    })
+
+    $('#btnClear').live('click',function(){
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+        $('#btnChildUpdate').hide();
+        $('#grid tbody tr').removeClass('ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight');
+    })
+
+</script>

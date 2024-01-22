@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.TransferOutViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.TransferOutDetail!= null)
+{
+    foreach (var x in Model.TransferOutDetail)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

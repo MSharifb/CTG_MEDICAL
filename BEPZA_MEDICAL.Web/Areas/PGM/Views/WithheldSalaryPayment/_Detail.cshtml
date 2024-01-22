@@ -1,0 +1,47 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.WithheldSalaryPayment.WithheldSalaryPaymentViewModel
+@using ERP_BEPZA.Web.Helpers
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("PaymentList"))
+    {
+       
+         <td style="text-align: center; display:none;">
+            @Html.HiddenFor(model => model.SalaryId)
+        </td>
+         <td style="text-align: center; display:none;">
+            @Html.HiddenFor(model => model.EmployeeId)
+        </td>
+        if (Model.Mode == "Create")
+        {
+            <td style="text-align: center;">
+                @Html.CheckBoxFor(model => model.IsPaid, new { @class = "eachSelect" })
+            </td>
+        }
+        <td>
+            @Html.EditorFor(m => m.PaymentDate)
+        </td>
+        <td style="text-align: left;">
+            @Html.TextBoxFor(model => model.EmployeeInitial, new { @class = "read-only", @readonly = true})
+        </td>
+         <td style="text-align: left;">
+            @Html.TextBoxFor(model => model.FullName, new { @class = "read-only", @readonly = true })
+        </td>
+       
+        <td style="text-align: left">
+            @Html.TextBoxFor(model => model.AccountNo, new { @class = "read-only", @readonly = true })
+        </td>
+        <td style="text-align: right;">
+            @Html.TextBoxFor(model => model.Payable, new { @class = "read-only", @readonly = true, @style = "text-align: right; width: 150px;" })
+        </td>
+        <td>
+            @Html.EditorFor(m => m.Remarks)
+        </td>
+        if (Model.Mode == "Edit")
+        {
+            <td style="text-align: center;">
+                <a href="#" class="deleteRow" title="Rollback" onclick="WithheldRollbackDb(this,@Model.SalaryId,'@Url.Action("WithheldRollback")')">
+                    <img src='@Url.Content("~/Content/Images/refresh.png")' alt="Delete" style="border: none; " />
+                </a>            
+            </td>
+        }
+    }
+</tr>

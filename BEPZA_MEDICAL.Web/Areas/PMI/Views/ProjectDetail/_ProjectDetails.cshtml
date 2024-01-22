@@ -1,0 +1,49 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Project.ProjectDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<style type="text/css">
+    .estimatedCost input[type='text'] {
+        text-align: right;
+    }
+</style>
+<tr>
+    @using (Html.BeginCollectionItem("ProjectDetailList"))
+    {
+    <tr>
+        @Html.HiddenFor(m => m.Id)
+        <td>
+            @Html.DropDownListFor(m => m.ProcurementTypeId, Model.ProcurementTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+        </td>
+        <td>
+            @Html.DropDownListFor(m => m.ProcurementMethodId, Model.ProcurementMethodList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+        </td>
+        <td>@Html.DropDownListFor(m => m.SourceOfFundId, Model.SourceOfFundList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })</td>
+        <td>@Html.DropDownListFor(m => m.ApprovalAuthorityId, Model.ApprovalAuthorityList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })</td>
+        <td>@Html.EditorFor(m => m.PackageNo)</td>
+        <td>@Html.EditorFor(m => m.PackageName)</td>
+        <td>@Html.TextBoxFor(m => m.Unit)</td>
+        <td>@Html.TextBoxFor(m => m.Quantity)</td>
+        <td class="estimatedCost">@Html.EditorFor(m => m.EstimatedCost)</td>
+        <td class="control-field" style="width:75px;">
+            <button type="button" id="cmdDeleteRow" class="btn btn-sm btn-danger">
+                <i class="fa fa-trash fa-lg"></i>
+            </button>
+            @*<a href="#" class="deleteRow" title="delete" id="cmdDeleteRow">
+                    <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+                </a>*@
+        </td>
+    </tr>
+    }
+
+
+    <script type="text/javascript">
+        $(".control-field button").on("click", function () {
+            $(this).closest('tr').remove();
+            return false;
+        })
+
+    </script>
+    <style type="text/css">
+        .security-money input[type='text'] {
+            text-align: right;
+        }
+    </style>

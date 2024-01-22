@@ -1,0 +1,91 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NoteOrderInfoViewModel
+
+<style type="text/css">
+    .details-view .label {
+        width: 25%;
+    }
+</style>
+
+<div class="GroupBox details-view">
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ComplaintNoteSheetId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ComplaintNoteSheetName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</div>
+
+<fieldset class="details-view">
+    <legend>Order Information</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderDate, "{0:dd-MM-yyyy}", new { @class = "read-only", @readonly = true })
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderNo)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderNo, new { @class = "read-only", @readonly = true })
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderTypeInfoId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderTypeInfoName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderDetails)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field" style="width:70%">
+            @Html.TextAreaFor(model => model.OrderDetails, new {@class = "read-only", @readonly = true, Style = "width:95%", @rows = 10, @maxlength = "500" })
+        </span>
+        <div class="clear"></div>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderByEmpId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderByEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })          
+        </span>
+
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderByEmployeeName)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderByEmployeeName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.OrderByDesignationName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.OrderByDesignationName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+</fieldset>

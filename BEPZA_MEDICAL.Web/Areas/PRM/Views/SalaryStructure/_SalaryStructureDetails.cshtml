@@ -1,0 +1,21 @@
+﻿@model MFS_IWM.Web.Areas.PRM.ViewModel.SalaryStructureDetailsViewModel
+@using MFS_IWM.Web.Helpers
+<tr>
+    @using (Html.BeginCollectionItem("SalaryStructureDetail"))
+    {  
+        <td>
+            @if (Model != null)
+            {
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.SalaryStructureId)
+            } 
+            @Html.TextBoxFor(model => model.HeadId, new { @class = "required" })
+            @Html.TextBoxFor(model => model.HeadType, new { @class = "required" })
+            @Html.TextBoxFor(model => model.AmountType, new { @class = "required" })
+        </td>
+        <td>
+            <a href="#" class="deleteRow" title="delete">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' style="border: none; "/></a>
+        </td>               
+    }
+</tr>

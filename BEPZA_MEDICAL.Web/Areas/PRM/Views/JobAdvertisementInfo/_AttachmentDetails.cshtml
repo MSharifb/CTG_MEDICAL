@@ -1,0 +1,33 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobAdvertisementInfo.JobAdvertisementInfoViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("AttachmentFilesList"))
+    {
+        if (Model != null)
+        {
+            @Html.HiddenFor(model => model.Id)
+        }
+       @Html.HiddenFor(model => model.Title)
+       @Html.HiddenFor(x => x.FileName)
+       @Html.HiddenFor(x => x.Attachment)
+
+        <td width="35%" style="text-align: center">
+            @Html.Encode(Model.Title)
+        </td>
+        <td width="8%" style="text-align: center">
+            @if (Model.Id != 0)
+            {
+                          <a href="@Model.FilePath" visible="true" runat="server" target="_blank">
+                                    <img src='@Url.Content("~/Content/Images/download.png")' alt="download" style="border: none; " />
+                          </a>
+            }
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="remove" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteJobAdvertisementDetailAttachment")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

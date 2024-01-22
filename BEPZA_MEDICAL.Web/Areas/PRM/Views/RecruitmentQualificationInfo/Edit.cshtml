@@ -1,0 +1,49 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RecruitmentQualificationInfoViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm("Edit", "RecruitmentQualificationInfo", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div style="color:Red" id="ErrMsg" class="@Model.ErrMsg">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="col-sm-9 col-sm-offset-3 text-right">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <button class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Update</button>
+                @*<input type="submit" value="Update" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />*@
+            }
+            <a href="@Url.Action("Index")" class="btn btn-warning"> <i class="fa fa-backward"></i> Back</a>
+        </div>
+    </fieldset>
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        if ('@Model.ErrMsg' != "") {
+
+            if ('@Model.IsError' == 1) {
+                $('#message').html("<b style='color:Green'>" + '@Model.ErrMsg' + "</b>");
+            }
+            else {
+                $('#message').html("<b style='color:Red'>" + '@Model.ErrMsg' + "</b>");
+            }
+        }
+    });
+
+</script>
+

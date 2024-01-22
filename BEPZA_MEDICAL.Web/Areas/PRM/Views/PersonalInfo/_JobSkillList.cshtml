@@ -1,0 +1,43 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobSkillInfoViewModel
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetJobSkillList", null, new { Id = Model.EmployeeId })',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Skill Name', 'Skill Level', 'Year of Experience'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: false, edittype: 'text', hidden: true },
+                        { index: 'SkillName', align: 'left', edittype: 'text', formatter: viewformatEdiorLink },
+                        { index: 'EfficiencyLevel', align: 'left', edittype: 'text' },
+                        { index: 'YearofExperience', align: 'right' }
+                      ],
+            autowidth: true,
+            caption: "Job Skill List",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "JobSkillInfoIndex", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+</script>

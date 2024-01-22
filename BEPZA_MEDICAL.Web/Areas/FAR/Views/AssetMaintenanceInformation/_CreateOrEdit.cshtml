@@ -1,0 +1,243 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.AssetMaintenanceInformationViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.strMode)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FIxedAssetId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.FIxedAssetId, Model.AssetCodeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control select2-ddl required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.Date, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaintenanceTypeInfoId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.MaintenanceTypeInfoId, Model.MaintenanceTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(model => model.Amount, new { @class = "form-control" })
+            </div>
+        </div>
+        <fieldset>
+            <legend>Used Spare Parts</legend>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SparePartId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(model => model.SparePartId, Model.SparePartList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(model => model.Quantity, new { @class = "col-sm-1 control-label" })
+                <div class="col-sm-1">
+                    @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(model => model.Rate, new { @class = "col-sm-1 control-label" })
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.Rate, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row" align="center">
+                <div style="width: 80%">
+                    <div class="clear"></div>
+                    <div class="text-right">
+                        <button class="btn btn-success" id="btnAdd"><i class="fa fa-plus"></i> Add</button>
+                    </div>
+                    <div class="clear">
+                    </div>
+                    <table id="grid" class="contenttable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Spare Part
+                                </th>
+                                <th>
+                                    Quantity
+                                </th>
+                                <th>
+                                    Rate
+                                </th>
+                                <th>
+                                    Remove
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @for (int i = 0; i < Model.AssetMaintenanceInformationDetailList.Count; i++)
+                            {
+                                var item = Model.AssetMaintenanceInformationDetailList.ToList()[i];
+                                <tr>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AssetMaintenanceInformationDetailList[i].Id)
+                                    </td>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AssetMaintenanceInformationDetailList[i].SparePartId)
+                                    </td>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AssetMaintenanceInformationDetailList[i].Quantity)
+                                    </td>
+                                    <td style="display: none;">
+                                        @Html.HiddenFor(m => m.AssetMaintenanceInformationDetailList[i].Rate)
+                                    </td>
+                                    <td>
+                                        <span> @item.SparePartName</span>
+                                    </td>
+                                    <td>
+                                        <span> @item.Quantity</span>
+                                    </td>
+                                    <td>
+                                        <span> @item.Rate</span>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,@item.SparePartId,'@Url.Action("DeleteAssetMaintenanceInformationDetail")')"></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clear" style="height:10px">
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-group">
+            <div class="attachment-area">
+                <div class="row">
+                    @Html.LabelFor(model => model.Attachment, new { @class = "col-sm-2 control-label" })
+                    <span class="field">
+                        @Html.HiddenFor(model => model.Attachment)
+                        @Html.HiddenFor(model => model.FileName)
+                        @Html.TextBoxFor(model => model.File, new { type = "file" })
+                    </span>
+                    <span>
+                            @if (Model.FileName != null)
+                            {
+                                @Html.ActionLink(Model.FileName.ToString(), "DownloadFile", new { @id = Model.Id, @class = @"file-download" })
+                            }
+                    </span>
+                </div>
+            </div>
+        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Remarks, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-6">
+                    @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="clear" style="height:10px">
+            </div>
+</fieldset>
+</div>
+<script type="text/javascript">
+    var arrList = [];
+    //pupulate existing data from database
+    var SelectionCriteriaOrExam = @Html.Raw(Json.Encode(Model.AssetMaintenanceInformationDetailList));
+    $.each( SelectionCriteriaOrExam, function( key, value ) {
+        arrList.push(String( value.SparePartId ));
+    });
+
+
+    $('#btnAdd').on('click', function (e) {
+        e.preventDefault();
+        $('#message').empty();
+        var assetMaintenanceInformationDetailId = $('#Id').val();
+        var sparePartId = $('#SparePartId').val();
+        var sparePartName = $("#SparePartId option:selected").text();
+
+        var quantity = $('#Quantity').val();
+        var rate = $('#Rate').val();
+        //checking duplicate entry
+        var index = $.inArray(sparePartId, arrList);
+
+        if (sparePartId == null || sparePartId == 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            arrList.push(sparePartId);
+
+            var trClone = '<tr>' +
+                '<td style="display: none;">' + '<input type="text" value="0" name="AssetMaintenanceInformationDetailList[0].Id"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="AssetMaintenanceInformationDetailList[0].SparePartId" value="' + sparePartId + '"></td>' +
+                '<td style="display: none;">' + '<input type="text" name="AssetMaintenanceInformationDetailList[0].Quantity" value="' + quantity + '" ></td>' +
+                '<td style="display: none;">' + '<input type="text" name="AssetMaintenanceInformationDetailList[0].Rate" value="' + rate + '" ></td>' +
+
+                '<td>' + '<label for="SparePartName">' + sparePartName + '</td>' +
+                '<td>' + '<label for="FullMark" >' + quantity + '</td>' +
+                 '<td>' + '<label for="PassMark">' + rate + '</td>' +
+                '<td>' + '<a class="deleteIcon-tempGrid" title="delete" href="#" title="delete" onclick="RemoveDb(this,0,&quot;' + sparePartId +'&quot;)"></a></td>' +
+                '</tr>';
+            $('#grid tbody').append(trClone);
+            RearrengeControlName2();
+        }
+    })
+
+    function RemoveDb(el,id,sparePartId,url) {
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+        arrList = $.grep(arrList, function(value) {
+            return value != sparePartId;
+        });
+        RearrengeControlName2();
+    }
+
+
+    function RearrengeControlName2() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>

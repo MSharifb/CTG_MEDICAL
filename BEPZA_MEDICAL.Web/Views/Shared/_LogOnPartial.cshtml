@@ -1,0 +1,33 @@
+﻿@using BEPZA_MEDICAL.Web.Utility
+<div class="user-dropdown dropdown pull-right">
+    <a class="btn btn-link" href="#" onclick="javascript:toggle_fullscreen()"><i class="fa fa-expand"></i></a>
+    @if (Request.IsAuthenticated)
+    {
+        if (MyAppSession.ZoneInfoId == 0)
+        {
+            Response.Redirect("~/Account/LogOn");
+        }
+        <button class="btn btn-link dropdown-toggle" type="button" id="user-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <div class="user-spec-holder">
+                <span class="small">
+                    @MyAppSession.EmpName.ToString(), @MyAppSession.EmpDesignation.ToString(), @User.Identity.Name
+                </span><br />
+                <span class="small">@MyAppSession.ZoneName</span>
+            </div>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right user-dropdown-menu" aria-labelledby="user-menu">
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("Index", "Home", new { area = "" })">
+                    <i class="fa fa-tachometer"></i> Dashboard
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("LogOff", "Account", new { area = "" })">
+                    <i class="fa fa-sign-out"></i> Log off
+                </a>
+            </li>
+        </ul>
+    }
+</div>
+

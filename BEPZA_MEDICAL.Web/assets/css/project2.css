@@ -1,0 +1,755 @@
+﻿/**
+* Project Style Sheet
+* All the project-specific styles that to add/override previous declarations
+* 
+* @since 1.0.0
+*/
+@font-face {
+    font-family: 'Open Sans';
+    src: url("../fonts/OpenSans-Regular.eot?v=1.1.0");
+    src: url("../fonts/OpenSans-Regular.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans-Regular.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans-Regular.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans-Regular.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans-Regular.svg?v=1.1.0#Regular") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans Bold';
+    src: url("../fonts/OpenSans-Bold.eot?v=1.1.0");
+    src: url("../fonts/OpenSans-Bold.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans-Bold.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans-Bold.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans-Bold.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans-Bold.svg?v=1.1.0#Bold") format("svg");
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+strong,
+b,
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    font-family: 'Open Sans Bold';
+}
+
+/**
+ * Color Palette
+ *
+ * black-color: #343838;
+ * selected-color: #68c39f;
+ */
+
+
+#site-header {
+    background-color: #343838;
+    color: #fff;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999; /* 3rd level */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.navbar-header {
+    min-width: auto;
+    float: left;
+}
+
+.navbar-brand {
+    height: auto;
+    position: relative;
+    padding: 5px 5px 0;
+    color: #fff;
+    z-index: 1;
+}
+
+    .navbar-brand:hover {
+        color: #eee;
+    }
+
+.navbar-logo {
+    display: inline-block;
+    float: left;
+    height: auto;
+    max-height: 40px;
+    margin-top: 3px;
+}
+
+.rounded-image {
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.navbar-branding {
+    display: inline-block;
+    float: left;
+    margin-left: 10px;
+    color: #fff;
+}
+
+.site-module {
+    font-size: 18px;
+    padding: 10px 10px 0 10px;
+}
+
+@media (max-width: 768px) {
+    .navbar-branding {
+        display: none;
+    }
+}
+
+.brand-text {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    vertical-align: middle;
+    /*padding: 8px 0px;*/
+}
+
+.brand-secondary-text {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.user-dropdown.dropdown {
+    margin-top: 8px;
+}
+
+    .user-dropdown.dropdown .btn-link {
+        text-decoration: none;
+        color: #fff;
+        width: auto; /* TEMPORARY: can be ommitted when grid.css and ComponentStyle.css are removed */
+        height: auto; /* TEMPORARY: can be ommitted when grid.css and ComponentStyle.css are removed */
+    }
+
+@media (min-width: 768px) {
+
+    #sidebar {
+        position: fixed;
+        width: 280px;
+        /*height: 100%;*/
+        top: 60px;
+        bottom: 0;
+        left: 0;
+        /*margin-top: 50px;*/
+        background-color: #343838;
+        color: #fff;
+        overflow: hidden;
+        z-index: 99; /* 2nd level */
+    }
+
+    #body {
+        padding: 20px;
+        margin-left: 280px;
+    }
+}
+
+#body {
+    margin-top: 50px;
+}
+
+#main-menu {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+    #main-menu ul,
+    #main-menu li,
+    #main-menu a {
+        list-style-type: none;
+        padding: 0;
+        font-size: 13px;
+    }
+
+    #main-menu a {
+        color: #fff;
+        text-decoration: none;
+        position: relative;
+    }
+
+        #main-menu a:hover {
+            background-color: #1b1e1e;
+        }
+
+    /* parent menu item */
+    #main-menu > ul > li > a {
+        display: block;
+        padding: 10px 22px 10px 20px;
+        text-shadow: 0px -1px 0px rgba(0,0,0,0.1);
+    }
+
+        #main-menu > ul > li > a:hover {
+            background-color: #4d5252;
+        }
+
+
+
+    /* sub menu item */
+    #main-menu ul ul {
+        background-color: #282b2b;
+    }
+
+        #main-menu ul ul a {
+            padding: 10px 25px 10px 35px;
+            display: block;
+            font-size: 12px;
+        }
+
+ul.submenu > li.active {
+    background-color: #0f1010;
+}
+
+li.has-submenu > a:after {
+    content: "";
+    display: inline-block;
+    top: 20px;
+    right: 10px;
+    position: absolute;
+    width: 0;
+    height: 0;
+    margin-left: 2px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid\9;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
+/* highlight active menu, that has submenu active */
+li.has-submenu.active > a {
+    background-color: #4d5252;
+}
+
+/* sub sub menu item */
+#main-menu ul ul ul a {
+    padding-left: 45px;
+}
+
+#site-footer {
+    border-top: 1px solid #b9c1cb;
+    font-size: 12px;
+    padding: 20px 0;
+    margin-top: 40px;
+    color: #7a868f;
+    text-align: center;
+}
+
+    #site-footer a {
+        text-decoration: none;
+    }
+
+        #site-footer a:hover {
+            text-decoration: underline;
+        }
+
+
+/** Pagination **/
+.pager {
+    border-collapse: separate;
+    background: #fff;
+    border-radius: 5px;
+    margin: 5px auto;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    width: 99.2%;
+    padding: 5px;
+    text-align: center;
+}
+
+    .pager a {
+        background-color: #6C7B90;
+        color: #fff;
+        border-radius: 3px;
+    }
+
+        .pager a:hover {
+            background-color: #999;
+        }
+
+    .pager a,
+    .pager .pager-item {
+        text-transform: uppercase;
+        text-decoration: none;
+        border-right: 1px solid #ccc;
+        padding: 2px 10px;
+        margin-left: 2px;
+        margin-right: 2px;
+        font-size: 10px;
+    }
+
+        .pager a:last-of-type,
+        .pager .pager-item:last-of-type {
+            margin-right: 0;
+            border-right: 0;
+        }
+
+.ui-dialog {
+    z-index: 9999;
+}
+
+.page-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 3px solid #666;
+}
+
+/** overriding modal CSS **/
+/*.ui-dialog .ui-dialog-titlebar-close {
+    background-image: url(images/ui-icons_777777_256x240.png);
+    background-position: -96px -128px;
+}*/
+
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #FFF;
+}
+
+#wrapper.main-dashboard .content-page {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.dashboard-widget-link {
+    display: block;
+}
+
+    .dashboard-widget-link:hover .widget {
+        background-color: #333;
+    }
+
+
+#user-menu {
+    text-align: right;
+}
+
+    #user-menu .user-spec-holder {
+        display: inline-block;
+    }
+
+
+/*link Icon*/
+
+.addItem {
+    background: url(../../Content/images/addItem.png) no-repeat;
+    height: 16px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+.downloadItem {
+    background: url(../../Content/images/download.png) no-repeat;
+    height: 16px;
+    width: 25px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+.viewItem {
+    background: url(../../Content/images/view.png) no-repeat;
+    height: 16px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+.editItem {
+    background: url(../../Content/images/Edit.png) no-repeat;
+    height: 16px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+.deleteItem, .deleteIcon-tempGrid {
+    background: url(../../Content/images/delete.png) no-repeat;
+    height: 16px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none !important;
+}
+
+.refreshIcon {
+    background: url(../../Content/images/refresh.png) no-repeat;
+    height: 16px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+.approveIcon {
+    background: url(../../Content/images/approve.png) no-repeat;
+    height: 16px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+.payItem {
+    background: url(../../Content/images/Edit.png) no-repeat;
+    height: 14px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+.mSalaryPDetails {
+    background: url(../../Content/images/Edit.png) no-repeat;
+    height: 14px;
+    width: 16px;
+    display: block;
+    overflow: hidden;
+    margin-left: 30%;
+    text-decoration: none;
+}
+
+/*new css by suman*/
+
+input[type="text"] {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+    height: 26px;
+    padding: 0px 5px;
+    width: 100%;
+    font-size: 13px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+}
+
+fieldset {
+    border: 1px solid #b9c1cb;
+    font-size: 12px;
+    margin: 0 0 0.5em;
+    padding: 4px 8px;
+}
+
+legend {
+    border-bottom: 0 none;
+    color: #333;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+    padding: 0 5px;
+    width: inherit;
+}
+
+.box {
+    position: relative;
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    padding: 10px;
+}
+
+/* TABLE
+----------------------------------------------------------*/
+
+.contenttable {
+    border: solid 0px #d2d6de;
+    border-collapse: collapse;
+    color: #000;
+    font-size: small;
+    width: 100%;
+}
+
+    .contenttable th, .contenttable thead th, .contenttable tfoot th {
+        padding: 6px 5px;
+        text-align: center;
+        border: solid 1px #d2d6de;
+        background: #CFCFCF;
+        font-size: 14px;
+        font-weight: normal;
+        color: #222;
+    }
+
+    .contenttable td, .contenttable tbody td {
+        padding: 3px 2px;
+        border: solid 1px #d2d6de;
+        font-size: 13px;
+        font-weight: normal;
+        color: #333;
+    }
+
+.filtertable {
+    border-collapse: collapse;
+    color: black;
+}
+
+    .filtertable td, .filtertable tbody td {
+        padding: 3px 3px 3px 10px;
+        white-space: nowrap;
+    }
+
+    .filtertable tbody tr td select {
+        border: 1px solid #ccc;
+        padding: 2px;
+        color: #555;
+        width: 80%;
+        font-size: small;
+    }
+
+    .filtertable tbody tr td input {
+        border: 1px solid #ccc;
+        padding: 2px;
+        width: 80%;
+        font-size: small;
+    }
+
+
+
+
+/** Bootstrap Button : btn btn-sm btn-success **/
+.select2-container--default .select2-selection--single {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+    height: 28px;
+    padding: 0px 0px;
+    font-size: 14px;
+    line-height: 1.2;
+    color: #555;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+    .form-group label {
+        font-weight: 400;
+        padding-top: 4px;
+    }
+
+.form-control {
+    border-radius: 0;
+    box-shadow: none;
+    border-color: #d2d6de;
+    height: 26px;
+    padding: 0px 5px;
+}
+
+    .form-control:focus {
+        border-color: #3c8dbc;
+        box-shadow: none;
+    }
+
+.form-horizontal .control-label {
+    font-weight: 400;
+    padding-top: 4px;
+}
+
+
+div.buttonSubmit {
+    float: left;
+}
+
+.filtertable label {
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 0;
+    line-height: 18px;
+}
+
+.filtertable input[type="text"] {
+    padding: 3px 5px;
+}
+/** Bootstrap Button : btn btn-sm btn-success **/
+
+.filtertable tbody tr td input[type="button"],
+.filtertable tbody tr td input[type="submit"] {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    height: auto;
+    border-radius: 3px;
+    width: 100%;
+}
+
+    .filtertable tbody tr td input[type="button"]:hover,
+    .filtertable tbody tr td input[type="button"]:active,
+    .filtertable tbody tr td input[type="submit"]:hover,
+    .filtertable tbody tr td input[type="submit"]:active {
+        color: #fff;
+        background-color: #449d44;
+        border-color: #398439;
+    }
+
+
+/* custom validation css*/
+input.read-only, .read-only, input.read-only:disabled, .read-only:disabled {
+    background-color: #eee;
+    cursor: not-allowed;
+}
+
+.required-field {
+    color: #ff0000;
+    font-weight: normal;
+}
+
+.labelRequired::after {
+    content: " *";
+    color: #ff0000;
+    font-weight: normal;
+    /*position:absolute;*/
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.field-validation-error {
+    color: #ff0000;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #dd4b39;
+    background-color: #ffeeee;
+}
+
+textarea.input-validation-error {
+    border: 1px solid #dd4b39;
+    background-color: #ffeeee;
+}
+
+select.input-validation-error {
+    border: 1px solid #dd4b39;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors {
+    /*font-weight: bold;*/
+    color: #dd4b39;
+}
+
+input.border-red, textarea.border-red, .border-red {
+    border: 1px solid #dd4b39;
+    background-color: #ffeeee;
+}
+
+.has-error .select2-selection {
+    border: 1px solid #a94442;
+    border-radius: 4px;
+}
+
+.input-validation-error span {
+    border: 1px solid #dd4b39;
+    border-radius: 4px;
+}
+/* End custom validation css*/
+
+/*Message*/
+
+.success {
+    text-align: left;
+    color: Green;
+}
+
+.failed {
+    text-align: left;
+    color: Red;
+}
+
+/*overrite timepicker css*/
+.bootstrap-timepicker-widget.dropdown-menu {
+    min-width: 85px;
+}
+
+.bootstrap-timepicker-widget table td a {
+    padding: 2px 0;
+}
+
+    .bootstrap-timepicker-widget table td a .fa {
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+.bootstrap-timepicker-widget table td input {
+    width: 30px;
+    padding: 3px;
+}
+
+
+/*end new css*/
+
+
+/* Query Analyzer Tree   
+----------------------------------------------------------*/
+.collapse {
+    width: 15px;
+    background: url(../../Content/images/treeViewIcon.png) no-repeat -74px 4px;   
+    display: inline-block;
+    cursor: pointer;
+}
+
+.expand {
+    width: 15px;
+    background: url(../../Content/images/treeViewIcon.png) no-repeat -74px 4px;    
+    display: inline-block;
+    cursor: pointer;
+}
+
+.treeview ul {
+    font-size: 14px;
+    margin: 0px;
+    padding-left: 20px;
+    list-style: none;
+}
+
+.treeview > li > a {
+    font-weight: normal;
+    font-size: 12px;
+}
+
+.treeview li {
+}
+
+    .treeview li a {
+        padding: 4px;
+        font-size: 12px;
+        display: inline-block;
+        text-decoration: none;
+        width: auto;
+    }

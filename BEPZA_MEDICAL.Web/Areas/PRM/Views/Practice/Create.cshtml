@@ -1,0 +1,25 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PracticeViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<div id="wrapperDiv">
+    @using (Html.BeginForm("Create", "Practice", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+    {
+        <fieldset>
+            @Html.Partial("_CreateOrEdit", Model)
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                }
+            </div>
+        </fieldset>
+    }
+
+    <div class="button-crude button-left">
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    <div class="clear"></div>
+</div>

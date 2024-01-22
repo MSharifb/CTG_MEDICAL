@@ -1,0 +1,45 @@
+﻿@using BEPZA_MEDICAL.Web.Utility
+@if (Request.IsAuthenticated)
+{
+    if (MyAppSession.ZoneInfoId == 0)
+    {
+        Response.Redirect("~/Account/LogOn");
+    }
+
+  
+    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="rounded-image topbar-profile-image">
+            <img src="@Url.Content("~/assets/img/default-user.png")">
+        </span><strong>@MyAppSession.EmpName.ToString()</strong>, <strong>@MyAppSession.EmpDesignation.ToString()</strong>, <strong> @User.Identity.Name</strong> <i class="fa fa-caret-down"></i>
+    </a>
+
+    <ul class="dropdown-menu">
+        
+        @if (MyAppSession.IsMultiZone)
+        {
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("SwitchEPZ", "Account", new { area = "" })">
+                    <i class="icon-switch"></i> Switch EPZ
+                </a>
+            </li>
+            <li class="divider"></li>
+        }
+        <li>
+            <a class="dashboard-widget-link" href="@Url.Action("UserManual", "Account", new { area = "" })">
+                <i class="icon-doc-text-inv"></i> User Manual
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a class="dashboard-widget-link" href="@Url.Action("ChangePassword", "Account", new { area = "" })">
+                <i class="icon-lock-open-1"></i> Change Password
+            </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+            <a class="dashboard-widget-link" href="@Url.Action("LogOff", "Account", new { area = "" })">
+                <i class="icon-logout-1"></i> Log off
+            </a>
+        </li>
+    </ul>
+}

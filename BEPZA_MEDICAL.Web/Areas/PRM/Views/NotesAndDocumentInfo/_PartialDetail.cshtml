@@ -1,0 +1,42 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.NotesAndDocumentInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("TempAttachmentDetail"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.NotesAndDocumentInfoId)
+        @Html.HiddenFor(x => x.RefNo)
+
+        @Html.HiddenFor(x => x.Subject)
+        @Html.HiddenFor(x => x.IsAddAttachment)
+        @Html.HiddenFor(x => x.FileName)
+        @Html.HiddenFor(x => x.Attachment)
+        @*@Html.HiddenFor(x => x.Date)*@
+
+        <td width="15%" style="text-align: center" class="chck-refNo">
+            @Html.Encode(Model.RefNo)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.TextBoxFor(x => x.Date, "{0:yyyy-MM-dd}", new { @style="display:none"})
+            @Html.Label(Convert.ToDateTime(Model.Date).ToString("dd-MM-yyyy"), new { @style = "color:black;text-align:center" })
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.Subject)
+        </td>
+        <td width="15%" style="text-align: center">
+            @if (@Model.Id > 0)
+            {
+                <a href="#" class="deleteRow" title="Add Comment" onclick="AddComment(this,@Model.Id,'@Url.Action("AddComment")')">
+                    <img src='@Url.Content("~/Content/Images/addItem.png")' alt="add Comment" style="border: none; " />
+                </a>
+            }
+
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="remove" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteAttachmentDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

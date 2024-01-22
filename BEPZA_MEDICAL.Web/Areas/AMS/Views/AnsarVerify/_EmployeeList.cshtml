@@ -1,0 +1,48 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.AMS.ViewModel.AnsarVerifyViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("AnsarList"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.EmployeeId)
+
+        <td style="width: 30px; text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.BEPZAID)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.AnsarName)
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.Designation)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.AnsarId)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.DateofJoining.Value.ToString("yyyy-MM-dd"))
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.AnsarJoiningDate.HasValue? Model.AnsarJoiningDate.Value.ToString("yyyy-MM-dd") : string.Empty)
+        </td>
+        @*<td width="5%" style="text-align: center">
+            <a href="#" title="view" onclick="ViewApplicantInfo(this,@Model.EmployeeId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" title="view" onclick="ViewHistory(this,@Model.EmployeeId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>*@
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

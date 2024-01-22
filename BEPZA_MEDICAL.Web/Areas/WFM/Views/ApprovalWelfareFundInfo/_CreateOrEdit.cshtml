@@ -1,0 +1,806 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.ApprovalWelfareFundInfoViewModel
+
+@{
+    Layout = null;
+}
+<b style=""></b>
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+<div class="form-horizontal">
+    <div class="form-group" style="display:none">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.MemberEmployeeId)
+    </div>
+    <fieldset>
+        <legend>Meeting Information</legend>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RefNo, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.RefNo, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.CommitteeName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.CommitteeName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MeetDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.MeetDate, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.MeetTime, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.MeetTime, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MeetPlace, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.MeetPlace, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.CycleInfoId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-4">@Html.DropDownListFor(model => model.CycleInfoId, Model.CycleInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })</div>
+                    <div class="col-sm-4">@Html.TextBoxFor(model => model.CycleName, new { @readonly = true, @class = "form-control read-only" })</div>
+                    <div class="col-sm-4">@Html.DropDownListFor(model => model.Year, Model.YearList, new { @class = "form-control" })</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MeetAgenda, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.MeetAgenda, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.WelfareFundCategoryId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.WelfareFundCategoryId, Model.WelfareFundCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <fieldset>
+                <legend>Budget Information</legend>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FinancialYear, new { @class = "col-sm-6 " })
+                    <div class="col-sm-6">
+                        @Html.EditorFor(model => model.FinancialYear, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaidAmout, new { @class = "col-sm-6" })
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.PaidAmout, new { @class = "form-control read-only" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BalanceAmout, new { @class = "col-sm-6" })
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.BalanceAmout, new { @class = "form-control read-only" })
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Committee Member</legend>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsExternal, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.CheckBoxFor(model => model.IsExternal)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberEmpId, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.MemberEmpId, new { @readonly = true, @class = "form-control read-only", @style = "width:90%" })
+                <span style="position:absolute;right:20px;top:5px">
+                    <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+                </span>
+
+            </div>
+            @Html.LabelFor(model => model.MemberRole, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.MemberRole, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberName, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.MemberName, new { @readonly = true, @class = "read-only form-control" })
+            </div>
+            @Html.LabelFor(model => model.ActiveStatus, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.ActiveStatus, Model.ActiveStatusList,/* @String.Format("{0}", Content.DDLOptionalLabel()),*/ new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberDesignation, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.MemberDesignation, new { @readonly = true, @class = "read-only form-control" })
+            </div>
+            @Html.LabelFor(model => model.SortOrder, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SortOrder, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group" align="center">
+            <div style="width:98%">
+                <div class="text-right" style="margin-bottom:5px">
+                    <button class="btn btn-success" id="btnAdd"><i class="fa fa-plus"></i> Add</button>
+                </div>
+                <div class="clearfix"></div>
+                <table id="CommitteeGrid" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Sort Order
+                            </th>
+                            <th>
+                                Member Id
+                            </th>
+
+                            <th>
+                                Member Name
+                            </th>
+                            <th>
+                                Designation
+                            </th>
+                            <th>
+                                Role
+                            </th>
+                            <th>
+                                Active Status
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.ApprovalWelfareFundInfoCommittee.Count; i++)
+                        {
+                            var item2 = Model.ApprovalWelfareFundInfoCommittee.ToList()[i];
+                            <tr>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].Id)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].ApprovalWelfareFundInfoId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].IsExternal)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].MemberEmployeeId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].MemberName)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].MemberDesignation)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].MemberRole)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].ActiveStatus)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.ApprovalWelfareFundInfoCommittee[i].SortOrder)
+                                </td>
+                                <td class="text-center">
+                                    <span> @item2.SortOrder</span>
+                                </td>
+                                <td>
+                                    <span> @item2.MemberEmpId</span>
+                                </td>
+                                <td>
+                                    <span> @item2.MemberName</span>
+                                </td>
+                                <td>
+                                    <span> @item2.MemberDesignation</span>
+                                </td>
+                                <td>
+                                    <span> @item2.MemberRole</span>
+                                </td>
+                                <td>
+                                    @if (@item2.ActiveStatus)
+                                    {
+                                        <span> Yes     </span>
+                                    }
+                                    else
+                                    {
+                                        <span> No</span>
+                                    }
+
+                                </td>
+                                <td>
+                                    <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item2.Id,'@Url.Action("DeleteCommittee")')">
+
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Approval and Rejection Information</legend>
+        <div class="form-group" align="center">
+            <div style="width: 98%">
+                <table id="gridEmpList" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Select
+                            </th>
+                            <th>
+                                Employee ID
+                            </th>
+                            <th>
+                                Employee Name
+                            </th>
+                            <th>
+                                Designation
+                            </th>
+                            <th>
+                                Department
+                            </th>
+                            <th>
+                                Section
+                            </th>
+                            <th>
+                                Applied Amount
+                            </th>
+                            <th>
+                                Approved Amount
+                            </th>
+                            <th>
+                                View
+                            </th>
+                            <th>
+                                History
+                            </th>
+                            <th>
+                                Reject
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.strMode == "Edit" || Model.ShowRecord == "Show") { Html.RenderPartial("_Details", Model); }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<script type="text/javascript">
+
+    function alowOnlyNumber(textBox, event) {
+        // Allow: backspace, delete, tab and escape class = "alowOnlyCurrency",
+        if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 ||
+            // Allow: Ctrl+A
+                        (event.keyCode == 65 && event.ctrlKey === true) ||
+            // Allow: Decimal (.)
+                         (event.keyCode == 110 || event.keyCode === 190) ||
+            // Allow: home, end, left, right
+                        (event.keyCode >= 35 && event.keyCode <= 39)) {
+
+            // let it happen, don't do anything
+            return;
+        }
+        else {
+            // Ensure that it is a number and stop the keypress
+            if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+
+                event.preventDefault();
+            }
+        }
+    }
+
+    function checkDecimalDegit(textBox) {
+        var appliedAmout = parseFloat($(textBox).closest('tr').children('td.tdAppliedAmount').text());
+        var degitAfterDecimal = 2;
+        var someNum = textBox.value;
+        var index = new String(textBox.value).indexOf(".");
+
+        if (index > -1) {
+            leftStr = someNum.substring(0, index);
+            rightStr = textBox.value.substring(index);
+            if (rightStr.length > degitAfterDecimal + 1) //1 for decimal point
+            {
+                rightStr = rightStr.substring(0, degitAfterDecimal + 1);
+            }
+            someNum = leftStr + rightStr;
+        }
+
+        if (textBox.value != someNum) {
+            textBox.value = someNum;
+        }
+        var aprvAmout=parseFloat(textBox.value);
+        //console.log('Applied Amout: ' + appliedAmout);
+        //console.log('Approved Amout: ' + aprvAmout);
+        if (aprvAmout > appliedAmout) {
+            alert("Approved Amount can't be more than Applied Amout.");
+            textBox.value = '';
+            return;
+        }
+    }
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, draggable: true, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "OnlineWelfareFundApplicationInformation")?UseTypeEmpId=1';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setEmpData(id) {
+        $('#MemberEmployeeId').val(id)
+        GetEmployeeInfo();
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo() {
+        var empId = $('#MemberEmployeeId').val();
+        var url = '@Url.Action("GetEmployeeInfo", "ApprovalWelfareFundInfo")';
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+
+        if (empId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $('#MemberEmpId').val(obj.EmpID);
+                $('#MemberName').val(obj.EmployeeName);
+                $("#MemberDesignation").val(obj.Designation);
+            }, "json");
+        }
+
+        return false;
+    }
+
+    function Closing() {
+
+    }
+</script>
+
+<script type="text/javascript">
+
+    @*$(function () {
+        //debugger;
+        if('@Model.errClass'=='success'){
+            $('#message').addClass("alert alert-success");
+        }
+        if('@Model.errClass'=='failed'){
+            $('#message').addClass("alert alert-danger");
+        }
+
+    });*@
+
+    $(function () {
+
+        $('#MeetTime').timepicker();
+    });
+
+    $("#CycleInfoId").on('change', function () {
+        getCyleMonthByCycleId($(this).val());
+    });
+
+    function getCyleMonthByCycleId(Id) {
+        $("#CycleName").val('');
+        if (Id > 0) {
+            var url = '@Url.Action("GetCycleMonth", "Cycle")' + '?Id=' + Id;
+            $.get(url, function (response) {
+                $("#CycleName").val(response);
+            });
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    $('#IsExternal').on('click', function () {
+        if ($(this).is(':checked')) {
+            $('#imgEmpSearch').hide();
+            $('#MemberName').prop('readonly', false);
+            $("#MemberName").removeClass("read-only");
+
+            $('#MemberDesignation').prop('readonly', false);
+            $("#MemberDesignation").removeClass("read-only");
+
+            $('#MemberEmployeeId').val('');
+            $('#MemberEmpId').val('');
+
+        }
+        else {
+            $('#imgEmpSearch').show();
+            $('#MemberName').prop('readonly', true);
+            $("#MemberName").addClass("read-only");
+
+            $('#MemberDesignation').prop('readonly', true);
+            $("#MemberDesignation").addClass("read-only");
+        }
+
+    });
+
+
+    $('#btnAdd').on('click', function (e) {
+        e.preventDefault();
+
+        $("#MemberName").removeClass("border-red");
+        $("#MemberDesignation").removeClass("border-red");
+        $("#MemberRole").removeClass("border-red");
+        $("#SortOrder").removeClass("border-red");
+
+        var approvalWelfareFundInfoId = $('#Id').val();
+        var isExternal = null;
+        if ($('#IsExternal').is(":checked")) {
+            isExternal = true;
+        }
+        else {
+            isExternal = false;
+        }
+
+        var memberEmployeeId = $("#MemberEmployeeId").val();
+        var memberId = $("#MemberEmpId").val();
+        var memberName = $("#MemberName").val();
+        var memberDesignation = $("#MemberDesignation").val();
+        var memberRole = $("#MemberRole").val();
+        var activeStatus = $("#ActiveStatus").val();
+        var activeStatusDisplay = $("#ActiveStatus option:selected").text();
+        var sortOrder = $("#SortOrder").val();
+
+        if (memberName == null || memberName == "") {
+            $("#MemberName").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (memberDesignation == null || memberDesignation == "") {
+            $("#MemberDesignation").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (memberRole == null || memberRole == "") {
+            $("#MemberRole").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (sortOrder == null || sortOrder == "") {
+            $("#SortOrder").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        var trClone = '<tr>' +
+       '<td style="display: none;">' + '<input type="text" value="0" name="ApprovalWelfareFundInfoCommittee[0].Id"></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].ApprovalWelfareFundInfoId" value="' + approvalWelfareFundInfoId + '"></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].IsExternal" value="' + isExternal + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].MemberEmployeeId" value="' + memberEmployeeId + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].MemberName" value="' + memberName + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].MemberDesignation" value="' + memberDesignation + '"></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].MemberRole" value="' + memberRole + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].ActiveStatus" value="' + activeStatus + '" ></td>' +
+       '<td style="display: none;">' + '<input type="text" name="ApprovalWelfareFundInfoCommittee[0].SortOrder" value="' + sortOrder + '" ></td>' +
+       '<td class="text-center">' + '<span >' + sortOrder + '</td>' +
+       '<td>' + '<span  >' + memberId + '</td>' +
+       '<td>' + '<span>' + memberName + '</td>' +
+       '<td>' + '<span >' + memberDesignation + '</td>' +
+       '<td>' + '<span >' + memberRole + '</td>' +
+       '<td>' + '<span >' + activeStatusDisplay + '</td>' +
+       '<td>' + '<a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;/WFM/ApprovalWelfareFundInfo/DeleteCommittee&quot;)"></a></td>' +
+       '</tr>';
+        $('#CommitteeGrid tbody').append(trClone);
+        RearrengeControlName();
+
+        //reset field
+        $('#MemberEmployeeId').val('');
+        $('#MemberEmpId').val('');
+        $('#MemberName').val('');
+        $('#MemberDesignation').val('');
+        $('#MemberRole').val('');
+        $('#SortOrder').val('');
+        $('#IsExternal').attr("checked", false);
+
+        $('#MemberName').attr('readonly', true);
+        $("#MemberName").addClass("read-only");
+
+        $('#MemberDesignation').attr('readonly', true);
+        $("#MemberDesignation").addClass("read-only");
+
+    })
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<span style=\"color:Green\">' + errMsg + '</span>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<span style=\"color:red\">' + errMsg + '</span>');
+                    }
+
+                }
+            });
+        }
+        RearrengeControlName();
+    }
+
+
+    function RearrengeControlName() {
+        $('#CommitteeGrid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+    $('#SortOrder').keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+            // let it happen, don't do anything
+            return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+<script type="text/javascript">
+
+    $("#CycleInfoId, #Year, #WelfareFundCategoryId").on('change', function (e) {
+        e.preventDefault();
+        var cyInfoV = $("#CycleInfoId").val();
+        var yearV = $("#Year").val();
+        var welFunCatV = $("#WelfareFundCategoryId").val();
+
+        loadBudgetInformation(welFunCatV);
+        LoadEmployee(cyInfoV, yearV, welFunCatV);
+    });
+
+    var loadEmpUrl = "@Url.Action("GetEmployeeList")";
+    function LoadEmployee(cycleId, year, welfareFundCategoryId) {
+        if (cycleId > 0 && year > 0 && welfareFundCategoryId > 0) {
+            $.ajax({
+                type: "GET",
+                url: loadEmpUrl,
+                data: { cycleId: cycleId, year: year, welfareFundCategoryId: welfareFundCategoryId },
+                success: (function (result) {
+                    $("#gridEmpList tbody").html(result);
+                })
+            });
+        }
+        //  return false;
+    }
+
+    function RemoveDb2(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<span style=\"color:Green\">' + errMsg + '</span>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<span style=\"color:red\">' + errMsg + '</span>');
+                    }
+
+                }
+            });
+        }
+        RearrengeControlName();
+    }
+
+    function loadBudgetInformation(welfareFundCategoryId) {
+        var budgetUrl = "@Url.Action("GetBudgetInfo")";
+        if (welfareFundCategoryId > 0) {
+            var url = '@Url.Action("LoadBudgetInfo", "ApprovalWelfareFundInfo")' + '?welfareFundCategoryId=' + welfareFundCategoryId;
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+
+            $.post(url, serializedForm, function (obj) {
+                $("#FinancialYear").val(obj.Year);
+                $("#PaidAmout").val(obj.Amount);
+                $("#BalanceAmout").val(obj.Balance);
+
+            }, "json");
+        }
+    }
+</script>
+
+
+@*View*@
+
+<div id="divView">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#divView").dialog({ autoOpen: false, modal: true, height: 600, width: 800, title: 'View Applicant Information', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function ViewApplicantInfo(el, employeeId) {
+
+        var url = '@Url.Action("ViewApplicantInfo", "VerifytheApplicationInfo")';
+        if (employeeId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { employeeId: employeeId },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                },
+                success: function (result) {
+                    $('#divView').html(result);
+                }
+            });
+
+            $("#divView").dialog('open');
+            return false;
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+@*View End*@
+
+@*History*@
+
+<div id="divHistory">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divHistory").dialog({ autoOpen: false, modal: true, height: 300, width: 700, title: 'View Applicant History', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function ViewHistory(el, employeeId) {
+
+        var url = '@Url.Action("ViewApplicantHistory", "VerifytheApplicationInfo")';
+        if (employeeId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { employeeId: employeeId },
+                error: function () {
+                    alert('System is unable to load data please try again.');
+                },
+                success: function (result) {
+                    $('#divHistory').html(result);
+                }
+            });
+
+            $("#divHistory").dialog('open');
+            return false;
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+@*History End*@
+
+
+<script type="text/javascript">
+
+    function checkApprovedAmount(el) {
+        if ($(el).is(':checked')) {
+            $(el).closest('tr').find("input").addClass("required");
+        }
+        else {
+            $(el).closest('tr').find("input").removeClass("required");
+        }
+    }
+
+    $(function () {
+        $("#gridEmpList tbody tr").each(function () {
+            if ($(this).find('input[type="checkbox"]').is(':checked')) {
+                $(this).closest('tr').find("input").addClass("required");
+            }
+            else {
+                $(this).closest('tr').find("input").removeClass("required");
+            }
+        });
+    });
+
+
+</script>

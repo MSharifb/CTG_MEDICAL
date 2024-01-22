@@ -1,0 +1,119 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+    ViewBag.Title = "User Manual";
+}
+
+
+<div class="row" style="text-align:center">
+    <div class="divCenter">
+        <ul class="user-zone-list">
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_HRMS_UserMan.pdf" })" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color: red"></i> Human Resource Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_Payroll_UserMan.pdf" })" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Payroll Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_AMS_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Accounting Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_LMS_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Leave Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_PF_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Provident Fund Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_IMS_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Inventory Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_PMS_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Project Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_WFM_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Welfare Fund Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_FMS_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Fund Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_FAM_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Fixed Asset Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_SMS_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Security Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_UMS_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> User Access Management
+                </a>
+            </li>
+            <li>
+                <a class="dashboard-widget-link" href="@Url.Action("GetUserManual", "Account", new {fileName= "ERP_BEPZA_LOAN_UserMan.pdf"})" target="_blank">
+                    <i class="fa fa-file-pdf-o" style="background-color:red"></i> Loan Management
+                </a>
+            </li>
+        </ul>
+    </div>
+    <br />
+    <div class="col-sm-12 approval-action-area" style="text-align:center;">
+        <a class="btn btn-sm btn-primary" href="@Url.Action("Index", "Home", new { area = "" })">
+            <i class="fa fa-tachometer"></i> Go Back To Dashboard
+        </a>
+    </div>
+</div>
+
+<style>
+    .divCenter {
+        margin: auto;
+        width: 50%;
+        border: 3px solid #2ab67c; /*3px solid #747dbf;*/
+        padding: 10px;
+    }
+
+    .user-zone-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .user-zone-list li {
+            margin-bottom: 8px;
+        }
+
+            .user-zone-list li:last-of-type {
+                margin-bottom: 0;
+            }
+
+            .user-zone-list li a {
+                padding: 8px 15px;
+                background-color: rgb(62 192 120 / 80%); /*rgba(72, 82, 163, 0.8);*/
+                margin-bottom: 3px;
+                display: block;
+                color: #fff;
+                text-decoration: none;
+            }
+
+                .user-zone-list li a:hover {
+                    background-color: #2d2064;
+                }
+</style>

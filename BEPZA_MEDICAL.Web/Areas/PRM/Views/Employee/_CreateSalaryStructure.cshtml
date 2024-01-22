@@ -1,0 +1,495 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Employee.EmployeeSalaryStructureViewModel
+@using (Html.BeginForm(Model.ActionType, "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.EmployeeId)
+    @Html.HiddenFor(model => model.isConsolidated)
+
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmpCode)
+                    <label class="required-field"> *</label>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.EmpCode)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.EmploymnetInfo.FullName)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.FullName)
+                </span>
+                <span class="label-right">
+                </span>
+                <span class="field"></span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+
+        <div class="GroupBox">
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.SalaryScaleId)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.HiddenFor(model => model.SalaryScaleId)
+                    @Html.EditorFor(model => model.SalaryScale)
+                </span>
+                <span class="label-right">
+                    &nbsp;
+                </span>
+                <span class="field">
+                    &nbsp;
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.GradeId)
+                    <label class="required-field">*</label>
+                </span>
+                <span class="field">
+                    @Html.HiddenFor(model => model.GradeId)
+                    @Html.TextBoxFor(model => model.JobGrade)
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.StepId)
+                    <label class="required-field"> * </label>
+                </span>
+                <span class="field">
+                    @if (Model.isConsolidated || Model.ButtonText == "Update")
+                    {
+                        @Html.DropDownListFor(m => m.StepId, Model.StepList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "consolidated" })
+                        @Html.HiddenFor(model => model.StepId)
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.StepId, Model.StepList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                    }
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">&nbsp;</span> <span class="field">
+                    @Html.CheckBoxFor(model => model.isConsolidated, new { @disabled = "disabled" })
+                    <label style="color: #3C78B5;">
+                        <label for="isSmoke">
+                            @Html.LabelFor(model => model.isConsolidated)
+                        </label>
+                    </label>
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.GrossSalary)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.GrossSalary)
+                </span>
+            </div>
+
+            <div class="row" style="display: none;">
+                <span class="label-right">
+                    @Html.LabelFor(model => model.OrgGrossSalary)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model => model.OrgGrossSalary)
+                </span>
+            </div>
+
+        </div>
+
+        <div style="min-width: 825px;" class="GroupBox ssd">
+
+            @Html.Partial("~/Areas/PRM/Views/Employee/_SalaryStructureDetail.cshtml", Model)
+
+        </div>
+
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" name="btnCreate" id="btnCreate" style="margin: 0 10px 0 0;" />
+            }
+            @if (!@Model.IsSalaryProcess)
+            {
+                @Html.ActionLink("Delete", "DeleteSalaryStructure", new { id = Model.EmployeeId }, new { @class = "delete-confirm" })
+            }
+            <div class="clear">
+            </div>
+        </div>
+
+    </fieldset>
+}
+
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+
+    /* If employee is inactive then disable all control */
+    if ('@Model.DateofInactive' != '') {
+        fnDisableEditMode();
+        $(".delete-confirm").hide();
+    }
+
+    $(function () {
+        var gradeId = $("#GradeId").val();
+        var stepId = $("#StepId").val();
+        var employeeId = $("#EmployeeId").val();
+        var isConsolidated = $("#isConsolidated").val();
+
+        //salary population
+        //populateSalaryDetails(gradeId, stepId, isConsolidated);
+
+        //// Only for isConsolidated employee
+        if ('@Model.isConsolidated' == 'True' || '@Model.ButtonText' == 'Update') {
+
+            // alert('Failed isConsolidated');
+
+            gradeId = $("#GradeId").val();
+            stepId = $("#StepId").val();
+
+            isConsolidated = $("#isConsolidated").val();
+            $('.consolidated').attr('disabled', true);
+
+            $("#StepId").val('@Model.StepId');
+        }
+
+        // Addition Date 08-Feb-2014
+        SalaryCalculation();
+        CalculateOrgGross();
+
+        $("#StepId").change(function () {
+            gradeId = $("#GradeId").val();
+            stepId = $("#StepId").val();
+            isConsolidated = $("#isConsolidated").val();
+
+            populateSalaryDetails(gradeId, stepId, isConsolidated)
+        })
+
+        function populateSalaryDetails(gradeId, stepId, isConsolidated) {
+            //console.log('grade: ' + gradeId + ' step: ' + stepId);
+
+            if (gradeId != '' && stepId != '') {
+
+                $.get('@Url.Action("GetSalaryStructureDetails", "Employee")' + '?gradeId=' + gradeId + '&stepId=' + stepId + '&empId=' + employeeId + '&IsConsolidated=' + isConsolidated + '&ErrorClass=' + '@Model.ErrorClass', function (data) {
+
+                    $('.ssd').empty();
+                    $('.ssd').html(data)
+
+                    var additionSelectedValues = $("#Addition .selected-val");
+                    var aditionDdls = $('#Addition .ddl-addition');
+
+                    var deductionSelectedValues = $("#Deduction .selected-val");
+                    var deductionDdls = $('#Deduction .ddl-deduction');
+
+                    for (var i = 0; i < additionSelectedValues.length; i++) {
+                        var selectedVal = $(additionSelectedValues[i]).text();
+                        $(aditionDdls[i]).val(selectedVal);
+                    }
+
+                    for (var i = 0; i < deductionSelectedValues.length; i++) {
+                        var selectedVal = $(deductionSelectedValues[i]).text();
+                        $(deductionDdls[i]).val(selectedVal).attr('disabled', false);
+                        //$(deductionDdls[i]).val(selectedVal).attr('disabled', true);
+                    }
+
+                    SalaryCalculation();
+                    CalculateOrgGross();
+                    if ('@Model.isConsolidated' == 'True') {
+                        disableGrossPayHead(true);
+                    }
+                });
+            }
+            else {
+                $('.ssd').empty();
+                $('#GrossSalary').val('0');
+            }
+        }
+
+
+
+        $("#JobGrade").live('focusout', function () {
+            var url = '@Url.Action("GetGradeId", "Employee", new { area = "PGM" })' + '?salaryScaleId=' + salaryScaleId + '&gradeName=' + $(this).val();
+            $.get(url,
+                function (data) {
+                    var stepSelect = $('#StepId');
+                    stepSelect.empty();
+                    stepSelect.append($('<option/>', {
+                        value: '',
+                        text: '@Content.DDLOptionalLabel()'
+                    }));
+
+                    if (data.gradeId > 0) {
+                        $("#GradeId").val(data.gradeId);
+
+                        $.getJSON('@Url.Action("GetStep", "Employee", new { area = "PGM" })',
+                            { gradeId: data.gradeId },
+                            function (data) {
+                                $.each(data.steps,
+                                    function (index, step) {
+                                        stepSelect.append($('<option/>',
+                                            {
+                                                value: step.Id,
+                                                text: step.StepName
+                                            }));
+                                    });
+                            });
+                    }
+                });
+        });
+
+
+
+        //check business rule
+        if (!$('input:checkbox[id=isConsolidated]').is(':checked')) {
+            $('#GrossSalary').css({ 'background-color': '#F2F5F8', 'cursor': 'default' });
+            $('#GrossSalary').attr('readonly', true)
+
+            //$('.basic').val('Percent');
+
+            //disable basic amount
+            disableBasicAmount();
+        }
+
+        $('#isConsolidated').live('click', function () {
+
+            if ($("input:checkbox[id=isConsolidated]").is(':checked')) {
+                $('#GrossSalary').css({ 'background-color': '', 'cursor': '' });
+                $('#GrossSalary').removeAttr('readonly', true)
+
+                $('.basic').val('Percent').attr('disabled', true);
+            }
+            else {
+                $('#GrossSalary').css({ 'background-color': '#F2F5F8', 'cursor': 'default' });
+                $('#GrossSalary').attr('readonly', true)
+
+                //$('.basic').val('Fixed').attr('disabled', true);
+            }
+            SalaryCalculation();
+            CalculateOrgGross();
+        })
+
+        $('.ddl-addition').live('change', function () {
+            //alert('ddl-call');
+            SalaryCalculation();
+            CalculateOrgGross();
+        })
+
+
+
+        //start calculation
+        $('#Addition .td-right :input, #Deduction  .td-right :input, #GrossSalary').live('focusout', function () {
+            //alert('call');
+            SalaryCalculation();
+            CalculateOrgGross();
+        })
+
+        function disableBasicAmount() {
+            if ($('.basic-amount').val() == "") {
+                $('.basic-amount').find('input').css({ 'background-color': '#F2F5F8', 'cursor': 'default' });
+                $('.basic-amount').find('input').attr('readonly', true);
+            }
+            else {
+                setTimeout(disableBasicAmount, 10);
+            }
+        }
+
+        function SalaryCalculation() {
+            CalculateGross();
+            CalculateAddition();
+            CalculateDeduction();
+            CalculateNetpay();
+            CalculateOrgGross();
+        }
+
+        function CalculateAddition() {
+            //alert('call calculateAdition');
+
+            var fields = $('#Addition .td-right :input');
+            var ddlFields = $('#Addition .ddl-addition');
+            var grossSalary = parseFloat($('#GrossSalary').val());
+            var sum = 0;
+
+            if ($('input:checkbox[id=isConsolidated]').is(':checked')) {
+
+                for (var i = 0; i < fields.length; i++) {
+
+                    var fieldVal = parseFloat($(fields[i]).val());
+
+                    if ($(ddlFields[i]).val() == 'Percent') {
+
+                        var percentedAmount = (grossSalary * fieldVal) / 100;
+
+                        sum = sum + percentedAmount;
+                    } else {
+                        sum = sum + fieldVal;
+                    }
+                }
+            }
+            else {
+                for (var i = 0; i < fields.length; i++) {
+                    var basicSalary = parseFloat($('.basic-amount :input').val());
+
+                    var fieldVal = parseFloat($(fields[i]).val());
+
+                    if ($(ddlFields[i]).val() == 'Percent') {
+
+                        var percentedAmount = (basicSalary * fieldVal) / 100;
+
+                        sum = sum + percentedAmount;
+                    } else {
+                        sum = sum + fieldVal;
+                    }
+                }
+            }
+            $('#TotalAddition').val(Math.round(sum));
+
+        }
+
+        function CalculateDeduction() {
+            //alert('call calculateDeduction');
+
+            var fields = $('#Deduction .td-right :input');
+            var ddlFields = $('#Deduction .ddl-deduction');
+            var grossSalary = parseFloat($('#GrossSalary').val());
+            var basicSalary = 0;
+            var sum = 0;
+
+            if ($('.basic').val() == 'Percent') {
+
+                basicSalary = (grossSalary * parseFloat($('.basic-amount :input').val())) / 100;
+            }
+            else {
+                basicSalary = parseFloat($('.basic-amount :input').val());
+            }
+
+            //when pf is zero
+            if ($('input:checkbox[id=isConsolidated]').is(':checked')) {
+                $('.pf-amount :input').val(0);
+            }
+
+            for (var i = 0; i < fields.length; i++) {
+
+                var fieldVal = parseFloat($(fields[i]).val());
+
+                if ($(ddlFields[i]).val() == 'Percent') {
+
+                    var percentedAmount = (basicSalary * fieldVal) / 100;
+
+                    sum = sum + percentedAmount;
+                } else {
+                    sum = sum + fieldVal;
+                }
+            }
+            $('#TotalDeduction').val(Math.round(sum));
+        }
+
+        function CalculateNetpay() {
+            var totalAddition = parseFloat($('#TotalAddition').val());
+            var totalDeduction = parseFloat($('#TotalDeduction').val());
+            var netPay = totalAddition - totalDeduction
+
+            $('#NetPay').val(netPay);
+        }
+
+        function CalculateOrgGross() {
+            var fields = $('#Addition .td-right :input');
+            var ddlFields = $('#Addition .ddl-addition');
+            var isGrossPH = $('.grossPayHead')
+            var basicSalary = parseFloat($('.basic-amount :input').val());
+            var grossSalary = parseFloat($('#GrossSalary').val());
+            var sum = 0;
+            var sumOrg = 0;
+
+            for (var i = 0; i < fields.length; i++) {
+
+                var fieldVal = parseFloat($(fields[i]).val());
+
+                //if ($(isGrossPH[i]).is(':checked')) {
+                if ($(isGrossPH[i]).val() == 'True') {
+                    if ($(ddlFields[i]).val() == 'Percent') {
+
+                        var percentedAmount = (grossSalary * fieldVal) / 100;
+
+                        sumOrg = sumOrg + percentedAmount;
+                    }
+                    else { sumOrg = sumOrg + fieldVal; }
+                }
+            }
+
+            $('#OrgGrossSalary').val(Math.round(sumOrg));
+        }
+
+        function CalculateGross() {
+
+            if (!$('input:checkbox[id=isConsolidated]').is(':checked')) {
+
+                var fields = $('#Addition .td-right :input');
+                var ddlFields = $('#Addition .ddl-addition');
+                var isGrossPH = $('.grossPayHead')
+                var basicSalary = parseFloat($('.basic-amount :input').val());
+                var sum = 0;
+
+
+                if (!$('input:checkbox[id=isConsolidated]').is(':checked')) {
+
+                    for (var i = 0; i < fields.length; i++) {
+
+                        var fieldVal = parseFloat($(fields[i]).val());
+
+                        //if ($(isGrossPH[i]).is(':checked')) {
+                        if ($(isGrossPH[i]).val() == 'True') {
+                            if ($(ddlFields[i]).val() == 'Percent') {
+
+                                var percentedAmount = (basicSalary * fieldVal) / 100;
+
+                                sum = sum + percentedAmount;
+                            } else {
+                                sum = sum + fieldVal;
+                            }
+                            //                            $('#OrgGrossSalary').val(Math.round(sum));
+                        }
+                    }
+                }
+                $('#GrossSalary').val(Math.round(sum));
+            }
+        }
+
+        function disableGrossPayHead(status) {
+            $('.grossPayHead').each(function (index, value) {
+                typeID = $(this).attr('id').replace('IsGrossPayHead', 'AmountType');
+                if (status) {
+                    if ($(this).val() == 'True') {
+                        //$('#' + typeID).val('Percent');
+                        //$('select#' + typeID).val('Percent');
+                        $('select#' + typeID).attr('disabled', true);
+                    }
+                    else {
+                        $('select#' + typeID).removeAttr('disabled');
+                    }
+                }
+                else {
+                    $('select#' + typeID).removeAttr('disabled');
+                }
+                //console.log(index + '-' + $(this).val());
+            });
+        }
+    })
+</script>

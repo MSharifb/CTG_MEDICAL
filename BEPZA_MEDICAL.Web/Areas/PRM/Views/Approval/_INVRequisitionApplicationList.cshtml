@@ -1,0 +1,127 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel>
+
+<table class="table table-bordered table-hovered table-responsive">
+    <thead>
+        <tr>
+            <th class="application-Date">Application Date</th>
+            <th class="applicant-Id">Applicant ID</th>
+            <th class="applicant-Name">Applicant Name</th>
+            <th class="dpt-dsg">Department</th>
+            <th class="dpt-dsg">Designation</th>
+            <th class="zone-area">Zone</th>
+            <th class="approval-status">Status</th>
+            <th class="approver-action">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                @Html.Partial("_INVRequisitionApplication", item)
+            }
+        }
+    </tbody>
+</table>
+
+<style type="text/css">
+    table {
+        border: 1px solid #34495e;
+    }
+
+        table tbody td {
+            padding: 4px !important;
+            vertical-align: middle !important;
+            font-size: 12px;
+        }
+
+        table thead {
+            background: #FFFFFF;
+            color: #000000;
+            font-family: Tahoma;
+            font-weight: bold;
+            font-size: 11px;
+            cursor: default;
+        }
+
+            table thead:hover {
+                cursor: default;
+            }
+
+            table thead th {
+                text-align: center;
+                /*padding: 5px 2px !important;*/
+                padding: 5px 0 !important;
+                vertical-align: middle;
+            }
+
+        table tbody tr:hover {
+            background: #eceff5;
+            color: #000000;
+        }
+
+    .checkItem {
+        width: 50px;
+        text-align: center;
+    }
+
+    .application-Date {
+        width: 120px;
+        max-width: 120px;
+    }
+
+    .applicant-Id {
+        width: 100px;
+        max-width: 100px;
+    }
+
+    .applicant-Name {
+        max-width: 400px;
+        min-width: 180px;
+        word-wrap: break-word;
+    }
+
+    .requested-amount {
+        width: 150px;
+        max-width: 150px;
+        padding-right: 10px !important;
+    }
+
+    td.requested-amount {
+        text-align: right;
+    }
+
+    .approval-status {
+        width: 120px;
+        max-width: 120px;
+        text-align: center;
+    }
+
+    .approver-action {
+        width: 70px;
+        max-width: 70px;
+        padding: 0;
+    }
+
+        .approver-action .btn {
+            width: 60px !important;
+        }
+
+    .date-range {
+        width: 120px;
+        max-width: 120px;
+    }
+
+    .dpt-dsg {
+        width: 200px;
+        max-width: 200px;
+        word-wrap: break-word;
+    }
+
+    .zone-area {
+        width: 100px;
+        max-width: 100px;
+    }
+</style>

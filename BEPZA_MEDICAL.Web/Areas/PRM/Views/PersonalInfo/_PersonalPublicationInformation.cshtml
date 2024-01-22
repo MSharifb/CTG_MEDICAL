@@ -1,0 +1,333 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalPublicationViewModel
+@using (Ajax.BeginForm("PersonalPublicationCommonAction", "PersonalInfo", new AjaxOptions { HttpMethod = "POST", OnSuccess = "OnSuccess" }, new { id = "frm" }))
+{
+    <fieldset>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        <div class="GroupBox">
+            <div id="message" style="max-height: 15px">
+                @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            </div>
+        </div>
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.PublicationName)
+                    <label class="required-field">
+                        *</label>
+                </span><span class="field">@*   @Html.EditorFor(model => model.PublicationName)*@
+                    <label style="color: #3C78B5;">
+                        @Html.TextAreaFor(model => model.PublicationName, new { @class = "required", @maxlength = 1000})</label>
+                </span><span class="label-right">@Html.LabelFor(model => model.PublicationDate)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.PublicationDate)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.PublicationAreaId)
+                    <label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.PublicationAreaId, Model.PublicationAreaList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                </span>
+                <span class="label-right">@Html.LabelFor(model => model.JournalName)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.JournalName, new { @maxlength=1000})
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.CountryId)
+                    <label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.CountryId, Model.CountryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+                </span><span class="label-right">@Html.LabelFor(model => model.SerialNo)
+                    <label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.TextBoxFor(model => model.SerialNo, new { @class = "required", @maxlength=50 })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(model => model.Remarks) </span><span class="field">
+                    <label style="color: #3C78B5;">
+                        @Html.TextAreaFor(model => model.Remarks, new { @maxlength=1000})</label>
+                </span>
+            </div>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="button" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <input type="button" value="Update" id="btnUpdate" name="btnSubmit" />
+                }
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+                {
+                    <input type="submit" value="Delete" id="btnDelete" name="btnSubmit" />                  
+                }
+                @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+                {
+                    <input type="button" value="Clear" id="btnClear" name="btnSubmit" />
+                }
+            </div>
+        </div>
+        <div class="GroupBox">
+            <table id="jqGrid" cellpadding="0" cellspacing="0" class="ui-jqgrid-view">
+            </table>
+            <div id="jqGridPager" style="text-align: center;">
+            </div>
+            <div id="jqSearch">
+            </div>
+        </div>
+        <div class="button-crude button-left">
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    </fieldset>         
+ 
+}
+<script type="text/javascript">
+
+    function ResetForm() {
+        $("#Id").val(0);
+        $("#PublicationAreaId").val("");
+        $("#PublicationDate").val("");
+        $("#PublicationName").val("");
+        $("#Remarks").val("");
+        $("#SerialNo").val("");
+        $('#JournalName').val('');
+        $('#CountryId').val('');
+
+        $('.required').css('border-color', '#CCCCCC');
+        $("#message").html('');
+    }
+    function OnSuccess(obj) {
+
+        if (obj.Success) {
+            $('#message').html("<b style='color:Green'>" + obj.Message + "</b>");
+            ResetForm();
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+            $('#btnDelete').hide();
+            jQuery("#jqGrid").trigger("reloadGrid");
+        }
+        else {
+            $('#message').html("<b style='color:Red'>" + obj.Message + "</b>");
+
+        }
+    }
+
+    function FormValidation() {
+
+        var isValid = true;
+
+        if ($('#SerialNo').val() == '') {
+            isValid = false;
+            $('#SerialNo').css('border-color', 'red');
+        }
+        else {
+            $('#SerialNo').css('border-color', '#CCCCCC');
+        }
+
+        if ($('#CountryId').val() == '') {
+            isValid = false;
+            $('#CountryId').css('border-color', 'red');
+        }
+        else {
+            $('#CountryId').css('border-color', '#CCCCCC');
+        }
+
+        if ($('#PublicationAreaId').val() == '') {
+            isValid = false;
+            $('#PublicationAreaId').css('border-color', 'red');
+        }
+        else {
+            $('#PublicationAreaId').css('border-color', '#CCCCCC');
+        }
+
+        if ($('#PublicationName').val() == '') {
+            isValid = false;
+            $('#PublicationName').css('border-color', 'red');
+        }
+        else {
+            $('#PublicationName').css('border-color', '#CCCCCC');
+        }
+
+        return isValid;
+    }
+
+    $(function () {
+
+        $('#btnSave').click(function (event) {
+            event.preventDefault();
+            var url = '@Url.Action("PersonalPublicationCreate", "PersonalInfo")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+
+            var validation = FormValidation();
+
+            if (validation == true) {
+                $.post(url, serializedForm, function (obj) {  //Post to action                   
+                    if (obj.Success) {                      
+                        ResetForm();
+                        jQuery("#jqGrid").trigger("reloadGrid");
+                        $('#btnSave').show();
+                        $('#btnUpdate').hide();
+                        $('#btnDelete').hide();
+                        $("#message").html("<b>" + obj.Message + "</b>").css("color", "green");
+                    }
+                    else {
+                        $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                    }
+
+                });
+            }
+            else {
+
+                $("#message").html("<b>Please provide valid information for the required field(s).</b>").css("color", "red");
+            }
+        });
+
+        $('#btnUpdate').click(function (event) {
+            event.preventDefault();
+            var url = '@Url.Action("PersonalPublicationEdit", "PersonalInfo")';
+            var form = $('#frm');
+            var serializedForm = form.serialize();
+
+            var validation = FormValidation();
+
+            if (validation == true) {
+
+                $.post(url, serializedForm, function (obj) {  //Post to action                  
+                    if (obj.Success) {    
+                        ResetForm();
+                        jQuery("#jqGrid").trigger("reloadGrid");
+                        $('#btnSave').show();
+                        $('#btnUpdate').hide();
+                        $('#btnDelete').hide();
+                        $("#message").html('<b style=\"color:Green\">' + obj.Message + '</b>');
+                    }
+                    else {
+                        $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                    }
+
+                });
+            }
+            else {
+
+                $("#message").html("<b>Please provide valid information for the required field(s).</b>").css("color", "red");
+            }
+        });
+
+        $("#btnDelete").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 400, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+                    var btnSubmit = 'Delete';
+                    var url = '@Url.Action("DeletePublication", "PersonalInfo")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success) {                          
+                            ResetForm();
+                            $('#btnSave').show();
+                            $('#btnUpdate').hide();
+                            $('#btnDelete').hide();
+                            jQuery("#jqGrid").trigger("reloadGrid");
+                            $('#message').html("<b style='color:Green'>" + obj.Message + "</b>");
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+
+        $('#btnUpdate').hide();
+        $('#btnDelete').hide();
+
+        $("a.editItem").live("click", function () {
+            editLinkObj = $(this);
+            $.post(editLinkObj[0].href, function (obj) {
+                ResetForm();
+                $("#Id").val(obj.Id);
+                $("#PublicationAreaId").val(obj.PublicationAreaId);
+                $("#PublicationDate").val(obj.PublicationDate);
+                $("#PublicationName").val(obj.PublicationName);
+                $("#Remarks").val(obj.Remarks);
+                $("#SerialNo").val(obj.SerialNo);
+                $('#JournalName').val(obj.JournalName);
+                $('#CountryId').val(obj.CountryId);
+            });
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            $('#btnDelete').show();
+            return false;
+        });
+
+        $('#btnClear').click(function () {
+            var url = '@Url.Action("PersonalPublicationIndex", "PersonalInfo", new { id = Model.EmployeeId })'
+            window.document.location = url;
+
+        })
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetPersonalPublicationList", null, new { id = Model.EmployeeId })',
+            datatype: 'json',
+            mtype: 'POST',
+            autowidth: true,
+            colNames: ['ID', 'Publicatoin', 'Publication Area', 'Journal', 'Publication Date','Serial #', 'Remarks'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                        { name: 'Publicatoin', index: 'Publicatoin', align: 'left', width: '150px', search: false, edittype: 'text', formatter: editorLink },
+                        { name: 'PublicationArea', index: 'PublicationArea', align: 'left', width: '120px', search: false, edittype: 'text' },
+                        { name: 'Journal', index: 'Journal', align: 'left', width: '120px', search: false, sortable: true },
+                        { name: 'PublicationDate', index: 'PublicationDate', align: 'center', width: '120px', search: false, edittype: 'text' },
+                        { name: 'SerialNo', index: 'SerialNo', align: 'left', width: '120px', search: false, edittype: 'text' },
+                        { name: 'Remarks', index: 'Remarks', align: 'left', width: '120px', search: false, edittype: 'text' },
+                      ],
+            caption: "Publication Information",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '100%'
+        });
+        
+        // Pager Function
+       // $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: false, enableClear: false });
+
+    })
+
+    function editorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink("_CellValue_", "GetSelectedPublicationData", new { id = "_ID_" }, new { @class = "editItem" })';
+        url = url.replace(/_CellValue_/, cellvalue)
+        url = url.replace(/_ID_/, rowObject[0])
+        return url;
+    }
+ 
+
+</script>

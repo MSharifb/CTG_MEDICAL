@@ -1,0 +1,109 @@
+﻿
+<script type="text/javascript">
+
+    $(function () {     
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 320, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+
+                    $.post(deleteLinkObj[0].href, function (obj) {  //Post to action
+
+                        if (obj.Success) {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+                            $('#sButton').trigger('click');
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                             }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+</script>
+ <script type="text/javascript">
+  
+     function handleDeleteSuccess() {        
+     }
+     function handleDeleteFailure() {        
+         $("#message").html('There is an Ajax call back error!');     
+     }
+     function JsonDelete_OnComplete(context) {     
+         var obj = eval("(" + context.responseText + ")");     
+         if (obj.Success) {
+             $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+             $('#sButton').trigger('click');
+         }
+         else {
+             $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+         }
+     }
+     
+ </script>
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#jqGrid').jqGrid({
+                url: '@Url.Action("GetList")',
+                datatype: 'json',
+                mtype: 'POST',
+                colNames: ['ID', 'Head Name', 'Head Type', 'Head Group', 'Amount Type', 'Sort Order', 'Is Taxable', 'Is Gross Pay', 'Is Other Addition', 'Is Other Deduction', 'Delete'],
+                colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false,hidden:true, edittype: 'text'},
+                            { name: 'HeadName', index: 'HeadName', align: 'left', search: true, edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'HeadType', index: 'HeadType', align: 'left', search: true, width: '50px', edittype: 'select', surl: '@Url.Action("GetHeadTypeView")' },
+                            { name: 'GroupId', index: 'GroupId', align: 'left', search: false, width: '100px', edittype: 'text' },
+                            { name: 'AmountType', index: 'AmountType', align: 'left', search: true, width: '50px', edittype: 'select', surl: '@Url.Action("GetAmountTypeView")' },
+                            { name: 'SortOrder', index: 'SortOrder', align: 'right', search: false, width: '50px', edittype: 'text', formatter: 'Integer' },
+                            { name: 'IsTaxable', index: 'IsTaxable', align: 'center', search: true, width: '40px', edittype: 'select', surl: '@Url.Action("GetTaxableView")', formatter: 'checkbox' },
+                            { name: 'IsGrossPayHead', index: 'IsGrossPayHead', align: 'center', search: true, width: '50px', edittype: 'select', surl: '@Url.Action("GetIsGrossPayView")', formatter: 'checkbox' },
+                            { name: 'IsOtherAddition', index: 'IsOtherAddition', align: 'center', search: true, width: '40px', edittype: 'select', surl: '@Url.Action("GetIsOtherAdditionView")', formatter: 'checkbox' },
+                            { name: 'IsOtherDeduction', index: 'IsOtherDeduction', align: 'center', search: true, width: '50px', edittype: 'select', surl: '@Url.Action("GetIsOtherDeductionView")', formatter: 'checkbox' },
+                            
+                            { name: 'Delete', index: 'Delete', align: 'right', search: false, hidden: IsDeleteAssigned, sortable: false, width: '35px', edittype: 'image', formatter: deleteformateadorLink }
+                          ],
+                autowidth: true,
+                caption: "Salary Head List",
+                rowList:[20,30,40,50,100],
+                pager: $('#jqGridPager'),
+                rowNum: 20,
+                sortname: 'SortOrder',
+                sortorder: 'asc',
+                viewrecords: true,
+                height: '100%',
+                width: '50%'
+            });
+            // Pager Function
+            $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+        });
+        function deleteformateadorLink(cellvalue, options, rowObject) {
+            var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+            url = url.replace(/_id_/, rowObject[0]);
+            return url;
+         }
+         function viewformatEdiorLink(cellvalue, options, rowObject) {
+           var url = '@Html.ActionLink( "_name_", "Edit", new { id = "_id_" })';
+           url = url.replace(/_name_/, cellvalue);
+           url = url.replace(/_id_/, rowObject[0]);
+           return url;
+         }
+</script>
+
+
+

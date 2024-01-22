@@ -1,0 +1,10 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.BudgetDetailViewModel>
+@using BEPZA_MEDICAL.Web.Helpers
+
+@foreach (var item in Model.AsEnumerable())
+{
+    using (Html.BeginCollectionItem("BudgetDetailList"))
+    {
+        @Html.Partial("_BudgetDetailItem", item)
+    }
+}

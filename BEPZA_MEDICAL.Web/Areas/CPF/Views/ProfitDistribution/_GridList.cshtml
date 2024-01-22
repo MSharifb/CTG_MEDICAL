@@ -1,0 +1,85 @@
+﻿<script type="text/javascript">
+
+    $(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Year', 'Month', 'Interest Rate', 'Remarks', 'Detail', 'Rollback'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                        { name: 'PeriodYear', index: 'PeriodYear', align: 'center', search: true, edittype: 'select', surl: '@Url.Action("GetCPFYear")' },
+                        { name: 'PeriodMonth', index: 'PeriodMonth', align: 'center', search: true, edittype: 'select', surl: '@Url.Action("GetCPFMonth")' },
+                        { name: 'ProfitRate', index: 'ProfitRate', align: 'right', search: true, edittype: 'text', width: '100px' },
+                        { name: 'Remarks', index: 'Remarks', align: 'left', search: false, edittype: 'text' },
+                        { name: 'Detail', index: 'Detail', align: 'center', search: false, width: '50px', edittype: 'image', formatter: generateformateadorLink },
+                        { name: 'Rollback', index: 'Rollback', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '50px', edittype: 'image', formatter: rollbackformateadorLink }
+                        ],
+            autowidth: true,
+            caption: "Profit Distribution Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'desc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function rollbackformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Rollback", new { periodId = "_periodId_" }, new { @class = "refreshIcon" })';
+        url = url.replace(/_periodId_/, rowObject[0]);
+
+        return url;
+    }
+
+    function generateformateadorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink(" ", "GoToDetails", new { id = "_id_" }, new { @class = "mSalaryPDetails" })';
+        url = url.replace(/_id_/, rowObject[0]);
+
+        return url;
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+
+        $("a.refreshIcon").live("click", function () {
+
+            rollbackLinkObj = $(this);  //for future use
+            $('#rollback-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+

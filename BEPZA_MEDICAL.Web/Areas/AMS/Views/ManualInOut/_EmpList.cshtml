@@ -1,0 +1,21 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ManualInOut.ManualInOutViewModel
+@foreach (var item in Model.Employee)
+{
+     <tr>
+            <td style="width: 30px; text-align: center">
+                @Html.CheckBox("empId", item.IsChecked, new { @class = "rchk", @value = item.EmployeeId })
+            </td>
+            <td style="width: 30px; text-align: center">
+                @Html.Encode(item.EmpId)
+            </td>
+            <td style="text-align: left">
+                @Html.Encode(item.EmployeeName)
+            </td>
+           <td width="10%" align="center">
+               @Html.Encode(item.CardNo)
+           </td>
+           <td style="text-align: left;">
+                @Html.Encode(item.DesignationName)
+            </td>
+        </tr>
+}

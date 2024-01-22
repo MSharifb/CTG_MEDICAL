@@ -1,0 +1,523 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.ProjectEstimationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@{
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.ActionType' == 'Update') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+        }
+        else {
+            $('#btnUpdate').hide();
+        }
+        var approvalStatus = $("#ApprovalStatusId option:selected").text();
+
+        if ('@Model.ActionType' == 'Update' && approvalStatus == 'Draft') {
+            $('.ApvUpdate').hide();
+        }
+        else if ('@Model.ActionType' == 'Update' && approvalStatus != 'Draft') {
+            $('.ApvSave').hide();
+        }
+        else if ('@Model.strMode' == 'Create'){
+            $('.ApvUpdate').hide();
+        }
+
+        ShowMessage('@Model.ActionType');
+
+        var statusName = '@Model.StatusName';
+        statusName = statusName.toLocaleLowerCase();
+
+        if (statusName.indexOf("appr") >= 0) {
+            $('#btnSave').hide();
+            $('#btnUpdate').hide();
+        }
+    });
+
+
+    var ShowMessage = function (actionType) {
+        var url = window.location.href.split('/');
+        var messageType = "";
+        switch (actionType) {
+            case "Update":
+                var aa = url[url.length - 1];
+                if (aa.toLowerCase().indexOf("?") >= 0) {
+                    var baseUrl = aa.split('?');
+                    var typeName = baseUrl[1].split('=');
+                    messageType = typeName[1];
+                    if (messageType == "success") {
+
+                    }
+                }
+                break;
+        }
+
+        if (messageType === "success") {
+            $('#message').html("Information has been Saved/Updated successfully");
+            $('#message').css({ "color": "green", "font-weight": "bold" });
+        }
+        if (messageType === "failed") {
+            $('#message').html("Information Save/Update Failed.");
+            $('#message').css({ "color": "red", "font-weight": "bold" });
+        }
+
+    }
+
+</script>
+
+@using (Html.BeginForm(Model.ActionType, "ProjectEstimation", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    <fieldset>
+        <legend>Estimation Details</legend>
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.HiddenFor(model => model.Id)
+                @Html.LabelFor(model => model.ProjectId, new { @class = "col-sm-2 default-label labelRequired" })
+                <div class="col-sm-10">
+                    @Html.DropDownListFor(model => model.ProjectId, Model.ProjectList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(model => model.BudgetAmount, new { @class = "col-sm-2 default-label" })
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(model => model.BudgetAmount, "{0:0.00}", new { @class = @"amount-style", @readonly = true, @style = @"background:#F2F5F8" })
+                </div>
+                @Html.LabelFor(model => model.EstimationDate, new { @class = "col-sm-2 default-label labelRequired" })
+                <div class="col-sm-2">
+                    @Html.EditorFor(model => model.EstimationDate, new { @required = true })
+                </div>
+                @Html.LabelFor(model => model.EstimationStatusId, new { @class = "col-sm-2 default-label labelRequired" })
+                <div class="col-sm-2">
+                    @Html.DropDownListFor(model => model.EstimationStatusId, Model.EstimationStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = @"form-control" })
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset id="estimationData">
+        <legend>Estimation Items</legend>
+        <div class="form-group">
+            @Html.LabelFor(m => m.TotalAmount, new { @class = "col-sm-3 default-label" })
+            <div class="col-sm-2">
+                @Html.TextBoxFor(m => m.TotalAmount, new { @class = @"amount-style", @readonly = true, @style = @"background:#F2F5F8" })
+            </div>
+        </div>
+        <div class="form-group pull-right">
+            <button type="button" class="btn btn-sm btn-primary" id="btnAddNewHead">
+                <i class="fa fa-plus-circle fa-lg"></i>Add New Head
+            </button>
+        </div>
+
+        @if (@Model.ProjectEstimationDetails != null && @Model.ProjectEstimationDetails.Count > 0)
+        {
+            @Html.Partial("_PartialHeadDetail", @Model)
+        }
+    </fieldset>
+
+    <fieldset>
+        <legend>Recommendation / Approval Flow</legend>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApprovalStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ApprovalStatusId, Model.ApprovalStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+            </div>
+        </div>
+        <div class="ApvSave">
+
+            <table class="table table-bordered" style="width:100%">
+
+                <thead style="height:10px!important">
+                    <tr style="height:10px!important">
+                        <th style="width: 30%">Designation</th>
+                        <th style="width: 45%">Employee Name & Department</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        if (Model.ActionType != "Update")
+                        {
+                            if (Model.ApproverList != null && Model.ApproverList.Any())
+                            {
+                                foreach (var x in Model.ApproverList)
+                                {
+                                    @Html.Partial("_PartialEmployeeList", x);
+                                }
+                            }
+                        }
+                        else if (Model.ActionType == "Update" && Model.ApprovalStatus.Contains("Draft"))
+                        {
+                            if (Model.ApproverList != null && Model.ApproverList.Any())
+                            {
+                                foreach (var x in Model.ApproverList)
+                                {
+                                    @Html.Partial("_PartialEmployeeList", x);
+                                }
+                            }
+
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ApvUpdate">
+            <table class="table table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 30%">Designation</th>
+                        <th style="width: 30%">Employee Name</th>
+                        <th> Department</th>
+                        <th>Status</th>
+                        <th> Remarks </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.ApproverList.Count; i++)
+                    {
+                        var item = Model.ApproverList.ToList()[i];
+                        <tr>
+                            <td>@Html.Encode(item.DesignationName)</td>
+                            <td>@Html.Encode(item.EmployeeName)</td>
+                            <td>@Html.Encode(item.DepartmentName)</td>
+                            <td>@Html.Encode(item.Status)</td>
+                            <td>@Html.Encode(item.Remarks)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+
+
+    <div class="button-crude" style="text-align:center;">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <button type="submit" class="btn btn-sm btn-primary" value="Save" id="btnSave" name="btnSave"><i class="fa fa-save">Save</i></button>
+            <button type="submit" class="btn btn-sm btn-primary" value="Update" id="btnUpdate" name="btnSave"><i class="fa fa-edit">Update</i></button>
+        }
+        <button type="button" class="btn btn-sm btn-primary" value="Clear" id="btnClear" name="btnClear"><i class="fa fa-refresh">Clear</i></button>
+    </div>
+
+}
+<div class="button-crude button-left">
+    <a href="@Url.Action("Index")" class="btn btn-sm btn-primary"> <i class="fa fa-backward"></i> Back to List</a>
+</div>
+
+<style type="text/css">
+    .amount-style {
+        text-align: right;
+        background: #F2F5F8;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ProjectId, #EstimationStatusId').select2();
+        $('table tbody tr .slNo input').unbind().focusout(GenerateSerialNumber);
+    });
+
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").on("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    var GetProjectInfo = function (e) {
+        //debugger;
+        var ProjectId = $('#ProjectId option:selected').val();
+        var url = window.location.href.split('/');
+        var baseUrl = url[0] + '//' + url[2];
+
+        var projectMasterId = 0;
+        var estimationMasterId = $('#Id').val();
+
+        if (ProjectId > 0) {
+            $.ajax({
+                url: '@Url.Action("GetProjectInformation", "ProjectEstimation")',
+                data: JSON.stringify({ ProjectId: ProjectId }),
+                type: 'POST',
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (result) {
+                    if (result.MasterId > 0) {
+                        projectMasterId = result.MasterId;
+
+                        baseUrl = baseUrl + '/PMI/ProjectEstimation/Edit/' + result.MasterId;
+                        window.location.href = baseUrl;
+                        e.preventDefault();
+                    }
+                    else {
+                        if (estimationMasterId > 0) {
+                            e.preventDefault();
+                            window.location.href = baseUrl + '/PMI/ProjectEstimation/Create/';
+                            return false;
+                        }
+                    }
+                    return false;
+                }
+            });
+
+
+            $.ajax({
+                url: '@Url.Action("GetBudgetAmountOf", "ProjectEstimation")',
+                data: JSON.stringify({ ProjectId: ProjectId }),
+                type: 'POST',
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                success: function (result) {
+                    $('#BudgetAmount').val(result.BudgetAmount);
+                    return false;
+                }
+            });
+        }
+        else {
+            e.preventDefault();
+            window.location.href = baseUrl + '/PMI/ProjectEstimation/Create/';
+            $('#TotalAmount').val(0);
+            $('#BudgetAmount').val(0);
+        }
+    }
+
+    $("#ProjectId").change(GetProjectInfo);
+
+    $('#btnAddNewHead').on('click', function () {
+        //debugger;
+        var previousHeadCount = $('table tbody tr .estimationHead select').length;
+        $.ajax({
+            url: '@Url.Action("AddNewEstimationHead", "ProjectEstimation")',
+            type: 'POST',
+            data: { previousHeadCount: previousHeadCount },
+            cache: false,
+            success: function (result) {
+                $('#estimationData').append(result);
+                $('#estimationData').fadeIn('fast');
+
+                $('table tbody tr .delete-head-area button').unbind().click(DeleteEstimationHead);
+                $('table tbody tr .quantity :input, table tbody tr .unitPrice :input').unbind().focusout(unitPriceChange);
+                $('table tbody tr .control-column .add-button button').unbind().click(AddNewItemInformation);
+
+            }
+        });
+    })
+
+
+    var DeleteEstimationHead = function () {
+        $(this).closest('table').parent().remove();
+    }
+
+    $('.delete-head-area button').click(DeleteEstimationHead);
+
+    var unitPriceChange = function () {
+        CalculateTotalAmount(this);
+        CalculateTotalProjectCost();
+    }
+
+    $('table tbody tr .quantity :input, table tbody tr .unitPrice :input').focusout(unitPriceChange);
+
+    function CalculateTotalAmount(obj) {
+        var price = $(obj).closest('tr').find('.unitPrice :input').val();
+        var quantity = $(obj).closest('tr').find('.quantity :input').val();
+        var totalAmount = parseFloat(price) * parseInt(quantity);
+        $(obj).closest('tr').find('.totalAmount :input').val(totalAmount);
+
+    }
+
+    function CalculateTotalProjectCost() {
+        var sum = 0;
+        $('table tbody tr .totalAmount').each(function () {
+            var amount = $(this).find('input').val();
+            sum = parseFloat(sum) + parseFloat(amount);
+            $('#TotalAmount').val(sum);
+        })
+    }
+
+    function highlightDuplicates() {
+        $('table tbody tr .item').find('option:selected').each(function () {
+            var itemName = $(this).text();
+            $('table tbody tr .item').find('option:selected').each(function () {
+                var currentItem = $(this).text();
+                if (itemName == currentItem) {
+                    $(this).css('border-color', 'red');
+                }
+            });
+        });
+    }
+
+    function ResetValue(unitDddl, txtPrice) {
+        unitDddl.val('');
+        txtPrice.val(0);
+    }
+
+    $(document).ready(function () {
+        var totalAmount = $('#TotalAmount').val();
+        var amount = parseFloat(totalAmount);
+        $('#TotalAmount').val(amount.toFixed(2));
+    })
+
+    var AddNewItemInformation = function () {
+        var eTbody = $(this).closest('table').find('tbody');
+        var headId = $(this).closest('table').find('tbody tr .estimationHead option:selected').val();
+        if (headId == '') {
+            headId = 0;
+        }
+        var currentSlNo = $(this).closest('tr').find('.slNo :input').val();
+
+        $.ajax({
+            url: '@Url.Action("AddNewItem", "ProjectEstimation")',
+            type: 'POST',
+            data: { estimationHeadId: headId, currentSlNo: currentSlNo },
+            cache: false,
+            success: function (result) {
+                eTbody.append(result);
+                $('table tbody tr .quantity :input').unbind().focusout(unitPriceChange);
+                $('table tbody tr .control-column .add-button button').unbind().click(AddNewItemInformation);
+                $('table tbody tr .slNo input').unbind().focusout(GenerateSerialNumber);
+                $('table tbody tr').ready(MakeItemDropdownSearchable);
+                $('table tbody tr .item select').unbind().change(GetItemInformation);
+                $('table tbody tr .control-column .delete-button button').unbind().click(RemoveItemInformation);
+                eTbody.find('tr .slNo :input').trigger('focusout');
+            }
+        });
+
+
+
+    }
+
+    $('table tbody tr .control-column .add-button button').click(AddNewItemInformation);
+
+    $('table tbody tr .estimationHead select').on('focusout', function () {
+        $('table tbody tr .unitPrice :input').trigger('focusout');
+        CalculateTotalProjectCost();
+    });
+
+
+
+    $('table tbody tr .slNo input').focusout(GenerateSerialNumber);
+
+    var GenerateSerialNumber = function () {
+        //debugger;
+        var slNo = $(this).val();
+        parseFloat(slNo);
+        if (isNaN(slNo)) {
+            slNo = 1.1;
+        };
+        var incrementalValue = 0.1;
+        var newSlNo = 0;
+        var nextCount = $(this).closest('tr').nextAll().length;
+
+        $(this).closest('tr').nextAll().each(function () {
+            slNo = parseFloat(slNo);
+            newSlNo = slNo + incrementalValue;
+
+            $(this).find('.slNo :input').val(newSlNo.toFixed(1));
+            slNo = newSlNo;
+        })
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    var MakeItemDropdownSearchable = function () {
+        $('.item select, .unit select').select2();
+    }
+
+    $(document).ready(function () {
+        $('table tbody tr .item select, table tbody tr .unit select').select2();
+    })
+
+    var RemoveItemInformation = function () {
+        var prevRow = $(this).closest('tr').prev();
+        $(this).closest('tr').remove();
+        prevRow.find('.slNo :input').trigger('focusout');
+    }
+
+    $('.control-column .delete-button button').click(RemoveItemInformation);
+
+    var GetItemInformation = function () {
+        //debugger;
+        var table = $(this).closest('table');
+        var headId = $(this).closest('tr').find('.estimationHeadId :input').val();
+        var itemId = $(this).find('option:selected').val();
+        var itemDdl = $(this);
+        var unitDdl = $(this).closest('tr').find('.unit select');
+        var txtUnitPrice = $(this).closest('tr').find('.unitPrice :input');
+        if (itemId > 0) {
+            $.ajax({
+                url: '@Url.Action("GetItemInformation", "ProjectEstimation")',
+                type: 'POST',
+                data: { itemId: itemId },
+                cache: false,
+                success: function (result) {
+                    unitDdl.val(result.UnitId).trigger('change');
+
+                    txtUnitPrice.val(result.UnitPrice);
+                    var currentItemId = $(itemDdl).val();
+
+                    $('table tbody tr .quantity :input').trigger('focusout');
+
+                    CalculateTotalProjectCost();
+
+                    if (currentItemId == 0 || currentItemId == '') {
+                        ResetValue(unitDdl, txtUnitPrice);
+                    }
+
+
+
+                }
+            });
+        }
+        else {
+            ResetValue(unitDdl, txtUnitPrice);
+
+        }
+    }
+
+    $('table tbody tr .item select').change(GetItemInformation);
+
+
+
+
+</script>
+
+<style type="text/css">
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+        font-size: 13px;
+    }
+
+    .select2-results__option {
+        font-size: 13px;
+    }
+
+    .slNo {
+        width: 70px;
+    }
+
+        .slNo input {
+            width: 100%;
+        }
+</style>

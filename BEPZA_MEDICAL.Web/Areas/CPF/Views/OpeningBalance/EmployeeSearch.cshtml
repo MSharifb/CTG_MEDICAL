@@ -1,0 +1,106 @@
+﻿
+
+@model MFS_IWM.Web.Areas.PRM.ViewModel.EmployeeSearchViewModel
+@{
+    
+    ViewBag.Title = "EmployeeSearch";
+    //Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+@using (Ajax.BeginForm("Index", "Employee", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div id="message">
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="success">
+                @Model.Message
+            </div>
+        }
+    </div>
+    @Html.HiddenFor(model=> model.EmployeeStatus) 
+    <fieldset>
+        <div id="jqSearch">
+        </div>
+    </fieldset> 
+    <br />   
+    <table id="jqGrid" cellpadding="0" cellspacing="0">
+    </table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>  
+    <div id="divList">
+    
+    </div>   
+   
+}
+<script type="text/javascript">
+
+
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+    });
+
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetEmpList", "OpeningBalance")' + '?Type=' + 0,
+            datatype: 'json',
+            mtype: 'POST',
+            //            postData: {
+            //                EmployeeStatus: $('#EmployeeStatus').val()
+            //            },
+            colNames: ['Name', 'ID', 'EmployeeID', 'Initial', 'Designation', 'Employee Type', 'Division/Unit', 'Location', 'Grade', 'Date of Joining', 'Date of Confirmation', 'Employment Type', 'Staff Category', 'Resource Level'],
+            colModel: [
+
+                            { name: 'Name', index: 'EmpName', align: 'left', search: true, edittype: 'text', width: '200px' },
+                            { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'EmployeeID', index: 'EmpID', align: 'left', search: true, edittype: 'text', width: '80px' },
+                            { name: 'Initial', index: 'EmpInitial', align: 'left', search: true, edittype: 'text', width: '100px' },
+
+                            { name: 'Designation', index: 'DesigName', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetDesignation")' },
+                            { name: 'ContractType', index: 'EmpTypeName', align: 'left', search: false, edittype: 'text' },
+                            { name: 'Division', index: 'DivisionName', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetDivision")' },
+                            { name: 'JobLocation', index: 'JobLocName', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetJobLocation")' },
+                            { name: 'Grade', index: 'GradeName', align: 'left', search: true, edittype: 'select', surl: '@Url.Action("GetGrade")' },
+
+                            { name: 'DateofJoining', index: 'DateofJoining', align: 'center', search: false, edittype: 'text' },
+                            { name: 'DateofConfirmation', index: 'DateofConfirmation', align: 'center', hidden: true, search: false, edittype: 'text' },
+
+                            { name: 'EmploymentType', index: 'EmpTypeId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetEmploymentType")' },
+                            { name: 'StaffCategory', index: 'StaffCategoryId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetStaffCategory")' },
+                            { name: 'ResourceLevel', index: 'ResourceLevelId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetResource")' },
+
+                          ],
+            autowidth: true,
+            caption: "Employee List",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+        $('#jqGrid').jqGrid('setGridParam', { onSelectRow: function (id) { return setData(id); } }); //this code send employee id to parent
+
+
+    });
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+        //$(this).live("click", function () { alert('test'); })
+        var url = '@Html.ActionLink("_name_", Model.ActionName, new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[1]);
+        return url;
+    }
+   
+
+</script>

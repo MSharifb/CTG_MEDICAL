@@ -1,0 +1,144 @@
+﻿<script type="text/javascript">
+
+    function ResetForm() {
+        $("#CountryId").val("");
+        LoadDivision();
+        $("#DivisionId").val("");
+        LoadDistrict();
+        $("#DistrictId").val("");
+        $("#ThanaName").val("");
+        $("#Id").val("0");
+        $('#btnUpdate').hide();
+        $(".validation-summary-errors ").empty();
+    }
+    function OnSubmitSuccess(obj) {
+        if (obj.Success > 0) {
+            $('#message').html("<b style='color:Green'>" + obj.Message + "</b>");
+            jQuery("#jqGrid").trigger("reloadGrid");
+            ResetForm();
+            $('#btnSave').show();
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+    function OnSubmitFailure() {
+        alert('Form Submit Error!');
+    }
+
+    function LoadDivision() {
+        var selectedCountry = $('#CountryId').val();
+        var divisionSelect = $('#DivisionId');
+        divisionSelect.empty();
+        divisionSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        if (selectedCountry != null && selectedCountry != '') {
+            $.getJSON('@Url.Action("LoadDivision")', { countryId: selectedCountry }, function (divisions) {
+                $.each(divisions, function (index, division) {
+                    divisionSelect.append($('<option/>', {
+                        value: division.Id,
+                        text: division.DivisionName
+                    }));
+                });
+            });
+        }
+    }
+
+    function LoadDistrict() {
+        var selectedDivision = $('#DivisionId').val();
+        var districtSelect = $('#DistrictId');
+        districtSelect.empty();
+        districtSelect.append($('<option/>', {
+            value: '',
+            text: '@Content.DDLOptionalLabel()'
+        }));
+        if (selectedDivision != null && selectedDivision != '') {
+            $.getJSON('@Url.Action("LoadDistrict")', { divisionId: selectedDivision }, function (districts) {
+                $.each(districts, function (index, district) {
+                    districtSelect.append($('<option/>', {
+                        value: district.Id,
+                        text: district.DistrictName
+                    }));
+                });
+            });
+        }
+    }
+
+    $(function () {
+        $("#btnClear").click(
+         function () {
+             ResetForm();
+             $('#btnSave').show();
+             $('#message').empty();
+         });
+
+        $("a.editItem").live("click", function () {
+            editLinkObj = $(this);
+            $.get(editLinkObj[0].href, function (obj) {
+                $("#Id").val(obj.Id);
+                $("#CountryId").val(obj.CountryId);
+
+                LoadDivision();
+                setTimeout(function () { $("#DivisionId").val(obj.DivisionId); LoadDistrict(); }, 100);
+
+                setTimeout(function () { $("#DistrictId").val(obj.DistrictId); }, 200);
+                $("#ThanaName").val(obj.ThanaName);
+            });
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            return false; // prevents the default behaviour
+        });
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Upazila', 'District', 'Division', 'Country', 'Edit', 'Delete'],
+            colModel: [
+                            { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'ThanaName', index: 'ThanaName', align: 'left', search: true, edittype: 'text' },
+                            { name: 'District', index: 'District', align: 'left', search: true, edittype: 'text' },
+                            { name: 'Division', index: 'Division', align: 'left', search: true, edittype: 'text' },
+                            { name: 'Country', index: 'Country', align: 'left', search: true, edittype: 'text' },
+                            { name: 'Edit', index: 'Edit', align: 'center', width: '50px', hidden: IsDeleteAssigned, edittype: 'image', formatter: viewformateadorLink },
+                            { name: 'Delete', index: 'Delete', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '40px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Upazila List",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ThanaName',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Ajax.ActionLink(" ", "ThanaEdit", new { id = "_ID_" }, new AjaxOptions { }, new { @class = "editItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_CellValue_/, cellvalue)
+        url = url.replace(/_ID_/, rowObject[0])
+        return url;
+    }
+</script>

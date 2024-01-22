@@ -1,0 +1,184 @@
+/**
+ * Login CSS
+ *
+ * @project POMS_MPA
+ * @since  1.0.0
+ */
+
+@font-face {
+	font-family: 'Open Sans';
+	src: url("../fonts/OpenSans-Regular.eot?v=1.1.0");
+	src: url("../fonts/OpenSans-Regular.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans-Regular.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans-Regular.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans-Regular.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans-Regular.svg?v=1.1.0#Regular") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Open Sans Bold';
+	src: url("../fonts/OpenSans-Bold.eot?v=1.1.0");
+	src: url("../fonts/OpenSans-Bold.eot?#iefix&v=1.1.0") format("embedded-opentype"), url("../fonts/OpenSans-Bold.woff2?v=1.1.0") format("woff2"), url("../fonts/OpenSans-Bold.woff?v=1.1.0") format("woff"), url("../fonts/OpenSans-Bold.ttf?v=1.1.0") format("truetype"), url("../fonts/OpenSans-Bold.svg?v=1.1.0#Bold") format("svg");
+	font-weight: bold;
+	font-style: normal;
+}
+
+html,
+body{
+	//height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-image: url('../img/bg_login.jpg');
+	background-size: cover;
+	background-position: center center;
+	background-attachment: fixed;
+	color: #fff;
+	font-family: "Open Sans", Arial, Helvetica, sans-serif;
+	/*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+*/
+}
+strong,
+b,
+h1,h2,h3,h4,h5,h6{
+	font-weight: 700;
+}
+
+a{
+	color: #fff;
+}
+
+a:hover{
+	color: #ededed;
+}
+
+.behave-table{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.behave-table-cell{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.text-red{
+	color: #e53d37;
+}
+
+#bg-overlay{
+	background-color: rgba(0,0,0,0.6);
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	z-index: 1;
+}
+
+@media (min-width: 768px) {
+	#bg-overlay{
+		background-color: transparent;
+		background-image: url('../img/overlay.svg');
+		background-size: cover;
+		background-repeat: no-repeat;
+		width: 50%;
+		left: auto;
+	}
+}
+
+#login-container{
+	position: relative;
+	z-index: 2;
+	width: 80%;
+	max-width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 10%;
+}
+
+@media (min-width: 768px) {
+	#login-container{
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 60%;
+		bottom: 0;
+		padding: 20px 50px;
+		width: auto;
+		max-width: 100%;
+		margin-top: 0;
+	}
+}
+
+.logo{
+	width: 100px;
+	height: auto;
+}
+
+#login-header{
+	margin-bottom: 30px;
+}
+
+.site-title{
+	font-size: 25px;
+}
+
+.site-description{
+	font-size: 20px;
+}
+
+/* #login-form{
+	position: relative;
+	//width: 95%;
+	//max-width: 500px;
+	background-color: rgba(0,0,0,0.6);
+	border: 5px solid rgba(255,255,255,0.2);
+	border-radius: 4px;
+	color: #fff;
+	z-index: 2;
+	padding: 40px;
+}
+
+#login-form .form-control{
+	background-color: rgba(0,0,0,0.2);
+	color: #fff;
+	border-top-width: 0;
+	border-left-width: 0;
+	border-right-color: #222;
+	border-bottom: 1px solid #333;
+}
+
+#login-form .input-group-addon{
+	background-color: rgba(0,0,0,0.5);
+	color: #fff;
+	border-top-width: 0;
+	border-left-color: #222;
+	border-bottom-color: #333;
+	border-right-width: 1px;
+	border-right-style: solid;
+	border-right-color: #222;
+} */
+
+#login-footer{
+	//margin-top: 10px;
+	font-size: 13px;
+	color: #ccc;
+	position: absolute;
+	right: 0;
+	bottom: 20px;
+	left: 0;
+	z-index: 2;
+}
+
+#login-footer a{
+	color: #fff;
+}
+
+@media (max-width: 768px) {
+	#login-footer{
+		margin-top: 40px;
+		position: relative;
+	}
+}

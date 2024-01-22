@@ -1,0 +1,59 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RollGenerationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.AdCode)&nbsp;<span class="required-field">*</span>
+        </span>
+        <span class="field">
+           @Html.DropDownListFor(model => model.AdCode, Model.JobAdvertisementInfoList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.RollNoFrom)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.RollNoFrom)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DesignationId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.DesignationId, Model.JobPostList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+
+    <div class="clear">
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+
+        $("#AdCode").live('change', function () {
+            var advertisementId = $("#AdCode").val();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetDesignation","RollGeneration")',
+                data: { advertisementId: advertisementId },
+                success: (function (result) {
+                    $("#DesignationId").empty();
+                    $("#DesignationId").html(result);
+                })
+            });
+        });
+
+    });
+
+
+</script>
+

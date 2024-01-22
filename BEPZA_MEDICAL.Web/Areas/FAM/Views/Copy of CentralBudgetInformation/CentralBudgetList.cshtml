@@ -1,0 +1,22 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAM.Models.CentralBudgetInformation.CentralBudget
+@using BEPZA_MEDICAL.Web.Helpers
+@using (Html.BeginCollectionItem("CentralBudgetList"))
+{
+    <tr style="height: auto">
+        <td>
+            @Html.HiddenFor(model => model.AccountHeadId)
+            @Html.TextBoxFor(model => model.AccountHeadName, new { @readonly = true, @style = "width: 320px;" })
+            @Html.HiddenFor(model => model.AccountHeadName)
+        </td>
+        <td style="text-align: right;">
+            @Html.TextBoxFor(model => model.OriginalAmount, new { @readonly = true, @style = "cursor:default;text-align:right; width: 120px;" })
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.AccountHeadType, new { @readonly = true, @style = "text-align:center; width:100px" })
+        </td>
+        <td>
+            @Html.TextBoxFor(model => model.Remarks, new { @style = "text-align:left; width:200px" })
+        </td>
+    </tr>
+
+}

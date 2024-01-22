@@ -1,0 +1,46 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryStructure.SalaryStructureModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "SalaryStructure", FormMethod.Post))
+{
+    <fieldset>
+        <div class="GroupBox" style="min-height: 15px" id="message">
+            @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.Id)
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsEditAssigned)
+                {
+                    <input type="submit" value="Update" id="btnSave" name="btnSubmit" style="margin-right: 8px;"
+                           onclick="return CheckBasicAmount();" />
+                }
+            </div>
+            <div class="clear"></div>
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    if ('@Model.Message' != "") {
+        $('#message').html("<b style='color:Red'>" + '@Model.Message' + "</b>");
+    }
+
+    function CheckBasicAmount() {
+        $('#message').html("");
+        var basicAmount = $($($('#Addition').find("tr")[1]).find("td")[3]).find("input").val();
+        if (basicAmount <= 0) {
+            $('#message').html("<b style='color:Red'> Basic should be greater than zero. </b>");
+            return false;
+        }
+
+        return true;
+    }
+
+</script>

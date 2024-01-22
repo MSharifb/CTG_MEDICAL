@@ -1,0 +1,355 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.Withdraw.WithdrawViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@*<div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>*@
+
+
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<div class="GroupBox">
+    <fieldset>
+        <legend>Member Information </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeCode)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.EmployeeCode)
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" onclick="return openEmployee();" />
+            </span>
+            <span class="label-right">
+                @*@Html.LabelFor(model => model.EmployeeInitial)*@
+                @*<label style='color: red'>*</label>*@
+                &nbsp;
+            </span>
+            <span class="field">
+                @*@Html.EditorFor(model => model.EmployeeInitial)*@
+                &nbsp;
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmployeeName)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.EmployeeName)
+            </span>
+            <span class="label-right">
+                @Html.HiddenFor(model => model.MembershipId)
+                @Html.LabelFor(model => model.MembershipCode)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.MembershipCode)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.PeriodId)
+                @Html.LabelFor(model => model.CpfPeriod)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.CpfPeriod)
+            </span>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend> </legend>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.WithdrawNo)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.WithdrawNo)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.EmpPortionBalance)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.EmpPortionBalance)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.WithdrawAmount)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.WithdrawAmount)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.AlreadyWithdrawnAmount)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.AlreadyWithdrawnAmount)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.RequestDate)
+                <label style='color: red'>*</label>
+            </span><span class="field">
+                @Html.EditorFor(model => model.RequestDate)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.WithdrawDate)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.WithdrawDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Reason)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(m => m.Reason, new { @style = "width:750px", @maxlength = "500" })
+            </span>
+        </div>
+     </fieldset>
+    <div class="clear">
+    </div>
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearchList", "EmployeeSearch")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'text',
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        //        $('#EmployeeCode').val(id)
+        $("#divEmpList").dialog('close');
+        var isEmp = false;
+
+        GetWithdrawInfo(isEmp, id);
+    }
+
+
+    function Closing() {
+
+    }
+
+    $("#WithdrawAmount").change(function () {
+        $('#message').empty();
+        var withdrawAmount = parseFloat($("#WithdrawAmount").val());
+        var balanceofEmployeeportion = parseFloat($("#EmpPortionBalance").val());
+        if (withdrawAmount > balanceofEmployeeportion) {
+            $('#message').append('<span class="validateown" style="color:red;">Withdrawn amount cannot exceed balance of employee portion.</span>');
+
+        }
+    });
+
+    //  Start Autocomplete
+
+    function split(val) {
+        return val.split(/,\s*/);
+    }
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+    $("#EmployeeCode").bind("keydown", function (event) {
+        if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).data("autocomplete").menu.active) {
+            event.preventDefault();
+        }
+    })
+    var urlauto = '@Url.Action("GetMemberByEmployeeCode", "OpeningBalance")';
+
+    $("#EmployeeCode").autocomplete({
+        source: function (request, response) {
+            //define a function to call your Action (assuming UserController)
+            $.ajax({
+                url: urlauto,
+                type: "GET",
+                dataType: "json",
+                //query will be the param used by your action method
+                data: { query: request.term },
+                term: extractLast(request.term),
+                success: function (data) {
+
+                    response($.map(data, function (item) {
+                        return { label: item, value: item };
+                    }))
+                }
+            })
+        },
+        search: function () {
+            // custom minLength
+            var term = extractLast(this.value);
+            if (term.length < 1) {
+                return false;
+            }
+        },
+        focus: function () {
+            // prevent value inserted on focus
+            return false;
+        },
+        select: function (event, ui) {
+            var terms = split(this.value);
+            // remove the current input
+            terms.pop();
+            // add the selected item
+            terms.push(ui.item.value);
+            // add placeholder to get the comma-and-space at the end
+            //           terms.push("");
+            //            this.value = terms.join(", ");
+            this.value = terms;
+            var isEmp = true;
+            $('#EmployeeCode').val(terms);
+            GetWithdrawInfo(isEmp, terms);
+            return false;
+        }
+    });
+
+    // End Autocomplete
+
+
+
+    $("#EmployeeCode").change(function () {
+        var isEmp = true;
+        GetWithdrawInfo(isEmp, $('#EmployeeCode').val());
+    });
+
+
+    $("#btnSave").click(function () {
+        //            $('#message').empty();
+        var Reason = $.trim($('#Reason').val());
+        $('#Reason').css("borderColor", "");
+
+        if (Reason == '') {
+            $('#Reason').css("borderColor", "red");
+            //                    $('#message').append('<span class="validateown" style="color:red;">Please fill up the red marked field(s)</span>');
+        }
+
+
+    });
+
+
+    $("#btnUpdate").click(function () {
+        //                $('#message').empty();
+        var Reason = $.trim($('#Reason').val());
+        $('#Reason').css("borderColor", "");
+
+        if (Reason == '') {
+            $('#Reason').css("borderColor", "red");
+            //                    $('#message').append('<span class="validateown" style="color:red;">Please fill up the red marked field(s)</span>');
+        }
+
+
+    });
+    if ('@Model.Mode' == "Update") {
+
+        $('#imgEmpSearch').hide();
+        $('#EmployeeCode').attr("readonly", "readonly");
+        //            $("#EmployeeCode").prop("readonly", true);
+
+
+
+    }
+
+    function GetWithdrawInfo(isEmp, id) {
+        if (isEmp) {
+            id = $('#EmployeeCode').val();
+        }
+
+        $('#EmployeeInitial').val('');
+        $('#EmployeeName').val('');
+        $('#MembershipId').val('');
+        $('#MembershipCode').val('');
+        $('#PeriodId').val('');
+        $('#CpfPeriod').val('');
+        $('#WithdrawDate').val('');
+        $('#WithdrawNo').val('');
+        $('#EmpPortionBalance').val('');
+        $('#WithdrawAmount').val('');
+        $('#AlreadyWithdrawnAmount').val('');
+        $('#Reason').val('');
+
+
+        if (id > 0) {
+            $.ajax({
+                url: '@Url.Action("GetWithdrawnInformation", "Withdraw")',
+                data: { id: id, isEmpcode: isEmp },
+                dataType: "json",
+                type: "POST",
+                ascync: false,
+                timeout: 5000,
+                success: function (data) {
+
+                    $('#EmployeeCode').val(data.EmployeeCode);
+                    $('#EmployeeInitial').val(data.EmployeeInitial);
+                    $('#EmployeeName').val(data.EmployeeName);
+                    $('#MembershipId').val(data.MembershipId);
+                    $('#MembershipCode').val(data.MembershipCode);
+                    if (data.CpfPeriod != "") {
+                        $('#PeriodId').val(data.PeriodId);
+                        $('#CpfPeriod').val(data.CpfPeriod);
+                    }
+                    $('#WithdrawDate').val(data.WithdrawDate);
+                    $('#WithdrawNo').val(data.WithdrawNo);
+                    $('#EmpPortionBalance').val(data.EmpPortionBalance);
+                    $('#WithdrawAmount').val(data.WithdrawAmount);
+                    $('#AlreadyWithdrawnAmount').val(data.AlreadyWithdrawnAmount);
+                    $('#Reason').val(data.Reason);
+                },
+                error: function () {
+                    alert("An error occurred.");
+                }
+            });
+        }
+        return false;
+    }
+
+</script>
+
+

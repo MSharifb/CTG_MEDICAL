@@ -1,0 +1,59 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRInstallmentInformationViewModel
+
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("InstallmentList"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.FixedDepositInfoId)
+        @Html.HiddenFor(x => x.ProfitRecvId)
+        @Html.HiddenFor(x => x.FDRAmount)
+        @Html.HiddenFor(x => x.InterestRate)
+        @Html.HiddenFor(x => x.InstallmentAmount)
+        @Html.HiddenFor(x => x.InterestReceiveAmount)
+        @Html.HiddenFor(x => x.ChequeId)
+        @Html.HiddenFor(x => x.Profit)
+        @Html.HiddenFor(x => x.BankCharge)
+        @Html.HiddenFor(x => x.TAXAmount)
+        <td width="5%" style="display: none">
+            @Html.TextBoxFor(x => x.Date, "{0:yyyy-MM-dd}")
+        </td>
+        <td width="5%" style="text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>
+        <td width="10%" style="text-align: center">
+            @Html.Encode(Model.FDRNo)
+        </td>
+        <td width="10%" style="text-align: center">
+            @Html.Encode(Model.Date.ToString("dd-MM-yyyy"))
+        </td>
+        <td width="10%" style="text-align: right">
+            @Html.Encode(Model.FDRAmount)
+        </td>
+        <td width="10%" style="text-align: right">
+            @Html.Encode(Model.InstallmentAmount)
+        </td>
+        <td width="10%" style="text-align: right">
+            @Html.Encode(Model.BankCharge)
+        </td>
+        <td width="10%" style="text-align: right">
+            @Html.Encode(Model.TAXAmount)
+        </td>
+        <td width="10%" style="text-align: right">
+            @Html.Encode(Model.Profit)
+        </td>
+        <td width="10%" style="text-align: right">
+            @Html.Encode(Model.InterestReceiveAmount)
+        </td>
+        <td width="12%" style="text-align: center">
+            @Html.Encode(Model.InterestRate)
+        </td>
+        <td width="8%" style="text-align: center">
+            @Html.Encode(Model.BankName)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.BranchName)
+        </td>
+    }
+</tr>

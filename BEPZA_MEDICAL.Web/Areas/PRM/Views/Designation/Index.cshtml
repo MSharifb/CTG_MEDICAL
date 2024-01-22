@@ -1,0 +1,100 @@
+﻿@{ ViewBag.Title = "jqGrid in ASP.NET MVC - Searching [Custom]"; }
+@{
+    ViewBag.Title = "Designation";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+
+
+    $(function () {
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+
+    });
+
+</script>
+@using (Ajax.BeginForm("Index", "Designation", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+    </div>
+
+    <fieldset>
+        <legend>Search</legend>
+        <div id="jqSearch">
+        </div>
+    </fieldset>
+
+    <div class="button-crude button-left" style="margin: 5px 0px">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            @Html.ActionLink("Add New", "Create", "Designation")
+        }
+    </div>
+
+    @*<table id="jqGrid" width="100%"></table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>*@
+    <div class="clear" style="height:10px">
+    </div>
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+
+}
+<script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetDesignations")',
+            autowidth: true,
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Grade', 'Designation', 'Sort Order', 'Short Name', 'Edit', 'Delete'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                        { name: 'GradeName', index: 'GradeName', width: 100, align: 'center', search: true, edittype: 'text' },
+                        { name: 'Name', index: 'Name', align: 'left', search: true, edittype: 'text' },
+                        { name: 'SortOrder', index: 'SortOrder', align: 'center', width: '30px', search: false, edittype: 'text' },
+                        { name: 'ShortName', index: 'ShortName', align: 'left', width: '50px', search: true, edittype: 'text' },
+                        { name: 'Edit', index: 'Edit', align: 'center', search: false, sortable: false, width: '20', edittype: 'image', formatter: viewformatEdiorLink },
+                        { name: 'Delete', index: 'Delete', width: '20', align: 'left', search: false, hidden: IsDeleteAssigned, sortable: false, edittype: 'text', formatter: deleteformateadorLink }
+
+            ],
+            caption: "Designation List",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '100%'
+
+        });
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Edit", new { id = "_id_" }, new { @class = "editItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    @*function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }*@
+
+</script>

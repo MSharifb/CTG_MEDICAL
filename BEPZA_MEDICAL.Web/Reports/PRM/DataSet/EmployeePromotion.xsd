@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="EmployeePromotion" targetNamespace="http://tempuri.org/EmployeePromotion.xsd" xmlns:mstns="http://tempuri.org/EmployeePromotion.xsd" xmlns="http://tempuri.org/EmployeePromotion.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="DBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="DBConnectionString (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.DBConnectionString.ConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="vwPromotedEmployeeTableAdapter" GeneratorDataComponentClassName="vwPromotedEmployeeTableAdapter" Name="vwPromotedEmployee" UserDataComponentName="vwPromotedEmployeeTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="DBConnectionString (Web.config)" DbObjectName="ERP_BEPZA.dbo.vwPromotedEmployee" DbObjectType="View" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        vwPromotedEmployee.*
+FROM            vwPromotedEmployee</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Id" DataSetColumn="Id" />
+              <Mapping SourceColumn="EmployeeInitial" DataSetColumn="EmployeeInitial" />
+              <Mapping SourceColumn="FullName" DataSetColumn="FullName" />
+              <Mapping SourceColumn="Division" DataSetColumn="Division" />
+              <Mapping SourceColumn="DivisionId" DataSetColumn="DivisionId" />
+              <Mapping SourceColumn="JoiningDate" DataSetColumn="JoiningDate" />
+              <Mapping SourceColumn="PromotionDate" DataSetColumn="PromotionDate" />
+              <Mapping SourceColumn="FromJobTitle" DataSetColumn="FromJobTitle" />
+              <Mapping SourceColumn="FromJobTitleId" DataSetColumn="FromJobTitleId" />
+              <Mapping SourceColumn="FromJobGrade" DataSetColumn="FromJobGrade" />
+              <Mapping SourceColumn="FromJobGradeId" DataSetColumn="FromJobGradeId" />
+              <Mapping SourceColumn="FromStep" DataSetColumn="FromStep" />
+              <Mapping SourceColumn="FromStepId" DataSetColumn="FromStepId" />
+              <Mapping SourceColumn="FromBasicSalary" DataSetColumn="FromBasicSalary" />
+              <Mapping SourceColumn="ToJobTitle" DataSetColumn="ToJobTitle" />
+              <Mapping SourceColumn="ToJobTitleId" DataSetColumn="ToJobTitleId" />
+              <Mapping SourceColumn="ToJobGrade" DataSetColumn="ToJobGrade" />
+              <Mapping SourceColumn="ToJobGradeId" DataSetColumn="ToJobGradeId" />
+              <Mapping SourceColumn="ToStepId" DataSetColumn="ToStepId" />
+              <Mapping SourceColumn="ToStep" DataSetColumn="ToStep" />
+              <Mapping SourceColumn="ToBasicSalary" DataSetColumn="ToBasicSalary" />
+              <Mapping SourceColumn="EmployeeID" DataSetColumn="EmployeeID" />
+              <Mapping SourceColumn="ToSalaryScale" DataSetColumn="ToSalaryScale" />
+              <Mapping SourceColumn="ToSalaryScaleId" DataSetColumn="ToSalaryScaleId" />
+              <Mapping SourceColumn="FromSalaryScale" DataSetColumn="FromSalaryScale" />
+              <Mapping SourceColumn="FromSalaryScaleId" DataSetColumn="FromSalaryScaleId" />
+              <Mapping SourceColumn="ZoneInfoId" DataSetColumn="ZoneInfoId" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="EmployeePromotion" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="EmployeePromotion" msprop:Generator_UserDSName="EmployeePromotion">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="vwPromotedEmployee" msprop:Generator_TableClassName="vwPromotedEmployeeDataTable" msprop:Generator_TableVarName="tablevwPromotedEmployee" msprop:Generator_TablePropName="vwPromotedEmployee" msprop:Generator_RowDeletingName="vwPromotedEmployeeRowDeleting" msprop:Generator_RowChangingName="vwPromotedEmployeeRowChanging" msprop:Generator_RowEvHandlerName="vwPromotedEmployeeRowChangeEventHandler" msprop:Generator_RowDeletedName="vwPromotedEmployeeRowDeleted" msprop:Generator_UserTableName="vwPromotedEmployee" msprop:Generator_RowChangedName="vwPromotedEmployeeRowChanged" msprop:Generator_RowEvArgName="vwPromotedEmployeeRowChangeEvent" msprop:Generator_RowClassName="vwPromotedEmployeeRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Id" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
+              <xs:element name="EmployeeInitial" msprop:Generator_ColumnVarNameInTable="columnEmployeeInitial" msprop:Generator_ColumnPropNameInRow="EmployeeInitial" msprop:Generator_ColumnPropNameInTable="EmployeeInitialColumn" msprop:Generator_UserColumnName="EmployeeInitial" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="3" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FullName" msprop:Generator_ColumnVarNameInTable="columnFullName" msprop:Generator_ColumnPropNameInRow="FullName" msprop:Generator_ColumnPropNameInTable="FullNameColumn" msprop:Generator_UserColumnName="FullName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="200" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Division" msprop:Generator_ColumnVarNameInTable="columnDivision" msprop:Generator_ColumnPropNameInRow="Division" msprop:Generator_ColumnPropNameInTable="DivisionColumn" msprop:Generator_UserColumnName="Division">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="DivisionId" msprop:Generator_ColumnVarNameInTable="columnDivisionId" msprop:Generator_ColumnPropNameInRow="DivisionId" msprop:Generator_ColumnPropNameInTable="DivisionIdColumn" msprop:Generator_UserColumnName="DivisionId" type="xs:int" />
+              <xs:element name="JoiningDate" msprop:Generator_ColumnVarNameInTable="columnJoiningDate" msprop:Generator_ColumnPropNameInRow="JoiningDate" msprop:Generator_ColumnPropNameInTable="JoiningDateColumn" msprop:Generator_UserColumnName="JoiningDate" type="xs:dateTime" />
+              <xs:element name="PromotionDate" msprop:Generator_ColumnVarNameInTable="columnPromotionDate" msprop:Generator_ColumnPropNameInRow="PromotionDate" msprop:Generator_ColumnPropNameInTable="PromotionDateColumn" msprop:Generator_UserColumnName="PromotionDate" type="xs:dateTime" />
+              <xs:element name="FromJobTitle" msprop:Generator_ColumnVarNameInTable="columnFromJobTitle" msprop:Generator_ColumnPropNameInRow="FromJobTitle" msprop:Generator_ColumnPropNameInTable="FromJobTitleColumn" msprop:Generator_UserColumnName="FromJobTitle">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FromJobTitleId" msprop:Generator_ColumnVarNameInTable="columnFromJobTitleId" msprop:Generator_ColumnPropNameInRow="FromJobTitleId" msprop:Generator_ColumnPropNameInTable="FromJobTitleIdColumn" msprop:Generator_UserColumnName="FromJobTitleId" type="xs:int" />
+              <xs:element name="FromJobGrade" msprop:Generator_ColumnVarNameInTable="columnFromJobGrade" msprop:Generator_ColumnPropNameInRow="FromJobGrade" msprop:Generator_ColumnPropNameInTable="FromJobGradeColumn" msprop:Generator_UserColumnName="FromJobGrade">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FromJobGradeId" msprop:Generator_ColumnVarNameInTable="columnFromJobGradeId" msprop:Generator_ColumnPropNameInRow="FromJobGradeId" msprop:Generator_ColumnPropNameInTable="FromJobGradeIdColumn" msprop:Generator_UserColumnName="FromJobGradeId" type="xs:int" />
+              <xs:element name="FromStep" msprop:Generator_ColumnVarNameInTable="columnFromStep" msprop:Generator_ColumnPropNameInRow="FromStep" msprop:Generator_ColumnPropNameInTable="FromStepColumn" msprop:Generator_UserColumnName="FromStep" type="xs:int" />
+              <xs:element name="FromStepId" msprop:Generator_ColumnVarNameInTable="columnFromStepId" msprop:Generator_ColumnPropNameInRow="FromStepId" msprop:Generator_ColumnPropNameInTable="FromStepIdColumn" msprop:Generator_UserColumnName="FromStepId" type="xs:int" />
+              <xs:element name="FromBasicSalary" msprop:Generator_ColumnVarNameInTable="columnFromBasicSalary" msprop:Generator_ColumnPropNameInRow="FromBasicSalary" msprop:Generator_ColumnPropNameInTable="FromBasicSalaryColumn" msprop:Generator_UserColumnName="FromBasicSalary" type="xs:decimal" />
+              <xs:element name="ToJobTitle" msprop:Generator_ColumnVarNameInTable="columnToJobTitle" msprop:Generator_ColumnPropNameInRow="ToJobTitle" msprop:Generator_ColumnPropNameInTable="ToJobTitleColumn" msprop:Generator_UserColumnName="ToJobTitle">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ToJobTitleId" msprop:Generator_ColumnVarNameInTable="columnToJobTitleId" msprop:Generator_ColumnPropNameInRow="ToJobTitleId" msprop:Generator_ColumnPropNameInTable="ToJobTitleIdColumn" msprop:Generator_UserColumnName="ToJobTitleId" type="xs:int" />
+              <xs:element name="ToJobGrade" msprop:Generator_ColumnVarNameInTable="columnToJobGrade" msprop:Generator_ColumnPropNameInRow="ToJobGrade" msprop:Generator_ColumnPropNameInTable="ToJobGradeColumn" msprop:Generator_UserColumnName="ToJobGrade">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ToJobGradeId" msprop:Generator_ColumnVarNameInTable="columnToJobGradeId" msprop:Generator_ColumnPropNameInRow="ToJobGradeId" msprop:Generator_ColumnPropNameInTable="ToJobGradeIdColumn" msprop:Generator_UserColumnName="ToJobGradeId" type="xs:int" />
+              <xs:element name="ToStepId" msprop:Generator_ColumnVarNameInTable="columnToStepId" msprop:Generator_ColumnPropNameInRow="ToStepId" msprop:Generator_ColumnPropNameInTable="ToStepIdColumn" msprop:Generator_UserColumnName="ToStepId" type="xs:int" />
+              <xs:element name="ToStep" msprop:Generator_ColumnVarNameInTable="columnToStep" msprop:Generator_ColumnPropNameInRow="ToStep" msprop:Generator_ColumnPropNameInTable="ToStepColumn" msprop:Generator_UserColumnName="ToStep" type="xs:int" />
+              <xs:element name="ToBasicSalary" msprop:Generator_ColumnVarNameInTable="columnToBasicSalary" msprop:Generator_ColumnPropNameInRow="ToBasicSalary" msprop:Generator_ColumnPropNameInTable="ToBasicSalaryColumn" msprop:Generator_UserColumnName="ToBasicSalary" type="xs:decimal" />
+              <xs:element name="EmployeeID" msprop:Generator_ColumnVarNameInTable="columnEmployeeID" msprop:Generator_ColumnPropNameInRow="EmployeeID" msprop:Generator_ColumnPropNameInTable="EmployeeIDColumn" msprop:Generator_UserColumnName="EmployeeID">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="15" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ToSalaryScale" msprop:Generator_ColumnVarNameInTable="columnToSalaryScale" msprop:Generator_ColumnPropNameInRow="ToSalaryScale" msprop:Generator_ColumnPropNameInTable="ToSalaryScaleColumn" msprop:Generator_UserColumnName="ToSalaryScale">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ToSalaryScaleId" msprop:Generator_ColumnVarNameInTable="columnToSalaryScaleId" msprop:Generator_ColumnPropNameInRow="ToSalaryScaleId" msprop:Generator_ColumnPropNameInTable="ToSalaryScaleIdColumn" msprop:Generator_UserColumnName="ToSalaryScaleId" type="xs:int" />
+              <xs:element name="FromSalaryScale" msprop:Generator_ColumnVarNameInTable="columnFromSalaryScale" msprop:Generator_ColumnPropNameInRow="FromSalaryScale" msprop:Generator_ColumnPropNameInTable="FromSalaryScaleColumn" msprop:Generator_UserColumnName="FromSalaryScale">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="FromSalaryScaleId" msprop:Generator_ColumnVarNameInTable="columnFromSalaryScaleId" msprop:Generator_ColumnPropNameInRow="FromSalaryScaleId" msprop:Generator_ColumnPropNameInTable="FromSalaryScaleIdColumn" msprop:Generator_UserColumnName="FromSalaryScaleId" type="xs:int" />
+              <xs:element name="ZoneInfoId" msprop:Generator_ColumnVarNameInTable="columnZoneInfoId" msprop:Generator_ColumnPropNameInRow="ZoneInfoId" msprop:Generator_ColumnPropNameInTable="ZoneInfoIdColumn" msprop:Generator_UserColumnName="ZoneInfoId" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

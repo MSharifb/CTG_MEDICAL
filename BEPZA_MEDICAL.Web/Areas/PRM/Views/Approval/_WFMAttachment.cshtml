@@ -1,0 +1,39 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.Approval.WFMAttachmentViewModel>
+
+<table class="table table-bordered table-responsive">
+    <thead>
+        <tr>
+            <th class="approver-info">
+                Title
+            </th>
+            <th class="comments">File</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td width="35%" style="text-align: center">
+                   @item.Title
+                </td>
+                <td width="8%" style="text-align: center">
+                    <a href="@item.FilePath" visible="true" runat="server" target="_blank">
+                        <img src='@Url.Content("~/Content/Images/download.png")' alt="download" style="border: none; " />
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style type="text/css">
+    .approver-info {
+        width: 35%;
+        vertical-align: top !important;
+    }
+    .comments {
+        width: 50%;
+        word-break: normal;
+        vertical-align: top !important;
+    }
+</style>

@@ -1,0 +1,270 @@
+﻿<div class="GroupBox">
+    <table id="jqGrid" cellpadding="0" cellspacing="0" class="ui-jqgrid-view">
+    </table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+</div>
+<script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#SortOrder").keydown(function (event) {
+
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+
+    function ResetForm() {
+        $("#Name").val("");
+        $("#SortOrder").val("");
+        $("#Remarks").val("");
+        $("#Id").val("0");
+        $(".validation-summary-errors ").html('');
+
+    }
+
+    function ClearMSG() {
+        $("#message").html('');
+        clearValidationSummary();
+    }
+    $(function () {
+        $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+        $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+
+        $('#btnUpdate').hide();
+        $('#btnSave').hide();
+
+        $('#Remarks').keypress(function () {
+            if (this.value.length >= 100)
+                return false;
+        });
+
+        $('#Name,#SortOrder').live('blur', function (event) {
+            var name = $('#Name').val();
+            var sortOrder = $('#SortOrder').val();
+
+            if (name != '' && sortOrder != '') {
+                $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+            }
+            else {
+                if (name == '') {
+                    // $("#message").html("Please fill up the red marked field(s)").css("color", "red");
+                    $('#Name').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+                }
+                else {
+                    $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                }
+
+                if (sortOrder == '') {
+                    //$("#message").html("Please fill up the red marked field(s)").css("color", "red");
+                    $('#SortOrder').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+                }
+                else {
+                    $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                }
+            }
+        });
+
+        $('#btnSave').live('click', function (event) {
+            event.preventDefault();
+            $.validator.unobtrusive.parse($('#frm'));
+
+            var name = $('#Name').val();
+            var sortOrder = $('#SortOrder').val();
+
+            if (name != '' && sortOrder != '') {
+                if ($('#frm').valid()) {
+
+                    var url = '@Url.Action("Create", "CommonConfig")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success == 1) {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "green");
+                            ResetForm();
+                            jQuery("#jqGrid").trigger("reloadGrid");
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                }
+                $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+            }
+            else {
+                if (name == '') {
+                    $("#message").html("Please fill up the red marked field(s)").css("color", "red");
+                    $('#Name').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+                }
+                else {
+                    $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                }
+
+                if (sortOrder == '') {
+                    $("#message").html("Please fill up the red marked field(s)").css("color", "red");
+                    $('#SortOrder').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+                }
+                else {
+                    $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                }
+            }
+        })
+
+        $('#btnUpdate').live('click', function (event) {
+            event.preventDefault();
+            $.validator.unobtrusive.parse($('#frm'));
+
+            var name = $('#Name').val();
+            var sortOrder = $('#SortOrder').val();
+
+            if (name != '' && sortOrder != '') {
+
+                if ($('#frm').valid()) {
+                    var url = '@Url.Action("Edit", "CommonConfig")';
+                    var form = $('#frm');
+                    var serializedForm = form.serialize();
+                    $.post(url, serializedForm, function (obj) {  //Post to action
+                        if (obj.Success == 1) {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "green");
+                            ResetForm();
+                            jQuery("#jqGrid").trigger("reloadGrid");
+                            $('#btnSave').show();
+                            $('#btnUpdate').hide();
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                }
+                $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+            }
+            else {
+                if (name == '') {
+                    $("#message").html("Please fill up the red marked field(s)").css("color", "red");
+                    $('#Name').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+                }
+                else {
+                    $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                }
+
+                if (sortOrder == '') {
+                    $("#message").html("Please fill up the red marked field(s)").css("color", "red");
+                    $('#SortOrder').css({ 'border-color': '#FF0000', 'background-color': '#FFF2F2' });
+                }
+                else {
+                    $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                }
+            }
+        })
+
+        $("#selectable").selectable({
+            selected: function (event, ui) {
+                ClearMSG();
+                var text = $('.ui-selected:first').text();
+                $("#Name").val('');
+                $("#SortOrder").val('');
+                $("#Remarks").val('');
+                $('#btnSave').show();
+                $('#btnUpdate').hide();
+
+                var url = '@Url.Action("Index")';
+                $.get(url, { name: text }, function () {
+                    jQuery("#jqGrid").trigger("reloadGrid");
+                    $('#Name').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                    $('#SortOrder').css({ 'border-color': '#C8C8D4', 'background-color': '#FFFFFF' });
+                    return false;
+                });
+            }
+        });
+        $("#btnClear").click(
+         function () {          
+             $("#Name").val('');
+             $("#SortOrder").val('');
+             $("#Remarks").val('');
+             $("#Id").val('0');
+             $('#btnSave').show();
+             $('#btnUpdate').hide();
+
+             $('#message').html('');
+         });
+
+        $("a.editItem").live("click", function () {
+            editLinkObj = $(this);
+            $.get(editLinkObj[0].href, function (obj) {
+                $("#Name").val(obj.name);
+                $("#SortOrder").val(obj.sortOrder);
+                $("#Remarks").val(obj.remarks);
+                $("#Id").val(obj.id);
+            });
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+            $('#message').html('');
+
+            return false;
+        });
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);
+            $('#delete-dialog').dialog('open');
+            return false;
+        });
+
+    });
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetCommonConfigList", null, new { })',
+            datatype: 'json',
+            mtype: 'POST',
+            autowidth: true,
+            colNames: ['ID', 'Name', 'Sort Order', 'Remarks', 'Delete'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'left', search: true, hidden: true, edittype: 'text' },
+                        { name: 'Name', index: 'Name', align: 'left', search: true, edittype: 'text', formatter: ViewformateadorLink },
+                        { name: 'SortOrder', index: 'SortOrder', align: 'center', width: '50px', search: false, edittype: 'text' },
+                        { name: 'Remarks', index: 'Remarks', align: 'left', search: false, sortable: false },
+                        { name: 'Delete', index: 'Delete', align: 'center', width: '50px', hidden: IsDeleteAssigned, edittype: 'image', formatter: deleteformateadorLink }
+                      ],
+            caption: "Common Configuration",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'Name',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+       
+    });
+
+    function ViewformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Ajax.ActionLink("_CellValue_", "Edit", new { id = "_ID_" }, new AjaxOptions { }, new { @class = "editItem" })';
+        url = url.replace(/_CellValue_/, cellvalue)
+        url = url.replace(/_ID_/, rowObject[0])
+        return url;
+    }
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_ID_" }, new { @class = "deleteItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_ID_/, rowObject[0])
+        return url;
+    }     
+
+</script>

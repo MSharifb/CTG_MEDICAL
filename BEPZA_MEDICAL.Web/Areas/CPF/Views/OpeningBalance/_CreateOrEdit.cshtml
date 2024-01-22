@@ -1,0 +1,461 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.OpeningBalance.OpeningBalanceViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.LabelFor(model => model.EmployeeCode)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+
+            @Html.EditorFor(model => model.EmployeeCode)
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" onclick="return openEmployee();" />
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.MembershipId)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.MembershipCode)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeName)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EmployeeName)
+        </span><span class="label-right">
+            @*@Html.HiddenFor(model => model.DateOfMembership)*@
+            @Html.LabelFor(model => model.DateOfMembership)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.DateOfMembership)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DesignationName)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.DesignationName)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.JoiningDate)
+            <label style='color: red'>
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.JoiningDate)
+        </span>
+    </div>
+</fieldset>
+<fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DateOfOpening)
+            <label style='color: red'>
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.DateOfOpening)
+        </span>
+    </div>
+</fieldset>
+<fieldset>
+    <div class="row">
+        <table id="grid" class="contenttable">
+            <thead>
+                <tr>
+                    <th class="label-area" rowspan="2">&nbsp;</th>
+                    <th colspan="2">Previous Year Balance</th>
+                    <th colspan="2">Current Year Contribution</th>
+                    <th colspan="2">Total</th>
+                </tr>
+                <tr>
+                    <th class="prev-year-contrib">Contribution</th>
+                    <th class="prev-year-interest">Interest</th>
+                    <th class="current-year-contrib">Contribution</th>
+                    <th class="current-year-interest">Interest</th>
+                    <th class="total-Contrib">Contribution</th>
+                    <th class="total-interest">Interest</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="label-area">Opening Balance (Own)</td>
+                    <td class="prev-year-contrib">@Html.EditorFor(model => model.PrevYearEmpCoreContribution)</td>
+                    <td class="prev-year-interest">@Html.EditorFor(model => model.PrevYearEmpProfit)</td>
+                    <td class="current-year-contrib">@Html.EditorFor(model => model.EmpCoreContribution)</td>
+                    <td class="current-year-interest">@Html.EditorFor(model => model.EmpProfit)</td>
+                    <td class="total-Contrib">@Html.EditorFor(model => model.EmpTotalContrib)</td>
+                    <td class="total-interest">@Html.EditorFor(model => model.EmpTotalProfit)</td>
+                </tr>
+            <tr>
+                @*Opening Balance (Company)*@
+                <td class="label-area">@Html.LabelFor(model => model.OpeningBalanceCompany)</td>
+                <td class="prev-year-contrib">@Html.EditorFor(model => model.PrevYearComCoreContribution)</td>
+                <td class="prev-year-interest">@Html.EditorFor(model => model.PrevYearComProfit)</td>
+                <td class="current-year-contrib">@Html.EditorFor(model => model.ComCoreContribution)</td>
+                <td class="current-year-interest">@Html.EditorFor(model => model.ComProfit)</td>
+                <td class="total-Contrib">@Html.EditorFor(model => model.ComTotalContrib)</td>
+                <td class="total-interest">@Html.EditorFor(model => model.ComTotalInterest)</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+
+<div class="clear">
+</div>
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        showErrMsg();
+
+    });
+
+
+    $(document).ready(function () {
+        $('.prev-year-contrib :input').trigger('focusout');
+        $('.current-year-contrib :input').trigger('focusout');
+        $('.prev-year-interest :input').trigger('focusout');
+        $('.current-year-interest :input').trigger('focusout');
+    })
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+    }
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearchList", "EmployeeSearch")';
+        //url = url.replace('CPF', 'PRM');
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'text',
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+
+        var isEmp = false;
+        GetEmployeeInfo(isEmp, id);
+
+        $("#divEmpList").dialog('close');
+        $("#divEmpList").dialog('close');
+    }
+
+
+    function Closing() {
+
+    }
+
+    //*********************************//
+    //**** Start Autocomplete Code ****//
+    //*********************************//
+
+    function split(val) {
+        return val.split(/,\s*/);
+    }
+    function extractLast(term) {
+        return split(term).pop();
+    }
+
+    $("#EmployeeCode").bind("keydown", function (event) {
+        if (event.keyCode === $.ui.keyCode.TAB &&
+                  $(this).data("autocomplete").menu.active)
+        {
+            event.preventDefault();
+        }
+    })
+    var urlauto = '@Url.Action("GetMemberByEmployeeCode", "OpeningBalance")';
+
+    $("#EmployeeCode").autocomplete({
+        source: function (request, response) {
+            //define a function to call your Action (assuming UserController)
+
+            $.ajax({
+                url: urlauto,
+                type: "GET",
+                dataType: "json",
+                //query will be the param used by your action method
+                data: { query: request.term },
+                term: extractLast(request.term),
+                success: function(data) {
+
+                    response($.map(data,
+                        function(item) {
+                            return { label: item, value: item };
+                        }));
+                }
+            });
+        },
+        search: function () {
+            // custom minLength
+            var term = extractLast(this.value);
+
+            if (term.length < 1) {
+
+                return false;
+            }
+        },
+        focus: function () {
+            // prevent value inserted on focus
+            return false;
+        },
+        select: function (event, ui) {
+            var terms = split(this.value);
+
+            // remove the current input
+            terms.pop();
+
+            // add the selected item
+            terms.push(ui.item.value);
+
+            // add placeholder to get the comma-and-space at the end
+            //           terms.push("");
+            //            this.value = terms.join(", ");
+            this.value = terms;
+            var isEmp = true;
+
+            $('#EmployeeCode').val(terms);
+            GetEmployeeInfo(isEmp, terms);
+            return false;
+        }
+    });
+
+    // End Autocomplete
+
+    function GetEmployeeInfo(isEmp, id) {
+
+        var Id = id;
+
+        if (isEmp) {
+            Id = $('#EmployeeCode').val();
+            var url = '@Url.Action("GetMembershipInfoByEmpId", "OpeningBalance")';
+        } else {
+            var url = '@Url.Action("GetMembershipInfoByMemberId", "OpeningBalance")';
+        }
+
+        $('#EmployeeCode').val('');
+        $('#EmployeeId').val('');
+        $('#EmployeeInitial').val('');
+        $('#EmployeeName').val('');
+        $('#MembershipId').val('');
+        $('#MembershipCode').val('');
+        $('#DateOfMembership').val('');
+        $('#DesignationName').val('');
+        $('#JoiningDate').val('');
+        $('#PeriodId').val('');
+        $('#CpfPeriod').val('');
+        $('#DateOfOpening').val('');
+        $('#ComCoreContribution').val('');
+        $('#ComProfit').val('');
+        $('#ComTotal').val('');
+        $('#EmpCoreContribution').val('');
+        $('#EmpProfit').val('');
+        $('#EmpTotal').val('');
+
+        if (Id > 0) {
+            $.ajax({
+                url: url,
+                data: { id: Id },
+                dataType: "json",
+                type: "POST",
+                ascync: false,
+                timeout: 5000,
+                success: function (data) {
+                    console.log(data);
+                    $('#EmployeeCode').val(data.EmployeeCode);
+                    $('#EmployeeId').val(data.EmployeeId);
+                    $('#EmployeeInitial').val(data.EmployeeInitial);
+                    $('#EmployeeName').val(data.EmployeeName);
+                    $('#DateOfMembership').val(data.DateOfMembership);
+                    $('#DesignationName').val(data.Designation);
+                    $('#JoiningDate').val(data.DateOfJoining);
+                    $('#MembershipId').val(data.MembershipId);
+                    if (data.CpfPeriod != "") {
+                        $('#PeriodId').val(data.PeriodId);
+                        $('#CpfPeriod').val(data.CpfPeriod);
+                    }
+                    $('#MembershipCode').val(data.MembershipCode);
+                    $('#DateOfOpening').val(data.DateOfOpening);
+                    $('#ComCoreContribution').val(data.ComCoreContribution);
+                    $('#ComProfit').val(data.ComProfit);
+                    $('#ComTotal').val(data.ComTotal);
+                    $('#EmpCoreContribution').val(data.EmpCoreContribution);
+                    $('#EmpProfit').val(data.EmpProfit);
+                    $('#EmpTotal').val(data.EmpTotal);
+
+
+                },
+                error: function () {
+                    alert("An error occurred.");
+                }
+            });
+        }
+        return false;
+    }
+
+    $("#ComCoreContribution").change(function () {
+        $('#message').empty();
+        var comCore = parseFloat($("#ComCoreContribution").val());
+        var comProfit = parseFloat($("#ComProfit").val());
+        if (comCore > comProfit) {
+            $("#ComTotal").val("");
+            $("#ComTotal").val(comCore + comProfit);
+
+        } else {
+            $('#message').append('<span class="validateown" style="color:red;">Core contribution must be greater than share of interest</span>');
+
+        }
+    });
+
+    if ('@Model.Mode' == "Update") {
+
+        $('#imgEmpSearch').hide();
+        $('#EmployeeCode').attr("readonly", "readonly");
+    }
+
+    $("#ComProfit").change(function () {
+        $('#message').empty();
+        var comCore = parseFloat($("#ComCoreContribution").val());
+        var comProfit = parseFloat($("#ComProfit").val());
+        if (comCore > comProfit) {
+            $("#ComTotal").val("");
+            $("#ComTotal").val(comCore + comProfit);
+
+        } else {
+            $('#message').append('<span class="validateown" style="color:red;">Core contribution must be greater than share of interest</span>');
+
+        }
+    });
+
+    $("#EmpCoreContribution").change(function () {
+        $('#message').empty();
+        var comCore = parseFloat($("#EmpCoreContribution").val());
+        var comProfit = parseFloat($("#EmpProfit").val());
+        if (comCore > comProfit) {
+            $("#EmpTotal").val("");
+            $("#EmpTotal").val(comCore + comProfit);
+
+        } else {
+            $('#message').append('<span class="validateown" style="color:red;">Core contribution must be greater than share of interest</span>');
+
+        }
+    });
+
+    $("#EmpProfit").change(function () {
+        $('#message').empty();
+        var comCore = parseFloat($("#EmpCoreContribution").val());
+        var comProfit = parseFloat($("#EmpProfit").val());
+        if (comCore > comProfit) {
+            $("#EmpTotal").val("");
+            $("#EmpTotal").val(comCore + comProfit);
+
+        } else {
+            $('#message').append('<span class="validateown" style="color:red;">Core contribution must be greater than share of interest</span>');
+
+        }
+    });
+
+</script>
+
+
+
+<script type="text/javascript">
+
+    $('.prev-year-contrib :input, .current-year-contrib :input').live('focusout', function () {
+        CalculateTotalContribution(this);
+    });
+
+    $('.prev-year-interest :input, .current-year-interest :input').live('focusout', function () {
+        CalculateTotalInterest(this);
+    });
+
+    function CalculateTotalInterest(obj) {
+        var prevVal = $(obj).closest('tr').find('.prev-year-interest :input').val();
+        var currentVal = $(obj).closest('tr').find('.current-year-interest :input').val();
+        var totalVal = parseFloat(prevVal) + parseFloat(currentVal);
+        $(obj).closest('tr').find('.total-interest :input').val(totalVal.toFixed(6));
+        return null;
+    }
+
+    function CalculateTotalContribution(obj) {
+        var prevVal = $(obj).closest('tr').find('.prev-year-contrib :input').val();
+        var currentVal = $(obj).closest('tr').find('.current-year-contrib :input').val();
+        var totalVal = parseFloat(prevVal) + parseFloat(currentVal);
+        $(obj).closest('tr').find('.total-Contrib :input').val(totalVal.toFixed(6));
+        return null;
+    }
+</script>
+
+
+<style type="text/css">
+    .prev-year-contrib, .prev-year-interest, .current-year-contrib, .current-year-interest, .total-Contrib, .total-interest {
+        width: 120px;
+    }
+
+    .label-area {
+        text-align: left !important;
+        background: none !important;
+    }
+
+    table tbody tr td input[type=text] {
+        height: 25px !important;
+    }
+
+    table tbody tr td .label-area {
+        border: 1px solid #000000 !important;
+    }
+
+    table {
+        cursor: default;
+    }
+</style>

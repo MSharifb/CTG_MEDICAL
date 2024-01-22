@@ -1,0 +1,124 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.ProfitInterestRate.ProfitInterestRateModel
+@using BEPZA_MEDICAL.Web.Helpers
+@using BEPZA_MEDICAL.Utility
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        console.log($('#IsMonthly').val());
+
+        if ($('#IsMonthly').val() == true) {
+            $('#Yearly').hide();
+            $('#rdlblYearly').hide();
+        }
+
+    });
+
+</script>
+
+
+@Html.HiddenFor(model => model.IsMonthly)
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            Type
+        </span>
+        <span class="field">
+            @Html.RadioButtonFor(x => x.PfPeriodDuration, CPFEnum.ProfitRateType.Yearly.ToString(), new { id = "Yearly", @class = "pfPeriodDuration" })
+            <label id="rdlblYearly"> Yearly </label>
+
+            <span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>
+            
+            @Html.RadioButtonFor(x => x.PfPeriodDuration, CPFEnum.ProfitRateType.Monthly.ToString(), new { id = "Monthly", @class = "pfPeriodDuration" })
+            <label> Monthly </label>
+        </span>
+    </div>
+
+    <div class="row">
+        
+        <span class="label">
+            @Html.LabelFor(model => model.Year)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.Year, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+
+    </div>
+
+    <div class="row monthly-duration">
+        
+        <span class="label">
+            @Html.LabelFor(model => model.Month, new {@id = @"lblMonthName"})
+            <label id="lblMonthStar" style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.Month, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.InterestRate)
+            <label style='color: red'>*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.InterestRate)
+        </span>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: "@Url.Action("GetPfInterestRateMethod", "ProfitInterestRate")",
+            dataType: "json",
+            type: "POST",
+            error: function () {
+                alert("System is unable to load data, please try again.");
+            },
+
+            success: function (data) {
+                ToggleMonthYear(data);
+                $('input:radio[class=pfPeriodDuration][id=' + data + ']').attr('checked', true);
+            }
+
+        });
+
+        function showErrMsg() {
+            if ('@Model.IsError' == "1") {
+                var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+                $("#message").html("<b>" + msg + "</b>").css("color", "red");
+            }
+        }
+
+    });
+
+</script>
+
+
+<script type="text/javascript">
+
+    function ToggleMonthYear(monthYearVal) {
+        if (monthYearVal == "Yearly") {
+            $('#Month').hide();
+            $('#lblMonthName').hide();
+            $('#lblMonthStar').hide();
+        }
+        else {
+            $('#Month').show();
+            $('#lblMonthName').show();
+            $('#lblMonthStar').show();
+        }
+    }
+
+    $('.pfPeriodDuration').live('click', function () {
+        var item = $(this).val();
+        ToggleMonthYear(item);
+    })
+</script>
+

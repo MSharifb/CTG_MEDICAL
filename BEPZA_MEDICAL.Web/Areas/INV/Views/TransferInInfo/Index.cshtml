@@ -1,0 +1,97 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.TransferInViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/INV/Views/Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+@using (Ajax.BeginForm("Index", "TransferInInfo", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div class="GroupBox" style="min-height: 15px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+
+    <fieldset>
+        <legend> Search </legend>
+        <div id="jqSearch">
+        </div>
+    </fieldset>
+    <div class="button-crude button-left">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            @Html.ActionLink("Add New", "Create") 
+            <input id="btnShowList" type="button" value="Transfer List" />
+        }
+    </div>
+    <div class="clear" style="height:10px">
+    </div>
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+    <div id="divList">
+        @Html.Partial("_GridList")
+    </div>
+
+}
+
+<div class="clear"></div>
+
+<div id="divReqList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divReqList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Transfer', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    $("#btnShowList").click(function () {
+        openRequisition();
+    });
+
+    function openRequisition() {
+        var url = '@Url.Action("TransferSearch", "TransferInInfo")';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divReqList').html(result);
+            }
+        });
+
+        $("#divReqList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        //$("#divReqList").dialog('close');
+    }
+
+    function Closing() {
+
+    }
+
+    //Check string has null or empty
+    var StringHasValue = function (strValue) {
+        if ($.trim(strValue) != "" && $.trim(strValue) != null && $.trim(strValue) != undefined)
+            return true;
+        else
+            return false;
+    };
+
+</script>
+
+

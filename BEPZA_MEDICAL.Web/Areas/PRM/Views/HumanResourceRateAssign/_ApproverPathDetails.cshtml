@@ -1,0 +1,31 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.HumanResourceRateAssign.HumanResourceRateAssignDetailModel
+@using BEPZA_MEDICAL.Web.Helpers
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("HumanResourceRateAssignDetailList"))
+    {
+        if (Model != null)
+        {
+            
+        @Html.Hidden("Id", Model.Id)
+        @Html.Hidden("HRRateAssignMasterId", Model.HRRateAssignMasterId)
+            
+        }        
+       
+        <td width="10%" style="text-align: left">
+            @Html.Hidden("EmployeeId", Model.EmployeeId)
+            @Html.TextBox("EmployeeInitial", Model.EmployeeInitial, new { @style = "padding:0px;text-align:left;background-color: #f2f5f8;", @readonly = false })
+        </td>  
+        <td width="10%" style="text-align: left">
+            @Html.Hidden("ResourceLevelId", Model.ResourceLevelId)
+            @Html.Hidden("EmploymentTypeId", Model.EmploymentTypeId)
+            @Html.TextBox("ResourceLevel", Model.ResourceLevel, new { @style = "padding:0px;text-align:left;background-color: #f2f5f8;", @readonly = false })
+        </td>             
+       
+        <td width="15%" style="text-align: right">
+            @Html.EditorFor(model=>Model.ActualRate, new { @style = "padding:0px;text-align:right;"})
+        </td>    
+        <td width="15%" style="text-align: right">
+            @Html.EditorFor(model => Model.BudgetRate, new { @style = "padding:0px;text-align:right;" })
+        </td>            
+    }
+</tr>

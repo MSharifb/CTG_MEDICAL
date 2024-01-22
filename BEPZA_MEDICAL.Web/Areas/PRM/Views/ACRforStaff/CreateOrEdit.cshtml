@@ -1,0 +1,65 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ACRforStaff.ACRforStaffViewModel
+
+@{
+    ViewBag.Title = "CreateOrEdit";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+<input type="hidden" id="Id" value="@Model.Id" />
+@{
+    string Id = "#";
+    string empId = "#";
+
+    if (Model.Id != 0)
+    { Id = "/" + Model.Id.ToString(); }
+    if (!string.IsNullOrWhiteSpace(Model.EmpId))
+    { empId = "/" + Model.EmpId; }
+}
+<div class="employee">
+    <div class="left-sidebar">
+        <ul>
+            <li class="@Model.StaffInfo.SelectedClass">@Html.ActionLink("Staff's Information", "StaffInfoIndex" + Id, null, new { @class = "emp-info" })</li>
+            <li class="@Model.BioData.SelectedClass">@Html.ActionLink("Bio-Data", "StaffBioDataIndex" + Id, null, new { @class = "emp-salary" })</li>
+            <li class="@Model.AssessmentInfo.SelectedClass">@Html.ActionLink("Assessment Information", "AssessmentInfoIndex" + Id, null, new { @class = "emp-contract" })</li>
+        </ul>
+    </div>
+    <div class="form-content">
+        @switch (Model.ViewType)
+        {
+            case "StaffInfo":
+                @Html.Partial("_StaffInfo", Model.StaffInfo)
+                break;
+            case "BioData":
+            @Html.Partial("_StaffBioData", Model.BioData)
+                break;
+            case "AssessmentInfo":
+            @Html.Partial("_StaffAssessmentInfo", Model.AssessmentInfo)
+                break;                
+            default:
+                break;
+        }
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var editMode = false;
+    var empId = '@Model.EmpId';
+    var id = '@Model.Id';
+
+    if (id != 0) {
+        editMode = true;
+    }
+    if (!editMode) {
+        $('.emp-info, .emp-contract, .emp-salary ').attr('href', '#');
+    }
+
+    function DeleteConfirm()
+    {
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+</script>
+
+

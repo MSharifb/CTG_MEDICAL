@@ -1,0 +1,38 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.OverTimePayment.OverTimePaymentModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "OverTimePayment", FormMethod.Post, new { id = "frm" }))
+{
+ 
+    <fieldset>
+        <div class="GroupBox" id="message">
+            @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div style="color:Red" id="ErrMsg" class="@Model.ErrMsg">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+
+        <div>
+            @Html.Partial("_CreateOrEdit", Model)
+        </div>
+        <div class="GroupBox">
+            <div class="button-crude">
+                @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+                }
+            </div>
+            <div class="clear"></div>
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index" )
+</div>

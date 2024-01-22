@@ -1,0 +1,61 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.OfficeEquipmentFurnitureInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Name)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model=>model.Name)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Description)
+        </span>
+        <span class="field" style="width:50%">
+            @Html.EditorFor(model => model.Description)
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Remarks)
+        </span>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        //debugger;
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            $('#btnSave').hide();
+        }
+    }
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $('#btnClear').live('click', function () {
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+    })
+
+</script>

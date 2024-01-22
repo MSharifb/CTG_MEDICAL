@@ -1,0 +1,277 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.QueryAnalyzerViewModel
+
+<link href="@Url.Content("~/Content/grid.css")" rel="stylesheet" type="text/css" />
+<style type="text/css">
+    .ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable {
+        overflow-x: auto;
+        overflow-y: auto;
+        height: 500px;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".datePicker").datepicker({
+            dateFormat: 'dd-mm-yy', changeYear: true, yearRange: '-100:+100'
+            , showOn: 'button'
+            , buttonImage: '@Url.Content("~/Content/img/controls/calendar-blue.gif")'
+            , buttonImageOnly: true
+        });
+
+        var nAgt = navigator.userAgent;
+        if (nAgt.indexOf("MSIE") != -1) {
+            var ver = getInternetExplorerVersion();
+            if (ver == 7) {
+                if (IsIE8Browser() == false) {
+
+                    $("#btnPrint").hide();
+                }
+            }
+        }
+    });
+
+    function closeThis() {
+        //var isOpen = $( ".selector" ).dialog( "isOpen" );
+        //alert(isOpen);
+        closeDialog();
+        //isOpen = $(this).dialog( "isOpen" );
+        //alert(isOpen);
+        //        if (isOpen) {
+        //
+        //        }
+    }
+
+    function IsIE8Browser() {
+        var rv = -1;
+        var ua = navigator.userAgent;
+        var re = new RegExp("Trident\/([0-9]{1,}[\.0-9]{0,})");
+        if (re.exec(ua) != null) {
+            rv = parseFloat(RegExp.$1);
+        }
+        return (rv == 4);
+    }
+
+
+    function getInternetExplorerVersion() {
+
+        var rv = -1; // Return value assumes failure.
+
+        if (navigator.appName == 'Microsoft Internet Explorer') {
+
+            var ua = navigator.userAgent;
+            //alert(navigator.appVersion +"--"+ navigator.userAgent);
+            var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+
+            if (re.exec(ua) != null)
+                rv = parseFloat(RegExp.$1);
+        }
+        return rv;
+    }
+
+    //Generating Pop-up Print Preview page
+    function getPrint(print_area) {
+        //Creating new page
+        var pp = window.open();
+        var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+
+        //pp.document.write(doctype);
+        var htm = '<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><title>Print Preview</title>'
+
+        pp.document.write(htm);
+        //var css = '<LINK href=' + '"<%= Url.Content("~/Content/css/PStyles.css") %>"' + ' type="text/css" rel="stylesheet" type="text/css" >';
+        //pp.document.write(css);
+
+        var sitecss = '<LINK href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" >';
+        pp.document.write(sitecss);
+
+        var gridcss = '<LINK href="@Url.Content("~/Content/grid.css")" rel="stylesheet" type="text/css" />';
+        pp.document.write(gridcss);
+
+        var reportcss = '<LINK href="@Url.Content("~/Content/report.css")"  rel="stylesheet" type="text/css" />';
+        pp.document.write(reportcss);
+
+        pp.document.write('<body MS_POSITIONING="GridLayout" bottomMargin="0" leftMargin="0" topMargin="0" rightMargin="0">');
+        //Adding form Tag
+        pp.document.write('<form  method="post">');
+        //Creating two buttons Print and Close within a table
+        //pp.document.write('<TABLE width=100%><TR><TD></TD></TR><TR><TD align=right><INPUT ID="PRINT" type="button" value="Print" onclick="javascript:location.reload(true);window.print();"><INPUT ID="CLOSE" type="button" value="Close" onclick="window.close();"></TD></TR><TR><TD></TD></TR></TABLE>');
+        pp.document.write('<TABLE width=100%><TR><TD></TD></TR><TR><TD align=right><a href="#" class="button" onclick="javascript:window.print();window.close();"><span>Print</span></a><a class="button" href="#" onclick="window.close();"><span>Close</span></a></TD></TR><TR><TD></TD></TR></TABLE>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">Bangladesh Export Processing Zones Authority</div>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">BEPZA COMPLEX, HOUSE: 19/D, ROAD: 6, DHANMONDI R/A</div>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">DHAKA</div>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">BANGLADESH</div>');
+        pp.document.write('<div align="right"><img src="@Url.Content("~/Content/Images/bepza_logo.jpg")" height="54px" width="158px"/></div>');
+        pp.document.write('<div class="border"></div>');
+        //Writing print area of the calling page
+        pp.document.write(document.getElementById(print_area).innerHTML);
+        pp.document.write('</form></body></HTML>');
+
+        //pp.document.getElementById('pager').innerHTML = "";
+        //pp.document.getElementById('button').innerHTML = "";
+        pp.document.close(htm);
+        //$('#pager').removeClass('pager');
+
+        return false;
+
+    }
+
+    //Generating Pop-up Print Preview page
+    function getDirectPrint(print_area) {
+        //Creating new page
+        var pp = window.open();
+        var doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+
+        //pp.document.write(doctype);
+        var htm = '<HTML xmlns="http://www.w3.org/1999/xhtml"><HEAD><title>Print Preview</title>'
+
+        pp.document.write(htm);
+        //var css = '<LINK href=' + '"<%= Url.Content("~/Content/css/PStyles.css") %>"' + ' type="text/css" rel="stylesheet" type="text/css" >';
+        //pp.document.write(css);
+
+        var sitecss = '<LINK href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" >';
+        pp.document.write(sitecss);
+
+        var gridcss = '<LINK href="@Url.Content("~/Content/grid.css")" rel="stylesheet" type="text/css" />';
+        pp.document.write(gridcss);
+
+        var reportcss = '<LINK href="@Url.Content("~/Content/report.css")"  rel="stylesheet" type="text/css" />';
+        pp.document.write(reportcss);
+
+        pp.document.write('<body MS_POSITIONING="GridLayout" bottomMargin="0" leftMargin="0" topMargin="0" rightMargin="0">');
+        //Adding form Tag
+        pp.document.write('<form  method="post">');
+        //Creating two buttons Print and Close within a table
+        //pp.document.write('<TABLE width=100%><TR><TD></TD></TR><TR><TD align=right><INPUT ID="PRINT" type="button" value="Print" onclick="javascript:location.reload(true);window.print();"><INPUT ID="CLOSE" type="button" value="Close" onclick="window.close();"></TD></TR><TR><TD></TD></TR></TABLE>');
+        pp.document.write('<TABLE width=100%><TR><TD></TD></TR><TR><TD align=right></TD></TR><TR><TD></TD></TR></TABLE>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">Bangladesh Export Processing Zones Authority</div>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">BEPZA COMPLEX, HOUSE: 19/D, ROAD: 6, DHANMONDI R/A</div>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">DHAKA</div>');
+        pp.document.write('<div style="padding: 2px;width: 80%;float: left;font-size: 12px;text-decoration: none;font-weight: bold;Text-align:center;">BANGLADESH</div>');
+        pp.document.write('<div align="right"><img src="@Url.Content("~/Content/Images/bepza_logo.jpg")" height="54px" width="158px"/></div>');
+        pp.document.write('<div class="border"></div>');
+        //Writing print area of the calling page
+        pp.document.write(document.getElementById(print_area).innerHTML);
+        pp.document.write('</form></body></HTML>');
+
+        //pp.document.getElementById('pager').innerHTML = "";
+        //pp.document.getElementById('button').innerHTML = "";
+
+        pp.document.close(htm);
+        pp.print();
+        pp.close();
+
+        return false;
+
+    }
+
+    function reportPreview() {
+        var ExportForm = document.getElementById("frmExportToExcel");
+        ExportForm.action = '@Url.Action("ExportToExcel", "ExportToExcel")';
+        ExportForm.submit();
+    }
+
+    @*function LoadPageData(page, pagesize) {
+        $("#Page").val(page);
+        var form = $('#frmDetails');
+        var serializedForm = form.serialize();
+        var targetDiv = '#dvPreview';
+        var url = '@Url.Action("GetReportData", "QueryAnalyzer")';
+        $.post(url, serializedForm, function (result) { $(targetDiv).html(result); }, "html");
+        // return false;
+    }*@
+
+</script>
+<form id="frmDetails" method="POST" action="">
+    @Html.HiddenFor(m => m.Page)
+    @Html.HiddenFor(m => m.CurrentPage)
+    @Html.HiddenFor(m => m.SortBy)
+    @Html.HiddenFor(m => m.SortAscending)
+    @Html.HiddenFor(m => m.Table)
+    @Html.HiddenFor(m => m.TableName)
+    @Html.HiddenFor(m => m.Column)
+    @Html.HiddenFor(m => m.ColumnName)
+    @Html.HiddenFor(m => m.AddRemove)
+    @Html.HiddenFor(m => m.strHtml)
+    @Html.HiddenFor(m => m.EmploymentStatus)
+
+    <div id="printable">
+        @if (Model.QueryAnalyzerItemsList != null)
+        {
+            for (int i = 0; i < Model.QueryAnalyzerItemsList.Count; i++)
+            {
+                @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].IsSelected)
+                @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryTable)
+                @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryColumnName)
+                @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryColumn)
+                @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryTableName)
+            }
+        }
+        @if (Model.QueryAnalyzerLogicList != null)
+        {
+            for (int i = 0; i < Model.QueryAnalyzerLogicList.Count; i++)
+            {
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].ItemName)
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].Item)
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].TableName)
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].ScodeStart)
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].ScopeLogic)
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].ScopeStartName)
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].ScopeEnd)
+                @Html.HiddenFor(m => m.QueryAnalyzerLogicList[i].ScopeEndName)
+            }
+        }
+
+        <div class="clear"></div>
+        <div class="row">
+            &nbsp;&nbsp;Report&nbsp;Title:&nbsp;&nbsp;@Html.Label(Model.ReportTitle)
+            <div class="clear"></div>
+            &nbsp;&nbsp;Report&nbsp;Date:&nbsp;&nbsp;@Html.Label(Model.ReportDate.ToString("dd-MM-yyyy"))
+        </div>
+        <div class="clear"></div>
+        <div id="grid">
+            <div id="grid-data" style="overflow: hidden;" class="printable">
+                <table>
+                    <thead>
+                        <tr>
+                            @foreach (System.Data.DataColumn column in Model.DtReport.Columns)
+                            {
+                                <th>
+                                    @Html.Encode(column.ColumnName)
+                                </th>
+                            }
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.DtReport != null)
+                        {
+                            for (int i = 0; i < Model.DtReport.Rows.Count; i++)
+                            {
+                                <tr>
+                                    @for (int j = 0; j < Model.DtReport.Columns.Count; j++)
+                                    {
+                                        <td>
+                                            @if (Model.DtReport.Rows[i][j].ToString().ToLower() == "true")
+                                            {
+                                                @Html.Label("Yes");
+                                            }
+                                            else if (Model.DtReport.Rows[i][j].ToString().ToLower() == "false")
+                                            {
+                                                @Html.Label("No");
+                                            }
+                                            else
+                                            {
+                                                @Html.Encode(Model.DtReport.Rows[i][j].ToString())
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

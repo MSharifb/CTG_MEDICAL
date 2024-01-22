@@ -1,0 +1,250 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.ApprovalPathInfo
+@model ApprovalPathInfoModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/FAM/Views/Shared/_Layout.cshtml";
+}
+<div class="GroupBox">
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+    @Html.Partial("_Search", Model.ApprovalPathSearch)
+</div>
+<script type="text/javascript">
+    function OnCompleteAddnew(content) {
+        if (content.statusText == 'OK') {
+            $('.search-content').hide();
+            $('.frm-content').html(content.responseText);
+        } else {
+            $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+            $("#message").delay(3000).hide();
+        }
+    }
+
+    $(function () {
+    $('#message').empty();
+        $('#DesignationId').live('change',function(){
+            var id = $(this).val();
+            $.get(
+                    "@Url.Action("GetEmpList")",
+                    {'id':id},
+                    function(r){
+                        if(r != ''){
+                            //$('.search-content').show();
+                            $('.ddl-emp-list').html(r);
+                        }
+                        else{
+                            //$('.search-content').hide();
+                            $("#message").show();
+                            $('#message').text(data).css({ 'color':'red' });
+                            $("#message").delay(3000).hide();
+                        }
+                    }
+                );
+        })
+    })
+    
+    $('#btnAdd').live('click', function () {
+        var i = $('#grid tbody tr').length;
+        $('#message').empty();
+
+        var nodeType = $('#ApprovalTypeId option:selected').text();
+        var nodeTypeId = $('#ApprovalTypeId option:selected').val();
+        if (nodeTypeId == '') { $('#message').show().text('Please Enter Node Type').css({ 'color': 'red' }); return false }
+
+        var desigName = $('#DesignationId option:selected').text();
+        var desigId = $('#DesignationId option:selected').val();
+        if (desigId == '') { $('#message').show().text('Please Enter Role/Designation').css({ 'color': 'red' }); return false }
+
+        var empName = $('#EmpId option:selected').text();
+        var empId = $('#EmpId option:selected').val();
+        if (empId == '') { $('#message').show().text('Please Enter Node').css({ 'color': 'red' }); return false }
+
+        var nodeOrder = $('#NodeOrder').val();
+        if (nodeOrder == '') { $('#message').show().text('Please Enter Node Order').css({ 'color': 'red' }); return false }
+
+        var isDuplicate = false;
+        $('#grid tbody tr').each(function (i) {
+            var tmpNodeTypeId = $(this).find("td:eq(2)").find('input').val();
+            var tmpDesigId = $(this).find("td:eq(3)").find('input').val();
+            var tmpEmpId = $(this).find("td:eq(4)").find('input').val();
+            var tmpNodeOrder = $(this).find("td:eq(5)").find('input').val();
+            if (nodeTypeId == tmpNodeTypeId && desigId == tmpDesigId && empId == tmpEmpId/* && nodeOrder == tmpNodeOrder*/) { 
+                isDuplicate = true; 
+                $('#message').show().text('Duplicate record not allowed').css({ 'color': 'red' }); 
+            }
+            else if(nodeType == 'Approver' && tmpNodeTypeId == 'Approver'){
+                    isDuplicate = true; 
+                    $('#message').show().text('Approver already exist.').css({ 'color': 'red' }); 
+
+            }
+            else if(nodeOrder==tmpNodeOrder){
+                isDuplicate=true;
+                $('#message').show().text('Duplicate node order.').css({'color':'red'});
+            }
+            else if(nodeOrder<0 || nodeOrder>999999999){
+                isDuplicate=true;
+                $('#message').show().text('Node order should be from 1 to 999999999.').css({'color':'red'});
+            }
+            else if(nodeType=='Approver' && nodeOrder<tmpNodeOrder){
+                isDuplicate=true;
+                $('#message').show().text('Approver should contain largest node order.').css({'color':'red'});
+            }
+
+        })
+
+        if (isDuplicate) return false;
+
+
+        var row = "<tr class='row'>" +
+        "<td style='display:none;'><input type='text' name='ApprovalPathDetails[" + i + "].NodeId' value='0' /></td>" +
+        "<td style='display:none;'><input type='text' name='ApprovalPathDetails[" + i + "].PathId' value='0' /></td>" +
+
+        "<td><input style='display:none' type='text' name='ApprovalPathDetails[" + i + "].ApprovalType' value='" + nodeTypeId + "'></input><a class='select-row' href='javascript:void(0)'>" + nodeType + "</a></td>" +
+        "<td><input style='display:none' type='text' name='ApprovalPathDetails[" + i + "].RoleDesignationId' value='" + desigId + "'></input>" + desigName + "</td>" +
+        "<td><input style='display:none' type='text' name='ApprovalPathDetails[" + i + "].NodeEmpId' value='" + empId + "'></input><span>" + empName + "</span></td>" +
+        "<td><input style='display:none' type='text' name='ApprovalPathDetails[" + i + "].NodeOrder' value='" + nodeOrder + "'></input><span>" + nodeOrder + "</span></td>" +
+        "<td><a class='deleteRow' title='delete' href='#'><img style='border: none; ' src='@Url.Content("~/Content/Images/Delete.png")'></a></td>";
+        $('#grid').find('tbody').append(row);
+
+        
+    })
+
+    $('.row a.deleteRow').live('click', function () {
+       
+        $(this).parent().parent().remove();
+        ResetDynamicTableSequenceNumber();
+    })
+    
+     function ResetDynamicTableSequenceNumber() {
+            var counter = 0;
+            $('#grid tr.row').each(function () {          
+                $(this).find("td input").each(function () {
+                    var toVal=$(this).attr("name");
+                    var v= toVal.substr(0,20);
+                    var v1= toVal.substr(21,toVal.length-19);
+                    $(this).attr("name",v+counter+v1);
+//                    alert($(this).attr("name"));
+                });
+                counter++;
+            });
+        } 
+
+    $('.row a.select-row').live('click', function () {
+
+        $('#grid tbody tr').removeClass("ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight");
+        $(this).parent().parent().addClass("ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight");
+        $('#btnAdd').hide();
+        $('#btnChildUpdate').show();
+
+        var tds = $(this).parent().parent().children();
+        var nodeTypeId = $(tds[2]).find('input').val();
+        var desigId = $(tds[3]).find('input').val();
+        var empId = $(tds[4]).find('input').val();
+        var nodeOrder = $(tds[5]).find('input').val();
+
+        //populate cascading dropdown
+        $.get(
+                "@Url.Action("GetEmpList")",
+                {'id':desigId},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.ddl-emp-list').html(r);
+
+                        $("#EmpId").val(empId);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+
+        $("#ApprovalTypeId").val(nodeTypeId);
+        $("#DesignationId").val(desigId);
+        
+
+        $('#NodeOrder').val(nodeOrder);
+    })
+
+    $('#btnChildUpdate').live('click', function () {
+        
+        //duplicate check
+        $('#message').empty();
+
+        var nodeType = $('#ApprovalTypeId option:selected').text();
+        var nodeTypeId = $('#ApprovalTypeId option:selected').val();
+        if (nodeTypeId == '') { $('#message').show().text('Please Enter Node Type').css({ 'color': 'red' }); return false }
+
+        var desigName = $('#DesignationId option:selected').text();
+        var desigId = $('#DesignationId option:selected').val();
+        if (desigId == '') { $('#message').show().text('Please Enter Role/Designation').css({ 'color': 'red' }); return false }
+
+        var empName = $('#EmpId option:selected').text();
+        var empId = $('#EmpId option:selected').val();
+        if (empId == '') { $('#message').show().text('Please Enter Node').css({ 'color': 'red' }); return false }
+
+        var nodeOrder = $('#NodeOrder').val();
+        if (nodeOrder == '') { $('#message').show().text('Please Enter Node Order').css({ 'color': 'red' }); return false }
+
+        var isDuplicate = false;
+        
+        $('#grid tbody tr').each(function (i) {
+            
+            if($(this).hasClass('row ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight')){
+                return true; 
+            }
+
+            var tmpNodeTypeId = $(this).find("td:eq(2)").find('input').val();
+            var tmpDesigId = $(this).find("td:eq(3)").find('input').val();
+            var tmpEmpId = $(this).find("td:eq(4)").find('input').val();
+            var tmpNodeOrder = $(this).find("td:eq(5)").find('input').val();
+            if (nodeTypeId == tmpNodeTypeId && desigId == tmpDesigId && empId == tmpEmpId/* && nodeOrder == tmpNodeOrder*/) {
+                    isDuplicate = true; 
+                    $('#message').show().text('Duplicate record not allowed').css({ 'color': 'red' }); 
+                
+            }
+            else if(nodeType == 'Approver' && tmpNodeTypeId == 'Approver'){
+                    isDuplicate = true; 
+                    $('#message').show().text('Approver already exist.').css({ 'color': 'red' }); 
+
+            }
+        })
+        if (isDuplicate) return false;
+
+        //set updated value        
+        var tds = $('#grid tbody tr.ui-state-highlight').children();
+        $(tds[2]).find('a').text(nodeType);
+        $(tds[2]).find('input').val(nodeTypeId);
+
+        $(tds[3]).find('input').val(desigId);
+        $(tds[3]).find('span').text(desigName);
+
+        $(tds[4]).find('input').val(empId);
+        $(tds[4]).find('span').text(empName);
+
+        $(tds[5]).find('input').val(nodeOrder);
+        $(tds[5]).find('span').text(nodeOrder);
+
+        //return to add mode
+        $('#ApprovalTypeId').val('');
+        $('#DesignationId').val('');
+        $('#EmpId').val('');
+        $('#NodeOrder').val('');
+        $('#grid tbody tr').removeClass('ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight');
+
+        //document.getElementById('frm').reset();
+        $('#btnAdd').show();
+        $('#btnChildUpdate').hide();
+    })
+
+    $('#btnClear').live('click',function(){
+        document.getElementById('frm').reset();
+        $('#btnAdd').show();
+        $('#btnChildUpdate').hide();
+        $('#grid tbody tr').removeClass('ui-state-highlight, ui-widget-content ui-state-highlight, ui-widget-header ui-state-highlight');
+    })
+</script>

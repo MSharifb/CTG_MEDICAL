@@ -1,0 +1,56 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.GroupInsurancePaymentType.GroupInsurancePaymentTypeViewModel
+
+
+@Html.HiddenFor(model => model.Id)
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PaymentType)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+           @Html.EditorFor(model=> model.PaymentType)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.OrderNo)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model=> model.OrderNo)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PaymentAmount)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.PaymentAmount)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.EffectiveDate)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveDate)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+            
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span><span class="label-right">
+          
+        </span><span class="field">
+          
+        </span>
+    </div>
+    <div class="clear"></div>
+</div>
+

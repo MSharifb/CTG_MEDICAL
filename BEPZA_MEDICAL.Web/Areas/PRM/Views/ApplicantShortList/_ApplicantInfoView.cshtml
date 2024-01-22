@@ -1,0 +1,164 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApplicantInfoViewModel
+
+<style type="text/css">
+    .applicant-view .label {
+        width: 25%;
+    }
+</style>
+<div class="GroupBox applicant-view">
+    <div style="width: 65%; float:left">
+        <div class="row">
+            <span class="label" style="width: 38.5%;">
+                @Html.LabelFor(model => model.ApplicantNameE)
+            </span>
+            <span class="field" style="width: 40%;">
+                @Html.TextBoxFor(model => model.ApplicantNameE, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label" style="width: 38.5%;">
+                @Html.LabelFor(model => model.ApplicantNameB)
+            </span><span class="field" style="width: 40%;">
+                @Html.TextBoxFor(model => model.ApplicantNameB, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label" style="width: 38.5%;">
+                @Html.LabelFor(model => model.NationalID)
+            </span><span class="field" style="width: 40%;">
+                @Html.TextBoxFor(model => model.NationalID, new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label" style="width: 38.5%;">
+                @Html.LabelFor(model => model.BirthRegNo)
+            </span><span class="field" style="width: 40%;">
+                @Html.TextBoxFor(model => model.BirthRegNo, new { @class = "read-only", @readonly = true })
+            </span>
+
+        </div>
+
+        <div class="row">
+            <span class="label" style="width: 38.5%;">
+                @Html.LabelFor(model => model.DateOfBirth)
+            </span><span class="field" style="width: 40%;">
+                @Html.TextBoxFor(model => model.DateOfBirth, "{0:dd-MM-yyyy}", new { @class = "read-only", @readonly = true })
+            </span>
+        </div>
+    </div>
+    <div style="width: 25%; float:left; padding-top: 3%;">
+        <span class="field">
+            <div class="portrait-box">
+                <span id="portrait-holder" class="applicant-img-preview">
+                    @if (Model.Attachment != null)
+                    {
+                        <img id="mainPortrait" alt="Applicant Photo" height="140" width="180" src="data:image;base64,@System.Convert.ToBase64String(Model.Attachment)" />
+                    }
+                </span>
+            </div>
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.FatherName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.FatherName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MotherName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.MotherName, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MobNo)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.MobNo, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.TelNo)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.TelNo, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Email, new { @class = "read-only", @readonly = true })
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.Email, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.YearOfExperience)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.YearOfExperience, new { @class = "read-only", @readonly = true })
+        </span>
+    </div>
+    <fieldset>
+        <legend>Educational Qualification</legend>
+        @if (@Model.SSC)
+        {
+            <div class="row">
+                <span class="label">
+                    @Html.Label("Examination Name")
+                </span><span class="field">
+                    @Html.Encode("SSC")
+                </span>
+                <span class="label-right">
+                    @Html.Label("Result")
+                </span><span class="field" style="width: 20%">
+                    @Html.TextBoxFor(model => model.SscResult, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.Label("Subject/Group")
+                </span><span class="field">
+                           @Html.DropDownListFor(model => model.SscGroupId, Model.SubjectGroupList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.Label("Board/University")
+                </span><span class="field" style="width: 20%">
+                    @Html.DropDownListFor(model => model.SscBoardId, Model.UniversityAndBoardList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+        }
+        @if (@Model.HSC)
+        {
+            <div class="row">
+                <span class="label">
+                    @Html.Label("Examination Name")
+                </span><span class="field">
+                    @Html.Encode("HSC")
+                </span>
+                <span class="label-right">
+                    @Html.Label("Result")
+                </span><span class="field" style="width: 20%">
+                    @Html.TextBoxFor(model => model.HscResult, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.Label("Subject/Group")
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.HscGroupId, Model.SubjectGroupList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "read-only", @readonly = true })
+                </span>
+                <span class="label-right">
+                    @Html.Label("Board/University")
+                </span><span class="field" style="width: 20%">
+                    @Html.DropDownListFor(model => model.HscBoardId, Model.UniversityAndBoardList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+        }
+    </fieldset>
+</div>

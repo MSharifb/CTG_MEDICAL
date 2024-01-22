@@ -1,0 +1,47 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmpTop
+<div class="GroupBox">
+    <div class="leftColumn">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmpID)
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmpID)
+            </span>
+        </div>
+        <div class="row">
+            <div class="label">
+                @Html.LabelFor(model => model.EmployeeInitial)
+            </div>
+            <div class="field">
+                @Html.EditorFor(model => model.EmployeeInitial)
+            </div>
+        </div>
+        <div class="row">
+            <div class="label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="field">
+                @Html.EditorFor(model => model.Name)
+            </div>
+        </div>
+        <div class="row">
+            <div class="label">
+                @Html.LabelFor(model => model.DesignationTop)
+            </div>
+            <div class="field">
+                @Html.EditorFor(model => model.DesignationTop)
+            </div>
+        </div>
+    </div>
+    <div class="rightColumn">
+        <div class="row">
+            <div class="field" style="width: auto;">
+                <div class="Photo-Top" style="visibility:hidden;">
+                    <img alt="Employe Photo" style="height:107px;"  src="@Url.Action("GetImage", "Employee", new { id = Model.EmployeeId, isPhoto = true })"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+</div>

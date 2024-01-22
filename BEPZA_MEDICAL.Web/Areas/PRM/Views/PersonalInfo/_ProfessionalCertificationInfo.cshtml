@@ -1,0 +1,102 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ProfessionalCertificationInfoViewModel
+@*@using (Ajax.BeginForm("CreateOrProfessionalTrainingInfo", "PersonalInfo", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))*@
+@using (Html.BeginForm("CreateOrEditProfessionalCertificationInfo", "PersonalInfo"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.strMode)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.Label("Professional/Honorary Degree")<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.CertificationCatagoryId, Model.CertificationCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.CertificationTitle)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.CertificationTitle)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.CertificationInstituteId)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.CertificationInstituteId, Model.InstituteList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.CountryId)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.CountryId, Model.CountryList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.CertificationYear)<label class="required-field">
+                        *</label>
+                </span><span class="field">
+                           @Html.DropDownListFor(model => model.CertificationYear, Model.CertificationYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.Result)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.Result)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.CertificationDetail)
+                </span><span class="field" style="width: 571px; padding: 0px;">
+                    @Html.TextAreaFor(model => model.CertificationDetail, new { @maxlength = 500 })
+                </span>
+                <div class="clear">
+                </div>
+            </div>
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" />
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "ProfessionalCertificationInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteProfessionalCertificationInfo", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+        </div>
+        <div class="spacer">
+        </div>
+        <div class="spacer">
+        </div>
+        <table id="jqGrid" cellpadding="0" cellspacing="0">
+        </table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_ProfessionalCertificationList", Model)
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+</script>

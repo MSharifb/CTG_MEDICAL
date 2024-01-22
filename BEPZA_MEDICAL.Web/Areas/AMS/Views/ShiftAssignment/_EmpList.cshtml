@@ -1,0 +1,25 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftAssigment.ShiftAssignmentViewModel
+
+    @foreach (var item in Model.Employee)
+    {
+        <tr>
+            <td style="width: 30px; text-align: center">
+                @Html.CheckBox("empId", item.IsChecked, new { @class = "rchk", @value = item.EmployeeId })
+            </td>
+            <td style="width: 30px; text-align: center">
+                @Html.Encode(item.ICNo)
+            </td>
+            <td style="text-align: left">
+                @Html.Encode(item.EmployeeName)
+            </td>
+
+            <td style="text-align: left;">
+                @Html.Encode(item.DesignationName)
+            </td>
+
+            <td style="text-align: left;">
+                @Html.Encode(item.DateOfJoining.ToString("dd/MM/yyyy"))
+            </td>
+        </tr>
+    }
+

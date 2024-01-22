@@ -1,0 +1,53 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.JobAdvertisementInfo.JobAdvertisementInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("JobRequisitionInfoDetailList"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.JobRequisitionInfoApprovalDetailId)
+        @Html.HiddenFor(x => x.DesignationId)
+        @Html.HiddenFor(x => x.DepartmentId)
+        @Html.HiddenFor(x => x.SectionId)
+        @Html.HiddenFor(x => x.NumberOfRequiredPost)
+        @Html.HiddenFor(x => x.ApprovedPost)
+        @Html.HiddenFor(x => x.JobRequisitionInfoSummaryId)
+
+        <td style="width: 30px; text-align: center ">
+            @*<a onclick="RequisitionDetail(@Model.ClearanceFromMinistryDetailId,@Model.DesignationId,@Model.RequisitionNo,'@Model.Designation',@Model.NumberOfRequiredPost,@Model.ClearancePost)">*@
+                @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+            @*</a>*@
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.RequisitionNo)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.Designation)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.NumberOfRequiredPost)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.ApprovedPost)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.Category)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.RequireDate)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.DepartmentName)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.SectionName)
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>
+<script type="text/javascript">
+</script>

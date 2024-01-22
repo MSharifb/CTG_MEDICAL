@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CF1348DC-06E0-464F-A69F-5B792BA156A1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BEPZA_MEDICAL.DAL.PMI</RootNamespace>
+    <AssemblyName>BEPZA_MEDICAL.DAL.PMI</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="acc_Accounting_Period_Information.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="acc_Cost_Centre_or_Institute_Information.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CommonConfigType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ERP_BEPZA.PMI.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ERP_BEPZA.PMI.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_Agency.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_AnnualProcurementPlanDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_AnnualProcurementPlanMaster.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ApprovalAuthority.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ApprovalFlowDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ApprovalFlowMaster.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ApprovalSection.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_AppZones.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_BudgetDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_BudgetDetailsYearlyBilled.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_BudgetDetailsYearlyCost.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_BudgetHead.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_BudgetMaster.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_BudgetType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_BudgetZoneOrProject.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ConstructionCategory.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ConstructionType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_EstimationDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_EstimationHead.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_EstimationHeadDescription.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_EstimationMaster.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_EstimationSetup.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_EstimationUnit.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_EstimationZone.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ExecuteFunctions.cs" />
+    <Compile Include="PMI_GenericRepository.cs" />
+    <Compile Include="PMI_Head.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_Ministry.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_PaymentStatus.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProcurementMethod.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProcurementType.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProgressReportAttachment.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProgressReportDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProgressReportDetailsYearlyBilled.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProgressReportMaster.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProgressReportSignature.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProjectApproverStatus.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProjectDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProjectFor.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProjectMaster.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProjectStatus.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProjectTimeExtension.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_ProjectZone.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_SourceOfFund.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_TenderDetails.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PMI_UnitOfWork.cs" />
+    <Compile Include="PMI_WorkStatus.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="sp_PMI_BudgetStatus_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_ChartBudgetVariance_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_Pmi_GetAccountingPeriod_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_Pmi_GetBudgetHeadInformation_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_PrintBudget_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_ProgressReport_Attachment_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_ProgressReport_M1_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_ProgressReport_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_ProjectStatus_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptAnnualProcurementPlan_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptFinancialBudget_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptProcurementPlanDetails_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptProcurementPlan_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptProjectEstimation_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptTenderNoticeDetails_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptTenderNotice_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptWorkWiseBudget_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_PMI_RptZoneWiseBudget_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_PMI_Signature_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SP_PRM_RptServiceVistory_Result.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwPMIBudgetHead.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwPMIBudgetInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwPMIEstimation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwPMINewBudgetInfo.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwPMIProcurementPlanFundRpt.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwPMIProjectSummary.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vwPMIStatusInformation.cs">
+      <DependentUpon>ERP_BEPZA.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="ERP_BEPZA.PMI.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ERP_BEPZA.PMI.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="ERP_BEPZA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.PMI.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ERP_BEPZA.PMI.edmx.diagram">
+      <DependentUpon>ERP_BEPZA.PMI.edmx</DependentUpon>
+    </None>
+    <None Include="ERP_BEPZA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ERP_BEPZA.PMI.edmx</DependentUpon>
+      <LastGenOutput>ERP_BEPZA.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BEPZA_MEDICAL.DAL.Infrastructure\BEPZA_MEDICAL.DAL.Infrastructure.csproj">
+      <Project>{3d9c2195-7658-4158-965f-069feaf8e311}</Project>
+      <Name>BEPZA_MEDICAL.DAL.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

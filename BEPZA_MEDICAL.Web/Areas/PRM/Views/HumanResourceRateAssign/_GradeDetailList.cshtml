@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.HumanResourceRateAssign.HumanResourceRateAssignModel
+@using BEPZA_MEDICAL.Web.Helpers
+@if (Model != null && Model.HumanResourceRateAssignDetailList != null)
+{
+    foreach (var x in Model.HumanResourceRateAssignDetailList)
+    {
+    @Html.Partial("_ApproverPathDetails", x);
+
+    }
+}

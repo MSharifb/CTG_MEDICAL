@@ -1,0 +1,45 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxExemptionRule.TaxExemptionRuleDetailViewModel
+@using ERP_BEPZA.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("DetailList"))
+    {
+        if (@Model != null)
+        {
+            <td class="detailInfo" style="display: none;">
+                
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.ExemptionId)
+                @Html.HiddenFor(model => model.HeadId)
+                @Html.HiddenFor(model => model.TaxExemptionBasisOn)
+                @Html.HiddenFor(model => model.HaveYearlyExemptionLimit)
+                @Html.HiddenFor(model => model.IsPercentageOnBasis)
+
+                // --
+                @Html.HiddenFor(model => model.HeadName)
+                @Html.HiddenFor(model => model.TaxExemptionBasis)
+                @Html.HiddenFor(model => model.TaxableInPercentage)
+                @Html.HiddenFor(model => model.YearlyExemptionLimitAmount)
+            </td>
+
+        }
+        <td style="text-align: left;">
+            @Html.Encode(Model.HeadName)
+        </td>
+        <td style="text-align: center;">
+            @Html.Encode(Model.TaxExemptionBasis)
+        </td>
+        <td style="text-align: right;">
+            @Html.Encode(Model.TaxableInPercentage)
+        </td>
+        <td style="text-align: right;">
+            @Html.Encode(Model.YearlyExemptionLimitAmount)
+        </td>
+        <td>
+            <a href="#" class="deleteRow" title="delete"
+               onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

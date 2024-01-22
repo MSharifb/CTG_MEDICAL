@@ -1,0 +1,28 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.FDRClosingViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/FMS/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "FDRClosing", FormMethod.Post, new { id = "frm" }))
+{
+
+    @Html.Partial("_CreateOrEdit", Model)
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-10 col-sm-offset-2 text-right">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <a class="btn btn-primary" id="btnHistory" ><i class="fa fa-history"></i> Show History</a>
+                    <button class="btn btn-success btnCheckFdrAction" id="btnSaveAndRenew" btnactionmode="Renew" onclick="getButtonAction(this)"><i class="fa fa-save"></i> Renew</button>
+                    <button class="btn btn-success" id="btnSave" btnactionmode="Save"><i class="fa fa-save" onclick="getButtonAction(this)"></i> Close</button>
+                }
+                <a href="@Url.Action("Index")" class="btn btn-warning"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+

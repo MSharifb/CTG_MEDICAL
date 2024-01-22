@@ -1,0 +1,7 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.ProgressReport.ProgressReportDetailsViewModel>
+@using BEPZA_MEDICAL.Web.Helpers
+
+@foreach (var item in Model.AsEnumerable())
+{
+        @Html.Partial("_ProgressReportDetailItem", item)
+}

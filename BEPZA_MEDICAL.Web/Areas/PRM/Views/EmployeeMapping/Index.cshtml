@@ -1,0 +1,17 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmployeeMappingViewModel
+@using BEPZA_MEDICAL.Web.Utility
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+
+@*, OnSuccess = "OnSubmitSuccess", OnFailure = "OnSubmitFailure"*@
+
+@using (Ajax.BeginForm("Index", "EmployeeMapping", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{     
+
+    <div class="GroupBox" style="max-height: 30px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+    @Html.Partial("_CreateOrEdit", Model)      
+}

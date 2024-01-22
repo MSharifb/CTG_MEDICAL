@@ -1,0 +1,67 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.StatusDesignationInfoViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="GroupBox">
+
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @*@Html.HiddenFor(model => model.ZoneInfoId)*@
+            @Html.LabelFor(model => model.StatusDesignationName)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.StatusDesignationName)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Remarks)
+        </span>
+        <div class="clear">
+        </div>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.SortOrder)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.SortOrder)
+        </span>
+
+    </div>
+</div>
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">    
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $(function () {       
+        if ('@Model.errClass' == "success" && '@Model.IsButtonHide' == 'True') {
+            $('input[name="btnSave"]').hide();
+        }
+    });
+
+</script>

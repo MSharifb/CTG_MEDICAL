@@ -1,0 +1,249 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftRoster.ShiftRosterModel
+
+@{
+    Layout = null;
+}
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    <div class="GroupBox">
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.DepartmentId)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.DepartmentId, Model.Departmentlist, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ShiftGroupName)
+                <label class="required-field">
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.ShiftGroupName, new { @class = "required" })
+            </span>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+
+        <div style="width: 50%;">
+            <table id="ShiftInfolTable" class="contenttable fixedcontenttable custom-grid">
+                <thead>
+                    <tr>
+                        <th>
+                            Source Shift<label class="required-field">*</label>
+                        </th>
+                        <th>
+                            Next Shift<label class="required-field">*</label>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.Mode == "Edit") { Html.RenderPartial("_Details", Model); }}
+                </tbody>
+            </table>
+        </div>
+        <div style="width: 50%">
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+            <div class="clear">
+            </div>
+            <table id="grid" class="contenttable">
+                <thead>
+                    <tr>
+
+                        <th width="15%" align="center">
+                            Source Shift
+                        </th>
+                        <th width="15%" align="center">
+                            Next Shift
+                        </th>
+                        <th width="10%">
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.ShiftRoster.Count; i++)
+                    {
+                        var item = Model.ShiftRoster.ToList()[i];
+                        <tr class="row">
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.ShiftRoster[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.ShiftRoster[i].SourceShift)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.ShiftRoster[i].NextShift)
+                            </td>
+                            <td>
+                                <label> @item.SourceShiftName</label>
+                            </td>
+                            <td>
+                                <label> @item.NextShiftName</label>
+                            </td>
+                            <td>
+                                <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@item.Id,@item.SourceShift,@item.NextShift,'@Url.Action("DeleteDetail")')">
+                                    <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="clear" style="height:10px">
+        </div>
+
+    </div>
+}
+
+<script type="text/javascript">
+    // for Source shift only
+    var arrList = [];
+    // for Next shift only
+    var nextArrList = [];
+
+    $('#DepartmentId').live('change', function () {
+        $('#grid tbody').empty();
+        arrList=[];
+        nextArrList=[];
+
+        var DepartmentId = $(this).val();
+            var url = '@Url.Action("GetShiftNamelist")';
+         if (DepartmentId > 0) {
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    data: { deptId: DepartmentId },
+                    success: (function (result) {
+                        $("#ShiftInfolTable tbody").html(result);
+                    })
+                });
+            }
+    })
+
+    //pupulate existing data from database
+    var shiftRosterDetails = @Html.Raw(Json.Encode(Model.ShiftRoster));
+    $.each( shiftRosterDetails, function( key, value ) {
+        arrList.push(String( value.SourceShift));
+    });
+
+    //pupulate existing data from database
+    var nextRosterDetails = @Html.Raw(Json.Encode(Model.ShiftRoster));
+    $.each( nextRosterDetails, function( key, value ) {
+        nextArrList.push(String( value.NextShift));
+    });
+
+
+
+    $('#btnAdd').live('click', function (e) {
+        e.preventDefault();
+        $("#message").empty();
+      
+        var id = $('#Id').val();
+        var sourceShiftId = $('#SourceShift').val();
+        var sourceShiftName = $("#SourceShift option:selected").text();
+        var nextShiftId = $('#NextShift').val();
+        var nextShiftName = $("#NextShift option:selected").text();
+
+        //checking duplicate entry
+        var index = $.inArray(sourceShiftId, arrList);
+        var index2 = $.inArray(nextShiftId, nextArrList);
+
+        if (sourceShiftId == null || sourceShiftId == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (nextShiftId == null || nextShiftId == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (nextShiftId == sourceShiftId) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Source Shift and Next Shift must de different.</span>  </div> ");
+            return;
+        }
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        if (index2 >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            //push to arry
+            arrList.push(sourceShiftId);
+            nextArrList.push(nextShiftId);
+
+            var trClone = '<tr>' +
+           '<td style="display: none;">' + '<input type="text" value="0" name="ShiftRoster[0].Id"></td>' +
+           '<td style="display: none;">' + '<input type="text" name="ShiftRoster[0].SourceShift" value="' + sourceShiftId + '"></td>' +
+           '<td style="display: none;">' + '<input type="text" name="ShiftRoster[0].NextShift" value="' + nextShiftId + '" ></td>' +
+
+           '<td>' + '<label for="SourceShiftName">' + sourceShiftName + '</td>' +
+           '<td>' + '<label for="NextShiftName" >' + nextShiftName + '</td>' +
+           '<td><a class="deleteRow" href="#" title="delete" onclick="RemoveDb(this,0,&quot;' + sourceShiftId +'&quot;&quot;' + nextShiftId +'&quot;)"><img src="../../../Content/Images/Delete.png" style="border: none;" alt="delete"></a></td>' +
+           '</tr>';
+            $('#grid tbody').append(trClone);
+            RearrengeControlName();
+
+            $('#SourceShift').val('');
+            $('#NextShift').val('');
+        }
+
+    });
+    function RemoveDb(el, id, sourceShiftId, nextShiftId, url) {
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+        arrList = $.grep(arrList, function(value) {
+            return value != sourceShiftId;
+        });
+        nextArrList = $.grep(nextArrList, function(value) {
+            return value != nextShiftId;
+        });
+
+        RearrengeControlName();
+    }
+
+
+    function RearrengeControlName() {
+        $('#grid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>

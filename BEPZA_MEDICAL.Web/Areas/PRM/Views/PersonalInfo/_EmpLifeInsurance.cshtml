@@ -1,0 +1,106 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.LifeInsuranceViewModel
+
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("CreateOrEditLifeInsurance", "PersonalInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.strMode)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateOfBirth)
+                </span>
+                <span class="field">
+                    @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "read-only", @readonly = true })
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DateOfDeath)
+                </span>
+                <span class="field">
+                    @Html.EditorFor(model=>model.DateOfDeath)
+                </span>
+            </div>
+
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.CauseOfDeath)
+                </span>
+                <span class="field" style="width: 50%">
+                    @Html.TextAreaFor(model => model.CauseOfDeath)
+                </span>
+            </div>
+
+            <div class="clear">
+            </div>
+
+        </div>
+        <div class="GroupBox">
+            <div class="clear"></div>
+            <div class="row">
+                <div id="divFileAttach">
+                    <span class="label">
+                        @Html.LabelFor(model => model.Attachment)
+                    </span>
+                    <span class="field">
+                        @Html.HiddenFor(model => model.Attachment)
+                        @Html.HiddenFor(model => model.FileName)
+                        <input type="file" name="Attachment" id="Attachment" />
+                        <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+                    </span>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" />
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "LifeInsuranceIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteLifeInsurance", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+        </div>
+        <div class="spacer">
+        </div>
+        <div class="spacer">
+        </div>
+        <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_EmpLifeInsuranceList", Model)
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+</script>

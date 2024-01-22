@@ -1,0 +1,9 @@
+﻿@model System.String
+
+@Html.TextArea("", Model != null ? Model : string.Empty, new { @class = "ckeditor"})
+
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $(".ckeditor").ckeditor();
+    });
+</script>

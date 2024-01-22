@@ -1,0 +1,95 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RequestedApplication.RequestedApplicationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+
+@using (Html.BeginCollectionItem("ApplicationList"))
+{
+    <tr>
+        <td class="application-Date">
+            <span class="id-area">@Html.HiddenFor(m => m.Id)</span>
+            <span class="application-id-area">@Html.HiddenFor(m => m.ApplicationId)</span>
+            <span class="online-offline">@Html.HiddenFor(m => m.IsOnlineApplication)</span>
+            <span class="application-date-area"> @Model.ApplicationDate.ToString("dd-MMM-yyyy")</span>
+            <span class="controller-area">@Html.HiddenFor(m => m.ControllerName)</span>
+            <span class="action-area">@Html.HiddenFor(m => m.ActionName)</span>
+        </td>
+        <td class="applicant-Id">
+            @Model.ApplicantId
+        </td>
+        <td class="applicant-Name">
+            @Model.ApplicantName
+        </td>
+        <td class="date-range">
+            @Model.StartDate.ToString("dd-MMM-yyyy")
+        </td>
+        <td class="date-range">
+            @Model.EndDate.ToString("dd-MMM-yyyy")
+        </td>
+        <td class="approval-status">
+            @Model.ApprovalStatusName
+            <span class="status-id-area">@Html.HiddenFor(m => m.ApprovalStatusId)</span>
+        </td>
+        <td class="approver-action">
+            <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i> View</button>
+        </td>
+        <td>
+            &nbsp;
+        </td>
+    </tr>
+}
+
+<script type="text/javascript">
+    $('.approver-action button').click(function () {
+
+        var applicationId = $(this).closest('tr').find('.id-area :input').val();
+
+        var url = '@Url.Action(@Model.ActionName, @Model.ControllerName)';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            data: { id: applicationId },
+            timeout: 5000,
+            error: function (error) {
+                console.log(error);
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divApplicationViewer').html(result);
+            }
+        });
+
+        $("#divApplicationViewer").dialog('open');
+    });
+</script>
+
+<style type="text/css">
+    #divApplicationViewer #body {
+        margin-left: 20px !important;
+    }
+
+    #divApplicationViewer .left-sidebar {
+        display: none !important;
+    }
+
+    #divApplicationViewer .button-left {
+        display: none !important;
+    }
+
+    #divApplicationViewer .delete-confirm {
+        display: none !important;
+    }
+
+    #divApplicationViewer .employee {
+        margin-left: 10px !important;
+    }
+
+    #divApplicationViewer .page-title {
+        margin-left: 70px !important;
+    }
+
+    #divApplicationViewer #main-body {
+        margin-left: 70px !important;
+    }
+</style>

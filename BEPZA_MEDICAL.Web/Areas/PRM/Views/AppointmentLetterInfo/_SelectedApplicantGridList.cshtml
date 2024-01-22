@@ -1,0 +1,42 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.AppointmentLetterInfoViewModel
+
+<script type="text/javascript">  
+  
+    $(document).ready(function () {      
+        $('#jqSelectedApplicantGrid').jqGrid({
+            url: '@Url.Action("GetSelectedApplicant")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'ApplicantInfoId', 'Applicant Name', 'Selected Id', 'Advertisement Code', 'Advertisement Code', 'Designation', 'Designation'],
+            colModel: [
+                            { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },                          
+                            { name: 'ApplicantInfoId', index: 'ApplicantInfoId', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'ApplicantName', index: 'ApplicantName', align: 'left', search: true, edittype: 'text' },
+                            { name: 'SelectedId', index: 'SelectedId', align: 'left', search: true, edittype: 'text', },
+                            { name: 'JobAdvertisementInfoId', index: 'JobAdvertisementInfoId', align: 'center', width: '60px', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("GetJobAdvertisement")' },
+                            { name: 'JobAdvertisementCode', index: 'JobAdvertisementCode', align: 'center', search: false, edittype: 'text' },
+                            { name: 'DesignationId', index: 'DesignationId', align: 'left', width: '60px', search: true, hidden: true, edittype: 'select', surl: '@Url.Action("DesignationListView")' },
+                            { name: 'DesignationName', index: 'DesignationName', align: 'center', width: '140px', search: false, edittype: 'text' },
+                           
+                          ],
+            autowidth: true,
+            caption: "Selected Applicant List",
+            rowList: [10, 20, 30, 40, 50, 100],
+            pager: $('#jqSelectedApplicantGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSelectedApplicantSearch").jqGrid('filterGrid', '#jqSelectedApplicantGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+        $('#jqSelectedApplicantGrid').jqGrid('setGridParam', { onSelectRow: function (id) { return setApplicantData(id); } }); //this code send employee id to parent
+
+
+    });
+   
+
+</script>
+

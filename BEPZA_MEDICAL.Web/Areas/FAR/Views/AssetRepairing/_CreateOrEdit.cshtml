@@ -1,0 +1,289 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.AssetRepairingViewModel
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend>Asset Category</legend>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.AssetStatusId)
+            @Html.HiddenFor(model => model.FixedAssetId)
+            @Html.HiddenFor(model => model.strAssetStatusName)
+            @Html.HiddenFor(model => model.strMode)
+            @Html.HiddenFor(model => model.AssetConditionId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.AssetCode, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.AssetCode, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.AssetName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.AssetName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.CategoryName, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.SubCategoryName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.SubCategoryName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.AssetStatusId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.strAssetStatusName, new { @class = "form-control" })
+            </div>*@
+            @Html.LabelFor(model => model.DepreciationRate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.DepreciationRate, new { @class = "form-control" })
+            </div>
+
+        </div>
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.AssetConditionId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.AssetConditionId, Model.AssetConditionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>*@
+            @Html.LabelFor(model => model.EffectiveDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.EffectiveDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CurrentBookValue, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.CurrentBookValue, new { @class = "form-control" })
+            </div>
+            <div class="col-sm-2">
+            </div>
+            @*@Html.LabelFor(model => model.IsImpactWithDep, new { @class = "col-sm-2 control-label labelRequired" })*@
+            <div class="col-sm-4">
+                @Html.CheckBoxFor(model => model.IsImpactWithDep)&nbsp;Is Impacted on depreciation
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RepairCost, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.RepairCost, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.AppreciatedCost, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.AppreciatedCost, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalCost, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.TotalCost, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.UpdatedBookValue, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(model => model.UpdatedBookValue, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Remarks, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-10">
+                @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+            </div>
+        </div>
+    </fieldset>
+</div>
+@*<script type="text/javascript">
+
+    $(function () {
+        showErrMsg();
+    });
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+        else {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "green");
+        }
+    }
+
+</script>*@
+<script type="text/javascript">
+    $(function () {
+        //    Start AutoComplete
+        $("#AssetCode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("AutoCompleteForAsset", "AssetRepairing")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.AssetCode + ' -- [' + item.AssetName + ']', value: item.AssetCode };
+                        }))
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $('#AssetCode').val(ui.item ? ui.item.value : 0);
+                GetEmployeeInfo($('#AssetCode').val());
+
+            }
+        });
+
+        $("#AssetCode").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8) {
+                $('#AssetName').val('');
+                $('#AssetCategoryID').val('');
+                $('#CategoryName').val('');
+                $('#AssetSubCategoryID').val('');
+                $('#SubCategoryName').val('');
+                $('#DepreciationRate').val('0');
+                $('#CurrentBookValue').val('0');
+                $('#UpdatedBookValue').val('0');              
+                $("#AssetConditionId").val($("#AssetConditionId option:first").val());
+            }
+        });
+
+        function GetEmployeeInfo(AssetCode) {
+
+            var url = '@Url.Action("GetAssetInformation", "AssetRepairing")';
+
+            $('#FixedAssetId').val('');          
+            $('#AssetName').val('');
+            $('#AssetCategoryID').val('');
+            $('#CategoryName').val('');
+            $('#AssetSubCategoryID').val('');
+            $('#SubCategoryName').val('');
+            $('#DepreciationRate').val('');
+            $('#CurrentBookValue').val('');          
+            $("#AssetConditionId").val($("#AssetConditionId option:first").val());
+
+            if (AssetCode != '') {
+                $.post(url, { assetCode: AssetCode }, function (obj) {
+
+                    if (obj.Result == 'NotRepairable') {
+                        //alert('Assets those were not sold or disposed will be repairable.');
+                        $("#message").html("<b>" + 'Assets those were not only sold or disposed will be repairable.' + "</b>").css("color", "red");
+                    }
+
+                    else if (obj.Result == false) {
+                        // alert('System is unable to load data please try again.');
+                        $("#message").html("<b>" + 'System is unable to load data please try again.' + "</b>").css("color", "red");
+                    }
+
+                    else {
+                        $("#FixedAssetId").val(obj.Id);
+                        $("#AssetName").val(obj.AssetName);
+                        $("#AssetCategoryID").val(obj.AssetCategoryID);
+                        $("#CategoryName").val(obj.CategoryName);
+                        $('#AssetSubCategoryID').val(obj.AssetSubCategoryID);
+                        $('#SubCategoryName').val(obj.SubCategoryName);
+                        $('#DepreciationRate').val(obj.DepreciationRate);
+                        $('#CurrentBookValue').val(obj.CurrentBookValue);
+
+                       
+                        var ddl = document.getElementById('AssetConditionId');
+                        var opts = ddl.options.length;
+                        for (var i = 0; i < opts; i++) {
+                            if (ddl.options[i].value == obj.AssetConditionId) {
+                                ddl.options[i].selected = true;
+                                break;
+                            }
+                        }
+
+                        CalculateTotalCostNUpdateBookValue();
+                        $("#message").html('');
+                    }
+
+                }, "json");
+
+            }
+            return false;
+        }
+
+        //    End AutoComplete
+
+
+        $('#AssetCode, #RepairCost, #AppreciatedCost').on('change keyup blur', function (index) {
+
+            if ($(this).val() != '') {
+
+                CalculateTotalCostNUpdateBookValue();
+            }
+            else {
+                $('#RepairCost').val('0');
+                $('#AppreciatedCost').val('0');
+                $('#UpdatedBookValue').val('0');
+            }
+
+            return false;
+        });
+
+        $('#IsImpactWithDep').on('change', function (index) {          
+            if ($(this).val() != '') {
+                CalculateTotalCostNUpdateBookValue();
+            }
+            else {
+                $('#RepairCost').val('0');
+                $('#AppreciatedCost').val('0');
+                $('#UpdatedBookValue').val('0');
+            }
+
+            return false;
+        });
+
+        function CalculateTotalCostNUpdateBookValue() {
+            var RepairCost = $('#RepairCost').val();
+            if (RepairCost != '') {
+                RepairCost = parseFloat(RepairCost);
+            }
+            else {
+                RepairCost = 0;
+            }
+
+            var AppreciatedCost = $('#AppreciatedCost').val();
+            if (AppreciatedCost != '') {
+                AppreciatedCost = parseFloat(AppreciatedCost);
+            }
+            else {
+                AppreciatedCost = 0;
+            }
+            var CurrentBookValue = $('#CurrentBookValue').val();
+            if (CurrentBookValue != '') {
+                CurrentBookValue = parseFloat(CurrentBookValue);
+            }
+          
+            if ($("#IsImpactWithDep").prop("checked") == true) {
+
+                var totalCost = RepairCost + AppreciatedCost;
+                $('#TotalCost').val(totalCost.toFixed(2));
+
+                var updatedBookValue = AppreciatedCost + CurrentBookValue;
+                $('#UpdatedBookValue').val(updatedBookValue.toFixed(2));
+            }
+            else {
+                var totalCost = RepairCost + AppreciatedCost;
+                $('#TotalCost').val(totalCost.toFixed(2));
+                $('#UpdatedBookValue').val(CurrentBookValue.toFixed(2));
+            }
+        }
+    });
+</script>

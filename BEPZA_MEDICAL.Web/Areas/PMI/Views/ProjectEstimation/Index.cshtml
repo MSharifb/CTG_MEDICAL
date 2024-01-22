@@ -1,0 +1,83 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.ProjectEstimationViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+@using (Ajax.BeginForm("Index", "ProjectEstimation", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (@Model != null)
+        {
+            if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        }
+    </div>
+
+    <fieldset>
+        <legend>Search</legend>
+        <div id="jqSearch" style="margin-top:5px">
+        </div>
+    </fieldset>
+    <div class="button-crude button-left">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <a href="@Url.Action("Create")" class="btn btn-sm btn-primary"> <i class="fa fa-plus-circle"></i> Add new</a>
+
+        }
+    </div>
+    <div class="clear" style="height:10px">
+    </div>
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+    <div id="divList">
+        @Html.Partial("_GridList")
+    </div>
+}
+
+<script type="text/javascript">
+    var MakeDropdownSearchable = function () {
+        $('.filtertable select').select2();
+    }
+
+    //$(document).ready(function () {
+    //    setTimeout(MakeDropdownSearchable, 5000);
+    //})
+
+    $('#jqGrid').click(function (e) {
+        //debugger;
+        var $groupHeader = $(e.target).closest("tr.jqgroup");
+        if ($groupHeader.length > 0) {
+            var estimationId = $(e.target).closest("tr.jqgroup").next('tr').attr('id');
+
+            e.preventDefault();
+            var url = window.location.href.split('/');
+            var baseUrl = window.location.href.split("PMI")[0];
+            baseUrl = baseUrl + '/PMI/ProjectEstimation/Edit/' + estimationId;
+            window.location.href = baseUrl;
+        }
+    });
+</script>
+
+
+<style type="text/css">
+    .filtertable tbody tr select {
+        width: 200px !important;
+    }
+
+    .filtertable tbody tr .hasDatepicker {
+        width: 130px !important;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+    }
+
+
+</style>

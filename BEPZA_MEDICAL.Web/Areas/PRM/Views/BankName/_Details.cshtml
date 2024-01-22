@@ -1,0 +1,30 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.BankBranchViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("BankBranches"))
+    {
+        <td style="display: none;">
+            if (@Model != null)
+            {
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.BankId)
+            }
+        </td>
+        <td style="text-align: left; width: 40%">
+            @Html.HiddenFor(model => model.Name)
+            @Html.HiddenFor(model => model.NameInBengali)
+            @Html.Encode(Model.Name)
+        </td>
+        <td style="text-align: left; width: 50%;">
+            @Html.HiddenFor(model => model.Address)
+            @Html.HiddenFor(model => model.AddressInBengali)
+            @Html.Encode(Model.Address)
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Model.Name@Model.Address','@Url.Action("DeleteBankBranch")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

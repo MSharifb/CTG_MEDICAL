@@ -1,0 +1,38 @@
+﻿@model ERP_BEPZA.Web.Areas.AMS.Models.ShiftAssigment.ShiftAssignmentViewModel
+@using ERP_BEPZA.Web.Helpers
+
+    <tr class="dynamicRow">
+        @using (Html.BeginCollectionItem("ShiftAssignment"))
+        {
+            @Html.HiddenFor(x => x.Id)
+            @Html.HiddenFor(x => x.EmployeeId)
+            @Html.HiddenFor(x => x.DepartmentId)
+            <td width="10%" style="text-align: center">
+                @Html.Encode(Model.EmpInitial)
+            </td>
+
+            <td width="15%" style="text-align: center">
+                 @Html.Encode(Model.EmployeeName)
+            </td>
+            <td width="20%" style="text-align: center">
+                @Html.DropDownListFor(x => x.RosterId, Model.ShiftGroup, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl", @style = "width:100%" })
+
+            </td>
+            <td width="20%" style="text-align: center">
+                @Html.DropDownListFor(x => x.ShiftId, Model.Shift, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl ", @style = "width:100%" })
+            </td>
+
+            <td width="20%" style="text-align: center">
+                @Html.DropDownListFor(x => x.RestDay, Model.RestDayList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl", @style = "width:100%" })
+            </td>
+            <td width="20%" style="text-align: center">
+                @Html.DropDownListFor(x => x.ApplyType, Model.ApplyTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required ddl", @style = "width:100%" })
+            </td>
+
+            <td width="5%">
+                <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Model.EmployeeId','@Url.Action("DeleteDetail")')">
+                    <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+                </a>
+            </td>
+        }
+    </tr>

@@ -1,0 +1,11 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.TransferInViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@if (Model != null && Model.TransferInDetail!= null)
+{
+    foreach (var x in Model.TransferInDetail)
+    {
+        @Html.Partial("_PartialDetail", x);
+    }
+
+}

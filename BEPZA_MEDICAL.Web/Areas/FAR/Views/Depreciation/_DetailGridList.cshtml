@@ -1,0 +1,98 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.DepreciationDetailViewModel
+
+@*@Html.TextBoxFor(model => model.FinancialYearId, new { id = "hfSalaryYear" })*@
+@Html.HiddenFor(model => model.DepreciationId, new { id = "hfDepreciationId" })
+
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //var syear = $('#hfSalaryYear').val();
+        var depreId = $('#hfDepreciationId').val();
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetDetailList")?depreciationId=' + depreId,
+            @*url: '@Url.Action("GetDetailList")?year=' + syear + "&month=" + smonth,*@
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Financial Year', 'Financial Year', 'Asset Code', 'Asset Name/Model', ' Asset Category', ' Asset Category', 'Asset Status', 'Dep. Rate', 'OP. Book Value', 'OP. Dep.', 'Depreciation', 'Cumulative Dep.', 'Current Book Value', "Rollback"],
+            colModel: [
+                    { name: 'ID', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                    { name: 'FinancialYearId', index: 'FinancialYearId', align: 'center', hidden: true, search: false, edittype: 'select', surl: '@Url.Action("GetYearList")' },
+                    { name: 'YearName', index: 'YearName', align: 'center', width: '60px', hidden: true, search: false, edittype: 'text' },
+                    { name: 'AssetCode', index: 'AssetCode', align: 'left', width: '60px', search: true, edittype: 'text' },
+                    { name: 'AssetName', index: 'AssetName', align: 'left', width: '120px', search: true, edittype: 'text' },
+                    { name: 'CategoryId', index: 'CategoryId', align: 'left', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetCategoryList")' },
+                    { name: 'AssetCategory', index: 'AssetCategory', width: '120px', align: 'left', search: false, edittype: 'text' },
+                    { name: 'AssetStatus', index: 'AssetStatus', align: 'center', hidden: true, width: '60px', search: false, edittype: 'text' },
+                    { name: 'DepreciationRate', index: 'DepreciationRate', align: 'center', width: '50px', search: false, edittype: 'text' },
+                    { name: 'OBBookValue', index: 'OBBookValue', align: 'right', width: '80px', search: false, edittype: 'text' },
+                    { name: 'OBDepreciation', index: 'OBDepreciation', align: 'right', width: '60px', search: false, edittype: 'text' },
+                    { name: 'Depreciation', index: 'Depreciation', align: 'right', width: '60px', search: false, edittype: 'text' },
+                    { name: 'CBDepreciation', index: 'CBDepreciation', align: 'right', width: '80px', search: false, edittype: 'text' },
+                    { name: 'CBBookValue', index: 'CBBookValue', align: 'right', width: '100px', search: false, edittype: 'text' },
+                    { name: 'Rollback', index: 'Rollback', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '50px', edittype: 'image', formatter: deleteformateadorLink }
+            ],
+            autowidth: true,
+            caption: "Asset Depreciation Information",
+            rowList: [10, 20, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            loadComplete: function () {
+                $("a.refreshIcon").on("click", function () {
+                    rollbackLinkObj = $(this);  //for future use
+                    $('#rollback-dialog').dialog('open');
+                    return false; // prevents the default behaviour
+                });
+            }
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "RollbackIndividual", new { idRollbackIndividual = "_idRollback_" }, new { @class = "refreshIcon" })';
+        url = url.replace(/_idRollback_/, rowObject[0]);
+        return url;
+    }
+
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+</script>
+
+<style type="text/css" media="screen">
+    th.ui-th-column div {
+        white-space: normal !important;
+        height: auto !important;
+        padding: 1px;
+    }
+</style>

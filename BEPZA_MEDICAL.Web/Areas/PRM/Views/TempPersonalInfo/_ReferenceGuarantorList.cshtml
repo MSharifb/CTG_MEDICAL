@@ -1,0 +1,109 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.ReferenceInfoViewModel
+
+           
+
+
+<script type="text/javascript">
+    $(function () {
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+        $('#delete-dialog').dialog({
+            autoOpen: false, width: 320, resizable: false, modal: true, //Dialog options
+            overlay: {
+                backgroundColor: '#000',
+                opacity: 0.5
+            },
+            buttons: {
+                "Yes": function () {
+
+                    $.post(deleteLinkObj[0].href, function (obj) {  //Post to action
+
+                        if (obj.Success) {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+                            $('#sButton').trigger('click');
+                        }
+                        else {
+                            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "No": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+     
+</script>
+<span class="url" style="display:none;">@Url.Action("GetReferenceGuarantorList","TempPersonalInfo", new { empId = Model.EmployeeId, a="test", controlType = Model.Type })</span>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var url = $('.url').text();
+
+//        console.log(url);
+
+        $('#jqGrid').jqGrid({
+            url: url,
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Name', 'ID', 'Designation', 'Relation', 'Mobile', 'Email'],
+            colModel: [
+                            { name: 'Name', index: 'Name', align: 'left', search: false, edittype: 'text', formatter: viewformatEdiorLink },
+                            { name: 'ID', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'Designation', index: 'Designation', align: 'left' },
+                            { name: 'Relation', index: 'Relation', align: 'left' },
+                            { name: 'Mobile', index: 'MobileNo', align: 'left' },
+                            { name: 'Email', index: 'Email', align: 'left' }
+                          ],
+            autowidth: true,
+            caption: "",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 10,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "EditReferenceInfo", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[1]);
+        return url;
+    }
+</script>

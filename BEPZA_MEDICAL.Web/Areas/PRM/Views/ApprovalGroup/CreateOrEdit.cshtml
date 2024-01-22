@@ -1,0 +1,65 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalGroup.ApprovalGroupViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_LayoutNew.cshtml";
+}
+
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.ActionType' == 'Update') {
+            $('#btnSave').hide();
+            $('#btnUpdate').show();
+        }
+        else {
+            $('#btnSave').show();
+            $('#btnUpdate').hide();
+        }
+        return false;
+    });
+</script>
+
+@using (Html.BeginForm(Model.ActionType, "ApprovalGroup", FormMethod.Post, new { id = "frm" }))
+{
+    <div class="form-horizontal">
+        <div id="message" class="form-group messageBox clearfix">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        <fieldset>
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.ActionType)
+            <div class="form-group">
+                @Html.LabelFor(m => m.ApprovalGroupName, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(m => m.ApprovalGroupName)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.SortOrder, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(m => m.SortOrder)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Remarks, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(m => m.Remarks)
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3 text-right">
+                <button class="btn btn-primary" id="btnSave"><i class="fa fa-save"></i> Save</button>
+                <button class="btn btn-primary" id="btnUpdate"><i class="fa fa-edit"></i> Update</button>
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+            </div>
+        </div>
+    </div>
+}

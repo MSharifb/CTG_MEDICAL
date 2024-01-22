@@ -1,0 +1,1683 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BEPZA_MEDICAL.DAL.WFM.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="WFM_ApprovalWelfareFundInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RefNo" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="CommitteeName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="MeetDate" Type="datetime" Nullable="false" />
+          <Property Name="MeetTime" Type="varchar" MaxLength="20" />
+          <Property Name="MeetPlace" Type="varchar" MaxLength="250" />
+          <Property Name="CycleInfoId" Type="int" Nullable="false" />
+          <Property Name="Year" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WelfareFundCategoryId" Type="int" Nullable="false" />
+          <Property Name="MeetAgenda" Type="varchar" MaxLength="500" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_ApprovalWelfareFundInfoCommittee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApprovalWelfareFundInfoId" Type="int" Nullable="false" />
+          <Property Name="IsExternal" Type="bit" Nullable="false" />
+          <Property Name="MemberEmployeeId" Type="int" />
+          <Property Name="MemberName" Type="varchar" MaxLength="150" />
+          <Property Name="MemberDesignation" Type="varchar" MaxLength="150" />
+          <Property Name="MemberRole" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ActiveStatus" Type="bit" Nullable="false" />
+          <Property Name="SortOrder" Type="int" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_ApprovalWelfareFundInfoEmployeeDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApprovalWelfareFundInfoId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="ApprovedAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="ApplicationId" Type="int" Nullable="false" />
+          <Property Name="IsOnline" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WFM_CycleInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CycleName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FromMonth" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ToMonth" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_OfflineApplicationInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicantStatus" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApplicantName" Type="varchar" MaxLength="150" />
+          <Property Name="RelationId" Type="int" />
+          <Property Name="Address" Type="varchar" MaxLength="150" />
+          <Property Name="BankNameId" Type="int" />
+          <Property Name="BranchNameId" Type="int" />
+          <Property Name="BankAccountNo" Type="varchar" MaxLength="50" />
+          <Property Name="MobileNo" Type="varchar" MaxLength="20" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="ApplicationDate" Type="datetime" Nullable="false" />
+          <Property Name="RefNo" Type="varchar" MaxLength="50" />
+          <Property Name="ApplicationNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WelfareFundCategoryId" Type="int" Nullable="false" />
+          <Property Name="AppliedAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="varchar" MaxLength="250" />
+          <Property Name="AppTo" Type="varchar" MaxLength="150" />
+          <Property Name="Subject" Type="varchar" MaxLength="150" />
+          <Property Name="Body" Type="varchar(max)" />
+          <Property Name="SignatoryId" Type="int" Nullable="false" />
+          <Property Name="Comments" Type="varchar" MaxLength="250" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="NID" Type="varchar" MaxLength="50" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="ApplicationStatusId" Type="int" Nullable="false" />
+          <Property Name="CycleId" Type="int" Nullable="false" />
+          <Property Name="SuggestAmount" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="WFM_OfflineApplicationInfoDetailAttachment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OfflineApplicationInfoId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Attachment" Type="varbinary(max)" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_OnlineApplicationInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="ApplicationDate" Type="datetime" Nullable="false" />
+          <Property Name="RefNo" Type="varchar" MaxLength="50" />
+          <Property Name="ApplicationNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WelfareFundCategoryId" Type="int" Nullable="false" />
+          <Property Name="AppliedAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="varchar" MaxLength="250" />
+          <Property Name="AppTo" Type="varchar" MaxLength="150" />
+          <Property Name="Subject" Type="varchar" MaxLength="150" />
+          <Property Name="Body" Type="varchar(max)" />
+          <Property Name="SignatoryId" Type="int" Nullable="false" />
+          <Property Name="Comments" Type="varchar" MaxLength="250" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="ApplicationStatusId" Type="int" Nullable="false" />
+          <Property Name="CycleId" Type="int" Nullable="false" />
+          <Property Name="SuggestAmount" Type="decimal" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="WFM_OnlineApplicationInfoDetailAttachment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OnlineApplicationInfoId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Attachment" Type="varbinary(max)" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_PaymentInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="ApprovalWelfareFundInfoId" Type="int" Nullable="false" />
+          <Property Name="PayOrderNo" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="PayOrderDate" Type="datetime" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="500" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_PaymentInfoEmployeeDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentInfoId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_ReasonOfWelfareCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WelfareFundCategoryId" Type="int" Nullable="false" />
+          <Property Name="Reason" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_VerifyTheApplication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApplicationStatus" Type="varchar" MaxLength="20" />
+          <Property Name="ApplicantZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="CycleId" Type="int" />
+          <Property Name="Year" Type="varchar" MaxLength="20" />
+          <Property Name="VerifyDate" Type="datetime" Nullable="false" />
+          <Property Name="VerifiedById" Type="int" Nullable="false" />
+          <Property Name="Comments" Type="varchar" MaxLength="250" />
+          <Property Name="WelfareFundCategoryId" Type="int" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_VerifyTheApplicationDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VerifyTheApplicationId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="AppliedAmount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_WelfareFundCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="COAId" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Remarks" Type="nvarchar" MaxLength="250" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="WFM_WelfareFundPolicy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WelfareFundCategoryId" Type="int" Nullable="false" />
+          <Property Name="OrderNo" Type="varchar" MaxLength="150" />
+          <Property Name="EffectiveFromDate" Type="datetime" Nullable="false" />
+          <Property Name="EffectiveToDate" Type="datetime" />
+          <Property Name="MinServiceYear" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="MaxAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="OtherMaxAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IUser" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IDate" Type="datetime" Nullable="false" />
+          <Property Name="EUser" Type="varchar" MaxLength="50" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="IsContinuous" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ReferenceDate" Type="datetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ERP_BEPZA.dbo.vwWfmApplicationInformation' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwWfmApplicationInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="EmpID" />
+            <PropertyRef Name="EmployeeName" />
+            <PropertyRef Name="DesignationName" />
+            <PropertyRef Name="ApplicationDate" />
+            <PropertyRef Name="ApplicationNo" />
+            <PropertyRef Name="WelfareFundCategoryId" />
+            <PropertyRef Name="FundCategoryName" />
+            <PropertyRef Name="AppliedAmount" />
+            <PropertyRef Name="ForwardTo" />
+            <PropertyRef Name="CycleId" />
+            <PropertyRef Name="ZoneInfoId" />
+            <PropertyRef Name="IsOnline" />
+            <PropertyRef Name="ApprovalStatusId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="EmpID" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="EmployeeName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="DesignationName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DepartmentName" Type="varchar" MaxLength="100" />
+          <Property Name="SectionName" Type="varchar" MaxLength="100" />
+          <Property Name="ApplicationDate" Type="datetime" Nullable="false" />
+          <Property Name="RefNo" Type="varchar" MaxLength="50" />
+          <Property Name="ApplicationNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="WelfareFundCategoryId" Type="int" Nullable="false" />
+          <Property Name="FundCategoryName" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="AppliedAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Reason" Type="varchar" MaxLength="250" />
+          <Property Name="AppTo" Type="varchar" MaxLength="150" />
+          <Property Name="Subject" Type="varchar" MaxLength="150" />
+          <Property Name="Body" Type="varchar(max)" />
+          <Property Name="ForwardTo" Type="int" Nullable="false" />
+          <Property Name="CycleId" Type="int" Nullable="false" />
+          <Property Name="ApplyYear" Type="int" />
+          <Property Name="ApplyMonthId" Type="int" />
+          <Property Name="ZoneInfoId" Type="int" Nullable="false" />
+          <Property Name="IsOnline" Type="int" Nullable="false" />
+          <Property Name="ApprovalStatusId" Type="int" Nullable="false" />
+          <Property Name="ApplicationStatus" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo">
+          <End Role="WFM_CycleInfo" Type="Self.WFM_CycleInfo" Multiplicity="1" />
+          <End Role="WFM_ApprovalWelfareFundInfo" Type="Self.WFM_ApprovalWelfareFundInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_CycleInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="CycleInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory">
+          <End Role="WFM_WelfareFundCategory" Type="Self.WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Role="WFM_ApprovalWelfareFundInfo" Type="Self.WFM_ApprovalWelfareFundInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo">
+          <End Role="WFM_ApprovalWelfareFundInfo" Type="Self.WFM_ApprovalWelfareFundInfo" Multiplicity="1" />
+          <End Role="WFM_ApprovalWelfareFundInfoCommittee" Type="Self.WFM_ApprovalWelfareFundInfoCommittee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfoCommittee">
+              <PropertyRef Name="ApprovalWelfareFundInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo">
+          <End Role="WFM_ApprovalWelfareFundInfo" Type="Self.WFM_ApprovalWelfareFundInfo" Multiplicity="1" />
+          <End Role="WFM_ApprovalWelfareFundInfoEmployeeDetails" Type="Self.WFM_ApprovalWelfareFundInfoEmployeeDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfoEmployeeDetails">
+              <PropertyRef Name="ApprovalWelfareFundInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory">
+          <End Role="WFM_WelfareFundCategory" Type="Self.WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Role="WFM_OfflineApplicationInfo" Type="Self.WFM_OfflineApplicationInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OfflineApplicationInfo">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo">
+          <End Role="WFM_OfflineApplicationInfo" Type="Self.WFM_OfflineApplicationInfo" Multiplicity="1" />
+          <End Role="WFM_OfflineApplicationInfoDetailAttachment" Type="Self.WFM_OfflineApplicationInfoDetailAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_OfflineApplicationInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OfflineApplicationInfoDetailAttachment">
+              <PropertyRef Name="OfflineApplicationInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory">
+          <End Role="WFM_WelfareFundCategory" Type="Self.WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Role="WFM_OnlineApplicationInfo" Type="Self.WFM_OnlineApplicationInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OnlineApplicationInfo">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo">
+          <End Role="WFM_OnlineApplicationInfo" Type="Self.WFM_OnlineApplicationInfo" Multiplicity="1" />
+          <End Role="WFM_OnlineApplicationInfoDetailAttachment" Type="Self.WFM_OnlineApplicationInfoDetailAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_OnlineApplicationInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OnlineApplicationInfoDetailAttachment">
+              <PropertyRef Name="OnlineApplicationInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_PaymentInfo_WFM_PaymentInfo">
+          <End Role="WFM_ApprovalWelfareFundInfo" Type="Self.WFM_ApprovalWelfareFundInfo" Multiplicity="1" />
+          <End Role="WFM_PaymentInfo" Type="Self.WFM_PaymentInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_PaymentInfo">
+              <PropertyRef Name="ApprovalWelfareFundInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo">
+          <End Role="WFM_PaymentInfo" Type="Self.WFM_PaymentInfo" Multiplicity="1" />
+          <End Role="WFM_PaymentInfoEmployeeDetails" Type="Self.WFM_PaymentInfoEmployeeDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_PaymentInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_PaymentInfoEmployeeDetails">
+              <PropertyRef Name="PaymentInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory">
+          <End Role="WFM_WelfareFundCategory" Type="Self.WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Role="WFM_ReasonOfWelfareCategory" Type="Self.WFM_ReasonOfWelfareCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ReasonOfWelfareCategory">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication">
+          <End Role="WFM_VerifyTheApplication" Type="Self.WFM_VerifyTheApplication" Multiplicity="1" />
+          <End Role="WFM_VerifyTheApplicationDetails" Type="Self.WFM_VerifyTheApplicationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_VerifyTheApplication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_VerifyTheApplicationDetails">
+              <PropertyRef Name="VerifyTheApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory">
+          <End Role="WFM_WelfareFundCategory" Type="Self.WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Role="WFM_WelfareFundPolicy" Type="Self.WFM_WelfareFundPolicy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_WelfareFundPolicy">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy">
+          <End Role="WFM_WelfareFundPolicy" Type="Self.WFM_WelfareFundPolicy" Multiplicity="1" />
+          <End Role="WFM_WelfareFundPolicy1" Type="Self.WFM_WelfareFundPolicy" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundPolicy">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_WelfareFundPolicy1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_WFM_getCoABudgetHeadAmount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="COAId" Type="int" Mode="In" />
+          <Parameter Name="zoneInfId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SP_WFM_getCoABudgetHeatList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="sp_WFM_RptApprovedApplicantList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="EmpID" Type="varchar" Mode="In" />
+          <Parameter Name="Year" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_WFM_SectionWiseWelfareFund" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="SectionId" Type="int" Mode="In" />
+          <Parameter Name="EmpID" Type="varchar" Mode="In" />
+          <Parameter Name="Year" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_WFM_WelfareFundConsolidateReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="SectionId" Type="int" Mode="In" />
+          <Parameter Name="DepartmentId" Type="int" Mode="In" />
+          <Parameter Name="Year" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="SP_WFM_ZoneWiseWelfareFund" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="zoneList" Type="varchar" Mode="In" />
+          <Parameter Name="EmpID" Type="varchar" Mode="In" />
+          <Parameter Name="Year" Type="varchar" Mode="In" />
+          <Parameter Name="ReferenceNum" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="WFM_uspVoucherPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="EmployeeId" Type="int" Mode="In" />
+          <Parameter Name="ApproveAmount" Type="decimal" Mode="In" />
+        </Function>
+        <EntityContainer Name="ERP_BEPZADALWFMStoreContainer">
+          <EntitySet Name="WFM_ApprovalWelfareFundInfo" EntityType="Self.WFM_ApprovalWelfareFundInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_ApprovalWelfareFundInfoCommittee" EntityType="Self.WFM_ApprovalWelfareFundInfoCommittee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_ApprovalWelfareFundInfoEmployeeDetails" EntityType="Self.WFM_ApprovalWelfareFundInfoEmployeeDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_CycleInfo" EntityType="Self.WFM_CycleInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_OfflineApplicationInfo" EntityType="Self.WFM_OfflineApplicationInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_OfflineApplicationInfoDetailAttachment" EntityType="Self.WFM_OfflineApplicationInfoDetailAttachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_OnlineApplicationInfo" EntityType="Self.WFM_OnlineApplicationInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_OnlineApplicationInfoDetailAttachment" EntityType="Self.WFM_OnlineApplicationInfoDetailAttachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_PaymentInfo" EntityType="Self.WFM_PaymentInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_PaymentInfoEmployeeDetails" EntityType="Self.WFM_PaymentInfoEmployeeDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_ReasonOfWelfareCategory" EntityType="Self.WFM_ReasonOfWelfareCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_VerifyTheApplication" EntityType="Self.WFM_VerifyTheApplication" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_VerifyTheApplicationDetails" EntityType="Self.WFM_VerifyTheApplicationDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_WelfareFundCategory" EntityType="Self.WFM_WelfareFundCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WFM_WelfareFundPolicy" EntityType="Self.WFM_WelfareFundPolicy" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vwWfmApplicationInformation" EntityType="Self.vwWfmApplicationInformation" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwWfmApplicationInformation].[Id] AS [Id], 
+    [vwWfmApplicationInformation].[EmployeeId] AS [EmployeeId], 
+    [vwWfmApplicationInformation].[EmpID] AS [EmpID], 
+    [vwWfmApplicationInformation].[EmployeeName] AS [EmployeeName], 
+    [vwWfmApplicationInformation].[DesignationName] AS [DesignationName], 
+    [vwWfmApplicationInformation].[DepartmentName] AS [DepartmentName], 
+    [vwWfmApplicationInformation].[SectionName] AS [SectionName], 
+    [vwWfmApplicationInformation].[ApplicationDate] AS [ApplicationDate], 
+    [vwWfmApplicationInformation].[RefNo] AS [RefNo], 
+    [vwWfmApplicationInformation].[ApplicationNo] AS [ApplicationNo], 
+    [vwWfmApplicationInformation].[WelfareFundCategoryId] AS [WelfareFundCategoryId], 
+    [vwWfmApplicationInformation].[FundCategoryName] AS [FundCategoryName], 
+    [vwWfmApplicationInformation].[AppliedAmount] AS [AppliedAmount], 
+    [vwWfmApplicationInformation].[Reason] AS [Reason], 
+    [vwWfmApplicationInformation].[AppTo] AS [AppTo], 
+    [vwWfmApplicationInformation].[Subject] AS [Subject], 
+    [vwWfmApplicationInformation].[Body] AS [Body], 
+    [vwWfmApplicationInformation].[ForwardTo] AS [ForwardTo], 
+    [vwWfmApplicationInformation].[CycleId] AS [CycleId], 
+    [vwWfmApplicationInformation].[ApplyYear] AS [ApplyYear], 
+    [vwWfmApplicationInformation].[ApplyMonthId] AS [ApplyMonthId], 
+    [vwWfmApplicationInformation].[ZoneInfoId] AS [ZoneInfoId], 
+    [vwWfmApplicationInformation].[IsOnline] AS [IsOnline], 
+    [vwWfmApplicationInformation].[ApprovalStatusId] AS [ApprovalStatusId], 
+    [vwWfmApplicationInformation].[ApplicationStatus] AS [ApplicationStatus]
+    FROM [dbo].[vwWfmApplicationInformation] AS [vwWfmApplicationInformation]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo" Association="Self.FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo">
+            <End Role="WFM_CycleInfo" EntitySet="WFM_CycleInfo" />
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory" Association="Self.FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo" Association="Self.FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo">
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+            <End Role="WFM_ApprovalWelfareFundInfoCommittee" EntitySet="WFM_ApprovalWelfareFundInfoCommittee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo" Association="Self.FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo">
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+            <End Role="WFM_ApprovalWelfareFundInfoEmployeeDetails" EntitySet="WFM_ApprovalWelfareFundInfoEmployeeDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory" Association="Self.FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_OfflineApplicationInfo" EntitySet="WFM_OfflineApplicationInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo" Association="Self.FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo">
+            <End Role="WFM_OfflineApplicationInfo" EntitySet="WFM_OfflineApplicationInfo" />
+            <End Role="WFM_OfflineApplicationInfoDetailAttachment" EntitySet="WFM_OfflineApplicationInfoDetailAttachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory" Association="Self.FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_OnlineApplicationInfo" EntitySet="WFM_OnlineApplicationInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo" Association="Self.FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo">
+            <End Role="WFM_OnlineApplicationInfo" EntitySet="WFM_OnlineApplicationInfo" />
+            <End Role="WFM_OnlineApplicationInfoDetailAttachment" EntitySet="WFM_OnlineApplicationInfoDetailAttachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_PaymentInfo_WFM_PaymentInfo" Association="Self.FK_WFM_PaymentInfo_WFM_PaymentInfo">
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+            <End Role="WFM_PaymentInfo" EntitySet="WFM_PaymentInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo" Association="Self.FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo">
+            <End Role="WFM_PaymentInfo" EntitySet="WFM_PaymentInfo" />
+            <End Role="WFM_PaymentInfoEmployeeDetails" EntitySet="WFM_PaymentInfoEmployeeDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory" Association="Self.FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_ReasonOfWelfareCategory" EntitySet="WFM_ReasonOfWelfareCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication" Association="Self.FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication">
+            <End Role="WFM_VerifyTheApplication" EntitySet="WFM_VerifyTheApplication" />
+            <End Role="WFM_VerifyTheApplicationDetails" EntitySet="WFM_VerifyTheApplicationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory" Association="Self.FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_WelfareFundPolicy" EntitySet="WFM_WelfareFundPolicy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy" Association="Self.FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy">
+            <End Role="WFM_WelfareFundPolicy" EntitySet="WFM_WelfareFundPolicy" />
+            <End Role="WFM_WelfareFundPolicy1" EntitySet="WFM_WelfareFundPolicy" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BEPZA_MEDICAL.DAL.WFM" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="WFM_ReasonOfWelfareCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WelfareFundCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Reason" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_WelfareFundCategory" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory" FromRole="WFM_ReasonOfWelfareCategory" ToRole="WFM_WelfareFundCategory" />
+        </EntityType>
+        <EntityContainer Name="ERP_BEPZAWFMEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="WFM_ReasonOfWelfareCategory" EntityType="Self.WFM_ReasonOfWelfareCategory" />
+          <EntitySet Name="WFM_OfflineApplicationInfoDetailAttachment" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfoDetailAttachment" />
+          <EntitySet Name="WFM_OnlineApplicationInfoDetailAttachment" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfoDetailAttachment" />
+          <EntitySet Name="WFM_PaymentInfo" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfo" />
+          <EntitySet Name="WFM_ApprovalWelfareFundInfoCommittee" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoCommittee" />
+          <EntitySet Name="WFM_VerifyTheApplication" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplication" />
+          <EntitySet Name="WFM_PaymentInfoEmployeeDetails" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfoEmployeeDetails" />
+          <AssociationSet Name="FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo">
+            <End Role="WFM_PaymentInfo" EntitySet="WFM_PaymentInfo" />
+            <End Role="WFM_PaymentInfoEmployeeDetails" EntitySet="WFM_PaymentInfoEmployeeDetails" />
+          </AssociationSet>
+          <EntitySet Name="WFM_VerifyTheApplicationDetails" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplicationDetails" />
+          <AssociationSet Name="FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication">
+            <End Role="WFM_VerifyTheApplication" EntitySet="WFM_VerifyTheApplication" />
+            <End Role="WFM_VerifyTheApplicationDetails" EntitySet="WFM_VerifyTheApplicationDetails" />
+          </AssociationSet>
+          <FunctionImport Name="SP_WFM_WelfareFundConsolidateReport" ReturnType="Collection(BEPZA_MEDICAL.DAL.WFM.SP_WFM_WelfareFundConsolidateReport_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="SectionId" Mode="In" Type="Int32" />
+            <Parameter Name="DepartmentId" Mode="In" Type="Int32" />
+            <Parameter Name="Year" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="WFM_ApprovalWelfareFundInfo" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo" />
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo">
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+            <End Role="WFM_ApprovalWelfareFundInfoCommittee" EntitySet="WFM_ApprovalWelfareFundInfoCommittee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_PaymentInfo_WFM_PaymentInfo" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfo_WFM_PaymentInfo">
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+            <End Role="WFM_PaymentInfo" EntitySet="WFM_PaymentInfo" />
+          </AssociationSet>
+          <EntitySet Name="WFM_CycleInfo" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_CycleInfo" />
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo">
+            <End Role="WFM_CycleInfo" EntitySet="WFM_CycleInfo" />
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+          </AssociationSet>
+          <FunctionImport Name="SP_WFM_SectionWiseWelfareFund" ReturnType="Collection(BEPZA_MEDICAL.DAL.WFM.SP_WFM_SectionWiseWelfareFund_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="SectionId" Mode="In" Type="Int32" />
+            <Parameter Name="EmpID" Mode="In" Type="String" />
+            <Parameter Name="Year" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="WFM_WelfareFundPolicy" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundPolicy" />
+          <AssociationSet Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy">
+            <End Role="WFM_WelfareFundPolicy" EntitySet="WFM_WelfareFundPolicy" />
+            <End Role="WFM_WelfareFundPolicy1" EntitySet="WFM_WelfareFundPolicy" />
+          </AssociationSet>
+          <FunctionImport Name="SP_WFM_getCoABudgetHeatList" ReturnType="Collection(BEPZA_MEDICAL.DAL.WFM.SP_WFM_getCoABudgetHeatList_Result)" />
+          <FunctionImport Name="sp_WFM_RptApprovedApplicantList" ReturnType="Collection(BEPZA_MEDICAL.DAL.WFM.sp_WFM_RptApprovedApplicantList_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="EmpID" Mode="In" Type="String" />
+            <Parameter Name="Year" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="vwWfmApplicationInformations" EntityType="BEPZA_MEDICAL.DAL.WFM.vwWfmApplicationInformation" />
+          <EntitySet Name="WFM_ApprovalWelfareFundInfoEmployeeDetails" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoEmployeeDetails" />
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo">
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+            <End Role="WFM_ApprovalWelfareFundInfoEmployeeDetails" EntitySet="WFM_ApprovalWelfareFundInfoEmployeeDetails" />
+          </AssociationSet>
+          <FunctionImport Name="SP_WFM_getCoABudgetHeadAmount" ReturnType="Collection(BEPZA_MEDICAL.DAL.WFM.SP_WFM_getCoABudgetHeadAmount_Result)">
+            <Parameter Name="COAId" Mode="In" Type="Int32" />
+            <Parameter Name="zoneInfId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SP_WFM_ZoneWiseWelfareFund" ReturnType="Collection(BEPZA_MEDICAL.DAL.WFM.SP_WFM_ZoneWiseWelfareFund_Result)">
+            <Parameter Name="zoneList" Mode="In" Type="String" />
+            <Parameter Name="EmpID" Mode="In" Type="String" />
+            <Parameter Name="Year" Mode="In" Type="String" />
+            <Parameter Name="ReferenceNum" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="WFM_OfflineApplicationInfo" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfo" />
+          <EntitySet Name="WFM_OnlineApplicationInfo" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfo" />
+          <AssociationSet Name="FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo">
+            <End Role="WFM_OfflineApplicationInfo" EntitySet="WFM_OfflineApplicationInfo" />
+            <End Role="WFM_OfflineApplicationInfoDetailAttachment" EntitySet="WFM_OfflineApplicationInfoDetailAttachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo">
+            <End Role="WFM_OnlineApplicationInfo" EntitySet="WFM_OnlineApplicationInfo" />
+            <End Role="WFM_OnlineApplicationInfoDetailAttachment" EntitySet="WFM_OnlineApplicationInfoDetailAttachment" />
+          </AssociationSet>
+          <EntitySet Name="WFM_WelfareFundCategory" EntityType="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory" />
+          <AssociationSet Name="FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_ApprovalWelfareFundInfo" EntitySet="WFM_ApprovalWelfareFundInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_OfflineApplicationInfo" EntitySet="WFM_OfflineApplicationInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_OnlineApplicationInfo" EntitySet="WFM_OnlineApplicationInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_ReasonOfWelfareCategory" EntitySet="WFM_ReasonOfWelfareCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory" Association="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory">
+            <End Role="WFM_WelfareFundCategory" EntitySet="WFM_WelfareFundCategory" />
+            <End Role="WFM_WelfareFundPolicy" EntitySet="WFM_WelfareFundPolicy" />
+          </AssociationSet>
+          <FunctionImport Name="WFM_uspVoucherPosting" ReturnType="Collection(BEPZA_MEDICAL.DAL.WFM.WFM_uspVoucherPosting_Result)">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="EmployeeId" Mode="In" Type="Int32" />
+            <Parameter Name="ApproveAmount" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          </EntityContainer>
+        <EntityType Name="WFM_OfflineApplicationInfoDetailAttachment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OfflineApplicationInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_OfflineApplicationInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo" FromRole="WFM_OfflineApplicationInfoDetailAttachment" ToRole="WFM_OfflineApplicationInfo" />
+        </EntityType>
+        <EntityType Name="WFM_OnlineApplicationInfoDetailAttachment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OnlineApplicationInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_OnlineApplicationInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo" FromRole="WFM_OnlineApplicationInfoDetailAttachment" ToRole="WFM_OnlineApplicationInfo" />
+        </EntityType>
+        <EntityType Name="WFM_PaymentInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="ApprovalWelfareFundInfoId" Type="Int32" Nullable="false" />
+          <Property Name="PayOrderNo" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="PayOrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Comments" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_PaymentInfoEmployeeDetails" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo" FromRole="WFM_PaymentInfo" ToRole="WFM_PaymentInfoEmployeeDetails" />
+          <NavigationProperty Name="WFM_ApprovalWelfareFundInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfo_WFM_PaymentInfo" FromRole="WFM_PaymentInfo" ToRole="WFM_ApprovalWelfareFundInfo" />
+        </EntityType>
+        <EntityType Name="WFM_ApprovalWelfareFundInfoCommittee">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApprovalWelfareFundInfoId" Type="Int32" Nullable="false" />
+          <Property Name="IsExternal" Type="Boolean" Nullable="false" />
+          <Property Name="MemberEmployeeId" Type="Int32" />
+          <Property Name="MemberName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="MemberDesignation" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="MemberRole" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ActiveStatus" Type="Boolean" Nullable="false" />
+          <Property Name="SortOrder" Type="Int32" Nullable="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_ApprovalWelfareFundInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo" FromRole="WFM_ApprovalWelfareFundInfoCommittee" ToRole="WFM_ApprovalWelfareFundInfo" />
+        </EntityType>
+        <EntityType Name="WFM_VerifyTheApplication">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicationStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicantZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="CycleId" Type="Int32" />
+          <Property Name="Year" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="VerifyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VerifiedById" Type="Int32" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="WelfareFundCategoryId" Type="Int32" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_VerifyTheApplicationDetails" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication" FromRole="WFM_VerifyTheApplication" ToRole="WFM_VerifyTheApplicationDetails" />
+        </EntityType>
+        <EntityType Name="WFM_PaymentInfoEmployeeDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentInfoId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_PaymentInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo" FromRole="WFM_PaymentInfoEmployeeDetails" ToRole="WFM_PaymentInfo" />
+        </EntityType>
+        <Association Name="FK_WFM_PaymentInfoEmployeeDetails_WFM_PaymentInfo">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfo" Role="WFM_PaymentInfo" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfoEmployeeDetails" Role="WFM_PaymentInfoEmployeeDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_PaymentInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_PaymentInfoEmployeeDetails">
+              <PropertyRef Name="PaymentInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WFM_VerifyTheApplicationDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VerifyTheApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="AppliedAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_VerifyTheApplication" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication" FromRole="WFM_VerifyTheApplicationDetails" ToRole="WFM_VerifyTheApplication" />
+        </EntityType>
+        <Association Name="FK_WFM_VerifyTheApplicationDetails_WFM_VerifyTheApplication">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplication" Role="WFM_VerifyTheApplication" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplicationDetails" Role="WFM_VerifyTheApplicationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_VerifyTheApplication">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_VerifyTheApplicationDetails">
+              <PropertyRef Name="VerifyTheApplicationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_WFM_WelfareFundConsolidateReport_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="EmpID" Nullable="false" MaxLength="15" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ZoneName" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Section" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Year" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Department" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="WFM_ApprovalWelfareFundInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RefNo" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="CommitteeName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="MeetDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MeetTime" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MeetPlace" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CycleInfoId" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WelfareFundCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="MeetAgenda" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_ApprovalWelfareFundInfoCommittee" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo" FromRole="WFM_ApprovalWelfareFundInfo" ToRole="WFM_ApprovalWelfareFundInfoCommittee" />
+          <NavigationProperty Name="WFM_PaymentInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_PaymentInfo_WFM_PaymentInfo" FromRole="WFM_ApprovalWelfareFundInfo" ToRole="WFM_PaymentInfo" />
+          <NavigationProperty Name="WFM_CycleInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo" FromRole="WFM_ApprovalWelfareFundInfo" ToRole="WFM_CycleInfo" />
+          <NavigationProperty Name="WFM_ApprovalWelfareFundInfoEmployeeDetails" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo" FromRole="WFM_ApprovalWelfareFundInfo" ToRole="WFM_ApprovalWelfareFundInfoEmployeeDetails" />
+          <NavigationProperty Name="WFM_WelfareFundCategory" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory" FromRole="WFM_ApprovalWelfareFundInfo" ToRole="WFM_WelfareFundCategory" />
+        </EntityType>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfoCommittee_WFM_ApprovalWelfareFundInfo">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo" Role="WFM_ApprovalWelfareFundInfo" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoCommittee" Role="WFM_ApprovalWelfareFundInfoCommittee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfoCommittee">
+              <PropertyRef Name="ApprovalWelfareFundInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_PaymentInfo_WFM_PaymentInfo">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo" Role="WFM_ApprovalWelfareFundInfo" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfo" Role="WFM_PaymentInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_PaymentInfo">
+              <PropertyRef Name="ApprovalWelfareFundInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WFM_CycleInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CycleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FromMonth" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ToMonth" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_ApprovalWelfareFundInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo" FromRole="WFM_CycleInfo" ToRole="WFM_ApprovalWelfareFundInfo" />
+        </EntityType>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfo_WFM_CycleInfo">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_CycleInfo" Role="WFM_CycleInfo" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo" Role="WFM_ApprovalWelfareFundInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_CycleInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="CycleInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_WFM_SectionWiseWelfareFund_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="EmpID" Nullable="false" MaxLength="15" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ZoneName" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Section" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="WFM_WelfareFundPolicy">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WelfareFundCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="OrderNo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="EffectiveFromDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EffectiveToDate" Type="DateTime" Precision="3" />
+          <Property Name="MinServiceYear" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="MaxAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="OtherMaxAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="IsContinuous" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ReferenceDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_WelfareFundPolicy1" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy" FromRole="WFM_WelfareFundPolicy" ToRole="WFM_WelfareFundPolicy1" />
+          <NavigationProperty Name="WFM_WelfareFundPolicy2" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy" FromRole="WFM_WelfareFundPolicy1" ToRole="WFM_WelfareFundPolicy" />
+          <NavigationProperty Name="WFM_WelfareFundCategory" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory" FromRole="WFM_WelfareFundPolicy" ToRole="WFM_WelfareFundCategory" />
+        </EntityType>
+        <Association Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundPolicy">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundPolicy" Role="WFM_WelfareFundPolicy" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundPolicy" Role="WFM_WelfareFundPolicy1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundPolicy">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_WelfareFundPolicy1">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_WFM_getCoABudgetHeatList_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="accountName" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="sp_WFM_RptApprovedApplicantList_Result">
+          <Property Type="String" Name="Year" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="MeetAgenda" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="EmpID" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="FullName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="Designation" Nullable="true" MaxLength="100" />
+          <Property Type="Decimal" Name="ApprovedAmount" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <EntityType Name="vwWfmApplicationInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="EmpID" />
+            <PropertyRef Name="EmployeeName" />
+            <PropertyRef Name="DesignationName" />
+            <PropertyRef Name="ApplicationDate" />
+            <PropertyRef Name="ApplicationNo" />
+            <PropertyRef Name="WelfareFundCategoryId" />
+            <PropertyRef Name="FundCategoryName" />
+            <PropertyRef Name="AppliedAmount" />
+            <PropertyRef Name="ForwardTo" />
+            <PropertyRef Name="ZoneInfoId" />
+            <PropertyRef Name="IsOnline" />
+            <PropertyRef Name="ApprovalStatusId" />
+            <PropertyRef Name="CycleId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="EmpID" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DesignationName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SectionName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RefNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WelfareFundCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="FundCategoryName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="AppliedAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="AppTo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Subject" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ForwardTo" Type="Int32" Nullable="false" />
+          <Property Name="ApplyYear" Type="Int32" />
+          <Property Name="ApplyMonthId" Type="Int32" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="IsOnline" Type="Int32" Nullable="false" />
+          <Property Name="ApprovalStatusId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CycleId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WFM_ApprovalWelfareFundInfoEmployeeDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApprovalWelfareFundInfoId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="ApprovedAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="ApplicationId" Type="Int32" Nullable="false" />
+          <Property Name="IsOnline" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="WFM_ApprovalWelfareFundInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo" FromRole="WFM_ApprovalWelfareFundInfoEmployeeDetails" ToRole="WFM_ApprovalWelfareFundInfo" />
+        </EntityType>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfoEmployeeDetails_WFM_ApprovalWelfareFundInfo">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo" Role="WFM_ApprovalWelfareFundInfo" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoEmployeeDetails" Role="WFM_ApprovalWelfareFundInfoEmployeeDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfoEmployeeDetails">
+              <PropertyRef Name="ApprovalWelfareFundInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="SP_WFM_getCoABudgetHeadAmount_Result">
+          <Property Type="Decimal" Name="Amount" Nullable="true" Precision="38" Scale="2" />
+          <Property Type="String" Name="yearName" Nullable="false" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="SP_WFM_ZoneWiseWelfareFund_Result">
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="EmpID" Nullable="false" MaxLength="15" />
+          <Property Type="Decimal" Name="Amount" Nullable="false" Precision="18" Scale="2" />
+          <Property Type="String" Name="Designation" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="ZoneName" Nullable="false" MaxLength="150" />
+        </ComplexType>
+        <EntityType Name="WFM_OfflineApplicationInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApplicantStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicantName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="RelationId" Type="Int32" />
+          <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="BankNameId" Type="Int32" />
+          <Property Name="BranchNameId" Type="Int32" />
+          <Property Name="BankAccountNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RefNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WelfareFundCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="AppliedAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="AppTo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Subject" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SignatoryId" Type="Int32" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="NID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="ApplicationStatusId" Type="Int32" Nullable="false" />
+          <Property Name="CycleId" Type="Int32" Nullable="false" />
+          <Property Name="SuggestAmount" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="WFM_OfflineApplicationInfoDetailAttachment" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo" FromRole="WFM_OfflineApplicationInfo" ToRole="WFM_OfflineApplicationInfoDetailAttachment" />
+          <NavigationProperty Name="WFM_WelfareFundCategory" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory" FromRole="WFM_OfflineApplicationInfo" ToRole="WFM_WelfareFundCategory" />
+        </EntityType>
+        <EntityType Name="WFM_OnlineApplicationInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="RefNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApplicationNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="WelfareFundCategoryId" Type="Int32" Nullable="false" />
+          <Property Name="AppliedAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="AppTo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Subject" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SignatoryId" Type="Int32" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ZoneInfoId" Type="Int32" Nullable="false" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="ApplicationStatusId" Type="Int32" Nullable="false" />
+          <Property Name="CycleId" Type="Int32" Nullable="false" />
+          <Property Name="SuggestAmount" Type="Decimal" Precision="18" Scale="2" />
+          <NavigationProperty Name="WFM_OnlineApplicationInfoDetailAttachment" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo" FromRole="WFM_OnlineApplicationInfo" ToRole="WFM_OnlineApplicationInfoDetailAttachment" />
+          <NavigationProperty Name="WFM_WelfareFundCategory" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory" FromRole="WFM_OnlineApplicationInfo" ToRole="WFM_WelfareFundCategory" />
+        </EntityType>
+        <Association Name="FK_WFM_OfflineApplicationInfoDetailAttachment_WFM_OfflineApplicationInfo">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfo" Role="WFM_OfflineApplicationInfo" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfoDetailAttachment" Role="WFM_OfflineApplicationInfoDetailAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_OfflineApplicationInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OfflineApplicationInfoDetailAttachment">
+              <PropertyRef Name="OfflineApplicationInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_OnlineApplicationInfoDetailAttachment_WFM_OnlineApplicationInfo">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfo" Role="WFM_OnlineApplicationInfo" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfoDetailAttachment" Role="WFM_OnlineApplicationInfoDetailAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_OnlineApplicationInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OnlineApplicationInfoDetailAttachment">
+              <PropertyRef Name="OnlineApplicationInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="WFM_WelfareFundCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="COAId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Remarks" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="IUser" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EUser" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="WFM_ApprovalWelfareFundInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory" FromRole="WFM_WelfareFundCategory" ToRole="WFM_ApprovalWelfareFundInfo" />
+          <NavigationProperty Name="WFM_OfflineApplicationInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory" FromRole="WFM_WelfareFundCategory" ToRole="WFM_OfflineApplicationInfo" />
+          <NavigationProperty Name="WFM_OnlineApplicationInfo" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory" FromRole="WFM_WelfareFundCategory" ToRole="WFM_OnlineApplicationInfo" />
+          <NavigationProperty Name="WFM_ReasonOfWelfareCategory" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory" FromRole="WFM_WelfareFundCategory" ToRole="WFM_ReasonOfWelfareCategory" />
+          <NavigationProperty Name="WFM_WelfareFundPolicy" Relationship="BEPZA_MEDICAL.DAL.WFM.FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory" FromRole="WFM_WelfareFundCategory" ToRole="WFM_WelfareFundPolicy" />
+        </EntityType>
+        <Association Name="FK_WFM_ApprovalWelfareFundInfo_WFM_WelfareFundCategory">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory" Role="WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo" Role="WFM_ApprovalWelfareFundInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ApprovalWelfareFundInfo">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_OfflineApplicationInfo_WFM_WelfareFundCategory">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory" Role="WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfo" Role="WFM_OfflineApplicationInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OfflineApplicationInfo">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_OnlineApplicationInfo_WFM_WelfareFundCategory">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory" Role="WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfo" Role="WFM_OnlineApplicationInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_OnlineApplicationInfo">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_ReasonOfWelfareCategory_WFM_WelfareFundCategory">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory" Role="WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_ReasonOfWelfareCategory" Role="WFM_ReasonOfWelfareCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_ReasonOfWelfareCategory">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WFM_WelfareFundPolicy_WFM_WelfareFundCategory">
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory" Role="WFM_WelfareFundCategory" Multiplicity="1" />
+          <End Type="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundPolicy" Role="WFM_WelfareFundPolicy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WFM_WelfareFundCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WFM_WelfareFundPolicy">
+              <PropertyRef Name="WelfareFundCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="WFM_uspVoucherPosting_Result">
+          <Property Type="Int64" Name="VoucherId" Nullable="true" />
+          <Property Type="Int32" Name="VouchrTypeId" Nullable="true" />
+          <Property Type="Int32" Name="FundControlId" Nullable="true" />
+        </ComplexType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ERP_BEPZADALWFMStoreContainer" CdmEntityContainer="ERP_BEPZAWFMEntities">
+          <EntitySetMapping Name="WFM_ReasonOfWelfareCategory">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_ReasonOfWelfareCategory">
+              <MappingFragment StoreEntitySet="WFM_ReasonOfWelfareCategory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="WelfareFundCategoryId" ColumnName="WelfareFundCategoryId" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_OfflineApplicationInfoDetailAttachment">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfoDetailAttachment">
+              <MappingFragment StoreEntitySet="WFM_OfflineApplicationInfoDetailAttachment">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="OfflineApplicationInfoId" ColumnName="OfflineApplicationInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_OnlineApplicationInfoDetailAttachment">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfoDetailAttachment">
+              <MappingFragment StoreEntitySet="WFM_OnlineApplicationInfoDetailAttachment">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="OnlineApplicationInfoId" ColumnName="OnlineApplicationInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_PaymentInfo">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfo">
+              <MappingFragment StoreEntitySet="WFM_PaymentInfo">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="PayOrderDate" ColumnName="PayOrderDate" />
+                <ScalarProperty Name="PayOrderNo" ColumnName="PayOrderNo" />
+                <ScalarProperty Name="ApprovalWelfareFundInfoId" ColumnName="ApprovalWelfareFundInfoId" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_ApprovalWelfareFundInfoCommittee">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoCommittee">
+              <MappingFragment StoreEntitySet="WFM_ApprovalWelfareFundInfoCommittee">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="SortOrder" ColumnName="SortOrder" />
+                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+                <ScalarProperty Name="MemberRole" ColumnName="MemberRole" />
+                <ScalarProperty Name="MemberDesignation" ColumnName="MemberDesignation" />
+                <ScalarProperty Name="MemberName" ColumnName="MemberName" />
+                <ScalarProperty Name="MemberEmployeeId" ColumnName="MemberEmployeeId" />
+                <ScalarProperty Name="IsExternal" ColumnName="IsExternal" />
+                <ScalarProperty Name="ApprovalWelfareFundInfoId" ColumnName="ApprovalWelfareFundInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_VerifyTheApplication">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplication">
+              <MappingFragment StoreEntitySet="WFM_VerifyTheApplication">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="WelfareFundCategoryId" ColumnName="WelfareFundCategoryId" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="VerifiedById" ColumnName="VerifiedById" />
+                <ScalarProperty Name="VerifyDate" ColumnName="VerifyDate" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+                <ScalarProperty Name="ApplicantZoneInfoId" ColumnName="ApplicantZoneInfoId" />
+                <ScalarProperty Name="ApplicationStatus" ColumnName="ApplicationStatus" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_PaymentInfoEmployeeDetails">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_PaymentInfoEmployeeDetails">
+              <MappingFragment StoreEntitySet="WFM_PaymentInfoEmployeeDetails">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PaymentInfoId" ColumnName="PaymentInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_VerifyTheApplicationDetails">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_VerifyTheApplicationDetails">
+              <MappingFragment StoreEntitySet="WFM_VerifyTheApplicationDetails">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="AppliedAmount" ColumnName="AppliedAmount" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VerifyTheApplicationId" ColumnName="VerifyTheApplicationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_WFM_WelfareFundConsolidateReport" FunctionName="BEPZA_MEDICAL.DAL.WFM.Store.SP_WFM_WelfareFundConsolidateReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.SP_WFM_WelfareFundConsolidateReport_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="WFM_ApprovalWelfareFundInfo">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfo">
+              <MappingFragment StoreEntitySet="WFM_ApprovalWelfareFundInfo">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="MeetAgenda" ColumnName="MeetAgenda" />
+                <ScalarProperty Name="WelfareFundCategoryId" ColumnName="WelfareFundCategoryId" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="CycleInfoId" ColumnName="CycleInfoId" />
+                <ScalarProperty Name="MeetPlace" ColumnName="MeetPlace" />
+                <ScalarProperty Name="MeetTime" ColumnName="MeetTime" />
+                <ScalarProperty Name="MeetDate" ColumnName="MeetDate" />
+                <ScalarProperty Name="CommitteeName" ColumnName="CommitteeName" />
+                <ScalarProperty Name="RefNo" ColumnName="RefNo" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_CycleInfo">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_CycleInfo">
+              <MappingFragment StoreEntitySet="WFM_CycleInfo">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="ToMonth" ColumnName="ToMonth" />
+                <ScalarProperty Name="FromMonth" ColumnName="FromMonth" />
+                <ScalarProperty Name="CycleName" ColumnName="CycleName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_WFM_SectionWiseWelfareFund" FunctionName="BEPZA_MEDICAL.DAL.WFM.Store.SP_WFM_SectionWiseWelfareFund">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.SP_WFM_SectionWiseWelfareFund_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="WFM_WelfareFundPolicy">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundPolicy">
+              <MappingFragment StoreEntitySet="WFM_WelfareFundPolicy">
+                <ScalarProperty Name="ReferenceDate" ColumnName="ReferenceDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsContinuous" ColumnName="IsContinuous" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="OtherMaxAmount" ColumnName="OtherMaxAmount" />
+                <ScalarProperty Name="MaxAmount" ColumnName="MaxAmount" />
+                <ScalarProperty Name="MinServiceYear" ColumnName="MinServiceYear" />
+                <ScalarProperty Name="EffectiveToDate" ColumnName="EffectiveToDate" />
+                <ScalarProperty Name="EffectiveFromDate" ColumnName="EffectiveFromDate" />
+                <ScalarProperty Name="OrderNo" ColumnName="OrderNo" />
+                <ScalarProperty Name="WelfareFundCategoryId" ColumnName="WelfareFundCategoryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_WFM_getCoABudgetHeatList" FunctionName="BEPZA_MEDICAL.DAL.WFM.Store.SP_WFM_getCoABudgetHeatList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.SP_WFM_getCoABudgetHeatList_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="accountName" ColumnName="accountName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_WFM_RptApprovedApplicantList" FunctionName="BEPZA_MEDICAL.DAL.WFM.Store.sp_WFM_RptApprovedApplicantList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.sp_WFM_RptApprovedApplicantList_Result">
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="MeetAgenda" ColumnName="MeetAgenda" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="ApprovedAmount" ColumnName="ApprovedAmount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="vwWfmApplicationInformations">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.vwWfmApplicationInformation">
+              <MappingFragment StoreEntitySet="vwWfmApplicationInformation">
+                <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+                <ScalarProperty Name="ApplicationStatus" ColumnName="ApplicationStatus" />
+                <ScalarProperty Name="ApprovalStatusId" ColumnName="ApprovalStatusId" />
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="ApplyMonthId" ColumnName="ApplyMonthId" />
+                <ScalarProperty Name="ApplyYear" ColumnName="ApplyYear" />
+                <ScalarProperty Name="ForwardTo" ColumnName="ForwardTo" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="AppTo" ColumnName="AppTo" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="AppliedAmount" ColumnName="AppliedAmount" />
+                <ScalarProperty Name="FundCategoryName" ColumnName="FundCategoryName" />
+                <ScalarProperty Name="WelfareFundCategoryId" ColumnName="WelfareFundCategoryId" />
+                <ScalarProperty Name="ApplicationNo" ColumnName="ApplicationNo" />
+                <ScalarProperty Name="RefNo" ColumnName="RefNo" />
+                <ScalarProperty Name="ApplicationDate" ColumnName="ApplicationDate" />
+                <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="DesignationName" ColumnName="DesignationName" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_ApprovalWelfareFundInfoEmployeeDetails">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_ApprovalWelfareFundInfoEmployeeDetails">
+              <MappingFragment StoreEntitySet="WFM_ApprovalWelfareFundInfoEmployeeDetails">
+                <ScalarProperty Name="IsOnline" ColumnName="IsOnline" />
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="ApprovedAmount" ColumnName="ApprovedAmount" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="ApprovalWelfareFundInfoId" ColumnName="ApprovalWelfareFundInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_WFM_getCoABudgetHeadAmount" FunctionName="BEPZA_MEDICAL.DAL.WFM.Store.SP_WFM_getCoABudgetHeadAmount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.SP_WFM_getCoABudgetHeadAmount_Result">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="yearName" ColumnName="yearName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_WFM_ZoneWiseWelfareFund" FunctionName="BEPZA_MEDICAL.DAL.WFM.Store.SP_WFM_ZoneWiseWelfareFund">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.SP_WFM_ZoneWiseWelfareFund_Result">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Designation" ColumnName="Designation" />
+                <ScalarProperty Name="ZoneName" ColumnName="ZoneName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="WFM_OfflineApplicationInfo">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_OfflineApplicationInfo">
+              <MappingFragment StoreEntitySet="WFM_OfflineApplicationInfo">
+                <ScalarProperty Name="SuggestAmount" ColumnName="SuggestAmount" />
+                <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+                <ScalarProperty Name="ApplicationStatusId" ColumnName="ApplicationStatusId" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="NID" ColumnName="NID" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="SignatoryId" ColumnName="SignatoryId" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="AppTo" ColumnName="AppTo" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="AppliedAmount" ColumnName="AppliedAmount" />
+                <ScalarProperty Name="WelfareFundCategoryId" ColumnName="WelfareFundCategoryId" />
+                <ScalarProperty Name="ApplicationNo" ColumnName="ApplicationNo" />
+                <ScalarProperty Name="RefNo" ColumnName="RefNo" />
+                <ScalarProperty Name="ApplicationDate" ColumnName="ApplicationDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="BankAccountNo" ColumnName="BankAccountNo" />
+                <ScalarProperty Name="BranchNameId" ColumnName="BranchNameId" />
+                <ScalarProperty Name="BankNameId" ColumnName="BankNameId" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="RelationId" ColumnName="RelationId" />
+                <ScalarProperty Name="ApplicantName" ColumnName="ApplicantName" />
+                <ScalarProperty Name="ApplicantStatus" ColumnName="ApplicantStatus" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_OnlineApplicationInfo">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_OnlineApplicationInfo">
+              <MappingFragment StoreEntitySet="WFM_OnlineApplicationInfo">
+                <ScalarProperty Name="SuggestAmount" ColumnName="SuggestAmount" />
+                <ScalarProperty Name="CycleId" ColumnName="CycleId" />
+                <ScalarProperty Name="ApplicationStatusId" ColumnName="ApplicationStatusId" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="ZoneInfoId" ColumnName="ZoneInfoId" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="SignatoryId" ColumnName="SignatoryId" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="AppTo" ColumnName="AppTo" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="AppliedAmount" ColumnName="AppliedAmount" />
+                <ScalarProperty Name="WelfareFundCategoryId" ColumnName="WelfareFundCategoryId" />
+                <ScalarProperty Name="ApplicationNo" ColumnName="ApplicationNo" />
+                <ScalarProperty Name="RefNo" ColumnName="RefNo" />
+                <ScalarProperty Name="ApplicationDate" ColumnName="ApplicationDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WFM_WelfareFundCategory">
+            <EntityTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_WelfareFundCategory">
+              <MappingFragment StoreEntitySet="WFM_WelfareFundCategory">
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="EUser" ColumnName="EUser" />
+                <ScalarProperty Name="IDate" ColumnName="IDate" />
+                <ScalarProperty Name="IUser" ColumnName="IUser" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="COAId" ColumnName="COAId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="WFM_uspVoucherPosting" FunctionName="BEPZA_MEDICAL.DAL.WFM.Store.WFM_uspVoucherPosting">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BEPZA_MEDICAL.DAL.WFM.WFM_uspVoucherPosting_Result">
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="VouchrTypeId" ColumnName="VouchrTypeId" />
+                <ScalarProperty Name="FundControlId" ColumnName="FundControlId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

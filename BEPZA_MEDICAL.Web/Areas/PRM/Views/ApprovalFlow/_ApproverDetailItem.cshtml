@@ -1,0 +1,45 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApproverInformationDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginCollectionItem("DetailList"))
+{
+    <td class="emp-info">
+        @Html.HiddenFor(m => m.Id)
+        <span class="flowId">
+            @Html.HiddenFor(m => m.ApprovalFlowDetailId)
+        </span>
+        @Html.HiddenFor(m => m.ApproverTypeId)
+        @Html.HiddenFor(m => m.AuthorTypeId)
+        @Html.HiddenFor(m => m.ApproverId)
+        @Html.HiddenFor(m => m.LevelId)
+        @Html.HiddenFor(m => m.EmpId)
+        @Html.HiddenFor(m => m.EmployeeId)
+        @Html.HiddenFor(m => m.MinAmount)
+        @Html.HiddenFor(m => m.MaxAmount)
+
+        @Model.EmployeeName
+    </td>
+    <td class="head-of-level">
+        @Model.HeadOfLevelType
+    </td>
+    <td class="org-level-post">
+        @Model.OrganogramLevelAndPost
+    </td>
+    <td class="approver-type">
+        @Model.ApproverTypeName
+    </td>
+    <td class="control-option">
+        <button type="button" class="btn btn-sm btn-primary delete-button">
+            <i class="fa fa-lg fa-trash"></i>
+        </button>
+    </td>
+}
+
+
+    <script type="text/javascript">
+        $('.control-option .delete-button').click(function () {
+            $(this).closest('tr').remove();
+            setTimeout(ToggleApproverType, 500);
+            return false;
+        });
+    </script>

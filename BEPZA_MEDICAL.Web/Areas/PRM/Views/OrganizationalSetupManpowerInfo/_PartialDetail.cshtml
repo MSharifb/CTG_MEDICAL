@@ -1,0 +1,38 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.OrganizationalSetupManpowerInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("TempManPwrList"))
+    {
+        <td width="5%" style="text-align: center">
+            @Html.Encode(Model.SLNo)
+        </td>
+        <td width="20%" style="text-align: left">
+            @Html.Encode(Model.DesignationName)
+        </td>
+        <td width="20%" style="text-align: left">
+            @Html.Label(Model.OrganogramLevelName)
+        </td>
+        <td width="12%" style="text-align: center">
+            @Html.Encode(Model.SanctionedPost)
+        </td>
+        <td width="10%" style="text-align: center">
+            @if (@Html.Encode(Model.ActiveStatus) == "True")
+            {
+                @Html.Encode("Yes")
+            }
+            else
+            {
+                @Html.Encode("No")
+            }
+        </td>
+        <td width="5%" style="text-align: left">
+            <a class="editItem" href="@Url.Action("Edit", "OrganizationalSetupManpowerInfo", new { id = @Html.Encode(Model.Id) })"></a>
+        </td>
+        <td width="5%" style="text-align: center">
+            <a href="#" class="deleteIcon-tempGrid" title="view" onclick="RemoveDb(this,@Model.Id,'@Url.Action("Delete","OrganizationalSetupManpowerInfo")')">
+            </a>
+        </td>
+    }
+</tr>
+

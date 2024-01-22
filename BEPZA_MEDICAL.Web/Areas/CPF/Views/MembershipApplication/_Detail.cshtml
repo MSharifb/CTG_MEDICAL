@@ -1,0 +1,14 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MemberNominee
+@using BEPZA_MEDICAL.Web.Helpers
+
+@using (Html.BeginForm())
+{
+    @Html.EditorFor(model => model.NomineeName)
+    
+}
+
+
+@*<img id="imgThumb-@Model.Id" height="50" width="50" class="imgThumb"
+    src="@Url.Action("GetImage", "MembershipApplication", new { id = Model.Id })"
+    onclick="OpenPhotoViewer(this)" alt="Photo" style="cursor:pointer;" />*@
+

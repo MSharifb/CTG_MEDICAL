@@ -1,0 +1,26 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.TaxRate.TaxRateDetailModel
+@using ERP_BEPZA.Web.Helpers
+
+<tr class="dynamicRow">
+    @if (Model != null)
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.TaxRateId)
+    }
+    @using (Html.BeginCollectionItem("TaxRateDetail"))
+    {          
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.SlabNo, new { @class = "required", @readonly = true })
+        </td>
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.LowerLimit, new { id = "LowerLimit", @class = "required", @maxlength = "10" })
+        </td>
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.UpperLimit, new { id = "UpperLimit", @class = "required", @maxlength = "10" })
+        </td>
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.TRate, new { id = "TRate", @class = "required", @maxlength = "5" })
+        </td>
+        
+    }
+</tr>

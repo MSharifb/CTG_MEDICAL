@@ -1,0 +1,10 @@
+﻿@model BOM_MPA.Web.Areas.PRM.ViewModel.BankNameViewModel
+
+@using BOM_MPA.Web.Helpers
+@if (Model != null && Model.BankBranches != null)
+{
+    foreach (var x in Model.BankBranches)
+    {
+        @Html.Partial("_BudgetAccountDetails", x);
+    }
+}

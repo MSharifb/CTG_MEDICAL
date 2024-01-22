@@ -1,0 +1,86 @@
+﻿@model IEnumerable<BEPZA_MEDICAL.Web.Areas.PRM.Data.PRM_Profession>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+ 
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@*@using MVC.Controls.Grid
+@using MVC.Controls
+@Html.Grid(new GridControl()
+.SetName("grdProfession")
+.SetPageSize(5)
+.SetIsAutoSize(true)
+.SetIsRowNumber(true).SetHttpVerb(HttpVerbs.Get)
+    .SetListUrl("Profession/List")
+.SetHeight("200")
+
+.SetColumns<BEPZA_MEDICAL.Web.Areas.PRM.Data.PRM_Profession>(d =>
+    {
+        d.Add(x => x.Id).SetAsPrimaryKey().SetFormatter("viewformateadorLink");
+        d.Add(x => x.Name);
+        d.Add(x => x.SortOrder);
+    })
+    .UpdateDefaultPager(pager => pager
+        .ShowSearch(true, true)
+        ))
+*@
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            SortOrder
+        </th>
+        <th>
+            IUser
+        </th>
+        <th>
+            EUser
+        </th>
+        <th>
+            IDate
+        </th>
+        <th>
+            EDate
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SortOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IUser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EUser)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EDate)
+        </td>
+        <td>
+            @Html.ActionLink("View", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

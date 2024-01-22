@@ -1,0 +1,94 @@
+﻿@model MFS_IWM.DAL.PRM.PRM_EmpContractInfo
+
+@{
+    ViewBag.Title = "CreateEmploymentContractPeriod";
+}
+
+<h2>CreateEmploymentContractPeriod</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>PRM_EmpContractInfo</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EmpoyeeId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EmpoyeeId)
+            @Html.ValidationMessageFor(model => model.EmpoyeeId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContractStartDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContractStartDate)
+            @Html.ValidationMessageFor(model => model.ContractStartDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ContractEndDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ContractEndDate)
+            @Html.ValidationMessageFor(model => model.ContractEndDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Remarks)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Remarks)
+            @Html.ValidationMessageFor(model => model.Remarks)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.isExtension)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.isExtension)
+            @Html.ValidationMessageFor(model => model.isExtension)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IUser)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IUser)
+            @Html.ValidationMessageFor(model => model.IUser)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EUser)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EUser)
+            @Html.ValidationMessageFor(model => model.EUser)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IDate)
+            @Html.ValidationMessageFor(model => model.IDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.EDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.EDate)
+            @Html.ValidationMessageFor(model => model.EDate)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

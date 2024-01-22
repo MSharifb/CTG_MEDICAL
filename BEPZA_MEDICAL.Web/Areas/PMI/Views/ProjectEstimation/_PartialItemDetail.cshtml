@@ -1,0 +1,38 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Estimation.ProjectEstimationDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr>
+    @using (Html.BeginCollectionItem("EstimationItemList"))
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(m => m.MasterId)
+        <td class="slNo">@Html.EditorFor(m => m.SerialNo)</td>
+        <td class="estimationHeadId" style="display:none;">@Html.TextBoxFor(m => m.EstimationHeadId)</td>
+        <td style="width:180px;" class="item"> @Html.DropDownListFor(model => model.EstimationItemId, Model.EstimationItemList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @required = @"required", @class = @"form-control" })</td>
+        <td class="unit" style="width:130px;">@Html.DropDownListFor(model => model.UnitId, Model.UnitList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @required = @"required", @class = @"form-control" })</td>
+        <td class="unitPrice" style="width:80px;">@Html.TextBoxFor(model => model.UnitPrice, "{0:0.00}", new { @style = @"width:80px; text-align:right;", @required = @"required" })</td>
+        <td class="quantity" style="width:80px;">
+            @Html.TextBoxFor(model => model.Quantity, new { @style = @"width:80px;", @required = @"required" })
+        </td>
+        <td class="totalAmount" style="width:100px;">@Html.TextBoxFor(model => model.TotalAmount, "{0:0.00}", new { @style = @"width:100px; text-align:right; background:#F2F5F8;", @readonly = true })</td>
+        <td>@Html.TextBoxFor(model => model.ItemDescription, new { @style = @"width:100%" })</td>
+        <td class="control-column" style="min-width:50px; width:70px;">
+            <span class="add-button">
+                <button type="button" id="btnAddNewItem" class="btn btn-sm btn-default addNewData" style="padding:3px;">
+                    <i class="fa fa-plus fa-lg"></i>
+                </button>
+            </span>
+            <span class="delete-button">
+                <button type="button" id="btnDeleteItem" class="btn btn-sm btn-default deleteData" style="padding:3px;">
+                    <i class="fa fa-trash fa-lg"></i>
+                </button>
+            </span>
+            @*<input type="button" name="btnAddNewItem" value="+" style="width:25px !important; padding:2px 5px;" />*@
+            @*<input type="button" name="btnDeleteItem" value="-" style="width:25px !important; padding:2px 5px;" />*@
+        </td>
+    }
+</tr>
+
+
+
+

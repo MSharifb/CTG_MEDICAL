@@ -1,0 +1,12 @@
+﻿@model List<BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.ApprovalFlow.ApproverInformationDetailsViewModel>
+@using BEPZA_MEDICAL.Web.Helpers
+
+@foreach (var item in Model)
+{
+    <tr>
+        @Html.Partial("_ApproverDetailItem", item)
+    </tr>
+}
+
+
+

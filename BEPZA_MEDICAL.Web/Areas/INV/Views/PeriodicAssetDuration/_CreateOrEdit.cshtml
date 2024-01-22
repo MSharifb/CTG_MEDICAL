@@ -1,0 +1,67 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.PeriodicAssetDurationViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.ItemInfoId)
+            @*<label class="required-field">
+        * , new { @class = "select-single" }
+    </label>*@
+        </span>
+        <span class="field">
+           @Html.DropDownListFor(model => model.ItemInfoId, Model.ItemInfoList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+        <span class="label">
+            @Html.LabelFor(model => model.DesignationId)
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(model => model.DesignationId, Model.DesignationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required select-single" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.ReIssueAfter)
+        </span>
+        <span class="field" style="width:132px">
+            @Html.TextBoxFor(model => model.ReIssueAfter)
+            @Html.DropDownListFor(model => model.DurationScale, Model.DurationScaleList, @String.Format("{0}", Content.DDLOptionalLabel()), new {@class = "required" })
+        </span>
+        
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        buttonHide();
+    });
+
+    $(function() {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    function buttonHide() {
+        if ('@Model.errClass' == "success" && '@Model.IsError' == "0") {
+            //$('input[name="btnSave"]').hide();
+        }
+    }
+
+</script>

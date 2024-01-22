@@ -1,0 +1,851 @@
+﻿@{ ViewBag.Title = "jqGrid in ASP.NET MVC - Searching [Custom]"; }
+@{
+    ViewBag.Title = "Application";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+@model ERP_BEPZA.Web.Areas.PMI.ViewModel.Budget.BudgetMasterViewModel
+<script type="text/javascript">
+    $(function () {
+        if ('@Model.BudgetType' == 'Development') {
+            $('.page-title').html("Development Budget");
+        }
+        else {
+            $('.page-title').html("Non-Development Budget");
+        }
+    });
+
+    $(function () {
+        ShowMessage('@Model.ActionType');
+    });
+
+    if ('@Model.ErrMsg' != "") {
+
+        if ('@Model.IsError' == '1') {
+
+        }
+        else {
+            $('#message2').html("<b style='color:green'>" + '@Model.ErrMsg' + "</b>");
+        }
+    }
+
+
+    var ShowMessage = function (actionType) {
+
+        var url = window.location.href.split('/');
+        var messageType = "";
+        switch (actionType) {
+            case "UpdateBudget":
+                var aa = url[url.length - 1];
+                if (aa.toLowerCase().indexOf("?") >= 0) {
+                    var baseUrl = aa.split('?');
+                    var typeName = baseUrl[1].split('=');
+                    messageType = typeName[1];
+                    if (messageType == "success") {
+
+                    }
+                }
+                break;
+        }
+
+        if (messageType === "success") {
+            $('#message').html("Information has been Saved / Updated successfully");
+            $('#message').css({ "color": "green", "font-weight": "bold" });
+        }
+        if (messageType === "failed") {
+            $('#message').html("Information Save / Update Failed.");
+            $('#message').css({ "color": "red", "font-weight": "bold" });
+        }
+
+    }
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#SortingOrder").keydown(function (event) {
+
+            if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27 || event.keyCode == 13 ||
+            (event.keyCode == 65 && event.ctrlKey === true) ||
+            (event.keyCode >= 35 && event.keyCode <= 39)) {
+                return;
+            }
+            else {
+                if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                    event.preventDefault();
+                }
+            }
+        });
+
+    });
+
+
+    $(document).ready(function () {
+        var selectedItems = $('#BudgetZonesString').val().split(',');
+        $('#BudgetZones').val(selectedItems).change();
+    })
+
+</script>
+
+@using (Ajax.BeginForm("SaveApplication", "RequestedApplication", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+     <div class="GroupBox" id="message" style="min-height:30px;">
+        @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+        <div class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+        }
+    </div>
+
+<div id="dvFinancialYear">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<div id="dvPrintBudget">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white; padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <div class="row" style="text-align:right; margin:0 0 5px 0;">
+            <button type="button" class="btn btn-sm btn-primary" id="btnPrint">
+                <i class="fa fa-print fa-lg"></i>Print
+            </button>
+        </div>
+        @Html.HiddenFor(m => m.BudgetZonesString)
+        <span class="master-id-area">
+            @Html.HiddenFor(m => m.Id)
+        </span>
+        @Html.HiddenFor(m => m.BudgetType)
+        <div class="form-group">
+            @Html.LabelFor(m => m.MinistryOrDivisionId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.MinistryOrDivisionId, Model.DivisionOrMinistryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @required = @"required" })
+            </div>
+
+            @Html.LabelFor(m => m.SourceOfFundId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.SourceOfFundId, Model.SourceOfFundList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.ApprovalAuthorityId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ApprovalAuthorityId, Model.ApprovalAuthorityList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+
+            @Html.LabelFor(m => m.ProcurementTypeId, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.ProcurementTypeId, Model.ProcurementTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.CreationDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(m => m.CreationDate, new { @readonly = "readonly" })
+            </div>
+
+            @Html.LabelFor(m => m.ProjectOrZoneList, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(m => m.BudgetZones, Model.ProjectOrZoneList, new { @class = "form-control", @multiple = @"multiple", @required = @"required" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div style="display:none;">
+                @Html.LabelFor(m => m.ApprovalDate, new { @class = "col-sm-2 control-label labelRequired" })
+                <div class="col-sm-4">
+                    @Html.EditorFor(m => m.ApprovalDate)
+                </div>
+            </div>
+            @Html.LabelFor(m => m.LastUpdateDate, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.EditorFor(m => m.LastUpdateDate, new { @readonly = "readonly" })
+            </div>
+        </div>
+
+    </fieldset>
+    <div>
+        <div style="text-align:right; margin-bottom:5px;">
+
+            <button type="button" class="btn btn-sm btn-primary" id="btnAddNewHead" style="padding:3px;">
+                <i class="fa fa-plus-circle fa-lg" style="margin-right:7px;"></i>Add New Head
+            </button>
+            @*@Html.ActionLink("Add Year...", "AddNewFinancialYearCost", null, new { noOfFinancialYear = 1, id = "btnAddNewYear" })*@
+            <button type="button" class="btn btn-sm btn-primary" id="btnAddNewYear" style="padding:3px;">
+                <i class="fa fa-plus-circle fa-lg" style="margin-right:7px;"></i>Add New Year
+            </button>
+        </div>
+        <fieldset>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th class="budget-sub-head">Budget Sub-Head</th>
+                        <th class="construction-type">Construction Type</th>
+                        <th class="project-name">Name of Work / Goods / Service</th>
+                        <th class="budget-amount">Estimated / Accepted Amount<br />(Lac)</th>
+                        @*@Html.Partial("_PartialHead", Model.YearWiseBudgetStatusList)*@
+                        <th class="remarks">Remarks</th>
+                        <th class="control-option">&nbsp;</th>
+                    </tr>
+                </thead>
+            </table>
+            <div class="dvBudgetDetails">
+                <table class="table table-bordered">
+                    <tbody>
+                        @*@Html.Partial("_BudgetDetailHeads", @Model)*@
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Comments, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-10">
+                    @Html.TextAreaFor(m => m.Comments, new { @style = @"width:100%" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="form-group">
+                @Html.LabelFor(m => m.EmployeeId, new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4">
+                    @Html.DropDownListFor(m => m.EmployeeId, Model.EmployeeList, new { @class = "form-control", @multiple = @"multiple"})
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</div>
+    
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-12 col-sm-offset-0 text-center">
+            @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                <button class="btn btn-primary" type="submit" value="Save" id="btnSave" name="btnSubmit"><i class="fa fa-save"></i> Save</button>
+                }
+        </div>
+    </div>
+</div>
+
+
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-0 text-left">
+                <a href="@Url.Action("Index")" class="btn btn-primary"> <i class="fa fa-backward"></i> Back</a>
+        </div>
+    </div>
+</div>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#BudgetZones').select2();
+        $('#EmployeeId').select2();
+    });
+
+    $(document).ready(function () {
+        if ('@Model.ActionType' != 'UpdateBudget') {
+            $('.project-name select').trigger('change');
+        }
+    });
+
+    $('table tbody tr .control-option #btnDeleteRow').click(function () {
+        var myTable = $(this).parent('table');
+        alert(myTable);
+    });
+
+    $(document).ready(function () {
+        $("#dvFinancialYear").dialog({ autoOpen: false, modal: true, height: 500, width: 500, title: 'Financial Year List', beforeclose: function (event, ui) { Closing(this); } });
+    });
+
+    $(document).ready(function () {
+        $("#dvPrintBudget").dialog({ autoOpen: false, modal: true, height: 500, width: 600, title: 'Print Budget', beforeclose: function (event, ui) { Closing(this); } });
+    });
+
+    $('#btnAddNewYear').click(function () {
+        GenerateHead();
+    });
+
+    $(document).ready(function () {
+        //setTimeout(SetFinancialYear, 1000);
+        MakeDropdownSearchable();
+        //setTimeout(trigg, 5000);
+    });
+
+    var trigg = function () {
+
+        $('.budget-sub-head select').trigger('change');
+    }
+
+    function SetFinancialYear() {
+        var fyArray = new Array();
+        $('table thead tr .yearly-cost-head .fyInfo :input').each(function () {
+            var fyId = $(this).val();
+            fyArray.push(fyId);
+        })
+        $('#SelectedFinancialYears').val(fyArray);
+    };
+
+    function AddNewYear() {
+        var financialYearUrl = '@Url.Action("GetFinancialYearList", "Budget")';
+        var financialYearId = $("#SelectedFinancialYears").val();
+        var array = financialYearId.split(",");
+        //var anArray = new Array(9, 18, 8);
+        $.ajax({
+            url: financialYearUrl,
+            data: { selectedYears: array },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                $('#dvFinancialYear').html(result);
+                $("#dvFinancialYear").dialog('open');
+            }
+        })
+        //var idArray = [18, 1, 8, 9, 7, 6];
+        //GenerateHead(idArray);
+
+    }
+
+
+    $('#dvFinancialYear #btnGenerateHead').click(function () {
+        var idArray = [];
+        $("table tbody tr").find('input[type="checkbox"]:checked').each(function (i, k) {
+            var item = $(this);
+            idArray.push(item.attr("id"));
+        });
+
+        var projectId = $('.budget-sub-head-id :input').val();
+        if (projectId == undefined || projectId == '') {
+            projectId = "0";
+        }
+        GenerateHead(idArray, projectId);
+        $("#SelectedFinancialYears").val(idArray);
+        //setTimeout(DeleteEmptyCells, 1000);
+    });
+
+    var financialYearChange = function () {
+        var fyId = $(this).val();
+        var statusId = $(this).closest('th').find('.budget-status option:selected').val();
+        var colIndex = $(this).closest('th').prevAll().length;
+        $('table tbody td:nth-child(' + (colIndex + 1) + ')').find('.financial-year :input').val(fyId);
+
+        var statusCount = 0;
+        $('table thead tr .yearly-cost-head').each(function () {
+
+            var currentStatusId = $(this).find('.budget-status option:selected').val();
+            var currentFyId = $(this).find('.financial-year option:selected').val();
+
+            if (statusId === currentStatusId && fyId === currentFyId) {
+                statusCount++;
+            }
+        });
+        if (statusCount > 1) {
+            $(this).closest('th').find('.budget-status select').val('');
+        };
+
+        return false;
+    };
+
+
+    var budgetStatusChange = function () {
+
+        var statusId = $(this).val();
+        var fyId = $(this).closest('th').find('.financial-year option:selected').val();
+        var colIndex = $(this).closest('th').prevAll().length;
+
+        var statusCount = 0;
+        $('table thead tr .yearly-cost-head').each(function () {
+
+            var currentStatusId = $(this).find('.budget-status option:selected').val();
+            var currentFyId = $(this).find('.financial-year option:selected').val();
+
+            if (statusId === currentStatusId && fyId === currentFyId) {
+                statusCount++;
+            }
+        });
+        if (statusCount > 1) {
+            statusId = 0;
+            $(this).val('');
+        };
+
+        $('table tbody td:nth-child(' + (colIndex + 1) + ')').find('.budget-status :input').val(statusId);
+        return false;
+    }
+
+    $('.yearly-cost-head .financial-year select').change(financialYearChange);
+
+    $('.yearly-cost-head .budget-status select').change(budgetStatusChange);
+
+    var BudgetSubHeadChange = function () {
+
+        var selectedSbHeadId = $(this).val();
+        var duplicateCount = 0;
+        var previousSubHeadId = 0;
+
+        //$('table tbody tr').each(function () {
+        //    var subHeadId = $(this).closest('tr').find('.budget-sub-head option:selected').val();
+        //    if (selectedSbHeadId === subHeadId) {
+        //        duplicateCount = duplicateCount + 1;
+        //    };
+        //});
+
+        $('table tbody tr').each(function () {
+            var subHeadId = $(this).closest('tr').find('.budget-sub-head option:selected').val();
+            $(this).closest('tr').find('.yearly-cost .sub-head-info :input').val(subHeadId);
+        });
+        //if (duplicateCount > 1) {
+        //    $(this).val('');
+        //    $(this).parent('tr').find('.yearly-cost .sub-head-info :input').val(0);
+        //};
+
+        SetRequiredAttr();
+    }
+
+
+
+
+    $('.budget-sub-head select').change(BudgetSubHeadChange);
+
+    var DeleteBudgetHead = function () {
+        var colIndex = $(this).closest('th').prevAll().length + 1;
+        $('table thead th:nth-child(' + (colIndex) + ')').remove();
+        $('table tbody td:nth-child(' + (colIndex) + ')').remove();
+        return false;
+    }
+
+    $('.delete-button button').click(DeleteBudgetHead);
+
+    var AddYearlyHead = function (position) {
+        var headUrl = '@Url.Action("AddNewFinancialYearHead", "Budget")';
+        $.ajax({
+            url: headUrl,
+            datatype: 'text',
+            type: 'POST',
+            cache: false,
+            success: function (html) {
+                $('table thead').find('th').eq(position).before(html);
+
+                $('.yearly-cost-head .budget-status select').unbind().change(budgetStatusChange);
+                $('.yearly-cost-head .financial-year select').unbind().change(financialYearChange);
+                $('.yearly-cost-head .delete-button button').unbind().click(DeleteBudgetHead);
+
+                $('.yearly-cost-head .budget-status select').trigger('change');
+                $('.yearly-cost-head .financial-year select').trigger('change');
+            }
+        })
+    }
+
+    var AddYearlyCost = function (position, idValue, tr) {
+        var url = '@Url.Action("AddNewFinancialYearCost", "Budget")';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            datatype: 'text',
+            data: { noOfFinancialYear: 1, id: idValue },
+            cache: false,
+            success: function (html) {
+                //$('.dvBudgetDetails table tbody').find('tr').each(function () {
+                $(tr).find('td').eq(position).before(html);
+                $('.budget-sub-head select').trigger('change');
+                //});
+            }
+        })
+
+
+    }
+
+
+    function GenerateHead() {
+        debugger;
+
+
+        var numCols = $("table").find('tr')[0].cells.length;
+        var position = numCols - 2;
+
+        AddYearlyHead(position);
+
+        $('.dvBudgetDetails table tbody tr').each(function () {
+            idValue = $(this).find('.budget-sub-head .test :input').val();
+            var tr = $(this).closest('tr');
+            AddYearlyCost(position, idValue, tr);
+        });
+
+        $('.yearly-cost-head .budget-status select').unbind().change(budgetStatusChange);
+        $('.yearly-cost-head .financial-year select').unbind().change(financialYearChange);
+        $('.yearly-cost-head .delete-button button').unbind().click(DeleteBudgetHead);
+
+        $('.yearly-cost-head .budget-status select').trigger('change');
+        $('.yearly-cost-head .financial-year select').trigger('change');
+
+        $('.budget-sub-head select').unbind().change(BudgetSubHeadChange);
+
+
+    };
+
+    function SetRequiredAttr() {
+        $('.td-name-of-work :input').attr('required', true);
+        $('.tdBudgetAmount :input').attr('required', true);
+    }
+
+
+
+    $('#btnAddNewHead').click(function () {
+        var url = '@Url.Action("AddNewBudgetHead", "Budget")';
+        var columnCount = $('.yearly-cost-head').length;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'text',
+            data: { noOfFinancialYear: columnCount },
+            cache: false,
+            success: function (html) {
+                console.log(html);
+                $('.dvBudgetDetails').append("<table class='table table-bordered'>" + html + "</table>");
+
+                $('.yearly-cost-head .budget-status select').unbind().change(budgetStatusChange);
+                $('.yearly-cost-head .financial-year select').unbind().change(financialYearChange);
+                $('.yearly-cost-head .budget-status select').trigger('change');
+                $('.yearly-cost-head .financial-year select').trigger('change');
+
+                $('.budget-sub-head select').unbind().change(BudgetSubHeadChange);
+                $('.budget-sub-head select').trigger('change');
+
+                $('.project-name select').unbind().change(SetBudgetSubHeadInfo);
+
+                return false;
+                //"<hr class='head-devider' />" +
+
+            }
+        })
+
+    });
+
+
+    $('#btnPrint').click(function () {
+        var budgetMasterId = $('#Id').val();
+        if (budgetMasterId == 0 || budgetMasterId == '') {
+            var message = 'Please save a budget to view/print report';
+            $('.message').html("<b>" + message + "</b>").css("color", "red");
+            return;
+        }
+        ShowPrintBudgetPopUp();
+    });
+
+
+    function ShowPrintBudgetPopUp() {
+        var url = '@Url.Action("ShowBudgetPrintPopUp", "Budget")';
+        var budgetDetailsId = $('#Id').val();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { budgetDetailId: budgetDetailsId },
+            cache: false,
+            success: function (result) {
+                $('#dvPrintBudget').html(result);
+                $("#dvPrintBudget").dialog('open');
+            }
+        })
+    };
+
+    //function CheckApproveStatus() {
+    //    $('table thead tr .yearly-cost-head select').each(function () {
+    //        var item = $(this).find('option:selected').text();
+    //        if (item == 'Approved') {
+    //            $(this).find('option:contains("Proposed")').prop("disabled", true);
+    //        }
+    //    });
+    //};
+
+    function MakeDropdownSearchable() {
+        $('#MinistryOrDivisionId, #SourceOfFundId, #ApprovalAuthorityId, #ProcurementTypeId').select2();
+    }
+
+
+    var SetBudgetSubHeadInfo = function () {
+
+        var budgetDetailsId = $('#Id').val();
+
+
+        var selectedHeadId = $(this).val();
+        var budgetSubHeads = $(this).closest('tr').next('tr').find('select');
+
+        var table = $(this).closest('table');
+
+        var selectedHeadName = $(this).find('option:selected').text();
+
+        if (selectedHeadId == "" || selectedHeadId == 0) {
+            $(table).find('tbody tr .budget-sub-head select').each(function () {
+                var subHeadDdl = $(this);
+                subHeadDdl.empty();
+                subHeadDdl.append($("<option></option>").val(0).html("[Select One]"));
+            });
+
+            ResetYearlyCostHead();
+            return;
+        }
+
+        var itemCounter = 0;
+        $('table tbody tr .ddlBudgetHeadItem').find('option:selected').each(function () {
+            var currentItemId = $(this).val();
+            if (currentItemId == selectedHeadId) {
+                itemCounter++;
+            }
+        });
+
+        if (itemCounter > 1) {
+            $(this).val(0);
+            var currentTable = $(this).closest('table');
+            $(currentTable).find('tbody tr').each(function () {
+                var itemDdl = $(this).find('.tdBudgetSubHead select');
+                itemDdl.empty();
+                itemDdl.append($("<option></option>").val(0).html("[Select One]"));
+            })
+            return;
+        }
+        var url = '@Url.Action("GetBudgetSubHeadByHeadId", "Budget")';
+        var budgetHeadId = $(this).closest('tr').next('tr').find('.tdHeadId :input').val(selectedHeadId);
+
+        budgetSubHeads.empty();
+        budgetSubHeads.append($("<option></option>").val(0).html("[Select One]"));
+        $.ajax({
+            url: url,
+            data: { budgetHeadId: selectedHeadId, budgetDetailsId: budgetDetailsId },
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                $.each(result, function () {
+                    $(table).find('tbody tr .budget-sub-head select').each(function () {
+                        var subHeadDdl = $(this);
+                        subHeadDdl.empty();
+                        subHeadDdl.append($("<option></option>").val(0).html("[Select One]"));
+                        $.each(result, function () {
+                            subHeadDdl.append($("<option></option>").val(this['Key']).html(this['Value']));
+                        });
+                    });
+                });
+
+            }
+        })
+        //ResetYearlyCostHead();
+        $('.budget-sub-head select').trigger('change');
+
+    }
+
+    $('.project-name select').change(SetBudgetSubHeadInfo);
+
+</script>
+
+<style type="text/css">
+    table thead th {
+        background: #2980b9 !important;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        height: 100px;
+        vertical-align: middle !important;
+        display: table-cell;
+        text-align: center;
+        color: #FFFFFF;
+    }
+
+        table thead th:hover {
+            cursor: default;
+        }
+
+    .project-name {
+        /*max-width: 220px;*/
+        min-width: 250px;
+        padding: 1px !important;
+    }
+
+        .project-name input[type=text] {
+            width: 100%;
+        }
+
+        .project-name select {
+            width: 100%;
+        }
+
+    .construction-type {
+        width: 100px;
+        max-width: 100px;
+        min-width: 100px;
+        padding: 1px !important;
+    }
+
+        .construction-type select {
+            width: 100px;
+            max-width: 100px;
+            min-width: 100px;
+            padding: 1px !important;
+        }
+
+    .budget-amount {
+        width: 100px;
+        min-width: 100px;
+        padding: 1px !important;
+        max-width: 100px;
+        word-wrap: break-word;
+    }
+
+        .budget-amount input[type=text] {
+            text-align: right;
+            width: 100%;
+        }
+
+    .remarks {
+        width: 200px;
+        min-width: 200px;
+        padding: 1px !important;
+    }
+
+        .remarks input[type=text] {
+            width: 100%;
+        }
+
+    .control-option {
+        max-width: 65px;
+        width: 65px;
+        min-width: 65px;
+        padding: 1px !important;
+    }
+
+    .budget-sub-head {
+        width: 150px;
+        max-width: 150px;
+        min-width: 150px;
+        padding: 1px !important;
+    }
+
+    .yearly-cost-head {
+        padding: 1px !important;
+        /*min-width: 105px;*/
+        max-width: 105px;
+        min-width: 105px;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        color: #FFFFFF;
+    }
+
+    .yearly-cost {
+        max-width: 105px;
+        min-width: 105px;
+        padding: 1px !important;
+    }
+
+        .yearly-cost input[type=text] {
+            text-align: right;
+            width: 100%;
+        }
+
+    .yearly-cost-head .fy-name input[type=text] {
+        text-align: center !important;
+        cursor: default;
+        border: none;
+        font-weight: bold;
+        font-size: 11px;
+        background: #2980b9;
+        color: #FFFFFF;
+    }
+
+    .yearly-cost-head select {
+        font-weight: bold;
+        font-size: 11px;
+        min-width: 105px;
+    }
+
+    .yearly-cost-head .lbl {
+        text-align: center;
+        word-wrap: break-word;
+    }
+
+    .yearly-cost-head input[type=text] {
+        text-align: center;
+        background: none;
+        border: none;
+        font-weight: bold !important;
+        font-size: 11px !important;
+        color: #FFFFFF;
+    }
+
+    .head-devider {
+        padding: 0;
+        border: none;
+        border-top: medium double #908c8c;
+        color: #333;
+        text-align: center;
+    }
+
+        .head-devider:before { /* Not really supposed to work, but does */
+            content: "***";
+            display: inline-block;
+            position: relative;
+            top: -0.7em;
+            font-size: 1.5em;
+            padding: 0 0.25em;
+            background: white;
+        }
+
+    #dvFinancialYear table {
+        border: 1px solid #5789B3 !important;
+    }
+
+        #dvFinancialYear table thead th {
+            height: 15px !important;
+            background: #5789B3 !important;
+            font-weight: bold !important;
+            font-size: 12px !important;
+            color: #FFFFFF !important;
+        }
+
+        #dvFinancialYear table tbody tr td {
+            font-size: 12px !important;
+            height: 15px !important;
+            vertical-align: top;
+        }
+
+    table tbody tr td:hover {
+        cursor: default;
+    }
+
+    .select2-selection {
+        border-radius: 0px !important;
+        padding: 0px 2px !important;
+        border: 1px solid #D2D6DE !important;
+    }
+
+    .my-button {
+        min-width: 100px;
+        width: 100px;
+    }
+
+    .select2-results__option {
+        font-size: 13px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 5px;
+        font-size: 13px;
+    }
+
+    .yearly-cost-head button {
+        padding: 2px !important;
+    }
+
+        .yearly-cost-head button i {
+            padding: 0 !important;
+        }
+</style>

@@ -1,0 +1,55 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RetirementAgeInfoViwModel
+@using BEPZA_MEDICAL.Web.Helpers
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Index", "RetirementAgeInfo", FormMethod.Post, new { id = "frm" }))
+{
+
+    <div class="GroupBox" style="min-height: 15px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+    
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.btnText)
+                @Html.HiddenFor(model => model.Id)
+                @Html.LabelFor(model => model.RetirementAge, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.RetirementAge, new { @class = "required" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FreedomFighterAge, new { @class = "label-required" })
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.FreedomFighterAge, new { @class = "required" })
+            </span>
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+
+    <div class="GroupBox">
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="@Model.btnText" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+        </div>
+    </div>
+
+}
+<script type="text/javascript">
+
+</script>

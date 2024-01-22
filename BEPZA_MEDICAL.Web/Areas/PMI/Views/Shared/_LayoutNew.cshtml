@@ -1,0 +1,30 @@
+﻿@using BEPZA_MEDICAL.Web.Utility
+@{
+    Layout = "~/Views/Shared/_LayoutNew.cshtml";
+    ViewBag.Area = "PMI";
+    ViewBag.ModuleName = "PMI";
+    ViewBag.Title = "Project Management Information";
+}
+<style>
+    .bg-navy {
+    background-color: 
+    #001f3f !important;
+}
+    .text-center{
+        color: #fff;
+        padding:8px !important;
+    }
+    .page-title{
+        margin-bottom: 1px !important;
+    }
+    .panel {
+        margin-bottom: 1px !important;
+    }
+</style>
+<div class="panel panel-default bg-navy">
+    <div class="panel-body text-center">
+        <i class="fa fa-map-marker pull-left pull-left"></i>
+        <strong>Zone :</strong> @MyAppSession.ZoneName <span class="text-muted">|</span> @Session["ProjectSectionName"].ToString()
+    </div>
+</div>
+@RenderBody()

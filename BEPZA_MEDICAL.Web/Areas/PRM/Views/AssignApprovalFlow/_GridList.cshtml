@@ -1,0 +1,124 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList", "AssignApprovalFlow")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Approval Process', 'Approver Flow', 'Zone', 'Is Group', 'Organogram Level', 'EmpId', 'Employee Id', 'Employee Name', 'Employee Id & Name', 'Division/Unit', 'Department', 'Section', 'Designation', 'Delete'],
+            colModel: [
+                            { name: 'Id', index: 'ID', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'ProcessName', index: 'ProcessName', align: 'left', width: '230px', search: true, formatter: viewformatEdiorLink, edittype: 'select', surl: '@Url.Action("GetProcessInfo")' },
+                            { name: 'FlowName', index: 'FlowName', align: 'left', width: '250px', search: true, edittype: 'select', surl: '@Url.Action("GetFlowInfo")' },
+                            { name: 'ZoneName', index: 'ZoneName', align: 'left', width: '70px', hidden: false, search: false },
+                            { name: 'GroupOrIndividual', index: 'GroupOrIndividual', align: 'left', width: '90px', hidden: false, search: false },
+                            { name: 'OrganogramLevelName', index: 'OrganogramLevelName', align: 'left', width: '280px', hidden: false, search: false },
+                            { name: 'EmployeeId', index: 'EmployeeId', align: 'left', width: '150px', search: false, hidden: true },
+                            { name: 'EmpId', index: 'EmpId', align: 'left', width: '110px', hidden: true, search: true },
+                            { name: 'EmployeeName', index: 'EmployeeName', align: 'left', width: '250px', hidden: true, search: true },
+                            { name: 'EmployeeIdAndName', index: 'EmployeeIdAndName', align: 'left', width: '250px', search: false },
+                            { name: 'DivisionOrUnit', index: 'DivisionOrUnit', align: 'left', width: '100px', search: true, edittype: 'select', surl: '@Url.Action("GetDivisionInfo")' },
+                            { name: 'Department', index: 'Department', align: 'left', width: '120px', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetDepartmentInfo")' },
+                            { name: 'Section', index: 'Section', align: 'left', width: '120px', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetSectionInfo")' },
+                            { name: 'Designation', index: 'Designation', align: 'left', width: '120px', search: true, edittype: 'select', surl: '@Url.Action("GetDesignationInfo")' },
+                            { name: 'Delete', index: 'Delete', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '30px', edittype: 'image', formatter: deleteformateadorLink }
+
+            ],
+            autowidth: true,
+            caption: "Approval Flow",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '100%',
+            loadComplete: function () {
+                $("a.deleteItem").on('click', function (e) {
+                    e.preventDefault();
+                    deleteLinkObj = $(this);  //for future use
+                    $('#delete-dialog').dialog('open');
+                    return false; // prevents the default behaviour
+                });
+            }
+
+        });
+        // Pager Function
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+</script>
+
+<div id="confirm" class="modal hide fade">
+    <div class="modal-body">
+        Delete?
+    </div>
+    <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(function () {
+
+        $("a.deleteItem").click(function (e) {
+            e.preventDefault();
+            //debugger;
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });
+    });
+
+</script>
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").show().html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").show().html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    $("a.set-approver").click(function () {
+        var obj = $(this);
+        alert(obj);
+    });
+</script>
+
+
+<style type="text/css">
+    .set-approver {
+    }
+</style>

@@ -1,0 +1,10 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MemberNomineeCollectionViewModel
+@*@using BEPZA_MEDICAL.Web.Helpers*@
+
+
+@foreach (var item in Model.MemberNomineeList)
+{
+    @Html.Partial("_Detail", @item)
+}
+
+

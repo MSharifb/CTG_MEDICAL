@@ -1,0 +1,758 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SelectionBoardInfoViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(m => m.strMode)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.CommitteeId)
+            @Html.LabelFor(model => model.CommitteeName)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.CommitteeName)
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.IsContinuous)
+        </span><span class="field">
+            @Html.CheckBoxFor(model => model.IsContinuous)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EffectiveFromDate)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.EditorFor(model => model.EffectiveFromDate)
+        </span>
+        <span class="label-right hdnToDate">
+            @Html.LabelFor(model => model.EffectiveToDate)
+
+        </span><span class="field hdnToDate">
+            @Html.EditorFor(model => model.EffectiveToDate)
+        </span>
+    </div>
+</div>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.JobAdvertisementInfoId)
+
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @if (Model.strMode == "Edit")
+            {   @Html.HiddenFor(model => model.JobAdvertisementInfoId)
+                @Html.TextBoxFor(model => model.JobAdvertisementCode, new { @class = "read-only", @readonly = true })
+            }
+            else
+            {
+                @Html.DropDownListFor(model => model.JobAdvertisementInfoId, Model.JobAdvertisementInfoList, @String.Format("{0}", Content.DDLOptionalLabel()))
+            }
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.IsIndividual)
+        </span>
+        <span class="field">
+            @Html.RadioButtonFor(model => model.IsIndividual, "False", new { @class = "chkIndividual", @checked = true })
+            @Html.Label("All")
+            @Html.RadioButtonFor(model => model.IsIndividual, "True", new { @class = "chkIndividual" })
+            @Html.Label("Individual")
+        </span>
+    </div>
+
+    <fieldset style=" margin:0 10px">
+        <legend>Job Post Information </legend>
+        <div class="row" align="center">
+            <div style="width: 90%">
+                <table id="grid" class="contenttable" width="50%">
+                    <thead>
+                        <tr>
+                            <th width="5%" align="center">
+                                Select&nbsp;<span class="required-field">*</span>
+                            </th>
+                            <th width="10%" align="center">
+                                Job Post Name
+                            </th>
+                            <th width="20%" align="center">
+                                Department Name
+                            </th>
+                            <th width="10%" align="center">
+                                Section Name
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.strMode == "Edit") { Html.RenderPartial("_JobPost", Model); }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.IsExternal)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.CheckBoxFor(model => model.IsExternal)
+        </span>
+
+    </div>
+    <div class="row">      
+        <span class="label">
+            @Html.HiddenFor(model => model.MemberEmployeeId)
+            @Html.LabelFor(model => model.MemberEmpId)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.MemberEmpId, new { @class = "read-only", @style = "width:150px", @readonly = true })
+            <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+        </span>
+
+        <span class="label-right">
+            @Html.LabelFor(model => model.MemberRole)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.MemberRole)
+
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MemberName)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.MemberName, new { @class = "read-only", @readonly = true })
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.ActiveStatus)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.RadioButtonFor(model => model.ActiveStatus, "True", new { @checked = true })
+            @Html.Label("Yes")
+            @Html.RadioButtonFor(model => model.ActiveStatus, "False")
+            @Html.Label("No")
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MemberDesignation)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.MemberDesignation, new { @class = "read-only", @readonly = true })
+
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.SortOrder)
+            <label class="required-field">
+                *
+            </label>
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.SortOrder)
+
+        </span>
+    </div>
+    <div class="row" align="center" id="SelectBoardComtInfo">
+        <div style="width:98%">
+            <div class="clear"></div>
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAdd" type="button" value="Add" />
+            </div>
+            <div class="clear">
+            </div>
+            <table id="CommitteeGrid" class="contenttable fixedcontenttable custom-grid">
+                <thead>
+                    <tr>
+                        <th>
+                            Job Post Name
+                        </th>
+                        <th>
+                            Sort Order
+                        </th>
+                        <th>
+                            Member Id
+                        </th>
+
+                        <th>
+                            Member Name
+                        </th>
+                        <th>
+                            Status Designation
+                        </th>
+                        <th>
+                            Role
+                        </th>
+                        <th>
+                            Active Status
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ if (Model.strMode == "Edit") { Html.RenderPartial("_Details", Model); }}                   
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Comments)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.Comments)
+        </span>
+        <div class="clear"></div>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.CheckBoxFor(model => model.IsAddAttachment, new { onclick = "disableUpload();" })
+            @Html.LabelFor(model => model.IsAddAttachment)
+        </span>
+        <span class="field">
+            <div id="divFileAttach">
+                @*<span id="spAttachment" class="label-right">
+                        @Html.LabelFor(model => model.Attachment)
+                    </span>*@
+
+                @Html.HiddenFor(model => model.Attachment)
+                @Html.HiddenFor(model => model.FileName)
+                <input type="file" name="Attachment" id="Attachment" />
+                <a href="@Model.FilePath" visible="true" runat="server" target="_blank">@Model.FileName</a>
+            </div>
+        </span>
+    </div>
+</div>
+<div class="clear">
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+
+        if ($('#IsContinuous').is(':checked')) {
+            //$('#EffectiveToDate').attr('readonly', true);
+            //$("#EffectiveToDate").addClass("read-only");
+            $('#EffectiveToDate').val('');
+            $('.hdnToDate').hide();
+        }
+        else {
+            $('#EffectiveToDate').addClass('required');
+        }
+    });
+
+
+    $('#IsContinuous').live('click', function (e) {
+        if ($(this).is(':checked')) {
+            $('#EffectiveToDate').val('');
+            $('.hdnToDate').hide();
+            $('#EffectiveToDate').removeClass('required');
+        }
+        else {
+            $('.hdnToDate').show();
+            $('#EffectiveToDate').addClass('required');
+        }
+
+    });
+
+    $("#EffectiveFromDate").live('change', function () {
+        $("#message").empty();
+        var fromDate = new Date($('#EffectiveFromDate').val());
+        var toDate = new Date($('#EffectiveToDate').val());
+
+        if ($('#EffectiveToDate').val() != '' && toDate < fromDate) {
+            // Do something
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> 'Effective From Date'  is lower than to 'Effective To Date' </span>  </div> ");
+            $('#EffectiveFromDate').val('');
+            return;
+        }
+
+    });
+
+    $("#EffectiveToDate").live('change', function () {
+        $("#message").empty();
+        var fromDate = new Date($('#EffectiveFromDate').val());
+        var toDate = new Date($('#EffectiveToDate').val());
+
+        if ($('#EffectiveDateFrom').val() != '' && fromDate > toDate) {
+            // Do something
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> 'Effective To Date' is greater than or equal to 'Effective From Date'  </span>  </div> ");
+            $('#EffectiveToDate').val('');
+            return;
+        }
+
+        if ($('#IsContinuous').is(':checked')) {
+            $('#IsContinuous').attr('checked', false);
+        }
+
+    });
+</script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        disableUpload();
+        checKIsIndividual();
+    });
+
+    function disableUpload() {
+        var IsSelect = $('#IsAddAttachment').attr('checked');
+        if (IsSelect) {
+            $('#File').show();
+            //$('#spAttachment').show();
+            $('#divFileAttach').show();
+        }
+        else {
+            $('#File').hide();
+            // $('#spAttachment').hide();
+            $('#divFileAttach').hide();
+        }
+    }
+
+    ////on page load
+    function checKIsIndividual() {
+        var val = $('input[name=IsIndividual]:checked').val();
+        if (val === "False") {
+            $("input.rchk").attr("disabled", true);
+            $('input.rchk').attr('checked', true);
+        } else {
+            $("input.rchk").attr("disabled", false);
+        }
+
+        if ($('#Id').val() > 0) {
+            $("input.chkIndividual").attr("disabled", true);
+        }
+    }
+    
+    /////
+    $(".chkIndividual").live('click', function () {
+        if ($(this).attr('checked')) {
+            var val = $(this).val();
+            if (val === "False") {
+                // alert("All Checked");
+                $('input.rchk').attr('checked', true);
+                $("input.rchk").attr("disabled", true);
+            } else {
+                //alert("Individual");
+                $('input.rchk').attr('checked', false);
+                $("input.rchk").attr("disabled", false);
+            }
+        }
+    });
+
+</script>
+<script type="text/javascript">
+    $('#JobAdvertisementInfoId').live("change", function (e) {
+        $('#grid tbody').empty();
+        $('#IsIndividual').attr("checked", true);
+        var jobAdId = $(this).val();
+        getJobPost(jobAdId);
+    });
+
+    var loadEmpUrl = "@Url.Action("GetJobPost")";
+    function getJobPost(jobAdId) {
+        if (jobAdId != "" && jobAdId != undefined) {
+            //$("#ErrorMessage").html("");
+            $.ajax({
+                type: "GET",
+                url: loadEmpUrl,
+                data: { jobAdId: jobAdId },
+                success: (function (result) {
+                    $("#grid tbody").html(result);
+                })
+            });
+        }
+        // else
+        //  $("#ErrorMessage").show().html("<b> Required Requisition Information</b>").css("color", "red");
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    var jobPostDesigId = '';
+    var jobPostDesig = '';
+
+    ////only one checkbox select
+    $(".rchk").live('click', function () {
+        if ($(this).attr('checked')) {
+            jobPostDesig = $(this).parents("tr").find(".desig").html();
+            jobPostDesigId = $(this).val();
+            $('input.rchk').not(this).attr('checked', false);
+        } else {
+            jobPostDesigId = '';
+            jobPostDesig = '';
+        }
+
+    });
+
+    @*var arrList = [];
+
+    //pupulate existing data from database
+    var selBoradComtt = @Html.Raw(Json.Encode(Model.SelectionBoardInfoCommittee));
+    $.each( selBoradComtt, function( key, value ) {
+        arrList.push(String( value.DesignationId ));
+    });*@
+
+    $('#IsExternal').live('click', function (e) {
+        if ($(this).is(':checked')) {
+            $('#imgEmpSearch').hide();
+            $('#MemberName').attr('readonly', false);
+            $("#MemberName").removeClass("read-only");
+
+            $('#MemberDesignation').attr('readonly', false);
+            $("#MemberDesignation").removeClass("read-only");
+
+            $('#MemberEmployeeId').val('');
+            $('#MemberEmpId').val('');
+        }
+        else {
+            $('#imgEmpSearch').show();
+            $('#MemberName').attr('readonly', true);
+            $("#MemberName").addClass("read-only");
+
+            $('#MemberDesignation').attr('readonly', true);
+            $("#MemberDesignation").addClass("read-only");
+        }
+
+    });
+
+
+    $('#btnAdd').live('click', function (e) {
+        e.preventDefault();
+        $("#message").empty();
+
+        $("#JobAdvertisementInfoId").removeClass("border-red");
+        $("#MemberName").removeClass("border-red");
+        $("#MemberDesignation").removeClass("border-red");
+        $("#MemberRole").removeClass("border-red");
+        $("#SortOrder").removeClass("border-red");
+
+        var selectionBoardInfoId = $('#Id').val();
+        var isExternal = null;
+        if ($('#IsExternal').is(":checked")) {
+            isExternal = true;
+        }
+        else {
+            isExternal = false;
+        }
+        var memberEmployeeId = $("#MemberEmployeeId").val();
+        //if ($("#MemberEmployeeId").val() != "") {
+        //    memberEmployeeId = $("#MemberEmployeeId").val();
+        //}
+
+        var memberId = $("#MemberEmpId").val();
+        var memberName = $("#MemberName").val();
+        var memberDesignation = $("#MemberDesignation").val();
+        var memberRole = $("#MemberRole").val();
+
+        var activeStatus = null;
+        var activeStatusDisplay = "";
+        if (activeStatus == "True") {
+            activeStatusDisplay = "Yes";
+            activeStatus = true;
+        }
+        else {
+            activeStatusDisplay = "No";
+            activeStatus = false;
+        }
+        if ($('#ActiveStatus').is(":checked")) {
+            activeStatusDisplay = "Yes";
+        }
+        else {
+            activeStatusDisplay = "No";
+        }
+        var sortOrder = $("#SortOrder").val();
+
+        var advertisementInfoId = $('#JobAdvertisementInfoId').val();
+        var isIndi = $('#IsIndividual:checked').val();
+
+        //checking duplicate entry
+        //  var index = $.inArray(jobPostDesigId, arrList);
+
+        if (advertisementInfoId == "") {
+            $("#JobAdvertisementInfoId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please select Advertisement Code</span>  </div> ");
+            return;
+        }
+        var JobPostCount = $('#grid tbody tr').length;
+        if (JobPostCount <= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Job Post not found.</span>  </div> ");
+            return;
+        }
+
+        if ($('#IsIndividual:checked').val() == "True") {
+            if (jobPostDesigId == null || jobPostDesigId == "") {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please select Job Post</span>  </div> ");
+                return;
+            }
+        }
+
+        if (memberName == null || memberName == "") {
+            $("#MemberName").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (memberDesignation == null || memberDesignation == "") {
+            $("#MemberDesignation").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (memberRole == null || memberRole == "") {
+            $("#MemberRole").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (sortOrder == null || sortOrder == "") {
+            $("#SortOrder").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+       
+        var model = {
+            SelectionBoardInfoId: @Model.Id,
+            IsExternal: isExternal,
+            DesignationId:jobPostDesigId,
+            DesignationName:jobPostDesig,
+            MemberEmployeeId:$("#MemberEmployeeId").val(),
+            MemberEmpId:$("#MemberEmpId").val(),
+            MemberName:$("#MemberName").val(),
+            MemberDesignation:$("#MemberDesignation").val(),
+            MemberRole: $("#MemberRole").val(),
+            ActiveStatus: $("#ActiveStatus:checked").val(),
+            SortOrder: $("#SortOrder").val()
+        }
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddSelectionBoardCommittee", "SelectionBoardInfo")',
+            data: { model: model },
+            success: (function (result) {
+                $("#CommitteeGrid tbody").append(result);
+                //reset field
+                 $('#MemberEmployeeId').val('');
+                 $('#MemberEmpId').val('');
+                 $('#MemberName').val('');
+                 $('#MemberDesignation').val('');
+                 $('#MemberRole').val('');
+                 $('#SortOrder').val('');
+                 $('#IsExternal').attr("checked", false);
+                 $('#MemberName').attr('readonly', true);
+                 $("#MemberName").addClass("read-only");
+                 $('#MemberDesignation').attr('readonly', true);
+                 $("#MemberDesignation").addClass("read-only");
+            })
+        });
+    });
+
+    //if (index >= 0) {
+    //    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+    //    return;
+    //}
+    //else {
+    //  arrList.push(jobPostDesigId);
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+
+                }
+            });
+        }
+        //delete jobdesignation from arry
+        //arrList = $.grep(arrList, function(value) {
+        //    return value != desigId;
+        //});
+        //RearrengeControlName();
+    }
+
+
+    //function RearrengeControlName() {
+    //    $('#CommitteeGrid tbody tr').each(function (outIndex) {
+    //        $(this).find('td').each(function (innerIndex) {
+    //            if ($(this).find('input').length > 0) {
+    //                $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+    //            }
+    //        })
+    //    })
+    //}
+
+    $('#SortOrder').keydown(function (e) {
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+            // let it happen, don't do anything
+            return;
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+        }
+    });
+</script>
+
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<br />
+<div class="clear">
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+        //showErrMsg();
+    });
+
+    function openEmployee() {
+        var url = '@Url.Action("EmployeeSearch", "Employee")?searchEmpType=active';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setData(id) {
+        $('#MemberEmployeeId').val(id);
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "SelectionBoardInfo")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: { empId: empId },
+                success: function (response) {
+                    if ($('#IsExternal').is(':checked')) {
+                        $('#IsExternal').attr('checked', false);
+                    }
+                    $("#MemberEmpId").val(response.EmpId);
+                    $("#MemberDesignation").val(response.Designation);
+                    $('#MemberName').val(response.EmployeeName);
+                },
+
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    function Closing() {
+
+    }
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form").submit(function () {
+            $("#message").empty();
+            $('#EffectiveToDate').removeClass('border-red');
+            if ($('#CommitteeName').val() == '' || $('#CommitteeName').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if ($('#EffectiveFromDate').val() == '' || $('#EffectiveFromDate').val() == null) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+                return false;
+            }
+            else if (!$('#IsContinuous').is(':checked')) {
+                if ($('#EffectiveToDate').val() == '' || $('#EffectiveToDate').val() == null) {
+                    $('#EffectiveToDate').addClass('border-red');
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the field or select 'Is Continuous'</span>  </div> ");
+
+                    return false;
+                }
+            }
+
+            var rowCount = $('#CommitteeGrid tbody tr').length;
+            if (rowCount == 0 || rowCount < 0) {
+                $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, add at least one  'Board Member'.</span> </div> ");
+                return false;
+            }
+        });
+    });
+</script>

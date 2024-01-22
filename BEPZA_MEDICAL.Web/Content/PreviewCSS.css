@@ -1,0 +1,54 @@
+﻿@media print {
+ 
+
+  table {
+        width: 100%;
+        font-family: Arial;
+    
+    }
+
+    tr {
+        height: 40px;
+        vertical-align: top;
+        /*background-color: #f5f3ed;*/
+    }
+
+    #report {
+        font-family: Arial;
+     
+    }
+
+    .tcol1 {
+        width: 180px;
+    }
+
+    .tcol2 {
+        width: 15px;
+    }
+
+}
+
+ table {
+        width: 100%;
+        font-family: Arial;
+    
+    }
+
+    tr {
+        height: 40px;
+        vertical-align: top;
+        /*background-color: #f5f3ed;*/
+    }
+
+    #report {
+        font-family: Arial;
+     
+    }
+
+    .tcol1 {
+        width: 180px;
+    }
+
+    .tcol2 {
+        width: 15px;
+    }

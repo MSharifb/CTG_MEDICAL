@@ -1,0 +1,540 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.AssetTransferViewModel
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend>Asset Info</legend>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.FixedAssetId)
+            @Html.HiddenFor(model => model.AssetStatusId)
+            @Html.HiddenFor(model => model.AssetStatusName)
+            @Html.HiddenFor(model => model.FromAssetConditionId)
+            @Html.HiddenFor(model => model.FromLocationId)
+            @Html.HiddenFor(model => model.FromBeneficiaryEmployeeId)
+            @Html.HiddenFor(model => model.ToBeneficiaryEmployeeId)
+            @Html.HiddenFor(model => model.IssuedBy)
+            @Html.HiddenFor(model => model.ReceivedBy)
+            @Html.HiddenFor(model => model.ReturnBy)
+            @Html.HiddenFor(model => model.strMode)
+            @Html.HiddenFor(model => model.ToOrganogramLevelId)
+            @Html.HiddenFor(model => model.FromAssetCondition)
+        </div>
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.AssetCode, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.AssetCode, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.AssetName, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.AssetName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.TransferDate, new { @class = "labelRequired" })<br />
+                        @Html.EditorFor(model => model.TransferDate, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.CategoryName, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.CategoryName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.SubCategoryName, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.SubCategoryName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ToLocationId, new { @class = "labelRequired" })
+                        @Html.DropDownListFor(model => model.ToLocationId, Model.ToLocationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                    </div>
+
+                </div>
+            </div>
+            @*<div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.FromAssetCondition, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.FromAssetCondition, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.AssetStatusName, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.AssetStatusName, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ToAssetConditionId, new { @class = " labelRequired" })
+                          @Html.DropDownListFor(model => model.ToAssetConditionId, Model.ToAssetConditionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                    </div>
+
+
+                </div>
+            </div>*@
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.FromBeneficiaryEmployee, new { @class = "control-label" })
+                        @Html.EditorFor(model => model.FromBeneficiaryEmployee, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.FromLocation, new { @class = " labelRequired" })
+                        @Html.EditorFor(model => model.FromLocation, new { @class = "form-control" })
+                    </div>
+
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ToZoneInfoId, new { @class = "labelRequired" })
+                        @Html.DropDownListFor(model => model.ToZoneInfoId, Model.ToZoneList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Accessories)
+                        @Html.TextAreaFor(model => model.Accessories, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Remarks)
+                        @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ToOrganogramLevelId, new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ToOrganogramLevelName, new { @class = "form-control" })
+                        <img class="search-img-pos" src='@Url.Content("~/Content/Images/btn_search.gif")' alt="Search" onclick="return openOrganogramLevelDialog();" />
+                        <div></div>
+                        @Html.LabelFor(model => model.ToBeneficiaryEmployee, new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ToBeneficiaryEmployee, new { @class = "form-control" })
+                        <img  src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="clearfix"></div>
+    <fieldset>
+        <legend>Return Info</legend>
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ExpectedDateOfReturn) <br />                       
+                        @Html.EditorFor(model => model.ExpectedDateOfReturn, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ReturnDate)
+                        @Html.EditorFor(model => model.ReturnDate, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.IssuedBy, new { @class = "labelRequired" }) <br />
+                        @Html.EditorFor(model => model.IssuedEmployeeBy, new { @class = "form-control" })
+                        <img class="search-img-pos" src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployeeIssuedBy();" />
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ReceivedBy, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.ReceivedEmployeeBy, new { @class = "form-control" })
+                        <img class="search-img-pos" src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployeeReceivedBy();" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            @Html.LabelFor(model => model.ReturnBy)
+                            @Html.EditorFor(model => model.ReturnEmployeeBy, new { @class = "form-control" })
+                            <img class="search-img-pos" src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployeeReturnBy();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" style="width:99%; height:98%;border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+
+
+<div id="divOrganogramLevelTree">
+    <iframe src="" style="width:99%; height:98%;border: 0px solid white;padding-right: 0px;">
+        Your browser does not support iframes.
+    </iframe>
+</div>
+<style>
+    .search-img-pos {
+        position: absolute;
+        right: 15px;
+        top: 25px;
+    }
+</style>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ToOrganogramLevelName,#ToBeneficiaryEmployee,#ReturnEmployeeBy,#ReceivedEmployeeBy,#IssuedEmployeeBy").css("width", "93%");
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee List', beforeclose: function (event, ui) { Closing(); } });
+        $("#divOrganogramLevelTree").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Organogram Level', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+
+    $('#ToZoneInfoId').on('change', function () {
+        $('#ToOrganogramLevelId').val('');
+        $('#ToOrganogramLevelName').val('');
+    });
+
+    function openOrganogramLevelDialog() {
+        var zoneId = $("#ToZoneInfoId").val();
+        if (zoneId == '') {
+            alert("Select Zone/Executive Office");
+            return false;
+        }
+        var url = '@Url.Action("OrganogramLevelTreeSearchList", "AssetTransfer")?zoneId=' + zoneId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divOrganogramLevelTree').html(result);
+            }
+        });
+        $("#divOrganogramLevelTree").dialog('open');
+        return false;
+    }
+
+
+    function setOrganogramId(orgNodeid, nodeName) {
+        $('#ToOrganogramLevelId').val('');
+        $('#ToOrganogramLevelName').val('');
+        if (nodeName != 'Bangladesh Export Processing Zones Authority') {
+            $('#ToOrganogramLevelId').val(orgNodeid);
+            $('#ToOrganogramLevelName').val(nodeName);
+            $("#divOrganogramLevelTree").dialog('close');
+        }
+
+    }
+
+    //To Beneficiary Employee
+    function openEmployee() {
+        var zoneId = $("#ToZoneInfoId").val();
+        var orgLvlId = $("#ToOrganogramLevelId").val();
+        if (zoneId == '') {
+            alert("Select Zone/Executive Office");
+            return false;
+        }
+        var url = '@Url.Action("ZoneWiseEmployeeSearch", "AssetTransfer")?ZoneInfoId=' + zoneId + '&OrganogramLevelId=' + orgLvlId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+
+    function setZoneWiseEmpData(id) {
+        //To Beneficiary Employee
+        $('#ToBeneficiaryEmployeeId').val(id)
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function openEmployeeIssuedBy() {
+        var url = '@Url.Action("EmployeeSearch", "FixedAsset")?UseTypeEmpId=2';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function openEmployeeReceivedBy() {
+        var url = '@Url.Action("EmployeeSearch", "FixedAsset")?UseTypeEmpId=3';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function openEmployeeReturnBy() {
+        var url = '@Url.Action("EmployeeSearch", "FixedAsset")?UseTypeEmpId=4';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+    function setEmpData(id, useTypeEmpId) {
+        //Issued By
+        if (useTypeEmpId == 2) {
+            $('#IssuedBy').val(id);
+            GetIssuedByEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+            //Received By
+        else if (useTypeEmpId == 3) {
+            $('#ReceivedBy').val(id);
+            GetReceivedByEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+        else {
+            $('#ReturnBy').val(id);
+            GetReturnByEmployeeInfo(id);
+            $("#divEmpList").dialog('close');
+        }
+
+    }
+
+    //To Beneficiary Employee
+    function GetEmployeeInfo(employeeId) {
+        var url = '@Url.Action("GetEmployeeInfo", "FixedAsset")?employeeId=' + employeeId;
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+        if (employeeId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $('#ToBeneficiaryEmployee').val(obj.EmployeeName);
+            }, "json");
+        }
+        return false;
+    }
+
+
+    //Issued By
+    function GetIssuedByEmployeeInfo(employeeId) {
+        var url = '@Url.Action("GetEmployeeInfo", "FixedAsset")?employeeId=' + employeeId;
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+        if (employeeId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $('#IssuedEmployeeBy').val(obj.EmployeeName);
+            }, "json");
+        }
+        return false;
+    }
+
+    //Received By
+    function GetReceivedByEmployeeInfo(employeeId) {
+        var url = '@Url.Action("GetEmployeeInfo", "FixedAsset")?employeeId=' + employeeId;
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+        if (employeeId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $('#ReceivedEmployeeBy').val(obj.EmployeeName);
+            }, "json");
+        }
+        return false;
+    }
+
+    //Return By
+    function GetReturnByEmployeeInfo(employeeId) {
+        var url = '@Url.Action("GetEmployeeInfo", "FixedAsset")?employeeId=' + employeeId;
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+        if (employeeId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $('#ReturnEmployeeBy').val(obj.EmployeeName);
+            }, "json");
+        }
+        return false;
+    }
+
+    function Closing() {
+
+    }
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+        //    Start AutoComplete
+        $("#AssetCode").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("AutoCompleteForAsset", "AssetTransfer")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.AssetCode + ' -- [' + item.AssetName + ']', value: item.AssetCode };
+                        }))
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $('#AssetCode').val(ui.item ? ui.item.value : 0);
+                GetAssetInformation($('#AssetCode').val());
+
+            }
+        });
+
+        $("#AssetCode").keydown(function (event) {
+            if (event.keyCode == 46 || event.keyCode == 8) {
+                $('#FixedAssetId').val('');
+                $('#AssetName').val('');
+                $('#CategoryName').val('');
+                $('#SubCategoryName').val('');
+
+                $('#AssetStatusId').val('');
+                $('#AssetStatusName').val('');
+                $("#FromLocationId").val('');
+                $("#FromLocation").val('');
+                $("#FromBeneficiaryEmployeeId").val('');
+                $("#FromBeneficiaryEmployee").val('');
+
+                $("#FromAssetConditionId").val('');
+                $("#FromAssetCondition").val('');
+
+            }
+        });
+
+        function GetAssetInformation(AssetCode) {
+
+            var url = '@Url.Action("GetAssetInformation", "AssetTransfer")';
+
+            $('#FixedAssetId').val('');
+            $('#AssetName').val('');
+            $('#CategoryName').val('');
+            $('#SubCategoryName').val('');
+            $('#AssetStatusId').val('');
+            $('#AssetStatusName').val('');
+            $("#FromLocationId").val('');
+            $("#FromAssetConditionId").val('');
+            $("#FromAssetCondition").val('');
+            $("#FromLocation").val('');
+            $("#FromBeneficiaryEmployeeId").val('');
+            $("#FromBeneficiaryEmployee").val('');
+
+            if (AssetCode != '') {
+                $.post(url, { AssetCode: AssetCode }, function (obj) {
+                    if (obj.Result == 'NotRepairable') {
+                        //alert('Assets those were not sold or disposed will be repairable.');
+                        $("#message").html("<b>" + 'Assets those were not only sold or disposed will be repairable.' + "</b>").css("color", "red");
+                    }
+                    else if (obj.Result == false) {
+                        // alert('System is unable to load data please try again.');
+                        $("#message").html("<b>" + 'System is unable to load data please try again.' + "</b>").css("color", "red");
+                    }
+                    else {
+                        $("#FixedAssetId").val(obj.FixedAssetId);
+                        $("#AssetName").val(obj.AssetName);
+                        $("#CategoryName").val(obj.CategoryName);;
+                        $('#SubCategoryName').val(obj.SubCategoryName);
+                        $('#AssetStatusId').val(obj.AssetStatusId);
+                        $('#AssetStatusName').val(obj.AssetStatus);
+                        $('#FromAssetConditionId').val(obj.FromAssetConditionId);
+                        $('#FromAssetCondition').val(obj.FromAssetCondition);
+                        $('#FromLocationId').val(obj.FromLocationId);
+                        $('#FromLocation').val(obj.FromLocation);
+                        $("#FromBeneficiaryEmployee").val(obj.FromBeneficiaryEmployee);
+                        $("#FromBeneficiaryEmployeeId").val(obj.FromBeneficiaryEmployeeId);
+                        // $("#message").html('');
+                    }
+                    // MFS_IWM_ADC_SCR.doc(43)
+                    FillAssetConditionByAssetStatusId(obj.AssetStatusId);
+                    // --
+
+                }, "json");
+            }
+            return false;
+        }
+        //End AutoComplete
+
+        function FillAssetConditionByAssetStatusId(AssetStatusId) {
+            if (AssetStatusId != '') {
+                $.ajax({
+                    url: '@Url.Action("GetAssetConditionList", "FixedAsset")',
+                    data: { id: AssetStatusId },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (data) {
+                        $("#ToAssetConditionId").empty();
+
+                        var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                        $.each(data, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+
+                        $("#ToAssetConditionId").html(items);
+                    }
+                });
+            }
+            else {
+                var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                $("#ToAssetConditionId").html(items);
+            }
+            return false;
+        }
+
+    });
+
+</script>

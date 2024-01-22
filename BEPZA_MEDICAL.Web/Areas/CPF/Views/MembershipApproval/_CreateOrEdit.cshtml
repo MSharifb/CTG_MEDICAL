@@ -1,0 +1,200 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.MembershipInformation.MembershipInformationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        showErrMsg();
+    });
+
+
+    function showErrMsg() {
+        if ('@Model.IsError' == "1") {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "red");
+        }
+        else {
+            var msg = '@Model.ErrMsg'.replace(/#/gi, "<br/>* ");
+            $("#message").html("<b>" + msg + "</b>").css("color", "green");
+        }
+    }
+
+</script>
+
+<fieldset>
+    <legend>Applicant Information</legend>
+
+    @if (Model.Mode == "Edit")
+    {
+        @Html.HiddenFor(model => model.ApprovalStatusId)
+        @Html.HiddenFor(model => model.MembershipStatus)
+    }
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeCode)<label style='color: red'>*</label>
+        </span><span class="field">
+            @Html.HiddenFor(model => model.EmployeeId)
+            @Html.TextBoxFor(model => model.EmployeeCode, new { @class = "read-only", @readonly = true, @style = "text-align:right;" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.OfficeName)
+        </span><span class="field">
+            @Html.EditorFor(model => model.OfficeName)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeName)
+        </span><span class="field">
+            @Html.EditorFor(model => model.EmployeeName)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.DepartmentName)
+        </span><span class="field">
+            @Html.EditorFor(model => model.DepartmentName)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.DesignationName)
+        </span><span class="field">
+            @Html.EditorFor(model => model.DesignationName)
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.SectionName)
+        </span><span class="field">
+            @Html.EditorFor(model => model.SectionName)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.JoiningDate)
+        </span><span class="field">
+            @Html.EditorFor(model => model.JoiningDate)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.PermanentDate)
+        </span><span class="field">
+            @Html.EditorFor(model => model.PermanentDate)
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PresentPayScale)
+        </span><span class="field">
+            @Html.EditorFor(model => model.PresentPayScale)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.PresentBasicPay)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.PresentBasicPay, new { @readonly = true })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Nationality)
+        </span><span class="field">
+            @Html.EditorFor(model => model.Nationality)
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.DateOfBirth)
+        </span><span class="field">
+            @Html.EditorFor(model => model.DateOfBirth)
+        </span>
+    </div>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.PresentAddress)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.PresentAddress, new { @maxlength = "500", @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+        </span><span class="label-right">
+            @Html.LabelFor(model => model.PermanentAddress)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.PermanentAddress, new { @maxlength = "500", @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.EmployeeCategory)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EmployeeCategory)
+        </span>
+    </div>
+    <div class="row HideDateButton">
+        <span class="label">
+            @Html.LabelFor(model => model.ApplicationDate)
+        </span>
+        <span class="field" id="ApplicationDateImg">
+            @Html.EditorFor(model => model.ApplicationDate, new { @readonly = true })
+        </span>
+        <span class="label-right">@Html.LabelFor(model => model.AccountNumber)</span>
+        <span class="field">@Html.TextBoxFor(model => model.AccountNumber, new { @readonly = true, @style = @"background:#F2F5F8 ;" })</span>
+    </div>
+    <div class="row">
+        <span class="label">@Html.LabelFor(model => model.BankName)</span>
+        <span class="field">
+            @Html.EditorFor(model => model.BankName)
+            @Html.HiddenFor(model => model.BankId)
+        </span>
+        <span class="label-right">@Html.LabelFor(model => model.BankBranchName)</span>
+        <span class="field">
+            @Html.EditorFor(model => model.BankBranchName)
+            @Html.HiddenFor(model => model.BankBranchId)
+        </span>
+    </div>
+
+</fieldset>
+<fieldset>
+    <legend>Membership Witness</legend>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.WitnessName)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.WitnessName, new { @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.WitnessMembershipID)
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.WitnessMembershipID, new { @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.WitnessAddress)
+        </span><span class="field">
+            @Html.TextAreaFor(model => model.WitnessAddress, new { @readonly = true, @style = "cursor:default;background-color: #f2f5f8;padding-right:0;" })
+        </span>
+    </div>
+
+</fieldset>
+
+<fieldset>
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.MembershipID)<label style='color: red'>*</label>
+        </span><span class="field">
+            @Html.TextBoxFor(model => model.MembershipID, new { @required = true })
+        </span>
+        <span class="label-right">
+            @Html.LabelFor(model => model.TrusteeMeetingHeldDate)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.TrusteeMeetingHeldDate, new { @required = true })
+        </span>
+    </div>
+
+</fieldset>
+
+
+<style type="text/css">
+    #PresentBasicPay {
+        background: #F2F5F8;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.HideDateButton').find('span.field #ApplicationDate').attr('readonly', true).css('background-color', '#F2F5F8');
+        $('.HideDateButton').find('#ApplicationDateImg').find('img').hide();
+    })
+</script>

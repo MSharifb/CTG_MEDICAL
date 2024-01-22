@@ -1,0 +1,65 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SelectedApplicantInfoApprovalViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("ApplicantInfoApprovalListDetail"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ApplicantInfoId)
+
+        <td style="width: 30px; text-align: center ">
+            @Html.CheckBoxFor(x => x.IsCheckedFinal, new { @class = "rchkFinal2" })
+        </td>
+        <td width="10%" style="text-align: center">
+            @Html.HiddenFor(x => x.DesignationId, new { @class = "appDesignationId" })
+            @Html.Encode(Model.DesignationName)
+        </td>
+        <td width="10%" style="text-align: center">
+            @Html.Encode(Model.RollNo)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.ApplicantName)
+        </td>
+        <td width="8%" style="text-align: center">
+            @Html.Encode(Model.DateOfBirth)
+        </td>
+        @*<td width="8%" style="text-align: center">
+            @Html.Encode(Model.FullMark)
+        </td>
+        <td width="8%" style="text-align: center" class="pass-mark">
+            @Html.Encode(Model.PassMark)
+        </td>
+        <td width="10%" style="text-align: center" class="obtain-mark">
+            @Html.Encode(Model.ObtainedMarks)
+        </td>*@
+         <td width="8%" style="text-align: center">
+            <a href="#" title="view" onclick="viewTestResult(this,@Model.ApplicantInfoId,@Model.JobAdvertisementInfoId,@Model.DesignationId)">
+                <img src='@Url.Content("~/Content/Images/view.png")' alt="View" style="border: none; " />
+            </a>
+        </td>
+        <td width="10%" style="text-align: left">
+            @Html.Encode(Model.Quota)
+        </td>
+        <td width="10%" style="text-align: center">
+          @*  @Html.Encode(Model.FinallySelected)*@
+            @if (@Html.Encode(Model.FinallySelected.ToString())=="True")
+            {
+              @Html.Label("Yes");
+            }
+            else
+            {
+                @Html.Label("No");
+            }
+        </td>
+        <td width="10%" style="text-align: center">
+            @Html.Encode(Model.FinalSelectedId)
+        </td>
+
+        @*<td width="5%">
+            <a href="#" class="deleteRow" title="delete" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteDetail")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>*@
+    }
+</tr>
+

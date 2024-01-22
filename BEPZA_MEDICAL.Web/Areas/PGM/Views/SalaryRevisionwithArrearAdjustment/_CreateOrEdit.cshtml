@@ -1,0 +1,278 @@
+﻿@model ERP_BEPZA.Web.Areas.PGM.Models.SalaryRevisionwithArrearAdjustment.SalaryRevisionwithArrearAdjustmentViewModel
+
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <fieldset>
+        <div class="row">
+            <span class="label">
+                @Html.HiddenFor(model => model.EmployeeId)
+                @Html.LabelFor(model => model.EmpId)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.EmpId, new { @class = "read-only required", @readonly = true })
+                <img src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.OrderDate)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.OrderDate)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Name)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Name)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.Month)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.Month, Model.MonthList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Designation)
+            </span>
+            <span class="field">
+                @Html.TextBoxFor(model => model.Designation)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.Year)
+                <label class="required-field">*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(model => model.Year, Model.YearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+            </span>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Arrear Details Information</legend>
+        <div class="row" align="center">
+            <div style="width: 90%">
+                <table id="grid" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th width="5%" align="center">
+
+                            </th>
+                            <th width="10%" align="center">
+                                Effective Date
+                            </th>
+                            <th width="10%" align="center">
+                                Order Date
+                            </th>
+                            <th width="10%" align="center">
+                                Arrear From
+                            </th>
+                            <th width="10%" align="center">
+                                Arrear To
+                            </th>
+                            <th width="10%" align="center">
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ if (Model.strMode == "Edit") { Html.RenderPartial("_ReqList", Model); }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>Salary Heads</legend>
+            <div class="row">
+                <div class="leftColumn" title="Addition" style="width:48%">
+                    <table id="Addition" class="contenttable" title="Addition">
+                        <thead>
+                            <tr>
+                                <td align="center" colspan="5" bgcolor="#BBD0E5">Addition</td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    Salary Head
+                                </td>
+                                <td align="center">
+                                    Amount Type
+                                </td>
+                                <td align="center">
+                                    Based On
+                                </td>
+                                <td align="center">
+                                    Percent/Fixed Amount
+                                </td>
+                                <td align="center">
+                                    Total Amount
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ if (Model.strMode == "Edit") { Html.RenderPartial("_Detail", Model); }}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="rightColumn" style="width:48%">
+                    <table id="Deduction" class="contenttable" title="Deduction">
+                        <thead>
+                            <tr>
+                                <td align="center" colspan="5" bgcolor="#FFE5E5">Deduction</td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    Salary Head
+                                </td>
+                                <td align="center">
+                                    Amount Type
+                                </td>
+                                <td align="center">
+                                    Based On
+                                </td>
+                                <td align="center">
+                                    Percent/Fixed Amount
+                                </td>
+                                <td align="center">
+                                    Total Amount
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{ if (Model.strMode == "Edit") { Html.RenderPartial("_DetailMore", Model); }}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="clear">
+            </div>
+        </fieldset>
+
+    </fieldset>
+
+    <div class="row">
+        <span class="label">
+            @Html.LabelFor(model => model.Remarks)
+        </span>
+        <span class="field">
+            @Html.TextAreaFor(model => model.Remarks)
+        </span>
+    </div>
+
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" width="99%" height="98%" style="border: 0px solid white;
+        padding-right: 0px;">
+        <p>
+            Your browser does not support iframes.
+        </p>
+    </iframe>
+</div>
+<div class="clear">
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+    function openEmployee() {
+
+        var url = '@Url.Action("EmployeeSearchForPGM", "Employee")?searchEmpType=active';
+        url = url.replace('PGM', 'PRM');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+
+        return false;
+    }
+
+    function setData(id) {
+        $('#EmployeeId').val(id);
+        GetEmployeeInfo(id);
+        //RequisitionInfo(id);
+        //DeductionInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo(empId) {
+        var url = '@Url.Action("GetEmployeeInfo", "SalaryRevisionwithArrearAdjustment")';
+        if (empId > 0) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ empId: empId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (obj) {
+                    $('#EmpId').val(obj.EmpId);
+                    $('#Name').val(obj.EmployeeName);
+                    $("#Designation").val(obj.Designation);
+                },
+                failure: function (response) {
+                    //alert(response.d);
+                }
+            });
+        }
+    }
+
+    @*var loadUrl = "@Url.Action("SalaryPayment")";
+    function RequisitionInfo(empId) {
+        if (empId != "" && empId != undefined) {
+            $("#ErrorMessage").html("");
+            $.ajax({
+                type: "GET",
+                url: loadUrl,
+                data: { empId: empId },
+                success: (function (result) {
+                    $("#Addition tbody").html(result);
+                })
+            });
+        }
+        else
+            $("#ErrorMessage").show().html("<b> Required Requisition Information</b>").css("color", "red");
+    }*@
+
+    @*var loadUrlDeduction = "@Url.Action("DeductionSalaryPayment")";
+    function DeductionInfo(empId) {
+        if (empId != "" && empId != undefined) {
+            $("#ErrorMessage").html("");
+            $.ajax({
+                type: "GET",
+                url: loadUrlDeduction,
+                data: { empId: empId },
+                success: (function (data) {
+                    $("#Deduction tbody").html(data);
+                })
+            });
+        }
+        else
+            $("#ErrorMessage").show().html("<b> Required Requisition Information</b>").css("color", "red");
+    }*@
+
+    function Closing() {
+
+    }
+
+</script>

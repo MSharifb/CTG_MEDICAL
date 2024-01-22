@@ -1,0 +1,172 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.AMS.ViewModel.AccademicQlfnInfoViewModel
+@*@using (Ajax.BeginForm("CreateOrEditAccademicQlfnInfo", "PersonalInfo", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))*@
+@using (Html.BeginForm("CreateOrEditAccademicQlfnInfo", "AnsarInfo"))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.errClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.HiddenFor(model => model.strMode)
+        @Html.HiddenFor(model => model.Id)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.DegreeLevelId)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.DegreeLevelId, Model.ExamLavelList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.UniversityAndBoardId)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.UniversityAndBoardId, Model.UniversityAndBoardList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                </span>
+
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.InstituteName)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.InstituteName)
+                </span>
+                <span class="label-right">
+                    @*@Html.LabelFor(model => model.SubjectGroupId)
+                    <label class="required-field">*</label>*@
+                    @Html.LabelFor(model => model.DegreeCountryId)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.DegreeCountryId, Model.CountryList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                    @*@Html.DropDownListFor(model => model.SubjectGroupId, Model.SubjectGroupList, @String.Format("{0}", Content.DDLOptionalLabel()))*@
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.AcademicGradeId)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.AcademicGradeId, Model.ResultList, @String.Format("{0}", Content.DDLOptionalLabel()), new { onclick = "EnableDisable();" })
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.ObtainMarks)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.ObtainMarks)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.CGPA)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.CGPA)
+                </span><span class="label-right">
+                    @Html.LabelFor(model => model.Scale)
+                </span><span class="field">
+                    @Html.EditorFor(model => model.Scale)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.YearOfPassing)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.DropDownListFor(model => model.YearOfPassing, Model.YearOfPassingList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class="required"})
+                </span>
+                <span class="label-right">
+                    @Html.LabelFor(model => model.DegreeDuration)
+                    <label class="required-field">*</label>
+                </span><span class="field">
+                    @Html.EditorFor(model => model.DegreeDuration)
+                </span>
+            </div>
+            <div class="row">
+                <span class="label">
+                    @Html.LabelFor(model => model.SpecialAchievement)
+                </span><span class="field">
+                    @Html.TextAreaFor(model => model.SpecialAchievement, new { @maxlength = 200 })
+                </span>
+                <span class="label-right">
+                    
+                </span><span class="field">
+                    
+                </span>
+            </div>
+
+            <div class="clear">
+            </div>
+        </div>
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned || (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="@Model.ButtonText" />
+            }
+            @if (!(new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsViewAssigned)
+            {
+                @Html.ActionLink("Clear", "AccademicQlfnInfoIndex/" + @Model.EmployeeId.ToString(), new { IsMenu = true })
+            }
+            @if (Model.DeleteEnable && (new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)
+            {
+                @Html.ActionLink("Delete", "DeleteAccademicQlfnInfo", new { id = Model.Id }, new { @class = "delete-confirm" })
+            }
+        </div>
+        <div class="spacer">
+        </div>
+        <div class="spacer">
+        </div>
+        <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_AccademicList", Model)
+    </fieldset>
+}
+@*delete-confirm*@
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        EnableDisable();
+    });
+
+    function DeleteConfirm() {
+
+        return confirm('Pressing OK will delete this record. Do you want to continue?')
+    }
+
+    function EnableDisable() {
+        var v = $('#AcademicGradeId :selected').text();
+        if (v.toLowerCase() == 'GPA/CGPA'.toLowerCase() || v.toLowerCase() == 'GPA'.toLowerCase() || v.toLowerCase() == 'CGPA'.toLowerCase()) {
+            $("#ObtainMarks").attr("disabled", "disabled");
+            $("#CGPA").removeAttr("disabled");
+            $("#Scale").removeAttr("disabled");
+            $("#ObtainMarks").val('');
+
+        }
+        else {
+            $("#ObtainMarks").removeAttr("disabled");
+            $("#CGPA").attr("disabled", "disabled");
+            $("#Scale").attr("disabled", "disabled");
+            $("#CGPA").val('');
+            $("#Scale").val('');
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+        
+        if ('@Model.InactiveDate' != '') {
+            fnDisableEditMode();
+            $(".delete-confirm").hide();
+        }
+
+    });
+
+</script>

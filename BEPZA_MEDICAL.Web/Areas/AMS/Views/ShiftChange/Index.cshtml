@@ -1,0 +1,12 @@
+﻿@using ERP_BEPZA.Web.Areas.AMS.Models.ShiftChange
+@model ShiftChangeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/AMS/Views/Shared/_Layout.cshtml";
+}   
+<div class="GroupBox">
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, ERP_BEPZA.Web.Utility.Common.ValidationSummaryHead)
+    </div> 
+    @Html.Partial("_Search")
+</div>

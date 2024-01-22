@@ -1,0 +1,312 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.DesignationHistoryViewModel
+@{
+    Layout = null;
+}
+<div class="GroupBox">
+    <div class="row">
+        <span class="label">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.OldSalaryScaleId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.OldSalaryScaleId, Model.OldSalaryScaleList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+        <span class="label">
+
+            @Html.LabelFor(model => model.NewSalaryScaleId)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.DropDownListFor(m => m.NewSalaryScaleId, Model.NewSalaryScaleList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "required" })
+        </span>
+    </div>
+    <div class="row">
+        <span class="label">
+
+            @Html.LabelFor(model => model.EffectiveDate)
+            <label class="required-field">*</label>
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.EffectiveDate)
+        </span>
+    </div>
+    <div class="clear"></div>
+    <div class="button-crude fixedAddButton" style="text-align: center;">
+        <input id="btSearch" type="button" value="Search" />
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="GroupBox">
+    <table id="designationHistorylTable" class="contenttable fixedcontenttable custom-grid">
+        <thead>
+            <tr>
+                <th>
+                    Old Grade<label class="required-field">*</label>
+                </th>
+                <th>
+                    New Grade<label class="required-field">*</label>
+                </th>
+                <th>
+                    Designation<label class="required-field">*</label>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ if (Model.strMode == "Edit" || Model.ShowRecord == "Show") { Html.RenderPartial("_Details", Model); }}
+        </tbody>
+    </table>
+    <div class="button-crude fixedAddButton" style="text-align: right;">
+        <input id="addItem" type="button" value="Add" />
+    </div>
+</div>
+<div class="clear"></div>
+<div class="GroupBox">
+    <table id="DesignationListTable" class="contenttable fixedcontenttable custom-grid">
+        <thead>
+            <tr>
+                <th>
+                    SL No.
+                </th>
+                <th>
+                    Old Job Grade
+                </th>
+                <th>
+                    New Job Grade
+                </th>
+
+                <th>
+                    Designation
+                </th>
+
+                <th>
+                    Remove
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.DesignationHistoryList.Count; i++)
+            {
+                var item = Model.DesignationHistoryList.ToList()[i];
+                <tr>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].OldJobGradeName)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].NewJobGradeName)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].Designation)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].Id)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].OldSalaryScaleId)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].OldJobGradeId)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].NewSalaryScaleId)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].NewJobGradeId)
+                    </td>
+                    <td style="display: none;">
+                        @Html.HiddenFor(m => m.DesignationHistoryList[i].DesignationId)
+                    </td>
+                    <td class="sNo" style="text-align: center">
+                        @(i + 1)
+                    </td>
+                    <td style="text-align: center">
+                        @item.OldJobGradeName
+                    </td>
+                    <td style="text-align: center">
+                        @item.NewJobGradeName
+                    </td>
+                    <td>
+                        @item.Designation
+                    </td>
+
+                    <td>
+                        <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,@item.DesignationId,'@Url.Action("DeleteDetail")')">
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+</div>
+
+<div class="clear"></div>
+
+<script type="text/javascript">
+
+    $(function () {
+        var Url = window.location.href;
+        $("#btnClear").live("click", function (event) {
+            event.preventDefault();
+            window.location.href = Url;
+        });
+    });
+
+    $("#btSearch").live('click', function (e) {
+        e.preventDefault();
+        // alert('SDD');
+
+        var oldId = $('#OldSalaryScaleId').val();
+        var newId = $('#NewSalaryScaleId').val();
+        var effDate= $('#EffectiveDate').val();
+        if(oldId>0 && newId>0 &&  effDate !=null &&  effDate !='' ){
+            GetSalaryScaleList(oldId, newId);
+        }
+
+    });
+
+    function GetSalaryScaleList(oldScaleId, newScaleid) {
+
+        var url = '@Url.Action("GetOldAndNewSalaryScaleList")';
+        if (oldScaleId > 0 && newScaleid > 0) {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: { oldSalarScaleId: oldScaleId, newSalaryScaleId: newScaleid },
+                success: (function (result) {
+                    $("#designationHistorylTable tbody").html(result);
+                })
+            });
+        }
+    }
+
+    var arrList = [];
+    //pupulate existing data from database
+    var designationHistoryDetails = @Html.Raw(Json.Encode(Model.DesignationHistoryList));
+    $.each( designationHistoryDetails, function( key, value ) {
+        arrList.push(String( value.DesignationId ));
+    });
+
+
+    $('#addItem').live('click', function (e) {
+        e.preventDefault();
+        $("#message").empty();
+
+        //debugger;
+        //var $tr = $(this).closest('.tr_clone');
+        //var $clone = $tr.clone();
+        //$clone.find(':text').val('');
+        //$tr.after($clone);
+        var sno=$('#DesignationListTable tr').length;
+        var empClearanceInfoId = $('#Id').val();
+        var oldSalaryScaleId = $('#OldSalaryScaleId').val();
+        var newSalaryScaleId = $('#NewSalaryScaleId').val();
+        var oldGradeId = $('#OldJobGradeId').val();
+        var oldGradeName = $("#OldJobGradeId option:selected").text();
+        var newGradeId = $('#NewJobGradeId').val();
+        var newGradeName = $("#NewJobGradeId option:selected").text();
+        var designationId = $('#DesignationId').val();
+        var designationName = $("#DesignationId option:selected").text();
+
+        //checking duplicate entry
+        var index = $.inArray(designationId, arrList);
+
+        if (oldGradeId == null || oldGradeId == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (newGradeId == null || newGradeId == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (designationId == null || designationId == "") {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (index >= 0) {
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            //push to arry
+            arrList.push(designationId);
+
+            var trClone = '<tr>' +
+           '<td style="display: none;">' +' <input type="text" name="DesignationHistoryList[0].OldJobGradeName" value="' + oldGradeName + '" ></td>' +
+           '<td style="display: none;">' +' <input type="text" name="DesignationHistoryList[0].NewJobGradeName" value="' + newGradeName + '" ></td>' +
+           '<td style="display: none;">' +' <input type="text" name="DesignationHistoryList[0].Designation" value="' + designationName + '" ></td>' +
+           '<td style="display: none;">' + '<input type="text" value="0" name="DesignationHistoryList[0].Id"></td>' +
+           '<td style="display: none;">' + '<input type="text" name="DesignationHistoryList[0].OldSalaryScaleId" value="' + oldSalaryScaleId + '"></td>' +
+           '<td style="display: none;">' + '<input type="text" name="DesignationHistoryList[0].OldJobGradeId" value="' + oldGradeId + '" ></td>' +
+           '<td style="display: none;">' + '<input type="text" name="DesignationHistoryList[0].NewSalaryScaleId" value="' + newSalaryScaleId + '" ></td>' +
+           '<td style="display: none;">' + '<input type="text" name="DesignationHistoryList[0].NewJobGradeId" value="' + newGradeId + '" ></td>' +
+           '<td style="display: none;">' + '<input type="text" name="DesignationHistoryList[0].DesignationId" value="' + designationId + '" ></td>' +
+
+           '<td class="sNo" style="text-align: center">' + sno + '</td>' +
+           '<td style="text-align: center">' + oldGradeName + '</td>' +
+           '<td style="text-align: center">' + newGradeName + '</td>' +
+           '<td>' + designationName + '</td>' +
+           '<td><a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,0,&quot;' + designationId +'&quot;)"></a></td>' +
+           '</tr>';
+            $('#DesignationListTable tbody').append(trClone);
+            RearrengeControlName();
+
+            $('#OldJobGradeId').val('');
+            $('#NewJobGradeId').val('');
+            $('#DesignationId').val('');
+
+        }
+
+    });
+    function RemoveDb(el, id, designationId,url) {
+        $(el).parent().parent().remove();
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    $(el).parent().parent().remove();
+                    $("#message").html("<b style=\"color:Green\">Information has been deleted successfully.</b> ");
+                }
+            });
+        }
+        arrList = $.grep(arrList, function(value) {
+            return value != designationId;
+        });
+        arrangeSno();
+        RearrengeControlName();
+    }
+
+    function arrangeSno()
+    {
+        var i=0;
+        $('#DesignationListTable tr').each(function() {
+            $(this).find(".sNo").html(i);
+            i++;
+        });
+    }
+
+    function RearrengeControlName() {
+        $('#DesignationListTable tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+</script>

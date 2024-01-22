@@ -1,0 +1,45 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.SelectionBoardInfoCommitteeViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+    @using (Html.BeginCollectionItem("SelectionBoardInfoCommittee"))
+    {
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.SelectionBoardInfoId)
+        @Html.HiddenFor(x => x.IsExternal)
+        @Html.HiddenFor(x => x.MemberEmployeeId)
+        @Html.HiddenFor(x => x.MemberName)
+        @Html.HiddenFor(x => x.MemberDesignation)
+        @Html.HiddenFor(x => x.MemberRole)
+        @Html.HiddenFor(x => x.ActiveStatus)
+        @Html.HiddenFor(x => x.SortOrder)
+        @Html.HiddenFor(x => x.DesignationId)
+
+        <td width="15%" style="text-align: center" class="chck-refNo">
+            @Html.Encode(Model.DesignationName)
+        </td>     
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.SortOrder)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.MemberEmpId)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.MemberName)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.MemberDesignation)
+        </td>
+        <td width="15%" style="text-align: left">
+            @Html.Encode(Model.MemberRole)
+        </td>
+        <td width="15%" style="text-align: center">
+            @Html.Encode(Model.ActiveStatus)
+        </td>
+        <td width="5%">
+            <a href="#" class="deleteRow" title="remove" onclick="RemoveDb(this,@Model.Id,'@Url.Action("DeleteSelectionCommittee")')">
+                <img src='@Url.Content("~/Content/Images/Delete.png")' alt="Delete" style="border: none; " />
+            </a>
+        </td>
+    }
+</tr>

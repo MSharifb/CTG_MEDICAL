@@ -1,0 +1,39 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PGM.Models.HouseRentRule.HouseRentRuleDetailModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<tr class="dynamicRow">
+
+    @if (Model != null)
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.HouseRentRuleId)
+    }
+
+    @using (Html.BeginCollectionItem("HouseRentRuleDetail"))
+    {
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.SlabNo, new { @class = "required", @readonly = true })
+        </td>
+
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.SalaryFrom, new { id = "SalaryFrom", @class = "required", @maxlength = "10" })
+        </td>
+
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.SalaryTo, new { id = "SalaryTo", @class = "required", @maxlength = "10" })
+        </td>
+
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.PercentOfSalary, new { id = "PercentOfSalary", @class = "required", @maxlength = "10" })
+        </td>
+
+        <td style="text-align: center">
+            @Html.TextBoxFor(model => model.MinHouseRent, new { id = "MinHouseRent", @class = "required", @maxlength = "10" })
+        </td>
+
+        @*<td style="text-align: center">
+            @Html.TextBoxFor(model => model.MaxHouseRent, new { id = "MaxHouseRent", @class = "required", @maxlength = "10" })
+        </td>*@
+    }
+
+</tr>

@@ -1,0 +1,109 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.WFM.ViewModel.WelfareFundPolicyViewModel
+
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+<fieldset>
+    <legend>Fund Policy Info</legend>
+    <div class="form-horizontal">
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.WelfareFundCategoryId, new { @class = "col-sm-3 control-label labelRequired" })
+            <div class="col-sm-9">
+                @Html.DropDownListFor(model => model.WelfareFundCategoryId, Model.WelfareFundCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control required" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrderNo, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(model => model.OrderNo, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReferenceDate, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
+                @Html.EditorFor(model => model.ReferenceDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.EffectiveFromDate, new { @class = "col-sm-3 control-label labelRequired" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.EffectiveFromDate, new { @class = "form-control" })
+            </div>
+            @*@Html.LabelFor(model => model.IsContinuous, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-2">
+                @Html.EditorFor(model => model.IsContinuous, new { @class = "form-control" })
+            </div>*@
+        </div>
+        <div class="form-group hdnToDate">
+            @Html.LabelFor(model => model.EffectiveToDate, new { @class = "col-sm-3 control-label labelRequired" })
+            <div class="col-sm-9">
+                @Html.EditorFor(model => model.EffectiveToDate, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MinServiceYear, new { @class = "col-sm-3 control-label labelRequired" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(model => model.MinServiceYear, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaxAmount, new { @class = "col-sm-3 control-label labelRequired" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(model => model.MaxAmount, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.OtherMaxAmount, new { @class = "col-sm-3 control-label labelRequired" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(model => model.OtherMaxAmount, new { @class = "form-control" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.IsActive, new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-9">
+                @Html.EditorFor(model => model.IsActive, new { @class = "form-control" })
+            </div>
+        </div>*@
+
+    </div>
+</fieldset>
+<script type="text/javascript">
+
+    //$(function () {
+    //    if ($('#IsContinuous').is(':checked')) {
+    //        $('#EffectiveToDate').val('');
+    //        $('.hdnToDate').hide();
+    //    }
+    //    else {
+    //        $('#EffectiveToDate').addClass('required');
+    //    }
+    //});
+
+
+    //$('#IsContinuous').on('click', function (e) {
+    //    if ($(this).is(':checked')) {
+    //        $('#EffectiveToDate').val('');
+    //        $('.hdnToDate').hide();
+    //        $('#EffectiveToDate').removeClass('required');
+    //    }
+    //    else {
+    //        $('.hdnToDate').show();
+    //        $('#EffectiveToDate').addClass('required');
+    //    }
+
+    //});
+
+</script>

@@ -1,0 +1,9 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PMI.ViewModel.Budget.YearWiseBilledViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+<span class="delete-button pull-right">
+    <button type="button" class="btn btn-sm btn-primary" style="padding:1px 5px !important; font-weight:bold; font-size:13px !important;">X</button>
+</span>
+<span class="financial-year">
+    @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control"})
+</span>
+@Html.Label("Billed Amount", new { @class = @"lbl" })

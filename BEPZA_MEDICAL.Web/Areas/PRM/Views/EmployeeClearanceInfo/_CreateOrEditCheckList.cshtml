@@ -1,0 +1,294 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.EmpClearanceInfoFormDetailsViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+
+<div class="GroupBox">
+    <div class="row">
+        <span class="label" style="width:25%">
+            @Html.HiddenFor(model => model.Id)
+            @Html.LabelFor(model => model.ClearanceFormName)
+        </span>
+        <span class="field">
+            @Html.TextBoxFor(model => model.ClearanceFormName, new { @class = "read-only", @readonly = true })
+        </span>
+        <span class="label-right">
+        </span>
+        <span class="field">
+        </span>
+    </div>
+    <div class="clear">
+    </div>
+    <div class="row">
+        <span class="label" style="width:25%">
+            @Html.LabelFor(model => model.ClearanceCheckList)
+            <label class="required-field">
+                *
+            </label>
+        </span><span class="field">
+            @Html.DropDownListFor(model => model.ClearanceChecklistId, Model.ClearanceCheckList, @String.Format("{0}", Content.DDLOptionalLabel()))
+        </span>
+    </div>
+    <div class="row">
+        <div class="row">
+            <span class="label" style="width:25%">
+                @Html.LabelFor(model => model.Status)
+            </span>
+            <span class="field">
+
+                @Html.RadioButtonFor(model => model.Status, "True", new { @checked = true })
+                @Html.Label("Yes")
+                @Html.RadioButtonFor(model => model.Status, "False")
+                @Html.Label("No")
+
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <span class="label" style="width:25%">
+            @Html.LabelFor(model => model.Description)
+        </span>
+        <span class="field">
+            @Html.EditorFor(model => model.Description)
+        </span>
+    </div>
+    <div class="clear"></div>
+
+</div>
+<div class="clear"></div>
+
+<div class="GroupBox">
+    <div class="row" align="center">
+        <div style="width:95%">
+            <div class="button-crude fixedAddButton" style="text-align: right;">
+                <input id="btnAddCheckList" type="button" value="Add" />
+                <input id="btnChildUpdate" type="button" value="Update" style="display: none;" />
+            </div>
+            <div class="clear">
+            </div>
+            <table id="ChkListDetailGrid" class="contenttable fixedcontenttable custom-grid">
+                <thead>
+                    <tr>
+                        <th>
+                            SL No.
+                        </th>
+                        <th>
+                            Checklist Name
+                        </th>
+                        <th>
+                            Clearance Status
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Remove
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @for (int i = 0; i < Model.EmpChecklistDetails.Count; i++)
+                    {
+                        var item = Model.EmpChecklistDetails.ToList()[i];
+                        <tr>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.EmpChecklistDetails[i].Id)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.EmpChecklistDetails[i].EmpClearanceFormDetailId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.EmpChecklistDetails[i].ClearanceChecklistId)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.EmpChecklistDetails[i].Status)
+                            </td>
+                            <td style="display: none;">
+                                @Html.HiddenFor(m => m.EmpChecklistDetails[i].Description)
+                            </td>
+                            <td class="sNo">
+                                <label>@(i + 1)</label>
+                            </td>
+                            <td>
+                                <label>@item.ClearanceName</label>
+                            </td>
+                            <td>
+                                <label>  @item.CheckStatus</label>
+                            </td>
+                            <td>
+                                <label>  @item.Description</label>
+                            </td>
+                            <td>
+                                <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,'@item.ClearanceChecklistId','@Url.Action("DeleteEmpClearanceChecklistDetail")')">
+
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $('input[type=radio]').live("click",function(){      
+        if($(this).val() =='True'){
+            $("#Description").addClass("read-only");
+            $("#Description").attr("readonly",true);
+        }
+        else{
+            $("#Description").removeClass("read-only");
+            $("#Description").attr("readonly",false);
+        }
+    });
+
+    var arrCheckList = [];
+
+    //pupulate existing data from database
+    var EmpChecklistDetails = @Html.Raw(Json.Encode(Model.EmpChecklistDetails));
+    $.each(EmpChecklistDetails, function( key, value ) {
+        arrCheckList.push(String( value.ClearanceChecklistId ));
+    });
+
+    $('#btnAddCheckList').click(function (e) {
+        e.preventDefault();
+        $("#messagePopupWindow").empty();
+
+        $("#ClearanceChecklistId").removeClass('border-red');
+        $("#Description").removeClass('border-red');  
+        
+        var sno = $('#ChkListDetailGrid tr').length;
+        var empClearanceFormDetailId = $('#Id').val();
+        var chklistId = $('#ClearanceChecklistId').val();
+        var chkListName = $("#ClearanceChecklistId option:selected").text();
+        var statusMain = $("#Status:checked").val();
+        var status = $("#Status:checked").val();
+        if (status == "False") {
+            status = "No"
+        } else {
+            status = "Yes"
+        }
+        var description = $("#Description").val();
+       
+        if (chklistId == null || chklistId == "") {
+            $("#ClearanceChecklistId").addClass('border-red');       
+            $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        if (status == "No" && description=="") {
+            $("#Description").addClass('border-red');         
+            $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+        //checking duplicate entry
+        var index = $.inArray(chklistId, arrCheckList);
+
+        if (index >= 0) {
+            $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Duplicate Entry</span>  </div> ");
+            return;
+        }
+        else {
+            //push to arry
+            arrCheckList.push(chklistId);
+
+            var trClone = '<tr>' +
+           '<td class="sNo">' + '<label>' + sno + '</td>' +
+           '<td style="display: none;">' + '<input type="text"  value="0"  name="EmpChecklistDetails[0].Id" ></td>' +
+           '<td style="display: none;">' + '<input type="text"name="EmpChecklistDetails[0].EmpClearanceFormDetailId" value="' + empClearanceFormDetailId + '"></td>' +
+
+           '<td style="display: none;">' + '<input type="text" name="EmpChecklistDetails[0].ClearanceChecklistId" value="' + chklistId + '" ></td>' +
+           '<td style="display: none;">' + '<input type="text" name="EmpChecklistDetails[0].Status" value="' + statusMain + '" ></td>' +
+           '<td style="display: none;">' + '<input type="text" name="EmpChecklistDetails[0].Description" value="' + description + '"></td>' +          
+           '<td>' + '<label for="Name">' + chkListName + '</td>' +
+           '<td>' + '<label for="Status" >' + status + '</td>' +
+            '<td>' + '<label for="Description">' + description + '</td>' +
+           '<td>' + '<a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;'+ chklistId +'&quot;,&quot;/PRM/EmployeeClearanceInfo/DeleteEmpClearanceChecklistDetail&quot;)"></a></td>' +
+
+           '</tr>';
+            $('#ChkListDetailGrid tbody').append(trClone);
+            RearrengeControlName();
+        }
+
+        $("#Description").val('');
+        $("#ClearanceChecklistId").val('');
+
+    })
+
+    function RemoveDb(el, id, chklistId, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+            arrCheckList = $.grep(arrCheckList, function(value) {
+                return value != chklistId;
+            })
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#messagePopupWindow").html('<b style=\"color:Green\">' + errMsg + '</b>');
+                        $(el).parent().parent().remove();
+
+                        arrCheckList = $.grep(arrCheckList, function(value) {
+                            return value != chklistId;
+                        })
+                    }
+                    else {
+                        $("#messagePopupWindow").html('<b style=\"color:red\">' + errMsg + '</b>');
+                    }
+                }
+            });
+        }
+
+        //delete from arry
+
+
+        arrangeSno();
+        RearrengeControlName();
+    }
+
+    function arrangeSno() {
+        var i = 0;
+        $('#ChkListDetailGrid tr').each(function () {
+            $(this).find(".sNo").html(i);
+            i++;
+        });
+    }
+
+
+    function RearrengeControlName() {
+        $('#ChkListDetailGrid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+    //$('#btnAdChekList').live('click', function (e) {
+
+    //    $('#messagePopupWindow').empty();
+    //    var rowCount = $('#ChkListDetailGrid tbody tr').length;
+    //    if (rowCount == 0 || rowCount < 0) {
+    //        $("#messagePopupWindow").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span>Please, add at least one Check List.</span> </div> ");
+    //        return false;
+    //        e.preventDefault();
+    //    }
+    //})
+
+</script>
+

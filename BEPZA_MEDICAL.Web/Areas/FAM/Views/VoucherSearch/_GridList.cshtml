@@ -1,0 +1,56 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAM.Models.VoucherSearchModel .VoucherSearchViewModel
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGridP').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Voucher No.', 'Voucher Date', 'Reference No.', 'Project No', 'Project Title', 'Amount', 'SelectedStatus'],
+            colModel: [
+                        { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                        { name: 'VoucherNumber', index: 'VoucherNumber', width: '70px', align: 'center', search: true, hidden: false, edittype: 'text' },
+                        { name: 'VoucherDate', index: 'VoucherDate', width: '70px', align: 'center', search: false, hidden: false, edittype: 'text' },
+                        { name: 'ReferenceNumber', index: 'ReferenceNumber', width: '70px', align: 'left', search: false, edittype: 'text' },                        
+                        { name: 'ProjectNo', index: 'ProjectNo', width: '70px', align: 'center', search: true, hidden: false, edittype: 'text' },
+                        { name: 'ProjectTitle', index: 'ProjectTitle', width: '70px', align: 'left', search: true, hidden: false, edittype: 'text' },
+                        { name: 'Debit', index: 'Debit', width: '70px', align: 'right', search: false, edittype: 'text' },
+                        { name: 'SelectedStatus', index: 'SelectedStatus', align: 'left', hidden: true, search: true, edittype: 'text' }
+                        
+                        ],
+            autowidth: true,
+            caption: "Search Invoice Voucher",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPagerP'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%'
+        });
+        // Pager Function
+        $("#jqSearchP").jqGrid('filterGrid', '#jqGridP', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+        $('#jqGridP').jqGrid('setGridParam', { onSelectRow: function (id) { return SetProjectIdForSearching(id); } }); //this code send employee id to parent
+
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sg_SelectedStatus').parent().prev().hide(); 
+        $('#sg_SelectedStatus').parent().hide();
+
+        $('.ProjectStatusClass').live('click', function () {
+            $('#sg_SelectedStatus').parent().prev().hide(); 
+            $('#sg_SelectedStatus').parent().hide();
+            $('#sg_SelectedStatus').val($(this).val());
+        });
+
+    });  
+   
+</script>

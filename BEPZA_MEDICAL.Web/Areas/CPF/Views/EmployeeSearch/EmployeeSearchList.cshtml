@@ -1,0 +1,40 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.CPF.Models.EmployeeSearchViewModel.EmployeeSearchViewModel
+@{
+    
+    ViewBag.Title = "EmployeeSearch";
+    //Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+<script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script>
+
+
+@using (Html.BeginForm("EmployeeSearchList", "EmployeeSearch", FormMethod.Post, new { id = "frm" }))
+{
+
+    <fieldset>
+        <legend>Membership Status</legend>
+        @Html.RadioButtonFor(x => x.EmployeeStatus, 0, new { id = "AllEmployee", @class = "empStatus" })
+        <label for="paiement_cash">
+            All
+        </label>
+        @Html.RadioButtonFor(x => x.EmployeeStatus, 1, new { id = "ActiveEmployee", @class = "empStatus" })
+        <label for="paiement_cash">
+            Active
+        </label>
+        @Html.RadioButtonFor(x => x.EmployeeStatus, 2, new { id = "InactiveEmployee", @class = "empStatus" })
+        <label for="paiement_cash">
+            Inactive
+        </label>
+    </fieldset>
+    <fieldset>
+        <div id="jqSearch">
+        </div>
+    </fieldset>
+    <br />
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+    <div id="divList">
+        @Html.Partial("_GridList", Model)
+    </div>
+}

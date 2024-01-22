@@ -1,0 +1,283 @@
+﻿@using BEPZA_MEDICAL.Web.Areas.FAM.Models.CentralBudgetInformation
+@model CentralBudgetInformationModel
+
+@using (Ajax.BeginForm("Index", null, new AjaxOptions { HttpMethod = "POST", OnComplete = "OnComplete" }, new { id = "frm", action = Url.Action(Model.Mode == "Create" ? "Create" : "Edit") }))
+{
+    
+    @Html.HiddenFor(m=>m.Id)
+    @Html.HiddenFor(m=>m.ApprovalStatus)
+    
+    <div class="GroupBox">
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FinancialYearId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.FinancialYearId, Model.FinancialYearList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                @Html.HiddenFor(m=>m.FinancialYearId)
+            </span>
+
+            @*<span class="label-right">
+                @Html.LabelFor(model => model.PendingApproval)
+            </span>
+            <span class="field">
+                @Html.EditorFor(m => m.PendingApproval) 123
+            </span>*@
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Remarks)
+            </span>
+            <span class="field">
+                @Html.EditorFor(m => m.Remarks)
+            </span>
+        </div>
+        <div class="clear"></div>
+
+
+        <div id="CentralBudgetList">
+        <table cellspacing='0' cellpadding='0' style=" margin-left:50px;">
+            <thead >
+                <tr>
+                    
+                    <th style="border:1px solid #CCCCCC; width:320px;">
+                        Account Head
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:100px;">
+                        Amount
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:100px;">
+                        Account Type
+                    </th>
+                    <th style="border:1px solid #CCCCCC; width:200px;">
+                        Remarks
+                    </th>
+                </tr>
+            </thead>
+
+            @if (Model != null && Model.CentralBudgetList != null)
+                {
+
+                    foreach (var x in Model.CentralBudgetList)
+                    {
+                        @Html.Partial("CentralBudgetList", x);
+                    }
+                }
+
+        </table>
+        </div>
+
+        
+        </div>
+
+
+        <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.ApprovalPathId)
+                <label style='color: red'>*</label>
+            </span>
+            <span class="field">
+                @Html.DropDownListFor(m => m.ApprovalPathId, Model.ApprovalPathList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                @Html.HiddenFor(m=>m.ApprovalPathId)
+            </span>
+
+            <span class="label-right">
+                @Html.LabelFor(model => model.CurrentApprovalNodeId)
+                
+            </span>
+            <span class="field" id="ddlNodeList">
+                @Html.DropDownListFor(m => m.CurrentApprovalNodeId, Model.NextApprovalNodeList, @String.Format("{0}", Content.DDLOptionalLabel()))
+                @Html.HiddenFor(m=>m.CurrentApprovalNodeId)
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label" style='display:none'>
+                @Html.LabelFor(model => model.recommenderOrApprover)
+            </span><span class="field"  style='display:none'>
+                @Html.EditorFor(m => m.recommenderOrApprover)
+            </span>
+        </div>
+
+        </div>
+        
+    
+    
+    <div class="clear"></div>
+    <div class="button-crude">
+        @if ((Model.recommenderOrApprover == null) & (Model.ApprovalStatus == "Draft" || Model.ApprovalStatus == "Rejected"))
+        {
+            if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+            <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="display:none;" />
+            }
+            else
+            {
+            }
+            if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsEditAssigned)
+            {
+                <input type="submit" value="Update" id="btnUpdate" name="btnSubmit" style="display:none;" />
+            }
+        }     
+
+        @if (Model.recommenderOrApprover != null)
+        {
+            if (Model.recommenderOrApprover.ToUpper() == "Recommender".ToUpper())
+            {
+                <input type="submit" value="Recommend" id="btnRecommend" name="btnSubmit" onclick="return ValidateForm();" />
+            }
+
+            if (Model.recommenderOrApprover.ToUpper() == "Approver".ToUpper())
+            {
+                <input type="submit" value="Approve" id="btnApprove" name="btnSubmit" onclick="return ValidateForm();" />
+            }
+        }
+        
+        @if (Model.recommenderOrApprover != null)
+        {
+            if (Model.recommenderOrApprover.ToUpper() == "Recommender".ToUpper() || Model.recommenderOrApprover.ToUpper() == "Approver".ToUpper())
+            {
+                <input type="submit" value="Reject" id="btnReject" name="btnSubmit" onclick="return ValidateForm();" />
+            }
+        }
+        @if ((Model.recommenderOrApprover == null) & (Model.ApprovalStatus == "Draft"))
+        {
+        <input type="button" value="Clear" id="btnClear" name="btnClear" onclick="document.getElementById('frm').reset();" />
+        }
+        <div class="clear"></div>
+    </div>
+    
+}
+<div class="button-crude button-left">
+    @Ajax.ActionLink("Back to List", "BackToList", new AjaxOptions { OnComplete = "OnCompleteBacktoList" })
+</div>   
+<div class="clear"></div>
+<script type="text/javascript">
+
+$(function () {
+
+
+
+     
+     $('#btnReject').live('click', function(){
+     if($(this).val()=="Reject")
+     {
+        $('#recommenderOrApprover').val("Reject");
+     }
+        
+
+  });
+
+
+
+
+    var mode = '@Model.Mode';
+    $.validator.unobtrusive.parse('#frm');
+    
+    if (mode == 'Create') {
+
+        $('#btnSave').show();
+        $('#btnUpdate').hide();
+    }
+    else {
+        
+        $('#FinancialYearId').attr('disabled',true)
+        $('#btnUpdate').show();
+
+//        if('@Model.NodeApprovalType'=="Recommender")
+//        {
+//            alert('Recommend');
+//           $('#btnUpdate').val("Recommend");
+//        }
+//        else if ('@Model.NodeApprovalType'== "Approver")
+//        {
+//            $('#btnUpdate').val("Approve");
+//        }
+
+        $('#btnSave').hide();
+        
+    }
+    
+    
+
+
+
+})
+
+function OnCompleteBacktoList(content) {
+    if (content.statusText == 'OK') {
+        $('.search-content').hide();
+        $('.frm-content').html(content.responseText);
+    } else {
+        $('#message').text('An error has occoured. Please try again.').css({ 'color': 'red' });
+    }
+}
+
+function OnComplete(content) {
+    var data = content.responseText;
+    if (data.toLowerCase().indexOf("updated") >= 0) {
+                    
+            $("#message").show();
+            $('#message').text(data).css({ 'color':'green' });
+            $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else if (data.toLowerCase().indexOf("saved") >= 0) {
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'green' });
+        $("#message").delay(3000).hide('slow');
+
+        $.get(
+                "@Url.Action("BackToList")",
+                {},
+                function(r){
+                    if(r != ''){
+                        //$('.search-content').show();
+                        $('.frm-content').html(r);
+                    }
+                    else{
+                        //$('.search-content').hide();
+                        $("#message").show();
+                        $('#message').text(data).css({ 'color':'red' });
+                        $("#message").delay(3000).hide();
+                    }
+                }
+            );
+    }
+    else {
+        //$('.search-content').hide();
+        $("#message").show();
+        $('#message').text(data).css({ 'color':'red' });
+        $("#message").delay(3000).hide('slow');
+    }
+}
+
+
+
+</script>
+
+<style>
+    .label {width:185px;}
+    .label-right {width:185px;}
+</style>
+

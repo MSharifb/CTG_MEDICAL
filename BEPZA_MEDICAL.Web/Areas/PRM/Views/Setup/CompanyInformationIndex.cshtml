@@ -1,0 +1,234 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.CompanyInformationViewModel
+@using BEPZA_MEDICAL.Web.Helpers
+@{
+    ViewBag.Title = "CreateOrEditCompanyInfo";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("CompanyInformationIndex", "Setup", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+
+    <div class="GroupBox" style="min-height: 15px" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        @if (!string.IsNullOrEmpty(Model.ErrMsg))
+        {
+            <div class="@Model.errClass">
+                @Model.ErrMsg
+            </div>
+        }
+    </div>
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(model => model.btnText)
+    <div class="GroupBox">
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.CompanyName)
+                <label style='color: red'>
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.CompanyName, new { @class = "required" })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.CompanyNameInBengali)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.CompanyNameInBengali)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Address)
+                <label style='color: red'>
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(model => model.Address, new { @class = "required" })
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.AddressInBengali)
+            </span>
+            <span class="field">
+                @Html.TextAreaFor(model => model.AddressInBengali)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.City)
+            </span><span class="field">
+                @Html.EditorFor(model => model.City)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.CityInBengali)
+            </span><span class="field">
+                @Html.EditorFor(model => model.CityInBengali)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Country)
+            </span><span class="field">
+                @Html.EditorFor(model => model.Country)
+            </span>
+            <span class="label-right">
+                @Html.LabelFor(model => model.CountryInBengali)
+            </span><span class="field">
+                @Html.EditorFor(model => model.CountryInBengali)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Phone1)
+                <label style='color: red'>
+                    *
+                </label>
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.Phone1, new { @class = "required" })
+            </span>
+        </div>
+
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.FaxNo)
+            </span>
+            <span class="field">
+                @Html.EditorFor(model => model.FaxNo)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.EmailAddress)
+            </span><span class="field">
+                @Html.EditorFor(model => model.EmailAddress)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.WebURL)
+            </span><span class="field">
+                @Html.EditorFor(model => model.WebURL)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.Phone2)
+            </span><span class="field">
+                @Html.EditorFor(model => model.Phone2)
+            </span>
+        </div>
+        <div class="row">
+            <span class="label">
+                @Html.LabelFor(model => model.CompanyLogo)
+                <label style='color: red'>
+                    *
+                </label>
+            </span>           
+            <span class="field">
+                @*@Html.CheckBoxFor(model => model.HasPhoto)*@
+                <div class="portrait-box">
+                    <span id="portrait-holder" class="applicant-img-preview">
+                        @if (Model.CompanyLogo != null && Model.CompanyLogo.Length > 0)
+                        {
+                            <img id="mainPortrait" alt="Applicant Photo" height="100" width="150" src="data:image;base64,@System.Convert.ToBase64String(Model.CompanyLogo)" />
+                        }
+                        <img id="previewImg" class="applicant-img-preview" src="#" alt="" />
+                    </span>
+                </div>
+                @Html.HiddenFor(model => model.CompanyLogo)
+                @* @Html.HiddenFor(model => model.FileName)*@
+                <input type="file" name="Attachment" id="Attachment" />
+
+            </span>
+            <span style="margin-left: 25px; width: 200px;" class="label">Maximum image size(512 KB) and jpg, jpeg, png or gif image only</span>
+
+        </div>
+
+        <div class="clear">
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+
+    <div class="GroupBox">
+        <div class="button-crude">
+            <input type="submit" value="@Model.btnText" id="btnSave" name="btnSave" />
+        </div>
+    </div>
+
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("form").submit(function () {
+            var bValue = $('#btnSave').val();
+            $('#btnText').val(bValue);
+
+        });
+
+        function getNameFromPath(strFilepath) {
+            var objRE = new RegExp(/([^\/\\]+)$/);
+            var strName = objRE.exec(strFilepath);
+
+            if (strName == null) {
+                return null;
+            }
+            else {
+                return strName[0];
+            }
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#previewImg').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('input[name=Attachment]').live("change", function (e) {
+            e.preventDefault();
+            var file = getNameFromPath($(this).val());
+            if (file != null) {
+                var extension = file.substr((file.lastIndexOf('.') + 1)).toLowerCase();
+                switch (extension) {
+                    case 'jpg':
+                    case 'png':
+                    case 'gif':
+                    case 'jpeg':
+                        flag = true;
+                        $('#mainPortrait').hide();
+                        $('#previewImg').show();
+                        readURL(this);
+                        break;
+                    default:
+                        flag = false;
+                }
+            }
+            if (flag == false) {
+                $("#message").html('<b>Please select JPG,JPEG, GIF or PNG image file only.</b>').css({ color: 'red' });
+                $('input[name=Attachment]').val("");
+                $('#previewImg').attr("src", "#");
+                return false;
+            }
+            else {
+                var fileSize = 0;
+                fileSize = this.files[0].size;
+                fileSize = Math.round(fileSize / 1024);
+                if (fileSize >= 512) {
+                    $("#message").html('<b>Please select image file less than 512 KB.</b>').css({ color: 'red' });
+                    $('input[name=Attachment]').val("");
+                    $('#mainPortrait').show();
+                    $('#previewImg').hide();
+                    return false;
+                }
+
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,37 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.QueryAnalyzerViewModel
+
+@Html.HiddenFor(m => m.QueryAnalyzerItemsList.Count)
+<table id="tblSelection" class="contenttable fixedcontenttable custom-grid">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Category
+            </th>
+            <th>
+                Item
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.QueryAnalyzerItemsList.Count; i++)
+        {
+            var item = Model.QueryAnalyzerItemsList.ToList()[i];
+            <tr>
+                <td>
+                    @Html.CheckBoxFor(m => m.QueryAnalyzerItemsList[i].IsSelected, new { @tableName = Model.QueryAnalyzerItemsList[i].CategoryTableName, @columnName = Model.QueryAnalyzerItemsList[i].CategoryColumnName, @column = Model.QueryAnalyzerItemsList[i].CategoryColumn, @table = Model.QueryAnalyzerItemsList[i].CategoryTable, @onclick = "SelectionLogic(this);" })
+                    @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryTable)
+                    @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryColumnName)
+                    @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryColumn)
+                    @Html.HiddenFor(m => m.QueryAnalyzerItemsList[i].CategoryTableName)
+                </td>
+                <td>
+                    @Html.Encode(Model.QueryAnalyzerItemsList[i].CategoryTableName)
+                </td>
+                <td>
+                    @Html.Encode(Model.QueryAnalyzerItemsList[i].CategoryColumnName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

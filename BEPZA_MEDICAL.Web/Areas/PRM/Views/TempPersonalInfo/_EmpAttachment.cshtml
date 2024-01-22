@@ -1,0 +1,73 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.PersonalInfo.EmpAttachmentViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm(@Model.ActionType, "TempPersonalInfo", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="message">
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="@Model.ErrorClass">
+                    @Model.Message
+                </div>
+            }
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+        </div>
+        @Html.HiddenFor(model => model.EmployeeId)
+        @Html.Partial("_EmpTopInfo", Model.EmpTop)
+        <div class="GroupBox">      
+            <div class="row">
+                <span class="label">@Html.LabelFor(m => m.AttachmentTypeId)<label class="required-field">*</label></span>
+                <span class="field">@Html.DropDownListFor(model => model.AttachmentTypeId, Model.AttachmentTypeList, @String.Format("{0}", Content.DDLOptionalLabel()))</span>
+                <span class="label-right">File Location<label class="required-field">*</label></span>
+                <span class="field"><input type="file" name="Attachment" id="Attachment" /></span>
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(m => m.FileName)<label class="required-field">*</label></span>
+                <span class="field">@Html.EditorFor(m=> m.FileName)</span>
+                <span class="label-right">@Model.FileSize &nbsp;</span>
+                <span class="field">@Html.ActionLink("Download", "GetEmpAttachedFile", new { id = Model.Id }, new { id="hlDowload", target="_blank" })</span>
+                @*<a href="@Model.DownloadLink">@Model.FileName</a>*@
+            </div>
+            <div class="row">
+                <span class="label">@Html.LabelFor(m=> m.Description)</span>
+                <span class="field">@Html.EditorFor(m=> m.Description)</span>
+                <span class="label-right"></span>
+                <span class="field"></span>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="button-crude">
+            <input type="submit" value="@Model.ButtonText"  />
+            @if (Model.DeleteEnable)
+            {
+                @Html.ActionLink("Delete", "DeleteAttachment", new { id = Model.Id }, new { onclick = "return DeleteConfirm();" })
+            }          
+            @Html.ActionLink("Clear", "CreateAttachment/" + @Model.EmployeeId.ToString() /*, new { controlType=Model.Type }, null*/)
+        </div>
+    </fieldset>
+    
+    <div class="grid">
+        <table id="jqGrid" cellpadding="0" cellspacing="0">
+        </table>
+        <div id="jqGridPager" style="text-align: center;">
+        </div>
+        @Html.Partial("_EmpAttachmentList", Model)
+    </div>
+    <div class="clear"> 
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script>
+    if ($('#FileName').val() == '')
+        $('#hlDowload').hide();
+</script>

@@ -1,0 +1,39 @@
+﻿@model BOM_MPA.Web.Areas.PRM.ViewModel.SalaryScaleViewModel
+@using BOM_MPA.Web.Helpers
+<tbody>
+    @foreach (var gradeStep in Model.JobGradeViewModel.GradeStep)
+    {
+        <tr>
+            using (Html.BeginCollectionItem("JobGradeViewModel.GradeStep"))
+            {
+
+            @if (Model != null)
+            {
+                @Html.Hidden("Id", gradeStep.Id)
+
+                @Html.Hidden("IUser", gradeStep.IUser)
+                @Html.Hidden("IDate", gradeStep.IDate)
+                @Html.Hidden("EUser", gradeStep.EUser)
+                @Html.Hidden("EDate", gradeStep.EDate)
+            }
+
+            <td width="30%" style="text-align: center">
+                @Html.TextBox("StepName", gradeStep.StepName, new { @class = "required", @readonly = true })
+            </td>
+
+            <td width="70%" style="text-align: center">
+                @Html.TextBox("StepAmount", gradeStep.StepAmount, new { @class = "required" })
+            </td>
+
+            @*
+                <td>
+                    <a href="#" class="deleteRow" title="delete">
+                        <img src='@Url.Content("~/Content/Images/Delete.png")' style="border: none; "/></a>
+                </td>
+            *@
+
+            }
+        </tr>
+    }
+
+</tbody>

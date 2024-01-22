@@ -1,0 +1,57 @@
+﻿<script type="text/javascript">
+   
+    $(function () {
+
+        $("a.deleteItem").live("click", function () {
+            deleteLinkObj = $(this);  //for future use
+            $('#delete-dialog').dialog('open');
+            return false; // prevents the default behaviour
+        });     
+
+    });
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            autowidth: true,
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['ID', 'Organogram Level', 'Designation', 'Employee Name', 'Delete'],
+            colModel: [
+                        { name: 'ID', index: 'ID', align: 'center', search: false, hidden: true, edittype: 'text' },
+                        { name: 'OrganogramLevelName', index: 'OrganogramLevelName', width: 80, align: 'center', search: false, edittype: 'text', formatter: viewformatEdiorLink },
+                        { name: 'Designation', index: 'Designation', width: 80, align: 'center', search: false, edittype: 'text' },
+                        { name: 'EmployeeName', index: 'EmployeeName', align: 'left', search: false, edittype: 'text' },
+                        { name: 'Delete', index: 'Delete', width: '20', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, edittype: 'text', formatter: deleteformateadorLink }
+
+                      ],
+            caption: "Head of the Level Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ID',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '100%'
+
+        });
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: false, enableClear: false });
+    });
+
+    function deleteformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Delete", new { id = "_id_" }, new { @class = "deleteItem", @style = "text-decoration: none;" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+   
+</script>

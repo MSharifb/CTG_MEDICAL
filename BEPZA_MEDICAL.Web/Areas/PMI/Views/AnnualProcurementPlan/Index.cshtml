@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+
+@using (Ajax.BeginForm("Index", "AnnualProcurementPlan", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div class="GroupBox" id="message">
+        @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    </div>
+    <fieldset>
+        <legend> Search </legend>
+        <div id="jqSearch">
+        </div>
+    </fieldset>
+    <div class="toolbar-btn-action clearfix">
+        @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            <a href="@Url.Action("Create")" class="btn btn-success"> <i class="fa fa-plus-circle"></i> Add new</a>
+        }
+
+    </div>
+    <div class="clear" style="height:10px">
+    </div>
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+    <div id="divList">
+        @Html.Partial("_GridList")
+    </div>
+
+}
+    <script type="text/javascript">
+    $('#jqGrid').click(function (e) {
+        //debugger;
+
+        var $groupHeader = $(e.target).closest("tr.jqgroup");
+        var appliedClass = $groupHeader.attr('class');
+
+        if ($groupHeader.length > 0 && $groupHeader.hasClass("myHeaderStyle")) {
+            var id = $(e.target).closest("tr.jqgroup").next('tr').next('tr').attr('id');
+            e.preventDefault();
+            var baseUrl = window.location.href.split("PMI")[0];
+            baseUrl = baseUrl + '/PMI/AnnualProcurementPlan/Edit/' + id;
+            window.location.href = baseUrl;
+        }
+    });
+
+    </script>

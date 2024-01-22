@@ -1,0 +1,108 @@
+﻿@*<script type="text/javascript">
+        $(function () {
+
+            $("a.refreshIcon").on("click", function () {
+                // alert($(this));
+
+                rollbackLinkObj = $(this);  //for future use
+                $('#rollback-dialog').dialog('open');
+                return false; // prevents the default behaviour
+            });
+        });
+
+    </script>*@
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#jqGrid').jqGrid({
+            url: '@Url.Action("GetList")',
+            datatype: 'json',
+            mtype: 'POST',
+            colNames: ['Id', 'Financial Year', 'Financial Year', 'Process Date', 'Remarks', 'Details', 'Rollback', 'Prepare Voucher'],
+            colModel: [
+                            { name: 'Id', index: 'Id', align: 'left', search: false, hidden: true, edittype: 'text' },
+                            { name: 'FinancialYearId', index: 'FinancialYearId', align: 'center', width: '60px', hidden: true, search: true, edittype: 'select', surl: '@Url.Action("GetYearList")' },
+                            { name: 'FinYearName', index: 'FinYearName', align: 'center', search: false, edittype: 'text' },
+                            { name: 'ProcessDate', index: 'ProcessDate', align: 'center', hidden: true, search: false, edittype: 'text' },
+                            { name: 'Remarks', index: 'Remarks', align: 'left', search: false, edittype: 'text' },
+                            { name: 'Details', index: 'Details', align: 'center', search: false, width: '50px', edittype: 'image', formatter: generateformateadorLink },
+                            { name: 'Rollback', index: 'Rollback', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '50px', edittype: 'image', formatter: rollbackformateadorLink },
+                            { name: 'PrepareVoucher', index: 'PrepareVoucher', align: 'center', search: false, hidden: IsDeleteAssigned, sortable: false, width: '60px', edittype: 'image', formatter: prepareVoucherLink }
+
+            ],
+            autowidth: true,
+            caption: "Depreciation Information",
+            rowList: [20, 30, 40, 50, 100],
+            pager: $('#jqGridPager'),
+            rowNum: 20,
+            sortname: 'ProcessDate',
+            sortorder: 'asc',
+            viewrecords: true,
+            height: '100%',
+            width: '50%',
+            loadComplete: function () {
+                $("a.refreshIcon").on("click", function () {
+                    // alert($(this));
+
+                    rollbackLinkObj = $(this);  //for future use
+                    $('#rollback-dialog').dialog('open');
+                    return false; // prevents the default behaviour
+                });
+            }
+        });
+        $("#jqSearch").jqGrid('filterGrid', '#jqGrid', { gridModel: true, gridNames: true, formtype: 'horizontal', autosearch: false, enableSearch: true, enableClear: true });
+
+    });
+    function rollbackformateadorLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "Rollback", new { id = "_id_" }, new { @class = "refreshIcon" })';
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+    function viewformatEdiorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink("_name_", "Edit", new { id = "_id_" })';
+        url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+    function generateformateadorLink(cellvalue, options, rowObject) {
+
+        var url = '@Html.ActionLink(" ", "GoToDetails", new { id = "_id_" }, new { @class = "mSalaryPDetails" })';
+        url = url.replace(/_id_/, rowObject[0]);
+
+        return url;
+    }
+
+    function prepareVoucherLink(cellvalue, options, rowObject) {
+        var url = '@Html.ActionLink(" ", "VoucherPosing", new { id = "_id_" }, new { @class = "fa fa-check-square-o", style = "color: #65a0c6; text-decoration: none !important;" })';
+        //url = url.replace(/_name_/, cellvalue);
+        url = url.replace(/_id_/, rowObject[0]);
+        return url;
+    }
+
+
+</script>
+
+
+<script type="text/javascript">
+
+    function handleDeleteSuccess() {
+    }
+    function handleDeleteFailure() {
+        $("#message").html('There is an Ajax call back error!');
+    }
+    function JsonDelete_OnComplete(context) {
+        var obj = eval("(" + context.responseText + ")");
+        if (obj.Success) {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "Green");
+            $('#sButton').trigger('click');
+        }
+        else {
+            $("#message").html("<b>" + obj.Message + "</b>").css("color", "red");
+        }
+    }
+
+</script>

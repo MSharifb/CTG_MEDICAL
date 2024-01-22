@@ -1,0 +1,34 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.INV.ViewModel.RequisitionInfoViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/INV/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "OnlineRequisition", FormMethod.Post, new { id = "frm", @encType = "multipart/form-data" }))
+{
+    <fieldset>
+        <div class="GroupBox" id="message" style="min-height:15px;">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div id="ErrMsg" class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned && Model.Status == "Submit")
+            {
+                <input type="submit" value="Update" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+            @*<input type="button" value="Clear" id="btnClear" name="btnClear" />*@
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
+
+

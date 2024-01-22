@@ -1,0 +1,34 @@
+﻿@model ERP_BEPZA.Web.Areas.CPF.Models.LoanApplication.LoanApplicationViewModel
+@using ERP_BEPZA.Web.Helpers
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/CPF/Views/Shared/_Layout.cshtml";
+}
+@using (Ajax.BeginForm("Index", "LoanApproval", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+     
+    <div class="GroupBox" style="max-height: 15px" id="message">
+    </div>
+    <div class="GroupBox">
+        <div id="jqSearch">
+        </div>
+        <div class="clear">
+        </div>
+    </div> 
+    
+    @*<div class="button-crude button-left">
+        @if ((new ERP_BEPZA.Web.Utility.AppConstant()).IsAddAssigned)
+        {
+            @Html.ActionLink("Add New", "Create")
+        }
+    </div>*@
+    <br /> 
+    <br />   
+    <table id="jqGrid" cellpadding="0" cellspacing="0">
+    </table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>  
+    <div id="divList">
+        @Html.Partial("_GridList")
+    </div>
+}

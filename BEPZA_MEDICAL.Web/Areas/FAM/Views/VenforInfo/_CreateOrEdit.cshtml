@@ -1,0 +1,93 @@
+﻿@model MFS_IWM.Web.Areas.FAM.Models.VendorInfo.VendorInformationModel
+@using MFS_IWM.Web.Helpers
+<script src="@Url.Content("~/Scripts/listEditor.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".addItem").click(function () {
+            $(".validation-summary-errors ").empty();
+        });
+    });
+</script>
+<table width="100%" class="contenttable">
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.VendorName)
+                <label style='color: red'>
+                    *</label>
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.VendorName)
+            </div>
+        </td>
+
+        <td >
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ContactPerson)
+            </div>
+        </td>
+        <td >
+            <div class="editor-field" >
+                @Html.EditorFor(model=>model.ContactPerson)
+            </div>
+        </td>
+
+    </tr>
+
+
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ContactNumber)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.ContactNumber)
+            </div>
+        </td>
+
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model => model.EMail)
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model=> model.EMail)
+            </div>
+        </td>
+
+        <td>
+        
+        </td>
+
+    </tr>
+
+    <tr>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model=> model.Address)            
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model=>model.Address)            
+            </div>
+        </td>
+        <td>
+            <div class="editor-label">
+                @Html.LabelFor(model=>model.IsActive)            
+            </div>
+        </td>
+        <td>
+            <div class="editor-field">
+                @Html.EditorFor(model=>model.IsActive)
+            </div>
+        </td>
+
+    </tr>
+</table>
+

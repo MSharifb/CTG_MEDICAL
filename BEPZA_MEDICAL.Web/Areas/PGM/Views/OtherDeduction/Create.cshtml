@@ -1,0 +1,26 @@
+﻿@model BOM_MPA.Web.Areas.PGM.Models.OtherAdjustDeduct.OtherAdjustDeductModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PGM/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "OtherDeduction", FormMethod.Post, new { id = "frm" }))
+{
+ 
+    <fieldset>
+        @* @Html.ValidationSummary(false, BOM_MPA.Web.Utility.Common.ValidationSummaryHead)*@
+        <div>
+            @Html.HiddenFor(model => model.Type)
+            @Html.Partial("_CreateOrEdit", Model)
+        </div>
+        <div class="button-crude">
+            @if ((new BOM_MPA.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Save" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />           
+            }
+        </div>
+    </fieldset>
+}
+<div class="button-crude button-left">
+    @Html.ActionLink("Back to List", "Index/" +@Model.Type.ToString () )
+</div>

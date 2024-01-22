@@ -1,0 +1,28 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.PRM.ViewModel.RollGenerationViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/PRM/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Create", "RollGeneration", FormMethod.Post, new { id = "frm" }))
+{
+    <fieldset>
+        <div class="messageBox" id="message">
+            @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+            @if (!string.IsNullOrEmpty(Model.ErrMsg))
+            {
+                <div class="@Model.errClass">
+                    @Model.ErrMsg
+                </div>
+            }
+        </div>
+        @Html.Partial("_CreateOrEdit", Model)
+        <div class="button-crude">
+            @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+            {
+                <input type="submit" value="Process" id="btnSave" name="btnSubmit" style="margin-right: 8px;" />
+            }
+            @*<input type="button" value="Reprocess" id="btnClear" name="btnClear" />*@
+        </div>
+    </fieldset>
+}

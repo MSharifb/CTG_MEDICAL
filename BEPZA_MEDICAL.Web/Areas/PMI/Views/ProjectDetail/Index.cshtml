@@ -1,0 +1,104 @@
+﻿@{ ViewBag.Title = "jqGrid in ASP.NET MVC - Searching [Custom]"; }
+@{
+    ViewBag.Title = "Project Details";
+    Layout = "~/Areas/PMI/Views/Shared/_LayoutNew.cshtml";
+}
+<script type="text/javascript">
+
+
+
+
+</script>
+@using (Ajax.BeginForm("Index", "ProjectDetail", new AjaxOptions { HttpMethod = "POST" }, new { id = "frm" }))
+{
+    <div class="message"></div>
+    <fieldset>
+        <div id="jqSearch">
+        </div>
+    </fieldset>
+    <div class="pull-right" style="font-size: 11px !important; font-weight:bold; font-style:italic;">
+        [N.B.] Green Color Indicate Defined Project, Red Color Indicate Undefined Project
+    </div>
+    <div>
+        @Html.Partial("_GridList")
+    </div>
+    @*<div class="GroupBox" style="display:block;">
+            <div class="button-crude" style="text-align:left; overflow:hidden;">
+                @if ((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsAddAssigned)
+                {
+                    <input type="button" id="btnAddProject" value="Add New Project" />
+                }
+            </div>
+        </div>*@
+    <div id="GridView Area"></div>
+    <table id="jqGrid" cellpadding="0" cellspacing="0"></table>
+    <div id="jqGridPager" style="text-align: center;">
+    </div>
+    <div id="divList">
+        @*<div id='delete-dialog' title='Delete Record' style="height: 20px">
+                <p style="line-height: 1em">
+                    <span class='ui-icon ui-icon-alert' style='float: left; margin: 0 7px 20px 0;'></span>
+                    Do you want to delete this record?
+                </p>
+            </div>*@
+        @*@Html.Partial("_GridList")*@
+    </div>
+}
+
+<script type="text/javascript">
+    $('#btnAddProject').click(function () {
+        document.location = '@Url.Action("Create", "ProjectDetail")';
+    });
+
+    function RemoveAllOptionFromFy() {
+        $("#sg_FinancialYearName option[value='0']").remove();
+    }
+
+    function SetCurrentFinancialYear() {
+        var url = '@Url.Action("GetCurrentFinancialYear", "ProjectDetail")';
+        $.ajax({
+            url: url,
+            type: 'POST',
+            cache: false,
+            success: function (result) {
+                $('.filtertable tbody tr #sg_FinancialYearName').val(result).attr("selected", "selected");
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        setTimeout(RemoveAllOptionFromFy, 6000);
+        setTimeout(SetCurrentFinancialYear, 5000);
+    })
+
+    $(document).ready(function () {
+        setTimeout(SetFilter, 5000);
+    });
+
+    function SetFilter() {
+        $('.filtertable tbody tr td select').select2();
+    }
+
+    //var setColor = function () {
+    //    debugger;
+    //    $('#jqGrid tbody tr').each(function () {
+    //        $(this).td.eq('2').css('color', 'red');
+    //    });
+    //}
+
+    //$(document).ready(function () {
+    //    setTimeout(setColor, 5000);
+    //})
+
+</script>
+
+
+<style type="text/css">
+    .filtertable tbody tr td select, .filtertable tbody tr td input {
+        width: 250px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        padding: 1px 1px;
+    }
+</style>

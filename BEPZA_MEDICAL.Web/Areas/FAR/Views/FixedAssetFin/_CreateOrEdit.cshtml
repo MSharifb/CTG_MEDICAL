@@ -1,0 +1,476 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FAR.ViewModel.FixedAssetViewModel
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+
+<div class="form-horizontal">
+    <fieldset>
+        <legend>Asset Info</legend>
+        <div class="form-group" style="display:none">
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.strMode)
+            @Html.HiddenFor(model => model.OrganogramLevelId)
+            @Html.HiddenFor(model => model.BeneficiaryEmployeeId)
+            @Html.HiddenFor(model => model.ItemId)
+            @Html.HiddenFor(model => model.PurchaseId)
+            @Html.HiddenFor(model => model.AssetStatusId)
+            @Html.HiddenFor(model => model.AssetConditionId)
+            @Html.HiddenFor(model => model.SupplierId)
+            @if (Model.Id > 0)
+            {
+                @Html.HiddenFor(model => model.AssetType)
+            }
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <div class="row">                   
+                    <div class="col-sm-4">
+                        @Html.RadioButtonFor(x => x.AssetType, "NewAsset", new { @checked = true,@readonly=true, @onclick = " return EnableOrDisableAssetID();" })
+                        @Html.LabelFor(model => model.NewAsset)
+                        @Html.RadioButtonFor(x => x.AssetType, "ExistingAsset", new { @readonly = true, @onclick = " return EnableOrDisableAssetID();" })
+                        @Html.LabelFor(model => model.ExistingAsset)
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.CheckBoxFor(model => model.IsRefurbishment)&nbsp;Refurbishment
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.CheckBoxFor(model => model.IsCalculateDepreciation)&nbsp;Calculate Depreciation
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.AssetCode, new { @class = "control-label labelRequired" })
+                        @Html.TextBoxFor(model => model.AssetCode, new { @class = "form-control read-only", @readonly = true })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.AssetName, new { @class = "  labelRequired" })
+                        @Html.TextBoxFor(model => model.AssetName, new { @class = "form-control read-only", @readonly = true })
+
+                    </div>
+                    <div class="col-sm-4">
+                        @*@Html.LabelFor(model => model.AssetStatusId, new { @class = "  labelRequired" })
+                            @Html.DropDownListFor(model => model.AssetStatusId, Model.AssetStatusList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })*@
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.CategoryId, new { @class = "control-label labelRequired" })
+                        @Html.DropDownListFor(model => model.CategoryId, Model.AssetCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.SubCategoryId, new { @class = "control-label labelRequired" })
+                        @Html.DropDownListFor(model => model.SubCategoryId, Model.AssetSubCategoryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.ItemTypeId, new { @class = "labelRequired" })
+                        @Html.DropDownListFor(model => model.ItemTypeId, Model.ItemTypeList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @style = "width:98%" })
+                        @*<img style="position:absolute;right:0;top:30px;" src='@Url.Content("~/Content/Images/btn_search.gif")' alt="Search" onclick="return showOrgLvlPopupDialog(this);" />*@
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.DepreciationRate, new { @class = "" })
+                        @Html.TextBoxFor(model => model.DepreciationRate, new { @class = "form-control required", @style = "text-align:right" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.SupplierId, new { @class = "labelRequired" })
+                        @Html.TextBoxFor(model => model.SupplierName, new { @class = "form-control required", @readonly = true })
+                        @*@Html.DropDownListFor(model => model.SupplierId, Model.AssetSupplierList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control", @readonly = "readonly" })*@
+                    </div>
+                    <div class="col-sm-4">
+                        @*@Html.LabelFor(model => model.AssetConditionId, new { @class = "labelRequired" })
+                            @Html.DropDownListFor(model => model.AssetConditionId, Model.AssetConditionList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })*@
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.PurchaseDate, new { @class = "labelRequired" })<br />
+                        @Html.EditorFor(model => model.PurchaseDate, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.DepreciationEffectiveDate, new { @class = "labelRequired" })<br />
+                        @Html.EditorFor(model => model.DepreciationEffectiveDate, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.LocationId, new { @class = "labelRequired" })
+                        @Html.DropDownListFor(model => model.LocationId, Model.LocationList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.AssetCost, new { @class = "labelRequired" })
+                        @Html.EditorFor(model => model.AssetCost, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.OBDepreciation, new { @class = "" })
+                        @Html.TextBoxFor(model => model.OBDepreciation, new { @class = "form-control required", @style = "text-align:right" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.OrganogramLevelName)
+                        @Html.EditorFor(model => model.OrganogramLevelName, new { @class = "form-control", @style = "width:98%" })
+                        @*<img style="position:absolute;right:0;top:30px;" src='@Url.Content("~/Content/Images/btn_search.gif")' alt="Search" onclick="return openOrganogramLevelDialog();" />*@
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.CurrentBookValue)
+                        @Html.EditorFor(model => model.CurrentBookValue, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.OBBookValue, new { @class = "" })
+                        @Html.EditorFor(model => model.OBBookValue, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.EmpID, new { @class = " " })
+                        @Html.EditorFor(model => model.EmpID, new { @class = "form-control", @style = "width:98%" })
+                        @*<img style="position:absolute;right:0;top:30px;" src='@Url.Content("~/Content/Images/btn_search.gif")' id="imgEmpSearch" alt="Search" onclick="return openEmployee();" />*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-4">
+                        @Html.LabelFor(model => model.Remarks, new { @class = " " })
+                        @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control" })
+                    </div>
+                    @*<div class="col-sm-4">
+                            @Html.LabelFor(model => model.SerialNo, new { @class = " " })
+                            @Html.EditorFor(model => model.SerialNo, new { @class = "form-control" })
+                        </div>*@
+                    @*<div class="col-sm-4">
+                        @Html.LabelFor(model => model.EmployeeName, new { @class = " " })
+                        @Html.EditorFor(model => model.EmployeeName, new { @class = "form-control" })
+                    </div>*@
+                </div>
+            </div>
+        </div>
+
+    </fieldset>
+</div>
+
+<div id="divEmpList">
+    <iframe id="styleAdvance" src="" style="width:99%; height:98%;border: 0px solid white;padding-right: 0px;">
+        Your browser does not support iframes.
+    </iframe>
+</div>
+
+<div id="divItemTypeTree">
+    <iframe src="" style="width:99%; height:98%;border: 0px solid white;padding-right: 0px;">
+        Your browser does not support iframes.
+    </iframe>
+</div>
+
+<div id="divOrganogramLevelTree">
+    <iframe src="" style="width:99%; height:98%;border: 0px solid white;padding-right: 0px;">
+        Your browser does not support iframes.
+    </iframe>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@Model.Id' > 0) {
+            $(':radio').attr("disabled", true);
+        }
+        // $("input[type=radio], input[type=checkbox],select").attr('disabled', true);
+        $("#divEmpList").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Employee List', beforeclose: function (event, ui) { Closing(); } });
+        $("#divItemTypeTree").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Item Type', beforeclose: function (event, ui) { Closing(); } });
+        $("#divOrganogramLevelTree").dialog({ autoOpen: false, modal: true, height: 600, width: 900, title: 'Organogram Level', beforeclose: function (event, ui) { Closing(); } });
+    });
+
+
+    function openOrganogramLevelDialog() {
+        //$('#OrganogramLevelId').val('');
+        //$('#OrganogramLevelName').val('');
+
+        var url = '@Url.Action("OrganogramLevelTreeSearchList", "FixedAsset")';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divOrganogramLevelTree').html(result);
+
+            }
+        });
+
+        $("#divOrganogramLevelTree").dialog('open');
+        return false;
+    }
+
+    function setOrganogramId(orgNodeid, nodeName) {
+        $('#OrganogramLevelId').val('');
+        $('#OrganogramLevelName').val('');
+        if (nodeName != 'Bangladesh Export Processing Zones Authority') {
+            $('#OrganogramLevelId').val(orgNodeid);
+            $('#OrganogramLevelName').val(nodeName);
+            $("#divOrganogramLevelTree").dialog('close');
+        }
+
+    }
+
+    function showOrgLvlPopupDialog() {
+        var url = '@Url.Action("DispalyItemTypeTree", "FixedAsset")';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divItemTypeTree').html(result);
+
+            }
+        });
+
+        $("#divItemTypeTree").dialog('open');
+        return false;
+    }
+
+    function bindItemCombo(itemTypeId) {
+        if ($('#ItemTypeId option[value=' + itemTypeId + ']').length > 0) {
+            $('#ItemTypeId').val(itemTypeId);
+            $("#divItemTypeTree").dialog('close');
+        }
+        else {
+            $('#ItemTypeId').val('');
+        }
+
+    }
+    function openEmployee() {
+        //used from welfare module
+        var url = '@Url.Action("EmployeeSearch", "FixedAsset")?UseTypeEmpId=1';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'text',
+            timeout: 5000,
+            error: function () {
+                alert('System is unable to load data please try again.');
+            },
+            success: function (result) {
+                $('#divEmpList').html(result);
+
+            }
+        });
+
+        $("#divEmpList").dialog('open');
+        return false;
+    }
+
+    function setEmpData(id) {
+        $('#BeneficiaryEmployeeId').val(id)
+        GetEmployeeInfo(id);
+        $("#divEmpList").dialog('close');
+
+    }
+
+    function GetEmployeeInfo(employeeId) {
+        var url = '@Url.Action("GetEmployeeInfo", "FixedAsset")?employeeId=' + employeeId;
+        var form = $('#frm');
+        var serializedForm = form.serialize();
+        if (employeeId > 0) {
+            $.post(url, serializedForm, function (obj) {
+                $('#EmpID').val(obj.EmployeeName + ' [' + obj.EmpID + ']');
+            }, "json");
+        }
+        return false;
+    }
+
+    function Closing() {
+
+    }
+</script>
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#AssetStatusId').on('change', function () {
+            if ($(this).val() != '') {
+                $.ajax({
+                    url: '@Url.Action("GetAssetConditionList", "FixedAsset")',
+                    data: { id: $(this).val() },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (data) {
+                        $("#AssetConditionId").empty();
+
+                        var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                        $.each(data, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+
+                        $("#AssetConditionId").html(items);
+                    }
+                });
+            }
+            else {
+                var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                $("#AssetConditionId").html(items);
+            }
+            return false;
+        });
+
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $('#CategoryId').on('change', function () {
+            if ($(this).val() != '') {
+                // Load Sub Category List
+                $.ajax({
+                    url: '@Url.Action("GetSubCategoryList", "FixedAsset")',
+                    data: { id: $(this).val() },
+                    dataType: "json",
+                    type: "POST",
+                    success: function (data) {
+                        $("#SubCategoryId").empty();
+
+                        var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                        $.each(data, function (i, item) {
+                            items += "<option value=\"" + item.Value + "\">" + item.Text + "</option>";
+                        });
+
+                        $("#SubCategoryId").html(items);
+                    }
+                });
+                //End Load Sub Category List
+
+            }
+            else {
+                $("#SubCategoryId").empty();
+                var items = "<option value=\"" + "" + "\">" + "[Select One]" + "</option>";
+                $("#SubCategoryId").html(items);
+            }
+            return false;
+        });
+
+        $('#SubCategoryId').on('change', function () {
+            $('#DepreciationRate').val('');
+            if ($(this).val() != '') {
+                $.getJSON('@Url.Action("GetDepreciationRateBySubCatID", "FixedAsset")', { id: $(this).val() }, function (data) {
+
+                    if (data != null) {
+                        $('#DepreciationRate').val(data.DepreciationRate);
+                    }
+                    else {
+                        $('#DepreciationRate').val('');
+                        alert('Asset sub-category does not exist.Please setup first.');
+                    }
+                });
+            }
+        });
+        return false;
+    });
+</script>
+<script type="text/javascript">
+
+    function EnableOrDisableAssetID() {
+
+        //var dd = $("input[name='AssetType']:checked").val();
+        //if (dd == 'ExistingAsset') {
+        //    $('#AssetCode').prop("enabled", true);
+        //    $('#AssetCode').prop('readonly', false).css('background-color', '#ffffff');
+        //}
+        //else {
+        //    $('#AssetCode').prop("enabled", false);
+        //    $('#AssetCode').prop('readonly', true).css('background-color', '#f2f5f8');
+        //}
+    }
+
+    $(function () {
+        EnableOrDisableAssetID();
+        getOBVal();
+    });
+
+    // Asset ID Calculation
+    $("#CategoryId").on("change", function () {
+        $('#AssetCode').val('');
+        $('#DepreciationRate').val('');
+        var assetType = $("input[name='AssetType']:checked").val();
+
+        if ($(this).val() != '') {
+            $.getJSON('@Url.Action("AssetCodeGenerate", "FixedAsset")', { assetType: assetType, categoryId: $(this).val() }, function (data) {
+
+                if (data.IsValid) {
+                    $('#AssetCode').val(data.assetCode);
+                    $("#message").html('');
+                }
+                else {
+                    $('#AssetCode').val('');
+                    $("#message").html("<b>" + "There is no reserved ID for this Asset category." + "</b>").css("color", "red");
+                    //                        alert('There is no reserved ID for this Asset category.');
+                }
+            });
+        }
+
+    });
+
+    //Calculate OB Book Value
+    $('#AssetCost,#OBDepreciation').on('change keyup blur', function () {
+        $('#OBBookValue').val('');
+        $('#CurrentBookValue').val('');
+        var assetCost = $('#AssetCost').val();
+        var oBDepreciation = 0;
+        if ($('#OBDepreciation').val() != '') {
+            oBDepreciation = $('#OBDepreciation').val();
+        }
+        // debugger;
+        if (assetCost > 0 && oBDepreciation >= 0) {
+            getOBVal(assetCost, oBDepreciation);
+        }
+
+    });
+
+    //fn Calculate OB Book Value
+    function getOBVal(AssetCost, OBDepreciation) {
+        var assetType = $("input[name='AssetType']:checked").val();
+
+        if (assetType == 'ExistingAsset' && AssetCost > 0) {
+            $('#OBBookValue').val((parseFloat(AssetCost) - parseFloat(OBDepreciation)).toFixed(2));
+            $('#CurrentBookValue').val($('#OBBookValue').val());
+        }
+        else {
+            if (AssetCost > 0) {
+                $('#OBBookValue').val((parseFloat(AssetCost) - parseFloat(OBDepreciation)).toFixed(2));
+                $('#CurrentBookValue').val($('#OBBookValue').val());
+            }
+        }
+    }
+</script>

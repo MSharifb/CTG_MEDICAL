@@ -1,0 +1,319 @@
+﻿@model BEPZA_MEDICAL.Web.Areas.FMS.ViewModel.BankInfoViewModel
+@{
+    Layout = null;
+}
+
+<div id="message" class="form-group messageBox clearfix">
+    @Html.ValidationSummary(false, BEPZA_MEDICAL.Web.Utility.Common.ValidationSummaryHead)
+    @if (!string.IsNullOrEmpty(Model.ErrMsg))
+    {
+        <div id="ErrMsg" class="@Model.errClass">
+            @Model.ErrMsg
+        </div>
+    }
+</div>
+<div class="form-horizontal">
+    <div class="form-group" style="display:none">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.DetailId)
+        @Html.HiddenFor(model => model.CountryName)
+    </div>
+    <fieldset>
+        <legend>Bank Information</legend>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.BankName, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.BankCode, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.BankCode, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankType, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.BankType, "Govt", new { @checked = true })&nbsp;Govt. Bank&nbsp;&nbsp;
+                @Html.RadioButtonFor(model => model.BankType, "Private")&nbsp;Private Bank
+
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Branch Information</legend>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BranchName, new { @class = "col-sm-2 control-label labelRequired" })
+            <div class="col-sm-4 ">
+                @Html.TextBoxFor(model => model.BranchName, new { @class = "form-control branchname" })
+            </div>
+            @Html.LabelFor(model => model.BranchAddress, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.BranchAddress, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SWIFTCode, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.SWIFTCode, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.BranchContactNo, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.BranchContactNo, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.BranchEmail, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.BranchEmail, new { @class = "form-control" })
+            </div>
+            @Html.LabelFor(model => model.CountryId, new { @class = "col-sm-2 control-label labelRequired countryid" })
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.CountryId, Model.CountryList, @String.Format("{0}", Content.DDLOptionalLabel()), new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group" align="center">
+            <div style="width:98%">
+                <div class="text-right" style="margin-bottom:5px">
+                    <button class="btn btn-success" id="btnAdd"><i class="fa fa-plus"></i> Add</button>
+                </div>
+                <div class="clearfix"></div>
+                <table id="DetailGrid" class="contenttable">
+                    <thead>
+                        <tr>
+                            <th>
+                                Branch Name
+                            </th>
+                            <th>
+                                Address
+                            </th>
+
+                            <th>
+                                SWIFT Code
+                            </th>
+                            <th>
+                                Contact No.
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Country
+                            </th>
+                            <th>
+                                Remove
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                        @for (int i = 0; i < Model.BankInfoBranchList.Count; i++)
+                        {
+                            var item = Model.BankInfoBranchList.ToList()[i];
+                            <tr>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].Id)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].BankInfoId)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].BranchName)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].BranchAddress)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].SWIFTCode)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].BranchContactNo)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].BranchEmail)
+                                </td>
+                                <td style="display: none;">
+                                    @Html.HiddenFor(m => m.BankInfoBranchList[i].CountryId)
+                                </td>
+                                <td><u><a href="#" id="branchName">@item.BranchName</a></u>
+                                </td>
+                                <td>
+                                    @item.BranchAddress
+                                </td>
+                                <td>
+                                    @item.SWIFTCode
+                                </td>
+                                <td>
+                                    @item.BranchContactNo
+                                </td>
+                                <td>
+                                    @item.BranchEmail
+                                </td>
+                                <td>
+                                    @item.CountryName
+                                </td>
+
+                                <td>
+                                    <a href="#" class="deleteIcon-tempGrid" title="delete" onclick="RemoveDb(this,@item.Id,'@Url.Action("DeleteDetail")')">
+
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<script type="text/javascript">
+    
+    $('table tbody tr #branchName').click(function () {
+        if($('.branchname').val() == '' && $('.countryid').val() == ''){
+           // debugger;
+            var CountryId = $(this).closest('tr').find('td').eq(7).find('input').val();
+            var branchName = $(this).closest('tr').find('td').eq(2).find('input').val();
+            var branchAddress = $(this).closest('tr').find('td').eq(3).find('input').val();
+            var sWIFTCode = $(this).closest('tr').find('td').eq(4).find('input').val();
+            var branchContactNo = $(this).closest('tr').find('td').eq(5).find('input').val();
+            var branchEmail = $(this).closest('tr').find('td').eq(6).find('input').val();
+            var id = $(this).closest('tr').find('td').eq(0).find('input').val();
+            var bankInfoId = $(this).closest('tr').find('td').eq(1).find('input').val();
+
+            $('#DetailId').val(id);
+            $('#BankInfoId').val(bankInfoId);
+            $('#BranchName').val(branchName);
+            $('#BranchAddress').val(branchAddress);
+            $('#SWIFTCode').val(sWIFTCode);
+            $('#BranchContactNo').val(branchContactNo);
+            $('#BranchEmail').val(branchEmail);
+            $('#CountryId').val(CountryId);
+            $('#BankInfoId').trigger('change');
+            $(this).closest('tr').remove();
+       
+            return false;
+        }
+        else{
+            alert('Add existing branch information first!');
+            return false;
+        }
+    })
+
+    $('table tbody tr .deleteRow').click(function () {
+        $(this).closest('tr').remove();
+        return false;
+    })
+</script>
+
+<script type="text/javascript">
+
+    $('#btnAdd').on('click', function (e) {
+        e.preventDefault();
+        $("#BranchName").removeClass("border-red");
+        $("#CountryId").removeClass("border-red");
+
+
+        var bankInfoId = $('#Id').val();
+        var branchName = $("#BranchName").val();
+        var branchAddress = $("#BranchAddress").val();
+        var swiftCode = $("#SWIFTCode").val();
+        var branchContactNo = $("#BranchContactNo").val();
+        var branchEmail = $("#BranchEmail").val();
+        var countryId = $("#CountryId").val();
+        var countryName = $("#CountryId option:selected").text()
+        var id = $('#DetailId').val();
+
+
+        if (branchName == null || branchName == "") {
+            $("#BranchName").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        if (countryId == null || countryId == "") {
+            $("#CountryId").addClass("border-red");
+            $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> Please fill up the red marked field(s)</span>  </div> ");
+            return;
+        }
+
+        var trClone = '<tr>' +
+        '<td style="display: none;">' + '<input type="text" value="' + id + '" name="BankInfoBranchList[0].Id"></td>' +
+        '<td style="display: none;">' + '<input type="text" name="BankInfoBranchList[0].BankInfoId" value="' + bankInfoId + '"></td>' +
+        '<td style="display: none;">' + '<input type="text" name="BankInfoBranchList[0].BranchName" value="' + branchName + '" ></td>' +
+        '<td style="display: none;">' + '<input type="text" name="BankInfoBranchList[0].BranchAddress" value="' + branchAddress + '" ></td>' +
+        '<td style="display: none;">' + '<input type="text" name="BankInfoBranchList[0].SWIFTCode" value="' + swiftCode + '" ></td>' +
+        '<td style="display: none;">' + '<input type="text" name="BankInfoBranchList[0].BranchContactNo" value="' + branchContactNo + '"></td>' +
+        '<td style="display: none;">' + '<input type="text" name="BankInfoBranchList[0].BranchEmail" value="' + branchEmail + '" ></td>' +
+        '<td style="display: none;">' + '<input type="text" name="BankInfoBranchList[0].CountryId" value="' + countryId + '" ></td>' +
+        '<td><u><a href="#" id="branchName">' + branchName + '</a></u></td>' +
+        '<td>' + branchAddress + '</td>' +
+        '<td>' + swiftCode + '</td>' +
+        '<td>' + branchContactNo + '</td>' +
+        '<td>' + branchEmail + '</td>' +
+        '<td>' + countryName + '</td>' +
+        '<td>' + '<a class="deleteIcon-tempGrid" href="#" title="delete" onclick="RemoveDb(this,0,&quot;/FMS/BankInfo/DeleteDetail&quot;)"></a></td>' +
+        '</tr>';
+        $('#DetailGrid tbody').append(trClone);
+        RearrengeControlName();
+
+        $('#BranchName').val('');
+        $('#BranchAddress').val('');
+        $('#SWIFTCode').val('');
+        $('#BranchContactNo').val('');
+        $('#BranchEmail').val('');
+        $('#CountryId').val(null);
+        return false;
+    });
+
+
+
+    function RemoveDb(el, id, url) {
+        if (id == 0 || id == undefined) {
+            $(el).parent().parent().remove();
+        }
+        else {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ Id: id }),
+                contentType: "application/json; charset=utf-8",
+                error: function () {
+                    $("#message").html("<div class=\"validation-summary-errors\" data-valmsg-summary=\"true\"> <span> System Error!</span>  </div> ");
+                },
+                success: function (result) {
+                    var errMsg = result.Message;
+                    var errg = result.Success;
+                    if (errg) {
+                        $("#message").html('<span style=\"color:Green\">' + errMsg + '</span>');
+                        $(el).parent().parent().remove();
+                    }
+                    else {
+                        $("#message").html('<span style=\"color:red\">' + errMsg + '</span>');
+                    }
+
+                }
+            });
+        }
+        RearrengeControlName();
+
+    }
+
+
+    function RearrengeControlName() {
+        $('#DetailGrid tbody tr').each(function (outIndex) {
+            $(this).find('td').each(function (innerIndex) {
+                if ($(this).find('input').length > 0) {
+                    $(this).find('input').attr('name', $(this).find('input').attr('name').replace(/\[(.*?)\]/, '[' + outIndex + ']'));
+
+                }
+            })
+        })
+    }
+
+</script>

@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="@Url.Content("~/Content/Images/bepza-logo.png")" />
+
+    <!-- Font Awesome -->
+    <link href="@Url.Content("~/assets/css/font-awesome.min.css")" rel="stylesheet" type="text/css" />
+    <!-- bootstrap css -->
+    <link href="@Url.Content("~/assets/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+
+    <!-- Chosen css-->
+    <link href="@Url.Content("~/Content/chosen/chosen.css")" rel="stylesheet" type="text/css" />
+
+    <!-- Select2 css -->
+    <link href="@Url.Content("~/assets/plugins/select2/select2.css")" rel="stylesheet" type="text/css" />
+
+    <!-- jstree css -->
+    <link href="@Url.Content("~/Content/jstree_pre1.0_fix_1/themes/default/style.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/Content/jquery.contextmenu.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jquery-ui-timepicker-addon.css")" rel="stylesheet" />
+
+    <link href="@Url.Content("~/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/assets/plugins/jqGrid/css/ui.jqgrid.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/assets/css/project.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+
+
+    @*Core jqury*@
+    <script src="@Url.Content("~/Scripts/jquery-1.6.4.min.js")" type="text/javascript"></script>
+
+    <!-- Chosen js-->
+    <script src="@Url.Content("~/Scripts/chosen.jquery.js")" type="text/javascript"></script>
+
+    <!-- Select2 -->
+    <script src="@Url.Content("~/assets/plugins/select2/select2.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/modernizr-1.7.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.autocomplete.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.zclip.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.contextmenu.js")" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.select-single').chosen({
+                allow_single_deselect: true
+                //, width: "95%"
+            });
+            $("input:submit, input:button, button", ".jqUI").button();
+            $('.date').datepicker({ dateFormat: "dd/mm/yy" });
+        });
+        var IsDeleteAssigned = '@((new BEPZA_MEDICAL.Web.Utility.AppConstant()).IsDeleteAssigned)';
+        IsDeleteAssigned = !(IsDeleteAssigned.toUpperCase() == 'TRUE');
+
+       
+
+    </script>   
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.0.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.multiselect.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.tmpl.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.jqGrid.locale-en-4.1.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.jqGrid-4.1.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.jqGrid.addons-4.1.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/CommonJS.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Utility.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")" type="text/javascript"></script> <!--  -->
+   
+    <script src="@Url.Content("~/Scripts/jquery-ui-timepicker-addon.js")"></script>
+    <script src="@Url.Content("~/assets/libs/Moment-js/moment.min.js")"></script>
+
+    @*Tree view*@
+    <script src="@Url.Content("~/Content/jstree_pre1.0_fix_1/jquery.jstree.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/jstree_pre1.0_fix_1/_lib/jquery.hotkeys.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Content/jstree_pre1.0_fix_1/_lib/jquery.cookie.js")" type="text/javascript"></script>
+
+    @*Tree view*@
+
+    @RenderSection("JavaScript", false)
+
+    @{
+        ViewBag.ZoneSwitchURL = Url.Content(Request.Url.PathAndQuery);
+    }
+</head>
+<body>
+    <div class="page">
+        <header id="site-header">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img class="navbar-logo" src="@Url.Content("~/Content/Images/bepza-logo.png")" alt="Logo">
+                    <span class="navbar-branding">
+                        <span class="brand-text">
+                            @if (!string.IsNullOrEmpty(ViewBag.ModuleName))
+                            {
+                                @ViewBag.Title
+                            }
+                            @*Bangladesh Export Processing Zones Authority*@
+                        </span>
+                        <small class="brand-secondary-text">
+                            Chattogram EPZ Medical Hospital
+                        </small>
+                    </span>
+                    <!-- /.navbar-branding -->
+                </a>
+                <!-- /.navbar-brand -->
+            </div>
+            <a href="#" id="sidebarHideShow">
+                <i class="fa fa-angle-double-left fa-3x" style="margin-top: 7px;"></i>
+            </a>
+            <!-- /.navbar-header -->
+            @Html.Partial("_LogOnPartial")
+            @Html.Partial("_ZoneDDLPartial")
+        </header>
+        <!-- /#site-header -->
+
+        <aside id="sidebar">
+            @*<% if (LMS.Web.LoginInfo.Current.ShowMenus) { %>*@
+            <div id="main-menu">
+                @if (!string.IsNullOrEmpty(ViewBag.Area))
+                {
+                    Html.RenderAction("GetManueList", "Menu", new { area = "", ModuleName = ViewBag.Area });
+                }
+            </div>
+            <!-- /#main-menu -->
+            @*<% } %>*@
+        </aside>
+        <!-- /#sidebar -->
+
+        <div id="body">
+            <div id="main">
+
+                @if (!string.IsNullOrEmpty(ViewBag.Area))
+                {
+                    Html.RenderAction("GetSiteMapList", "Menu", new { area = "", ModuleName = ViewBag.Area });
+                }
+
+                <div id="main-body">
+                    @RenderBody()
+                </div>
+
+            </div>
+            <div class="clearfix"></div>
+            <footer id="site-footer">
+                Designed &amp; Developed by <a href="https://www.bepza.gov.bd/" target="_blank"><span style="color: #ff0000;font-weight: bold;">BEPZA </span><span style="color: #008000;font-weight: bold;"> MIS</span></a> Team
+            </footer>
+
+            <div id='delete-dialog' title='Delete Record' style="height: 20px;display:none">
+                <p style="line-height: 1em;">
+                    <span>
+                        <img src='@Url.Content("~/Content/Images/question.jpg")' style="width:30px;height:30px" alt="Q" />
+                    </span>
+                    Do you want to delete this record?
+                </p>
+            </div>
+            <div id='rollback-dialog' title='Rollback Record' style="height: 20px;display:none">
+                <p style="line-height: 1em">
+                    <span>
+                        <img src='@Url.Content("~/Content/Images/question.jpg")' style="width:30px;height:30px" alt="Q" />
+                    </span>
+                    Do you want to rollback this record?
+                </p>
+            </div>
+            <div class="delete-dialog-link" title="Delete Record" style="height: 20px;display:none">
+                <p style="line-height: 1em">
+                    <span>
+                        <img src='@Url.Content("~/Content/Images/question.jpg")' style="width:30px;height:30px" alt="Q" />
+                    </span>
+                    Do you want to delete this record ?
+                </p>
+            </div>
+            <div id='successfull-dialog' title='Information' style="height: 20px;display:none">
+                <p style="line-height: 1em">
+                    <span>
+                        <img src='@Url.Content("~/Content/Images/information.jpg")' style="width:30px;height:30px" alt="I" />
+                    </span>
+                    <span class="msg" style="vertical-align: text-top"></span>
+                </p>
+            </div>
+            <div id='error-dialog' title='Information' style="height: 20px;display:none">
+                <p style="line-height: 1em">
+                    <span>
+                        <img src='@Url.Content("~/Content/Images/alert.jpg")' style="width:30px;height:30px" alt="Image" />
+                    </span>
+                    <span class="msg" style="vertical-align: text-top"></span>
+                </p>
+            </div>
+
+            <div id='approve-dialog' title='Approve Record' style="height: 20px;display:none">
+                <p style="line-height: 1em">
+                    <span>
+                        <img src='@Url.Content("~/Content/Images/question.jpg")' style="width:30px;height:30px" alt="Q" />
+                    </span>
+                    Do you want to approve this record ?
+                </p>
+            </div>
+
+            <div id='process-dialog' title='Process Record' style="height: 20px;display:none">
+                <p style="line-height: 1em;">
+                    <span>
+                        <img src='@Url.Content("~/Content/Images/question.jpg")' style="width:30px;height:30px" alt="Q" />
+                    </span>
+                    Do you want to process this record?
+                </p>
+            </div>
+
+
+        </div> <!-- /#Body End -->
+    </div>
+    <script src="~/assets/js/project.js"></script>
+    <script>
+        var flag = 0;
+        $('#sidebarHideShow').click(function (e) {
+            e.preventDefault();
+            if (flag == 0) {
+                $('#sidebar').hide();
+                $('#body').each(function () {
+                    this.style.setProperty('margin-left', '0px', 'important');
+                });
+
+                $('#sidebarHideShow i').removeClass('fa fa-angle-double-left');
+                $('#sidebarHideShow i').addClass('fa fa-angle-double-right');
+
+                flag = 1;
+            }
+            else {
+                $('#sidebar').show();
+                $('#body').each(function () {
+                    this.style.setProperty('margin-left', '280px', 'important');
+                });
+
+                $('#sidebarHideShow i').removeClass('fa fa-angle-double-right');
+                $('#sidebarHideShow i').addClass('fa fa-angle-double-left');
+
+                flag = 0;
+            }
+        });
+    </script>
+</body>
+</html>

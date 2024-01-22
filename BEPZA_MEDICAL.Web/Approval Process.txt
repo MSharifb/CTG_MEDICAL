@@ -1,0 +1,15 @@
+﻿PIM (Project Information Management):
+
+1. Time Sheet Approval Process
+
+	i.) Project Wise Time Sheet Approval process:
+		a.)Employee must submit his/her time sheet to project's PL/PS.
+		b.)PL/PS will approve/Reject the time sheet.If time sheet contains multiple projects then each PL/PS of corresponding project
+			will approve the time sheet. Once it's approved by PL/PS the project's activity of this time sheet will be approved.
+	
+	ii.) Once approved the time sheet by PL/PS of all project, Division Head Wise Time Sheet Approval Process will be applicable:
+		a.) Employee's division head will go to My Documents>> My Approval>> Time Sheet (Division Head) link.Here time sheet of own division will be 
+			populated in the grid.
+		b.) Division head will click on Action link inside the grid.
+		b.) Employee's Division head will approve/Reject the time sheet.
+			Once it's approved, the time sheet status will be approved.
